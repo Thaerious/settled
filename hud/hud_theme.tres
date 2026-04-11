@@ -1,0 +1,11 @@
+[gd_resource type="Theme" format=3 uid="uid://c1voxdoftfv08"]
+
+[resource]
+default_font_size = 40
+BankMargin/base_type = &"MarginContainer"
+BankMargin/constants/margin_bottom = 20
+BankMargin/constants/margin_left = 20
+BankMargin/constants/margin_right = 20
+BankMargin/constants/margin_top = 20
+QtyAnnotation/base_type = &"Label"
+QtyAnnotation/font_sizes/font_size = 20
