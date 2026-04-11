@@ -1,9 +1,33 @@
-[gd_scene load_steps=2 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=6 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://cvd22dj1dxfs8" path="res://hud/hud.tscn" id="1_mlf6e"]
+[ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
+[ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board.gd" id="3_v1wow"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
+resource_name = "board_tiles"
+texture = ExtResource("2_v1wow")
+texture_region_size = Vector2i(111, 128)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_mixcd"]
+tile_shape = 3
+tile_size = Vector2i(111, 128)
+sources/0 = SubResource("TileSetAtlasSource_mixcd")
 
 [node name="Node2D" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("1_mlf6e")]
+
+[node name="GameBoard" type="TileMapLayer" parent="."]
+position = Vector2(920, 316)
+tile_set = SubResource("TileSet_mixcd")
+script = ExtResource("3_v1wow")
