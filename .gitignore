@@ -1,3 +1,24 @@
-# Godot 4+ specific ignores
+# Godot 4 .gitignore
+
+# Godot-specific ignores
 .godot/
-/android/
+*.translation
+
+# Export presets (contains sensitive paths, regenerated on export)
+export_presets.cfg
+
+# Mono/C# specific
+.mono/
+data_*/
+mono_crash.*.json
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor backup files
+*.tmp
+*.bak
+*.swp
+*~.nib

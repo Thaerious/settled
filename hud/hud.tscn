@@ -1,12 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=5 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
-[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/tree.png" id="2_2gk58"]
-[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/wheat.png" id="2_svhta"]
-[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/sheep.png" id="3_fjv1a"]
-[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/clay-brick.png" id="5_1kkc0"]
-[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/mountain.png" id="5_fjv1a"]
+[ext_resource type="PackedScene" uid="uid://jf1afc3rc62v" path="res://hud/store.tscn" id="4_w8tcp"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/PlayerCard.tscn" id="7_0ivg5"]
+[ext_resource type="PackedScene" uid="uid://ccds24g8vhw1y" path="res://hud/bank.tscn" id="8_1kkc0"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -16,128 +13,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_6ca3a")
-
-[node name="BankContainerMargin" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -40.0
-offset_right = 20.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_type_variation = &"BankMargin"
-
-[node name="ColorRect" type="ColorRect" parent="BankContainerMargin"]
-layout_mode = 2
-color = Color(0.26868853, 0.60960835, 0.2513955, 1)
-
-[node name="HBoxContainer" type="HBoxContainer" parent="BankContainerMargin"]
-custom_minimum_size = Vector2(0, 150)
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="BankContainerMargin/HBoxContainer"]
-layout_mode = 2
-
-[node name="ExchangeLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "4:1"
-horizontal_alignment = 1
-
-[node name="TreeTexture" type="TextureRect" parent="BankContainerMargin/HBoxContainer/VBoxContainer"]
-modulate = Color(0, 0.39215687, 0, 1)
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-texture = ExtResource("2_2gk58")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="CountLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 1
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="BankContainerMargin/HBoxContainer"]
-layout_mode = 2
-
-[node name="ExchangeLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-text = "4:1"
-horizontal_alignment = 1
-
-[node name="WheatTexture" type="TextureRect" parent="BankContainerMargin/HBoxContainer/VBoxContainer2"]
-modulate = Color(1, 0.69803923, 0, 1)
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-texture = ExtResource("2_svhta")
-expand_mode = 3
-
-[node name="CountLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 1
-
-[node name="VBoxContainer3" type="VBoxContainer" parent="BankContainerMargin/HBoxContainer"]
-layout_mode = 2
-
-[node name="ExchangeLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer3"]
-layout_mode = 2
-text = "4:1"
-horizontal_alignment = 1
-
-[node name="SheepTexture" type="TextureRect" parent="BankContainerMargin/HBoxContainer/VBoxContainer3"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-texture = ExtResource("3_fjv1a")
-expand_mode = 3
-
-[node name="CountLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer3"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 1
-
-[node name="VBoxContainer4" type="VBoxContainer" parent="BankContainerMargin/HBoxContainer"]
-layout_mode = 2
-
-[node name="ExchangeLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer4"]
-layout_mode = 2
-text = "4:1"
-horizontal_alignment = 1
-
-[node name="RockTexture" type="TextureRect" parent="BankContainerMargin/HBoxContainer/VBoxContainer4"]
-modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-texture = ExtResource("5_fjv1a")
-expand_mode = 3
-
-[node name="CountLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer4"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 1
-
-[node name="VBoxContainer5" type="VBoxContainer" parent="BankContainerMargin/HBoxContainer"]
-layout_mode = 2
-
-[node name="ExchangeLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer5"]
-layout_mode = 2
-text = "4:1"
-horizontal_alignment = 1
-
-[node name="ClayTexture" type="TextureRect" parent="BankContainerMargin/HBoxContainer/VBoxContainer5"]
-modulate = Color(0.6515811, 0.2864562, 2.8878452e-07, 1)
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-texture = ExtResource("5_1kkc0")
-expand_mode = 3
-
-[node name="CountLabel" type="Label" parent="BankContainerMargin/HBoxContainer/VBoxContainer5"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 1
 
 [node name="PlayerInfoMargin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -150,7 +25,7 @@ theme_override_constants/margin_top = 50
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="PlayerCard" parent="PlayerInfoMargin/VBoxContainer" instance=ExtResource("7_0ivg5")]
+[node name="PlayerCard1" parent="PlayerInfoMargin/VBoxContainer" instance=ExtResource("7_0ivg5")]
 layout_mode = 2
 
 [node name="PlayerCard2" parent="PlayerInfoMargin/VBoxContainer" instance=ExtResource("7_0ivg5")]
@@ -160,4 +35,37 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="PlayerCard4" parent="PlayerInfoMargin/VBoxContainer" instance=ExtResource("7_0ivg5")]
+layout_mode = 2
+
+[node name="BankMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -278.0
+offset_top = -258.0
+offset_right = 278.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"DefaultMargin"
+
+[node name="Bank" parent="BankMargin" instance=ExtResource("8_1kkc0")]
+layout_mode = 2
+
+[node name="StoreMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -389.0
+offset_top = -252.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_type_variation = &"DefaultMargin"
+
+[node name="Store" parent="StoreMargin" instance=ExtResource("4_w8tcp")]
 layout_mode = 2
