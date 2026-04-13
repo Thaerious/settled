@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://jf1afc3rc62v"]
+[gd_scene load_steps=12 format=3 uid="uid://jf1afc3rc62v"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_wwgia"]
 [ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/house.png" id="2_gxy6w"]
+[ext_resource type="Script" uid="uid://bom8m0e6d0jvr" path="res://hud/store.gd" id="2_vdnqj"]
 [ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/clay-brick.png" id="3_vdnqj"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/tree.png" id="4_6yum6"]
 [ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/sheep.png" id="5_jkq34"]
@@ -16,162 +17,167 @@ offset_right = 320.0
 offset_bottom = 212.0
 theme = ExtResource("1_wwgia")
 theme_type_variation = &"BGBox"
+script = ExtResource("2_vdnqj")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="RoadContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("2_gxy6w")
-expand_mode = 4
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
-layout_direction = 2
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 2
-
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
-modulate = Color(0.6509804, 0.28627452, 0, 1)
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("3_vdnqj")
-expand_mode = 4
-
-[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
-modulate = Color(0, 0.39215687, 0, 1)
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("4_6yum6")
-expand_mode = 4
-
-[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("5_jkq34")
-expand_mode = 4
-
-[node name="TextureRect5" type="TextureRect" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
-modulate = Color(1, 0.69803923, 0, 1)
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("6_q7xxg")
-expand_mode = 4
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/RoadContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("7_x3ys2")
 expand_mode = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/RoadContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer"]
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/RoadContainer/HBoxContainer"]
 modulate = Color(0.6509804, 0.28627452, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("3_vdnqj")
 expand_mode = 4
 
-[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer"]
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/RoadContainer/HBoxContainer"]
 modulate = Color(0, 0.39215687, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("4_6yum6")
 expand_mode = 4
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HouseContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer3"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HouseContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture = ExtResource("8_f0ole")
+texture = ExtResource("2_gxy6w")
 expand_mode = 4
 
-[node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(25, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HouseContainer"]
+layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer3/HBoxContainer"]
-modulate = Color(1, 0.69803923, 0, 1)
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HouseContainer/HBoxContainer"]
+modulate = Color(0.6509804, 0.28627452, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture = ExtResource("6_q7xxg")
+texture = ExtResource("3_vdnqj")
 expand_mode = 4
 
-[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HBoxContainer3/HBoxContainer"]
-modulate = Color(1, 0.69803923, 0, 1)
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HouseContainer/HBoxContainer"]
+modulate = Color(0, 0.39215687, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture = ExtResource("6_q7xxg")
+texture = ExtResource("4_6yum6")
 expand_mode = 4
 
-[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HBoxContainer3/HBoxContainer"]
-modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("9_qfpxu")
-expand_mode = 4
-
-[node name="TextureRect5" type="TextureRect" parent="VBoxContainer/HBoxContainer3/HBoxContainer"]
-modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("9_qfpxu")
-expand_mode = 4
-
-[node name="TextureRect6" type="TextureRect" parent="VBoxContainer/HBoxContainer3/HBoxContainer"]
-modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("9_qfpxu")
-expand_mode = 4
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer4"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-texture = ExtResource("10_iqqph")
-expand_mode = 4
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer4"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 2
-
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer4/HBoxContainer"]
+[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HouseContainer/HBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("5_jkq34")
 expand_mode = 4
 
-[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HBoxContainer4/HBoxContainer"]
+[node name="TextureRect5" type="TextureRect" parent="VBoxContainer/HouseContainer/HBoxContainer"]
 modulate = Color(1, 0.69803923, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("6_q7xxg")
 expand_mode = 4
 
-[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HBoxContainer4/HBoxContainer"]
+[node name="CityContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/CityContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("8_f0ole")
+expand_mode = 4
+
+[node name="Spacer" type="Control" parent="VBoxContainer/CityContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CityContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/CityContainer/HBoxContainer"]
+modulate = Color(1, 0.69803923, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("6_q7xxg")
+expand_mode = 4
+
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/CityContainer/HBoxContainer"]
+modulate = Color(1, 0.69803923, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("6_q7xxg")
+expand_mode = 4
+
+[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/CityContainer/HBoxContainer"]
+modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("9_qfpxu")
+expand_mode = 4
+
+[node name="TextureRect5" type="TextureRect" parent="VBoxContainer/CityContainer/HBoxContainer"]
+modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("9_qfpxu")
+expand_mode = 4
+
+[node name="TextureRect6" type="TextureRect" parent="VBoxContainer/CityContainer/HBoxContainer"]
+modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("9_qfpxu")
+expand_mode = 4
+
+[node name="CardContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/CardContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("10_iqqph")
+expand_mode = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CardContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/CardContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("5_jkq34")
+expand_mode = 4
+
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/CardContainer/HBoxContainer"]
+modulate = Color(1, 0.69803923, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("6_q7xxg")
+expand_mode = 4
+
+[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/CardContainer/HBoxContainer"]
 modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2

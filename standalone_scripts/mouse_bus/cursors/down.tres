@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Cursor" load_steps=3 format=3 uid="uid://2cqbsqla00nb"]
+
+[ext_resource type="Script" uid="uid://bbd0bx07ifemw" path="res://mouse_bus/cursor.gd" id="1_r03xn"]
+[ext_resource type="Texture2D" uid="uid://lynlymq06uax" path="res://assets/cursors/default_arrow.png" id="2_54ifu"]
+
+[resource]
+script = ExtResource("1_r03xn")
+table = Dictionary[String, Resource]({
+"default": ExtResource("2_54ifu")
+})
+metadata/_custom_type_script = "uid://bbd0bx07ifemw"

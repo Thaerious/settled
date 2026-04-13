@@ -15,6 +15,10 @@ run/main_scene="uid://i8e1xl7e7oqx"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+MouseBus="*res://standalone_scripts/mouse_bus/mouse_bus.gd"
+
 [display]
 
 window/size/viewport_width=1920

@@ -54,6 +54,14 @@ func get_vertex_positions(cell: Vector2i) -> Array[Vector2]:
 	return result
 
 
+func all_vertices() -> Vec2iSet:
+	var result = Vec2iSet.new()
+	for cell in self.all_cells():
+		for pos in self.get_vertex_positions(cell):
+			result.add_item(Vector2i(pos))		
+	return result
+
+
 func _fill_terrain_bag() -> void:
 	for terrain in TERRAIN_COUNTS:
 		for i in TERRAIN_COUNTS[terrain]:
@@ -61,13 +69,19 @@ func _fill_terrain_bag() -> void:
 	self._terrain_bag.shuffle()
 
 
-func _place_tiles() -> void:
-	var bag_index := 0
+func all_cells() -> Array[Vector2i]:
+	var result: Array[Vector2i] = []
 	for row in ROW_SIZES.size():
 		var col_count: int = ROW_SIZES[row]
 		var col_offset: int = ROW_OFFSETS[row]
 		for col in col_count:
-			var cell := Vector2i(col + col_offset, row)
-			var terrain: String = self._terrain_bag[bag_index]
-			bag_index += 1
-			self.set_cell(cell, TERRAIN_SOURCE_ID, Vector2i(TERRAIN[terrain], 0))
+			result.append(Vector2i(col + col_offset, row))
+	return result
+
+
+func _place_tiles() -> void:
+	var bag_index := 0
+	for cell in self.all_cells():
+		var terrain: String = self._terrain_bag[bag_index]
+		bag_index += 1
+		self.set_cell(cell, TERRAIN_SOURCE_ID, Vector2i(TERRAIN[terrain], 0))

@@ -29,7 +29,7 @@ sources/0 = SubResource("TileSetAtlasSource_mixcd")
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("1_mlf6e")]
 
 [node name="GameBoard" type="TileMapLayer" parent="."]
-position = Vector2(1, 0)
+position = Vector2(586, 318)
 tile_set = SubResource("TileSet_mixcd")
 script = ExtResource("3_v1wow")
 

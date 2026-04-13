@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Cursor" load_steps=2 format=3 uid="uid://cdf8y80oy3ump"]
+
+[ext_resource type="Script" uid="uid://bbd0bx07ifemw" path="res://just_code/mouse_bus/cursor.gd" id="1_v4ua1"]
+
+[resource]
+script = ExtResource("1_v4ua1")
+metadata/_custom_type_script = "uid://b434bnr51owwy"
