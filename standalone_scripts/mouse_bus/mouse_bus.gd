@@ -1,30 +1,7 @@
 ## mouse_bus.gd (MouseBus)
 ## Autoload singleton that manages drag-and-drop and hover state for the entire game.
-## Supports both Control (UI) and Area2D (world) drop targets via duck typing.
+## Supports both Control (UI) and Area2D (world) drop targets.
 extends Node
-
-
-## Configuration settings for drag-and-drop behaviour.
-class DragSettings:
-	## If [code]true[/code], the drag ghost is freed automatically when a drop occurs.
-	var clear_on_drop: bool = true
-
-
-## Active drag-and-drop settings instance.
-var settings := DragSettings.new()
-
-
-# ─── State ───
-
-var drag_args: DragArgs = null
-
-## The visual ghost node displayed under the cursor during a drag.
-## [code]null[/code] when no drag is active.
-var _draggable: TextureRect
-
-## The Control or Node currently under the cursor during a drag.
-## [code]null[/code] when nothing is hovered.
-var _hover_target: Node = null
 
 
 # ─── Constants ───
@@ -35,36 +12,24 @@ const DRAG_LAYER: int = 10
 ## The mouse button that initiates and releases drags.
 const DRAG_BUTTON: int = MouseButton.MOUSE_BUTTON_LEFT
 
-
-# ─── Coordinate Helpers ───
-
-## Returns the current mouse position in world space.
-func mouse_world_pos() -> Vector2:
-	return get_viewport().get_canvas_transform().affine_inverse() * get_viewport().get_mouse_position()
+## Bitmask for physics layer 10 (mouse layer).
+const MOUSE_MASK: int = 1 << 9
 
 
-## Converts a canvas (screen) space position to world space.
-## [param canvas_pos] The screen-space position to convert.
-func world_pos(canvas_pos: Vector2) -> Vector2:
-	return get_viewport().get_canvas_transform().affine_inverse() * canvas_pos
+# ─── State ───
 
+## The active drag arguments. [code]null[/code] when no drag is active.
+var _args: DragArgs = null
 
-## Converts a world space position to canvas (screen) space.
-## [param global_pos] The world-space position to convert.
-func canvas_pos(global_pos: Vector2) -> Vector2:
-	return get_viewport().get_canvas_transform() * global_pos
+## The visual ghost node displayed under the cursor during a drag.
+var _draggable: TextureRect = null
 
+## The CanvasLayer that hosts the drag ghost, rendered above all other UI.
+var _drag_layer: CanvasLayer = null
 
-## Returns the mouse position in [param target]'s local coordinate space.
-## Uses [method Control.get_local_mouse_position] for Control nodes,
-## and [method Node2D.to_local] for everything else.
-## [param target] The node to convert into.
-## [param world_pos] The world-space position to convert.
-func get_local(target: Variant, world_pos: Vector2) -> Vector2:
-	if target is Control:
-		return target.get_local_mouse_position()
-	else:
-		return target.to_local(world_pos)
+## The node currently under the cursor during a drag.
+## [code]null[/code] when nothing is hovered.
+var _hover_target: Node = null
 
 
 # ─── Lifecycle ───
@@ -88,26 +53,19 @@ func _input(event: InputEvent) -> void:
 ## Moves the drag ghost to follow the cursor and updates the hover target each frame.
 func _process(_delta: float) -> void:
 	if self._draggable == null: return
-	self._draggable.position = get_viewport().get_mouse_position() + self._drag_offset
-	var control := get_viewport().gui_get_hovered_control()
-	self._update_hover_target(control)
+	self._draggable.position = get_viewport().get_mouse_position() + self._args.offset
+	self._update_hover()
 
 
 # ─── Public API ───
 
 ## Begins a drag operation, creating a ghost image that follows the cursor.
 ## Asserts that no drag is already active.
-##
-## [param texture] The texture to display on the drag ghost.
-## [param payload] Arbitrary data to deliver to the drop target.
-## [param size] The display size of the drag ghost.
-## [param offset] Offset from the cursor to the ghost's top-left corner.
-## [param on_success] Callable invoked with a [DragRecord] on successful drop.
-## [param on_failure] Callable invoked with a [DragRecord] when no valid target is found.
+## [param args] The drag configuration and callbacks.
 func start_drag(args: DragArgs) -> void:
 	assert(self._draggable == null, "MouseBus: drag started while one is already active")
-	self._draggable  = self._generate_rect(args.texture, args.size)
-	self.drag_args = args
+	self._args      = args
+	self._draggable = self._generate_rect(args.texture, args.size)
 	self._drag_layer.add_child(self._draggable)
 
 
@@ -116,19 +74,45 @@ func is_dragging() -> bool:
 	return self._draggable != null
 
 
-## Frees the drag ghost immediately if one exists.
-## Does not resolve drop targets or invoke callbacks.
+## Frees the drag ghost if one exists. Does not resolve drop targets or invoke callbacks.
 func clear_image() -> void:
 	if self._draggable != null:
 		self._draggable.queue_free()
 		self._draggable = null
 
 
+# ─── Coordinate Helpers ───
+
+## Returns the current mouse position in world space.
+func mouse_world_pos() -> Vector2:
+	return get_viewport().get_canvas_transform().affine_inverse() * get_viewport().get_mouse_position()
+
+
+## Converts a canvas (screen) space position to world space.
+## [param canvas_pos] The screen-space position to convert.
+func world_pos(canvas_pos_in: Vector2) -> Vector2:
+	return get_viewport().get_canvas_transform().affine_inverse() * canvas_pos_in
+
+
+## Converts a world space position to canvas (screen) space.
+## [param global_pos] The world-space position to convert.
+func canvas_pos(global_pos: Vector2) -> Vector2:
+	return get_viewport().get_canvas_transform() * global_pos
+
+
+## Returns the mouse position in [param target]'s local coordinate space.
+## [param target] The node to convert into.
+## [param world_pos] The world-space position to convert.
+func get_local(target: Variant, world_pos_in: Vector2) -> Vector2:
+	if target is Control:
+		return target.get_local_mouse_position()
+	else:
+		return target.to_local(world_pos_in)
+
+
 # ─── Internals ───
 
 ## Creates and returns a [TextureRect] configured as a drag ghost.
-## Mouse filter is set to [constant Control.MOUSE_FILTER_IGNORE] so it does
-## not interfere with hover detection on nodes beneath it.
 ## [param texture] The texture to display.
 ## [param size] The minimum size of the rect.
 func _generate_rect(texture: Texture2D, size: Vector2) -> TextureRect:
@@ -141,119 +125,100 @@ func _generate_rect(texture: Texture2D, size: Vector2) -> TextureRect:
 	return texture_rect
 
 
-## Queries the 2D physics space at [param world] for Area2D nodes that implement [code]on_drop[/code].
-## Checks the collider directly, then falls back to its parent.
+## Queries the physics space at [param world] for Area2D nodes on the mouse layer.
 ## [param world] The world-space position to query.
-func _get_drop_targets_at(world: Vector2) -> Array[Node]:
+func _get_world_target(world: Vector2) -> Node:
 	var targets: Array[Node] = []
 	var space := get_viewport().get_world_2d().direct_space_state
 	var query := PhysicsPointQueryParameters2D.new()
 	query.position = world
 	query.collide_with_areas = true
 	query.collide_with_bodies = false
-	query.collision_mask = 1 << 9
+	query.collision_mask = MOUSE_MASK
 
-	var results := space.intersect_point(query)
-
-	for result in results:
+	for result in space.intersect_point(query):
 		targets.append(result.collider)
 
-	return targets
+	if targets.size() > 0: return targets[0]
+	return null
+
+
+## Any control that accepts drop declares 'var can_drop: bool = true'
+func _get_ui_target() -> Control:
+	var ui_target: Control = get_viewport().gui_get_hovered_control()
+	if ui_target == null: return null
+	if not "can_drop" in ui_target: return null
+	if not ui_target.can_drop: return null
+	return ui_target
+
+
+# Retrieve the first object under the mouse that is a valid target for drag-drop
+func _get_drop_target(world: Vector2) -> Variant:
+	var drop_target: Variant = self._get_ui_target()
+	if drop_target != null: return drop_target
+	return self._get_world_target(world)
 
 
 ## Resolves the drop target under the cursor and returns a populated [DragRecord].
-## Checks UI controls first via [method Viewport.gui_get_hovered_control],
-## then falls back to physics-based Area2D targets.
-## Calls [code]on_drop(record)[/code] on the target if found.
-func _resolve_drop_target() -> DragRecord:
+## Checks UI controls first, then falls back to physics-based Area2D targets.
+func _resolve_target() -> DragRecord:
 	var screen_pos := get_viewport().get_mouse_position()
-	var world := self.world_pos(screen_pos)
+	var world      := self.world_pos(screen_pos)
 
-	var record := DragRecord.new(
-		self._draggable,
-		self._payload,
-		screen_pos,
-		world,
-	)
+	var record := DragRecord.new()
+	record.draggable      = self._draggable
+	record.payload        = self._args.payload
+	record.screen_pos     = screen_pos
+	record.world_pos      = world
+	record.destination    = self._get_drop_target(world)
 
-	# Control drop targets get precedence.
-	var drop_target: Variant = get_viewport().gui_get_hovered_control()
-
-	# Search for targets in world space.
-	if drop_target == null:
-		var node_targets := self._get_drop_targets_at(world)
-		if node_targets.size() > 0: drop_target = node_targets[0]
-
-	if drop_target == null:
-		return record
-
-	record.destination = drop_target
-	record.local_position = self.get_local(drop_target, world)
-
-	if drop_target.has_method("on_drop"):
-		if drop_target.on_drop(record):
-			record.succeeded = DragRecord.DropResult.ON_DROP
-		else:
-			record.succeeded = DragRecord.DropResult.NO_HANDLER
-
-	if self.settings.clear_on_drop:
-		self.clear_image()
+	if record.destination != null:
+		record.local_pos = self.get_local(record.destination, world)
 
 	return record
 
 
 ## Ends the active drag, resolves the drop target, and invokes the appropriate callback.
-## Also notifies the current hover target via [code]on_drag_exit[/code] if implemented.
 func _stop_drag() -> void:
 	if self._draggable == null: return
-	var record = self._resolve_drop_target()
+	var record := self._resolve_target()
+	
+	if self._hover_target != null:
+		var hover := HoverRecord.new()
+		hover.draggable  = self._draggable
+		hover.payload    = self._args.payload
+		hover.screen_pos = record.screen_pos
+		hover.world_pos  = record.world_pos
+		hover.exited     = self._hover_target
+		hover.entered    = null
+		self._args.on_exit.call(hover)
 
-	if record.succeeded and self._success_cb.is_valid():
-		self._success_cb.call(record)
-	elif not record.succeeded and self._failure_cb.is_valid():
-		self._failure_cb.call(record)
+	if record.destination: 
+		self._args.on_success.call(record)
+	else: 
+		self._args.on_failure.call(record)
 
-	if self._hover_target != null and self._hover_target.has_method("on_drag_exit"):
-		var hover_record := self._build_hover_record(self._hover_target)
-		self._hover_target.on_drag_exit(hover_record)
-
-	self._draggable = null
+	self.clear_image()
+	self._args         = null
 	self._hover_target = null
-	self._drag_offset = Vector2.ZERO
 
+
+func _generate_hover_record() -> HoverRecord:
+	var record := HoverRecord.new()
+	record.draggable  = self._draggable
+	record.payload    = self._args.payload
+	record.screen_pos = get_viewport().get_mouse_position()
+	record.world_pos  = self.world_pos(record.screen_pos)
+	record.exited     = self._hover_target
+	record.entered    = self._get_drop_target(record.world_pos)
+	return record
 
 ## Updates [member _hover_target] as the cursor moves during a drag.
-## Calls [code]on_drag_exit[/code] on the previous target and [code]on_drag_enter[/code]
-## on the new target if those methods exist.
+## Invokes [member DragArgs.on_exit] and [member DragArgs.on_enter] as the target changes.
 ## [param control] The Control currently under the cursor, or [code]null[/code].
-func _update_hover_target(control: Control) -> void:
-	if control == self._hover_target: return
-
-	if self._hover_target != null and self._hover_target.has_method("on_drag_exit"):
-		var hover_record := self._build_hover_record(self._hover_target)
-		self._hover_target.on_drag_exit(hover_record)
-
-	self._hover_target = control
-
-	if self._hover_target != null and self._hover_target.has_method("on_drag_enter"):
-		var hover_record := self._build_hover_record(self._hover_target)
-		self._hover_target.on_drag_enter(hover_record)
-
-
-## Constructs a [DragRecord] describing the current drag state relative to [param target].
-## Used internally to populate hover enter/exit callbacks.
-## [param target] The node to use as the record's destination.
-func _build_hover_record(target: Node) -> DragRecord:
-	var screen_pos := get_viewport().get_mouse_position()
-	var world := self.world_pos(screen_pos)
-
-	var record := DragRecord.new(
-		self._draggable,
-		self._payload,
-		screen_pos,
-		world,
-	)
-
-	record.destination = target
-	record.local_position = self.get_local(target, world)
-	return record
+func _update_hover() -> void:
+	var record = self._generate_hover_record()
+	if record.exited == record.entered: return
+	if record.entered: self._args.on_enter.call(record)
+	if record.exited: self._args.on_exit.call(record)
+	self._hover_target = record.entered

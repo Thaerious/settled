@@ -36,16 +36,16 @@ func _road_press(event: InputEvent) -> void:
 		args.size    = ICON_SIZE
 		args.offset  = Vector2.ZERO		
 		
-		args.on_success = func (rec: DragRecord):
+		args.on_success = func (_rec: DragRecord):
 			EventBus.clear_targets.emit()
 
-		args.on_failure = func (rec: DragRecord):
+		args.on_failure = func (_rec: DragRecord):
 			EventBus.clear_targets.emit()
 
-		args.on_enter = func (rec: DragRecord):
+		args.on_enter = func (_rec: DragRecord):
 			pass
 
-		args.on_exit = func (rec: DragRecord):
+		args.on_exit = func (_rec: DragRecord):
 			pass
 
 		MouseBus.start_drag(args)
@@ -60,17 +60,17 @@ func _house_press(event: InputEvent) -> void:
 		args.size    = ICON_SIZE
 		args.offset  = Vector2.ZERO		
 		
-		args.on_success = func (rec: DragRecord):
+		args.on_success = func (_rec: DragRecord):
 			EventBus.clear_targets.emit()
 
-		args.on_failure = func (rec: DragRecord):
+		args.on_failure = func (_rec: DragRecord):
 			EventBus.clear_targets.emit()
 
 		args.on_enter = func (rec: DragRecord):
-			pass
+			print("on enter ", rec)
 
 		args.on_exit = func (rec: DragRecord):
-			pass
+			print("on exit ", rec)
 
 		MouseBus.start_drag(args)
 
@@ -84,16 +84,16 @@ func _city_press(event: InputEvent) -> void:
 		args.size    = ICON_SIZE
 		args.offset  = Vector2.ZERO		
 		
-		args.on_success = func (rec: DragRecord):
+		args.on_success = func (_rec: DragRecord):
 			EventBus.clear_targets.emit()
 
-		args.on_failure = func (rec: DragRecord):
+		args.on_failure = func (_rec: DragRecord):
 			EventBus.clear_targets.emit()
 
-		args.on_enter = func (rec: DragRecord):
+		args.on_enter = func (_rec: DragRecord):
 			pass
 
-		args.on_exit = func (rec: DragRecord):
+		args.on_exit = func (_rec: DragRecord):
 			pass
 
 		MouseBus.start_drag(args)
