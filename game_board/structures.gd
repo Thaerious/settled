@@ -3,7 +3,7 @@ extends Node2D
 
 const SettlementScene := preload("res://game_board/house_piece.tscn")
 const CityScene       := preload("res://game_board/city_piece.tscn")
-const IndicatorScene  := preload("res://game_board/indicator_piece.tscn")
+const IndicatorScene  := preload("res://game_board/target_piece.tscn")
 
 ## Canonical vertex positions → placed structure node
 var _structures: Dictionary = {}

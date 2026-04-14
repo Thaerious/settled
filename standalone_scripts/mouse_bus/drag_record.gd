@@ -1,13 +1,19 @@
 ## drag_record.gd
 class_name DragRecord
 
+enum DropResult {
+    MISSED     = 0,
+    ON_DROP    = 1,
+    NO_HANDLER = 2,
+}
+
 var draggable:       Node
 var destination:     Variant
 var payload:         Variant
 var local_position:  Vector2
 var world_position:  Vector2
 var screen_position: Vector2
-var succeeded:       bool = false
+var succeeded:       DropResult = DropResult.MISSED
 
 func _init(
 	draggable:       Node,	

@@ -5,6 +5,23 @@ extends RefCounted
 
 
 var _data: Dictionary = {}
+var _iter_index: int = 0
+var _iter_keys: Array = []
+
+
+func _iter_init(_arg) -> bool:
+	self._iter_keys = self._data.keys()
+	self._iter_index = 0
+	return self._iter_keys.size() > 0
+
+
+func _iter_next(_arg) -> bool:
+	self._iter_index += 1
+	return self._iter_index < self._iter_keys.size()
+
+
+func _iter_get(_arg) -> Vector2i:
+	return self._iter_keys[self._iter_index]
 
 
 ## Adds [param item] to the set. Has no effect if already present.
@@ -24,7 +41,7 @@ func contains(item: Vector2i) -> bool:
 
 ## Adds all items from [param items] to the set.
 ## [param items] Any iterable of Vector2i values.
-func add_all(items: Array[Vector2i]) -> void:
+func add_all(items: Variant) -> void:
 	for item in items:
 		self._data[item] = true
 

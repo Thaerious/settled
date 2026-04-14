@@ -16,24 +16,11 @@ var settings := DragSettings.new()
 
 # ─── State ───
 
+var drag_args: DragArgs = null
+
 ## The visual ghost node displayed under the cursor during a drag.
 ## [code]null[/code] when no drag is active.
 var _draggable: TextureRect
-
-## The data payload being carried by the current drag.
-var _payload: Variant
-
-## Called with a [DragRecord] when a drag completes successfully.
-var _success_cb: Callable
-
-## Called with a [DragRecord] when a drag fails to find a valid drop target.
-var _failure_cb: Callable
-
-## Offset from the cursor to the top-left of the drag ghost, set at drag start.
-var _drag_offset: Vector2 = Vector2.ZERO
-
-## The CanvasLayer that hosts the drag ghost, rendered above all other UI.
-var _drag_layer: CanvasLayer = null
 
 ## The Control or Node currently under the cursor during a drag.
 ## [code]null[/code] when nothing is hovered.
@@ -117,21 +104,10 @@ func _process(_delta: float) -> void:
 ## [param offset] Offset from the cursor to the ghost's top-left corner.
 ## [param on_success] Callable invoked with a [DragRecord] on successful drop.
 ## [param on_failure] Callable invoked with a [DragRecord] when no valid target is found.
-func start_drag(
-	texture:    Texture2D,
-	payload:    Variant,
-	size:       Vector2,
-	offset:     Vector2 = Vector2.ZERO,
-	on_success: Callable = Callable(),
-	on_failure: Callable = Callable(),
-) -> void:
+func start_drag(args: DragArgs) -> void:
 	assert(self._draggable == null, "MouseBus: drag started while one is already active")
-
-	self._draggable  = self._generate_rect(texture, size)
-	self._payload    = payload
-	self._success_cb = on_success
-	self._failure_cb = on_failure
-	self._drag_offset = offset
+	self._draggable  = self._generate_rect(args.texture, args.size)
+	self.drag_args = args
 	self._drag_layer.add_child(self._draggable)
 
 
@@ -145,6 +121,7 @@ func is_dragging() -> bool:
 func clear_image() -> void:
 	if self._draggable != null:
 		self._draggable.queue_free()
+		self._draggable = null
 
 
 # ─── Internals ───
@@ -174,15 +151,12 @@ func _get_drop_targets_at(world: Vector2) -> Array[Node]:
 	query.position = world
 	query.collide_with_areas = true
 	query.collide_with_bodies = false
+	query.collision_mask = 1 << 9
 
 	var results := space.intersect_point(query)
 
 	for result in results:
-		var collider = result.collider
-		if collider.has_method("on_drop"):
-			targets.append(collider)
-		elif collider.get_parent().has_method("on_drop"):
-			targets.append(collider.get_parent())
+		targets.append(result.collider)
 
 	return targets
 
@@ -202,8 +176,10 @@ func _resolve_drop_target() -> DragRecord:
 		world,
 	)
 
+	# Control drop targets get precedence.
 	var drop_target: Variant = get_viewport().gui_get_hovered_control()
 
+	# Search for targets in world space.
 	if drop_target == null:
 		var node_targets := self._get_drop_targets_at(world)
 		if node_targets.size() > 0: drop_target = node_targets[0]
@@ -215,7 +191,10 @@ func _resolve_drop_target() -> DragRecord:
 	record.local_position = self.get_local(drop_target, world)
 
 	if drop_target.has_method("on_drop"):
-		record.succeeded = drop_target.on_drop(record)
+		if drop_target.on_drop(record):
+			record.succeeded = DragRecord.DropResult.ON_DROP
+		else:
+			record.succeeded = DragRecord.DropResult.NO_HANDLER
 
 	if self.settings.clear_on_drop:
 		self.clear_image()

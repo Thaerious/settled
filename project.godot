@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 MouseBus="*res://standalone_scripts/mouse_bus/mouse_bus.gd"
+EventBus="*res://standalone_scripts/event_bus/event_bus.gd"
+GameModel="*res://standalone_scripts/game_model.gd"
 
 [display]
 
@@ -27,3 +29,7 @@ window/size/viewport_height=1080
 [dotnet]
 
 project/assembly_name="Settled"
+
+[layer_names]
+
+2d_physics/layer_10="Mouse"

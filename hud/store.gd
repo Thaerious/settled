@@ -1,9 +1,5 @@
 extends PanelContainer
 
-signal show_house_targets()
-signal show_city_targets()
-signal show_road_targets()
-
 const road_piece: Texture2D = preload("res://assets/road.png")
 const house_piece: Texture2D = preload("res://assets/house.png")
 const city_piece: Texture2D = preload("res://assets/city.png")
@@ -29,30 +25,78 @@ static func is_left_click(event: InputEvent) -> bool:
 		and event.pressed
 	)
 
-func _on_success(record: DragRecord) -> void:
-	pass
-
-
-func _on_reject(record: DragRecord) -> void:
-	pass
 
 
 func _road_press(event: InputEvent) -> void:
 	if is_left_click(event):
-		self.show_road_targets.emit()
-		MouseBus.start_drag(road_piece, "house", ICON_SIZE, Vector2.ZERO, self._on_success, self._on_reject)
+		EventBus.show_road_targets.emit()
+		var args = DragArgs.new()
+		args.texture = road_piece
+		args.payload = "road"
+		args.size    = ICON_SIZE
+		args.offset  = Vector2.ZERO		
+		
+		args.on_success = func (rec: DragRecord):
+			EventBus.clear_targets.emit()
+
+		args.on_failure = func (rec: DragRecord):
+			EventBus.clear_targets.emit()
+
+		args.on_enter = func (rec: DragRecord):
+			pass
+
+		args.on_exit = func (rec: DragRecord):
+			pass
+
+		MouseBus.start_drag(args)
 
 
 func _house_press(event: InputEvent) -> void:
 	if is_left_click(event):
-		self.show_house_targets.emit()
-		MouseBus.start_drag(house_piece, "house", ICON_SIZE, Vector2.ZERO, self._on_success, self._on_reject)
+		EventBus.show_house_targets.emit()
+		var args = DragArgs.new()
+		args.texture = house_piece
+		args.payload = "house"
+		args.size    = ICON_SIZE
+		args.offset  = Vector2.ZERO		
+		
+		args.on_success = func (rec: DragRecord):
+			EventBus.clear_targets.emit()
+
+		args.on_failure = func (rec: DragRecord):
+			EventBus.clear_targets.emit()
+
+		args.on_enter = func (rec: DragRecord):
+			pass
+
+		args.on_exit = func (rec: DragRecord):
+			pass
+
+		MouseBus.start_drag(args)
 
 
 func _city_press(event: InputEvent) -> void:
 	if is_left_click(event):
-		self.show_city_targets.emit()
-		MouseBus.start_drag(city_piece, "house", ICON_SIZE, Vector2.ZERO, self._on_success, self._on_reject)
+		EventBus.show_city_targets.emit()
+		var args = DragArgs.new()
+		args.texture = city_piece
+		args.payload = "city"
+		args.size    = ICON_SIZE
+		args.offset  = Vector2.ZERO		
+		
+		args.on_success = func (rec: DragRecord):
+			EventBus.clear_targets.emit()
+
+		args.on_failure = func (rec: DragRecord):
+			EventBus.clear_targets.emit()
+
+		args.on_enter = func (rec: DragRecord):
+			pass
+
+		args.on_exit = func (rec: DragRecord):
+			pass
+
+		MouseBus.start_drag(args)
 
 
 func _card_press(event: InputEvent) -> void:

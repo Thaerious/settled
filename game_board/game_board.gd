@@ -1,6 +1,10 @@
 ## board.gd
 extends TileMapLayer
 
+@onready var structures = %Structures
+
+const TargetPiece: PackedScene = preload("res://game_board/target_piece.tscn")
+
 const TERRAIN_SOURCE_ID := 0
 
 const TERRAIN := {
@@ -37,16 +41,43 @@ const VERTEX_OFFSETS := [
 const ROW_SIZES := [3, 4, 5, 4, 3]
 const ROW_OFFSETS := [1, 0, 0, 0, 1]
 
-var _terrain_bag: Array[String] = []
 
+# Storage structures for easy iterator
+var active_targets : Array[Node2D] = []
+var _terrain_bag: Array[String] = []
 
 func _ready() -> void:
 	self._fill_terrain_bag()
 	self._place_tiles()
 
+	EventBus.show_house_targets.connect(self.show_house_targets)
+	EventBus.clear_targets.connect(self.clear_targets)
+
+
+func clear_targets():
+	print("clear targets")
+	for target in self.active_targets:
+		self.structures.remove_child(target)
+
+
+func show_house_targets():
+	var vertices = self.all_vertices()
+	for vertex in vertices:
+		var target: Node2D = TargetPiece.instantiate()
+		target.position = vertex
+		self.active_targets.append(target)
+		self.structures.add_child(target)
+
+
+func show_city_targets():
+	pass
+
+func show_road_targets():
+	pass
+
 
 ## Returns the 6 world positions for the vertices of a given cell.
-func get_vertex_positions(cell: Vector2i) -> Array[Vector2]:
+func get_vertices(cell: Vector2i) -> Array[Vector2]:
 	var center := self.map_to_local(cell)
 	var result: Array[Vector2] = []
 	for offset in VERTEX_OFFSETS:
@@ -57,7 +88,7 @@ func get_vertex_positions(cell: Vector2i) -> Array[Vector2]:
 func all_vertices() -> Vec2iSet:
 	var result = Vec2iSet.new()
 	for cell in self.all_cells():
-		for pos in self.get_vertex_positions(cell):
+		for pos in self.get_vertices(cell):
 			result.add_item(Vector2i(pos))		
 	return result
 
