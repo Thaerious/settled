@@ -12,11 +12,10 @@ const DRAG_LAYER: int = 10
 ## The mouse button that initiates and releases drags.
 const DRAG_BUTTON: int = MouseButton.MOUSE_BUTTON_LEFT
 
-## Bitmask for physics layer 10 (mouse layer).
-const MOUSE_MASK: int = 1 << 9
-
-
 # ─── State ───
+
+## Bitmask for physics layer
+var _mouse_mask: int = 0
 
 ## The active drag arguments. [code]null[/code] when no drag is active.
 var _args: DragArgs = null
@@ -40,6 +39,7 @@ func _ready() -> void:
 	self._drag_layer = CanvasLayer.new()
 	self._drag_layer.layer = DRAG_LAYER
 	self.add_child(self._drag_layer)
+	self._mouse_mask = self._get_mouse_mask()
 
 
 ## Listens for mouse button release to end an active drag.
@@ -112,6 +112,14 @@ func get_local(target: Variant, world_pos_in: Vector2) -> Vector2:
 
 # ─── Internals ───
 
+func _get_mouse_mask() -> int:
+	for i in range(32):
+		if ProjectSettings.get_setting("layer_names/2d_physics/layer_%d" % (i + 1)).to_lower() == "mouse":
+			return 1 << i
+	push_error("MouseBus: no physics layer named 'mouse' found")
+	return 0
+
+
 ## Creates and returns a [TextureRect] configured as a drag ghost.
 ## [param texture] The texture to display.
 ## [param size] The minimum size of the rect.
@@ -133,8 +141,8 @@ func _get_world_target(world: Vector2) -> Node:
 	var query := PhysicsPointQueryParameters2D.new()
 	query.position = world
 	query.collide_with_areas = true
-	query.collide_with_bodies = false
-	query.collision_mask = MOUSE_MASK
+	query.collide_with_bodies = false	
+	query.collision_mask = self._mouse_mask
 
 	for result in space.intersect_point(query):
 		targets.append(result.collider)

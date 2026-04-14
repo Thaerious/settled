@@ -42,10 +42,10 @@ func _road_press(event: InputEvent) -> void:
 		args.on_failure = func (_rec: DragRecord):
 			EventBus.clear_targets.emit()
 
-		args.on_enter = func (_rec: DragRecord):
+		args.on_enter = func (_rec: HoverRecord):
 			pass
 
-		args.on_exit = func (_rec: DragRecord):
+		args.on_exit = func (_rec: HoverRecord):
 			pass
 
 		MouseBus.start_drag(args)
@@ -61,15 +61,17 @@ func _house_press(event: InputEvent) -> void:
 		args.offset  = Vector2.ZERO		
 		
 		args.on_success = func (_rec: DragRecord):
+			print("on success")
 			EventBus.clear_targets.emit()
 
 		args.on_failure = func (_rec: DragRecord):
+			print("on failure")
 			EventBus.clear_targets.emit()
 
-		args.on_enter = func (rec: DragRecord):
+		args.on_enter = func (rec: HoverRecord):
 			print("on enter ", rec)
 
-		args.on_exit = func (rec: DragRecord):
+		args.on_exit = func (rec: HoverRecord):
 			print("on exit ", rec)
 
 		MouseBus.start_drag(args)
@@ -90,10 +92,10 @@ func _city_press(event: InputEvent) -> void:
 		args.on_failure = func (_rec: DragRecord):
 			EventBus.clear_targets.emit()
 
-		args.on_enter = func (_rec: DragRecord):
+		args.on_enter = func (_rec: HoverRecord):
 			pass
 
-		args.on_exit = func (_rec: DragRecord):
+		args.on_exit = func (_rec: HoverRecord):
 			pass
 
 		MouseBus.start_drag(args)
