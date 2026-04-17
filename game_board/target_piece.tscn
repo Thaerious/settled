@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://bq4cym7s2ixp6"]
+[gd_scene load_steps=4 format=3 uid="uid://bq4cym7s2ixp6"]
 
+[ext_resource type="Script" uid="uid://818gufhbwqto" path="res://game_board/target_piece.gd" id="1_5i6ik"]
 [ext_resource type="Texture2D" uid="uid://dh7lwv1rv56h2" path="res://assets/indicator.png" id="1_sbtaw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5iwoi"]
 radius = 30.0
 
-[node name="IndicatorPiece" type="Node2D"]
+[node name="TargetPiece" type="Node2D"]
+script = ExtResource("1_5i6ik")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_sbtaw")

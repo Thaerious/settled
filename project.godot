@@ -21,6 +21,10 @@ MouseBus="*res://standalone_scripts/mouse_bus/mouse_bus.gd"
 EventBus="*res://standalone_scripts/event_bus/event_bus.gd"
 GameModel="*res://standalone_scripts/game_model.gd"
 
+[debug]
+
+gdscript/warnings/shadowed_variable=0
+
 [display]
 
 window/size/viewport_width=1920

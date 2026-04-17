@@ -199,7 +199,6 @@ func _stop_drag() -> void:
 		hover.world_pos  = record.world_pos
 		hover.exited     = self._hover_target
 		hover.entered    = null
-		self._args.on_exit.call(hover)
 
 	if record.destination: 
 		self._args.on_success.call(record)

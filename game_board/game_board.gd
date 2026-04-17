@@ -3,7 +3,8 @@ extends TileMapLayer
 
 @onready var structures = %Structures
 
-const TargetPiece: PackedScene = preload("res://game_board/target_piece.tscn")
+const TARGET_PIECE: PackedScene = preload("res://game_board/target_piece.tscn")
+const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")
 
 const TERRAIN_SOURCE_ID := 0
 
@@ -50,23 +51,40 @@ func _ready() -> void:
 	self._fill_terrain_bag()
 	self._place_tiles()
 
-	EventBus.show_house_targets.connect(self.show_house_targets)
-	EventBus.clear_targets.connect(self.clear_targets)
+	EventBus.show_house_targets.connect(self.show_house_targets_hnd)
+	EventBus.clear_targets.connect(self.clear_targets_hnd)
+	EventBus.set_house.connect(self.set_house_hnd)
 
 
-func clear_targets():
-	print("clear targets")
+func show_house_targets_hnd():
+	for vertex in self.all_vertices():
+		self.show_target(vertex)
+
+
+func clear_targets_hnd():	
 	for target in self.active_targets:
-		self.structures.remove_child(target)
+		target.get_parent().remove_child(target)
+		target.queue_free()	
+
+	self.active_targets.clear()
 
 
-func show_house_targets():
-	var vertices = self.all_vertices()
-	for vertex in vertices:
-		var target: Node2D = TargetPiece.instantiate()
-		target.position = vertex
-		self.active_targets.append(target)
-		self.structures.add_child(target)
+func set_house_hnd(loc: Vector2) -> void:
+	print("set_house_piece ", loc)
+	var house_piece := HOUSE_PIECE.instantiate()
+	house_piece.position = loc
+	%Structures.add_child(house_piece)
+
+
+func show_target(vertex: Vector2i):
+	var target: Node2D = TARGET_PIECE.instantiate()
+	target.position = vertex
+	self.structures.add_child(target)
+	target.name = "TargetPiece"
+	self.active_targets.append(target)
+
+
+
 
 
 func show_city_targets():

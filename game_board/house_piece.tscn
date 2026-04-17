@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://8lxol0xx2mih"]
+[gd_scene load_steps=3 format=3 uid="uid://b0bv7imb33x08"]
 
-[node name="House" type="Node2D"]
+[ext_resource type="PackedScene" uid="uid://n0j8qpa8egf7" path="res://game_board/game_piece.tscn" id="1_rul5a"]
+[ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/house.png" id="2_flj7s"]
+
+[node name="HousePiece" instance=ExtResource("1_rul5a")]
+texture = ExtResource("2_flj7s")
+sprite_size = Vector2(32, 32)

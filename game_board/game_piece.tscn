@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://n0j8qpa8egf7"]
+
+[ext_resource type="Script" uid="uid://d336drfblu7mt" path="res://game_board/game_piece.gd" id="1_1pq3x"]
+
+[node name="GamePiece" type="Node2D" groups=["game_piece"]]
+z_index = 1
+script = ExtResource("1_1pq3x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
