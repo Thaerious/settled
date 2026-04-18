@@ -3,6 +3,7 @@ extends Node2D
 
 
 var _current_piece: GamePiece = null
+var axial: Axial = Axial.zero()
 
 
 func set_piece(game_piece: GamePiece) -> void:    

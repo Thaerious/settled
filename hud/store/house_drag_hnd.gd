@@ -41,7 +41,7 @@ func _on_success(_rec: DragRecord) -> void:
 	print("_on_success ", self._last_target)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.clear_targets.emit()
-	if self._last_target: EventBus.set_house.emit(GameModel.self_id, _last_target.position)
+	if self._last_target: EventBus.set_house.emit(GameModel.self_id, _last_target.axial)
 	self._last_target = null
 
 

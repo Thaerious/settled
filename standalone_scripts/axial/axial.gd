@@ -79,6 +79,10 @@ func corners() -> AxialSet:
 	return aset
 
 
+static func corners_of(ax: Axial) -> AxialSet:
+	return ax.corners()
+
+
 func hexes() -> AxialSet:
 	var aset := AxialSet.new()
 	for neighbor in Axial.CORNERS:
@@ -89,9 +93,9 @@ func hexes() -> AxialSet:
 	return aset
 
 
-static func corners_of(ax: Axial) -> AxialSet:
-	return ax.corners()
-
+static func hexes_of(ax: Axial) -> AxialSet:
+	return ax.hexes()
+	
 
 func to_screen(size: float) -> Vector2:
 	var x: float = size * (sqrt(3.0) * self.q + sqrt(3.0) / 2.0 * self.r)

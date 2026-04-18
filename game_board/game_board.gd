@@ -44,7 +44,7 @@ var vertex_offsets: Vec2iSet = (
 
 # Storage structures for easy iterator
 var _active_targets: Array[Node2D] = []
-var _active_houses: Dictionary[int, Vec2iSet] = {}
+var _active_houses: Dictionary[int, AxialSet] = {}
 var _terrain_bag: Array[String] = []
 var _map: HexCornerMap = null
 
@@ -54,7 +54,7 @@ func _ready() -> void:
 	self._place_tiles()
 
 	for i in range(4):
-		self._active_houses[i] = Vec2iSet.new()
+		self._active_houses[i] = AxialSet.new()
 
 	EventBus.show_house_targets.connect(self.show_house_targets_hnd)
 	EventBus.clear_targets.connect(self.clear_targets_hnd)
@@ -76,29 +76,27 @@ func _input(event: InputEvent) -> void:
 		self.clear_targets_hnd()
 
 		for corner in corners:
-			var screen_pos = self.corner_to_screen(corner)
-			self.show_target(screen_pos)
+			self.show_target(corner)
 
 
 func corner_to_screen(corner: Axial) -> Vector2:
 	var hexes := corner.hexes()
-	print("corner %s | %s" % [corner, hexes])
 	var sum := Vector2.ZERO
+
 	for hex in corner.hexes():
 		sum += self.map_to_local(Axial.axial_to_offset(hex))
 
-	print("corner %s | %s" % [corner, sum])
 	return sum / hexes.size()
 
 
 func show_house_targets_hnd():
 	if self._active_houses[GameModel.self_id].size() == 0:
-		self.all_vertices().for_each(self.show_target)
+		self._map.all_corners().for_each(self.show_target)
 	else:
 		var houses := self._active_houses[GameModel.self_id]
-		var hexes = houses.flat_map(self.get_hexes_for_vertex)
-		var neighbors = hexes.flat_map(self.get_vertices_for_hex)
-		neighbors.for_each(self.show_target)
+		var hexes = houses.flat_map(Axial.corners_of)
+		# var neighbors = hexes.flat_map(Axial.neighbors_of)
+		# neighbors.for_each(self.show_target)
 
 
 func get_hexes_for_vertex(hex: Vector2i) -> Vec2iSet:
@@ -117,16 +115,18 @@ func clear_targets_hnd():
 	self._active_targets.clear()
 
 
-func set_house_hnd(id: int, loc: Vector2i) -> void:
+func set_house_hnd(id: int, corner: Axial) -> void:
+	self._active_houses[id].add_item(corner)
 	var house_piece := HOUSE_PIECE.instantiate()
-	house_piece.position = loc
+	house_piece.position = self.corner_to_screen(corner)
 	%Structures.add_child(house_piece)
-	self._active_houses[id].add_item(loc)
 
 
-func show_target(vertex: Vector2):
+func show_target(corner: Axial):
 	var target: Node2D = TARGET_PIECE.instantiate()
-	target.position = vertex
+	target.axial = corner
+	var screen_pos = self.corner_to_screen(corner)
+	target.position = screen_pos
 	self.structures.add_child(target)
 	target.name = "TargetPiece"
 	self._active_targets.append(target)
@@ -138,23 +138,6 @@ func show_city_targets():
 
 func show_road_targets():
 	pass
-
-
-## Returns the 6 vertex positions for the vertices of a given hex.
-func get_vertices_for_hex(hex: Vector2i) -> Vec2iSet:
-	var center := self.map_to_local(hex)
-	var result: Array[Vector2i] = []
-	for offset in self.vertex_offsets:
-		result.append(Vector2i((center + Vector2(offset)).snapped(Vector2(2, 2))))
-	return Vec2iSet.new(result)
-
-
-func all_vertices() -> Vec2iSet:
-	var result = Vec2iSet.new()
-	for hex in self.map.all_hexes():
-		for pos in self.get_vertices_for_hex(hex):
-			result.add_item(Vector2i(pos))
-	return result
 
 
 func _fill_terrain_bag() -> void:

@@ -32,6 +32,10 @@ func all_hexes() -> AxialSet:
 	return self._hexes.clone()
 
 
+func all_corners() -> AxialSet:
+	return self._hexes.flat_map(Axial.corners_of)
+
+
 func get_corners(hex: Axial) -> AxialSet:
 	return self.hex_to_corners.get(hex.to_vec3i(), AxialSet.new())
 

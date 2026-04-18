@@ -88,8 +88,8 @@ func to_array() -> Array[Axial]:
 
 
 func for_each(cb: Callable) -> AxialSet:
-	for v in self._data:
-		cb.call(self._vec_to_axial(v))
+	for ax: Axial in self:
+		cb.call(ax)
 	return self
 
 
