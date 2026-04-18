@@ -3,7 +3,7 @@ extends ProductBase
 
 const HOUSE_TEXTURE: Texture2D = preload("res://assets/house.png")
 const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")
-const ICON_SIZE = Vector2(64,64)
+const ICON_SIZE = Vector2(32,32)
 
 var trigger: Control
 var _house_piece = HOUSE_PIECE.instantiate()
@@ -21,13 +21,14 @@ func _house_press(event: InputEvent) -> void:
 
 func _start_drag() -> void:
 	print("_start_drag")
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	self._house_piece = HOUSE_PIECE.instantiate()
 
 	var args = DragArgs.new()
 	args.texture = HOUSE_TEXTURE
 	args.payload = "house"
 	args.size    = ICON_SIZE
-	args.offset  = Vector2.ZERO	
+	args.offset  = ICON_SIZE / -2	
 	args.on_success = self._on_success
 	args.on_failure = self._on_failure
 	args.on_enter = self._on_enter
@@ -38,30 +39,39 @@ func _start_drag() -> void:
 
 func _on_success(_rec: DragRecord) -> void:
 	print("_on_success ", self._last_target)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.clear_targets.emit()
-	if self._last_target: EventBus.set_house.emit(_last_target.position)
+	if self._last_target: EventBus.set_house.emit(GameModel.self_id, _last_target.position)
 	self._last_target = null
 
 
 func _on_failure(_rec: DragRecord) -> void:
 	print("_on_failure ", self._last_target)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.clear_targets.emit()
 	self._last_target = null
 
 
 func _on_enter(rec: HoverRecord) -> void:	
 	if not rec.entered.owner is TargetPiece: return		
+	print("_on_enter ", rec.entered.owner)
 
+	var target := rec.entered.owner as TargetPiece
+	if target == self._last_target: return  # already set, ignore
+
+	rec.draggable.visible = false
 	if self._last_target: self._last_target.clear_piece()
 	self._last_target = rec.entered.owner as TargetPiece
-	self._last_target.set_piece(self._house_piece)
-	print("_on_enter ", self._last_target)
+	self._last_target.set_piece(self._house_piece)	
 	
 
 func _on_exit(rec: HoverRecord) -> void:	
 	if not rec.exited.owner is TargetPiece: return	
-	if not self._last_target: return
 
-	print("_on_exit")
+	var target := rec.exited.owner as TargetPiece
+	if target != self._last_target: return  # already moved on, ignore
+
+	rec.draggable.visible = true
+	print("_on_exit ", rec.exited.owner)
 	self._last_target.clear_piece()
 	self._last_target = null

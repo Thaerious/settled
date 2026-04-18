@@ -9,105 +9,151 @@ const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")
 const TERRAIN_SOURCE_ID := 0
 
 const TERRAIN := {
-	"hills":     0,
-	"forest":    1,
+	"hills": 0,
+	"forest": 1,
 	"mountains": 2,
-	"fields":    3,
-	"pasture":   4,
-	"desert":    5,
-	"ocean":     6,
+	"fields": 3,
+	"pasture": 4,
+	"desert": 5,
+	"ocean": 6,
 }
 
 const TERRAIN_COUNTS := {
-	"hills":     3,
-	"forest":    4,
+	"hills": 3,
+	"forest": 4,
 	"mountains": 3,
-	"fields":    4,
-	"pasture":   4,
-	"desert":    1,
+	"fields": 4,
+	"pasture": 4,
+	"desert": 1,
 }
 
-const VERTEX_OFFSETS := [
-	Vector2(0, -64),       # top
-	Vector2(55, -32),      # top-right
-	Vector2(55, 32),       # bottom-right
-	Vector2(0, 64),        # bottom
-	Vector2(-55, 32),      # bottom-left
-	Vector2(-55, -32),     # top-left
-]
-
-## Catan board layout: ring of rows, each entry is column count.
-## Pointy-top offset coords: rows 0-4, lengths 3,4,5,4,3.
-## Col offsets per row to centre the board.
-const ROW_SIZES := [3, 4, 5, 4, 3]
-const ROW_OFFSETS := [1, 0, 0, 0, 1]
-
+## The offset to each vertex from a hex
+var vertex_offsets: Vec2iSet = (
+	Vec2iSet
+	. new(
+		[
+			Vector2(0, -64),  # top
+			Vector2(55, -32),  # top-right
+			Vector2(55, 32),  # bottom-right
+			Vector2(0, 64),  # bottom
+			Vector2(-55, 32),  # bottom-left
+			Vector2(-55, -32),  # top-left
+		]
+	)
+)
 
 # Storage structures for easy iterator
-var active_targets : Array[Node2D] = []
+var _active_targets: Array[Node2D] = []
+var _active_houses: Dictionary[int, Vec2iSet] = {}
 var _terrain_bag: Array[String] = []
+var _map: HexCornerMap = null
+
 
 func _ready() -> void:
 	self._fill_terrain_bag()
 	self._place_tiles()
+
+	for i in range(4):
+		self._active_houses[i] = Vec2iSet.new()
 
 	EventBus.show_house_targets.connect(self.show_house_targets_hnd)
 	EventBus.clear_targets.connect(self.clear_targets_hnd)
 	EventBus.set_house.connect(self.set_house_hnd)
 
 
+# debug function
+var last = null
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		var local_pos := self.get_local_mouse_position()
+		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
+		var corners := hex.corners()
+
+		print("hex %s | corners %s" % [hex, corners])
+
+		self.clear_targets_hnd()
+
+		for corner in corners:
+			var screen_pos = self.corner_to_screen(corner)
+			self.show_target(screen_pos)
+
+
+func corner_to_screen(corner: Axial) -> Vector2:
+	var hexes := corner.hexes()
+	print("corner %s | %s" % [corner, hexes])
+	var sum := Vector2.ZERO
+	for hex in corner.hexes():
+		sum += self.map_to_local(Axial.axial_to_offset(hex))
+
+	print("corner %s | %s" % [corner, sum])
+	return sum / hexes.size()
+
+
 func show_house_targets_hnd():
-	for vertex in self.all_vertices():
-		self.show_target(vertex)
+	if self._active_houses[GameModel.self_id].size() == 0:
+		self.all_vertices().for_each(self.show_target)
+	else:
+		var houses := self._active_houses[GameModel.self_id]
+		var hexes = houses.flat_map(self.get_hexes_for_vertex)
+		var neighbors = hexes.flat_map(self.get_vertices_for_hex)
+		neighbors.for_each(self.show_target)
 
 
-func clear_targets_hnd():	
-	for target in self.active_targets:
+func get_hexes_for_vertex(hex: Vector2i) -> Vec2iSet:
+	return self._vertex_hexes[hex]
+
+
+func get_vertex_neighbors(vector: Vector2i):
+	return self.vertex_neighbors[vector]
+
+
+func clear_targets_hnd():
+	for target in self._active_targets:
 		target.get_parent().remove_child(target)
-		target.queue_free()	
+		target.queue_free()
 
-	self.active_targets.clear()
+	self._active_targets.clear()
 
 
-func set_house_hnd(loc: Vector2) -> void:
-	print("set_house_piece ", loc)
+func set_house_hnd(id: int, loc: Vector2i) -> void:
 	var house_piece := HOUSE_PIECE.instantiate()
 	house_piece.position = loc
 	%Structures.add_child(house_piece)
+	self._active_houses[id].add_item(loc)
 
 
-func show_target(vertex: Vector2i):
+func show_target(vertex: Vector2):
 	var target: Node2D = TARGET_PIECE.instantiate()
 	target.position = vertex
 	self.structures.add_child(target)
 	target.name = "TargetPiece"
-	self.active_targets.append(target)
-
-
-
+	self._active_targets.append(target)
 
 
 func show_city_targets():
 	pass
 
+
 func show_road_targets():
 	pass
 
 
-## Returns the 6 world positions for the vertices of a given cell.
-func get_vertices(cell: Vector2i) -> Array[Vector2]:
-	var center := self.map_to_local(cell)
-	var result: Array[Vector2] = []
-	for offset in VERTEX_OFFSETS:
-		result.append(center + offset)
-	return result
+## Returns the 6 vertex positions for the vertices of a given hex.
+func get_vertices_for_hex(hex: Vector2i) -> Vec2iSet:
+	var center := self.map_to_local(hex)
+	var result: Array[Vector2i] = []
+	for offset in self.vertex_offsets:
+		result.append(Vector2i((center + Vector2(offset)).snapped(Vector2(2, 2))))
+	return Vec2iSet.new(result)
 
 
 func all_vertices() -> Vec2iSet:
 	var result = Vec2iSet.new()
-	for cell in self.all_cells():
-		for pos in self.get_vertices(cell):
-			result.add_item(Vector2i(pos))		
+	for hex in self.map.all_hexes():
+		for pos in self.get_vertices_for_hex(hex):
+			result.add_item(Vector2i(pos))
 	return result
 
 
@@ -118,19 +164,16 @@ func _fill_terrain_bag() -> void:
 	self._terrain_bag.shuffle()
 
 
-func all_cells() -> Array[Vector2i]:
-	var result: Array[Vector2i] = []
-	for row in ROW_SIZES.size():
-		var col_count: int = ROW_SIZES[row]
-		var col_offset: int = ROW_OFFSETS[row]
-		for col in col_count:
-			result.append(Vector2i(col + col_offset, row))
-	return result
-
-
 func _place_tiles() -> void:
 	var bag_index := 0
-	for cell in self.all_cells():
+	var root: Axial = Axial.zero()
+	var hexes: AxialSet = root.neighbors().add_item(root)
+	hexes = hexes.flat_map(Axial.neighbors_of).union(hexes)
+
+	for hex in hexes:
 		var terrain: String = self._terrain_bag[bag_index]
 		bag_index += 1
-		self.set_cell(cell, TERRAIN_SOURCE_ID, Vector2i(TERRAIN[terrain], 0))
+		var vector := Axial.axial_to_offset(hex)
+		self.set_cell(vector, TERRAIN_SOURCE_ID, Vector2i(TERRAIN[terrain], 0))
+
+	self._map = HexCornerMap.new(hexes)

@@ -10,13 +10,11 @@ extends PanelContainer
 @onready var roads_view: AnnotatedTexture = %Roads
 @onready var soldiers_view: AnnotatedTexture = %Soldiers
 
-
 @export var player_name: String = "Name Not Set":
 	set(value):
 		name = value
 		if self.is_node_ready():
 			self.name_label.text = value
-
 
 @export var victory_points: int = 0:
 	set(value):
@@ -24,13 +22,11 @@ extends PanelContainer
 		if self.is_node_ready():
 			self.vic_points_view.text = str(value)
 
-
 @export var resources: int = 0:
 	set(value):
 		resources = value
 		if self.is_node_ready():
 			self.resources_view.text = str(value)
-
 
 @export var action_cards: int = 0:
 	set(value):
@@ -38,13 +34,11 @@ extends PanelContainer
 		if self.is_node_ready():
 			self.action_cards_view.text = str(value)
 
-
 @export var roads: int = 0:
 	set(value):
 		roads = value
 		if self.is_node_ready():
 			self.roads_view.text = str(value)
-
 
 @export var soldiers: int = 0:
 	set(value):
