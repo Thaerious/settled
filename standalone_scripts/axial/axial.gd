@@ -61,9 +61,23 @@ func invert() -> Axial:
 
 func neighbors() -> AxialSet:
 	var aset := AxialSet.new()
-	for neighbor in Axial.NEIGHBORS:
-		var ax := Axial.from_vec3i(neighbor)
-		aset.add_item(self.clone().transform(ax))
+
+	if self.is_hex():
+		print("is hex")
+		for neighbor in Axial.NEIGHBORS:
+			var ax := Axial.from_vec3i(neighbor)
+			aset.add_item(self.clone().transform(ax))
+	elif self.is_even():
+		print("is even")
+		aset.add_item(self.clone().transform(Axial.new(-1, 0, 0))) 
+		aset.add_item(self.clone().transform(Axial.new(0, -1, 0))) 
+		aset.add_item(self.clone().transform(Axial.new(0, 0, -1))) 
+	else:
+		print("is odd")
+		aset.add_item(self.clone().transform(Axial.new(1, 0, 0))) 
+		aset.add_item(self.clone().transform(Axial.new(0, 1, 0))) 
+		aset.add_item(self.clone().transform(Axial.new(0, 0, 1))) 
+
 	return aset
 
 
@@ -84,18 +98,22 @@ static func corners_of(ax: Axial) -> AxialSet:
 
 
 func hexes() -> AxialSet:
+	if self.is_hex(): push_error("Axial not a corner.") 
+
 	var aset := AxialSet.new()
 	for neighbor in Axial.CORNERS:
 		var ax := Axial.from_vec3i(neighbor)
 		ax = self.clone().transform(ax.invert())
-		if ax.q + ax.r + ax.s != 0: continue
-		aset.add_item(ax)
+		
+		if ax.is_hex(): 
+			aset.add_item(ax)
+
 	return aset
 
 
 static func hexes_of(ax: Axial) -> AxialSet:
 	return ax.hexes()
-	
+
 
 func to_screen(size: float) -> Vector2:
 	var x: float = size * (sqrt(3.0) * self.q + sqrt(3.0) / 2.0 * self.r)
@@ -103,13 +121,31 @@ func to_screen(size: float) -> Vector2:
 	return Vector2(x, y)
 
 
+func is_hex():
+	return (self.q + self.r + self.s) == 0
+
+
+# even corners require two moves to get to a hex
+func is_even():
+	return (self.q + self.r + self.s) % 2 == 0
+
+
+# odd corners require one move to get to a hex
+func is_odd():
+	return (self.q + self.r + self.s) % 2 != 0
+
+
 static func axial_to_offset(ax: Axial) -> Vector2i:
+	@warning_ignore("integer_division")
 	var col: int = ax.q + (ax.r - (ax.r & 1)) / 2
 	var row: int = ax.r
 	return Vector2i(col, row)
 
 
 static func offset_to_axial(vec: Vector2i) -> Axial:
+	@warning_ignore("integer_division")
 	var q: int = vec.x - (vec.y - (vec.y & 1)) / 2
 	var r: int = vec.y
 	return Axial.new(q, r, -q - r)
+
+

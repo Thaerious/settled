@@ -62,28 +62,26 @@ func _ready() -> void:
 
 
 # debug function
-var last = null
+# var last = null
+# func _input(event: InputEvent) -> void:
+# 	if event is InputEventMouseButton and event.pressed:
+# 		var local_pos := self.get_local_mouse_position()
+# 		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
+# 		var corners := hex.corners()
 
+# 		print("hex %s | corners %s" % [hex, corners])
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		var local_pos := self.get_local_mouse_position()
-		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
-		var corners := hex.corners()
+# 		self.clear_targets_hnd()
 
-		print("hex %s | corners %s" % [hex, corners])
-
-		self.clear_targets_hnd()
-
-		for corner in corners:
-			self.show_target(corner)
+# 		for corner in corners:
+# 			self.show_corner_target(corner)
 
 
 func corner_to_screen(corner: Axial) -> Vector2:
 	var hexes := corner.hexes()
 	var sum := Vector2.ZERO
 
-	for hex in corner.hexes():
+	for hex in corner.hexes():		
 		sum += self.map_to_local(Axial.axial_to_offset(hex))
 
 	return sum / hexes.size()
@@ -91,12 +89,15 @@ func corner_to_screen(corner: Axial) -> Vector2:
 
 func show_house_targets_hnd():
 	if self._active_houses[GameModel.self_id].size() == 0:
-		self._map.all_corners().for_each(self.show_target)
+		self._map.all_corners().for_each(self.show_corner_target)
 	else:
 		var houses := self._active_houses[GameModel.self_id]
-		var hexes = houses.flat_map(Axial.corners_of)
-		# var neighbors = hexes.flat_map(Axial.neighbors_of)
-		# neighbors.for_each(self.show_target)
+		var adjacent = houses.flat_map(Axial.neighbors_of)
+		var permitted = adjacent.flat_map(Axial.neighbors_of)		
+		permitted = permitted.difference(adjacent)
+		permitted = permitted.difference(houses)
+		permitted = permitted.intersect(self._map.all_corners())
+		permitted.for_each(self.show_corner_target)
 
 
 func get_hexes_for_vertex(hex: Vector2i) -> Vec2iSet:
@@ -120,9 +121,10 @@ func set_house_hnd(id: int, corner: Axial) -> void:
 	var house_piece := HOUSE_PIECE.instantiate()
 	house_piece.position = self.corner_to_screen(corner)
 	%Structures.add_child(house_piece)
+	print("House placed at %s" % corner)
 
 
-func show_target(corner: Axial):
+func show_corner_target(corner: Axial):
 	var target: Node2D = TARGET_PIECE.instantiate()
 	target.axial = corner
 	var screen_pos = self.corner_to_screen(corner)

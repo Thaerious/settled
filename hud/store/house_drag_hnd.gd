@@ -37,16 +37,18 @@ func _start_drag() -> void:
 	EventBus.show_house_targets.emit()
 	MouseBus.start_drag(args)
 
+
 func _on_success(_rec: DragRecord) -> void:
-	print("_on_success ", self._last_target)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.clear_targets.emit()
-	if self._last_target: EventBus.set_house.emit(GameModel.self_id, _last_target.axial)
+
+	if self._last_target: 
+		EventBus.set_house.emit(GameModel.self_id, _last_target.axial)
+	
 	self._last_target = null
 
 
 func _on_failure(_rec: DragRecord) -> void:
-	print("_on_failure ", self._last_target)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.clear_targets.emit()
 	self._last_target = null
@@ -54,7 +56,6 @@ func _on_failure(_rec: DragRecord) -> void:
 
 func _on_enter(rec: HoverRecord) -> void:	
 	if not rec.entered.owner is TargetPiece: return		
-	print("_on_enter ", rec.entered.owner)
 
 	var target := rec.entered.owner as TargetPiece
 	if target == self._last_target: return  # already set, ignore
@@ -72,6 +73,5 @@ func _on_exit(rec: HoverRecord) -> void:
 	if target != self._last_target: return  # already moved on, ignore
 
 	rec.draggable.visible = true
-	print("_on_exit ", rec.exited.owner)
 	self._last_target.clear_piece()
 	self._last_target = null

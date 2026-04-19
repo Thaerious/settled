@@ -5,11 +5,12 @@ extends RefCounted
 var hex_to_corners: Dictionary[Vector3i, AxialSet] = {}
 var corner_to_hexes: Dictionary[Vector3i, AxialSet] = {}
 var _hexes: AxialSet
-
+var _corners: AxialSet = AxialSet.new()
 
 func _init(hexes: AxialSet):
 	self._hexes = hexes
 
+	# map each hex to it's corners
 	for hex in hexes:
 		var hex_key := hex.to_vec3i()
 		if hex_key not in self.hex_to_corners:
@@ -18,7 +19,9 @@ func _init(hexes: AxialSet):
 		for c in Axial.CORNERS:
 			var corner: Axial = Axial.new(hex.q + c.x, hex.r + c.y, hex.s + c.z)
 			self.hex_to_corners[hex_key].add_item(corner)
+			self._corners.add_item(corner)
 
+	# reverse map corners to it's hexes
 	for hex in hexes:
 		for corner in self.get_corners(hex):
 			var corner_key := corner.to_vec3i()
@@ -33,7 +36,7 @@ func all_hexes() -> AxialSet:
 
 
 func all_corners() -> AxialSet:
-	return self._hexes.flat_map(Axial.corners_of)
+	return self._corners
 
 
 func get_corners(hex: Axial) -> AxialSet:
