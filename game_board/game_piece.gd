@@ -3,6 +3,7 @@ extends Node2D
 
 @onready var _sprite_node := %Sprite2D
 
+
 @export var texture: Texture2D:
 	set(value):
 		texture = value

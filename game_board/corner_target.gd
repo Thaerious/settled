@@ -1,9 +1,9 @@
-class_name TargetPiece
+class_name CornerTarget
 extends Node2D
 
 
 var _current_piece: GamePiece = null
-var axial: Axial = Axial.zero()
+var axial: Axial = null
 
 
 func set_piece(game_piece: GamePiece) -> void:    

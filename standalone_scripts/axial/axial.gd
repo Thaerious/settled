@@ -35,6 +35,10 @@ func _init(q: int, r: int, s: int):
 	self.s = s
 
 
+func key() -> String:
+	return "%s.%s.%s" % [self.q, self.r, self.s]
+
+
 func clone() -> Axial:
 	return Axial.new(self.q, self.r, self.s)
 
@@ -44,7 +48,7 @@ func to_vec3i() -> Vector3i:
 
 
 func _to_string() -> String:
-	return "Axial(%d, %d, %d)" % [self.q, self.r, self.s]
+	return "(%d, %d, %d)" % [self.q, self.r, self.s]
 
 
 static func zero() -> Axial:
@@ -63,7 +67,6 @@ func neighbors() -> AxialSet:
 	var aset := AxialSet.new()
 
 	if self.is_hex():
-		print("is hex")
 		for neighbor in Axial.NEIGHBORS:
 			var ax := Axial.from_vec3i(neighbor)
 			aset.add_item(self.clone().transform(ax))
@@ -83,6 +86,27 @@ func neighbors() -> AxialSet:
 
 static func neighbors_of(ax: Axial) -> AxialSet:
 	return ax.neighbors()
+
+
+func edges() -> AxialEdgeSet:
+	var aset := AxialEdgeSet.new()
+
+	if self.is_hex():
+		push_error("Axial not a corner.")
+	elif self.is_even():
+		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(-1, 0, 0)), deg_to_rad(-30)))
+		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, -1, 0)), deg_to_rad(90)))
+		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, 0, -1)), deg_to_rad(30)))
+	else:
+		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(1, 0, 0)), deg_to_rad(-30)))
+		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, 1, 0)), deg_to_rad(90)))
+		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, 0, 1)), deg_to_rad(30)))
+
+	return aset
+
+
+static func edges_of(ax: Axial) -> AxialEdgeSet:
+	return ax.edges()
 
 
 func corners() -> AxialSet:

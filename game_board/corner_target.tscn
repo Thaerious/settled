@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bq4cym7s2ixp6"]
+
+[ext_resource type="Script" uid="uid://qhivqrxiphii" path="res://game_board/corner_target.gd" id="1_d4fpw"]
+[ext_resource type="Texture2D" uid="uid://dh7lwv1rv56h2" path="res://assets/indicator.png" id="1_sbtaw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5iwoi"]
+radius = 30.0
+
+[node name="TargetPiece" type="Node2D"]
+script = ExtResource("1_d4fpw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_sbtaw")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 512
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_5iwoi")

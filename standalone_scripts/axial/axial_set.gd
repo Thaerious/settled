@@ -98,7 +98,7 @@ func size() -> int:
 # Returns a string representation of the internal key array.
 # {A, B, C} → "[(1,0,-1), (0,1,-1), (1,-1,0)]"
 func _to_string() -> String:
-	return str(self._data.keys())
+	return "AxialSet" + str(self._data.keys())
 
 
 ## Returns all items as an [Array] of [Axial].
@@ -178,6 +178,15 @@ func map(cb: Callable) -> AxialSet:
 # {A, B}.flat_map(fn) → fn(A) | fn(B)
 func flat_map(cb: Callable) -> AxialSet:
 	var aset := AxialSet.new()
+	for v in self._data:
+		aset.add_all(cb.call(self._vec_to_axial(v)))
+	return aset
+
+
+# Maps each element to a set via cb, then flattens all results into one set.
+# {A, B}.flat_map(fn) → fn(A) | fn(B)
+func edge_map(cb: Callable) -> AxialEdgeSet:
+	var aset := AxialEdgeSet.new()
 	for v in self._data:
 		aset.add_all(cb.call(self._vec_to_axial(v)))
 	return aset

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cql4d1s7iy3a4"]
+[gd_scene load_steps=3 format=3 uid="uid://b5ujcj7s2nj36"]
 
-[ext_resource type="Texture2D" uid="uid://br4ilu0qi6e2x" path="res://assets/city_piece.png" id="1_ev7bq"]
+[ext_resource type="PackedScene" uid="uid://n0j8qpa8egf7" path="res://game_board/game_piece.tscn" id="1_4r7fv"]
+[ext_resource type="Texture2D" uid="uid://d2ok6fkl28mm1" path="res://assets/city.png" id="2_fuelr"]
 
-[node name="City_Piece" type="Node2D"]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_ev7bq")
+[node name="CityPiece" instance=ExtResource("1_4r7fv")]
+texture = ExtResource("2_fuelr")
+sprite_size = Vector2(32, 32)

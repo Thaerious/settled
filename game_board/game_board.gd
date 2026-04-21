@@ -1,10 +1,14 @@
 ## board.gd
+class_name GameBoard
 extends TileMapLayer
 
 @onready var structures = %Structures
 
-const TARGET_PIECE: PackedScene = preload("res://game_board/target_piece.tscn")
+const CORNER_TARGET: PackedScene = preload("res://game_board/corner_target.tscn")
+const EDGE_TARGET: PackedScene = preload("res://game_board/edge_target.tscn")
 const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")
+const CITY_PIECE: PackedScene = preload("res://game_board/city_piece.tscn")
+const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
 const TERRAIN_SOURCE_ID := 0
 
@@ -43,22 +47,34 @@ var vertex_offsets: Vec2iSet = (
 )
 
 # Storage structures for easy iterator
-var _active_targets: Array[Node2D] = []
-var _active_houses: Dictionary[int, AxialSet] = {}
-var _terrain_bag: Array[String] = []
-var _map: HexCornerMap = null
+var _corner_black_list: AxialSet = AxialSet.new()         # locations that are not permitted houses
+var _active_targets: Array[Node2D] = []                   # targets currently on the board, used to clear
+var _active_buildings: Dictionary[int, AxialSet] = {}     # the locations of buildings the player owns (1:n)
+var _active_roads: Dictionary[int, AxialEdgeSet] = {}     # the locations (keys) of roads the player owns
+var _placed_pieces: Dictionary[String, GamePiece] = {}    # which game piece belongs to which axial (1:1)
+var _terrain_bag: Array[String] = []                      # used to setup the board
+var map: HexCornerMap = null                             # records valid hexes/corners
 
 
 func _ready() -> void:
 	self._fill_terrain_bag()
 	self._place_tiles()
+	GameBoardHelpers.place_numbers(self)
 
 	for i in range(4):
-		self._active_houses[i] = AxialSet.new()
+		self._active_buildings[i] = AxialSet.new()
+		self._active_roads[i] = AxialEdgeSet.new()
 
 	EventBus.show_house_targets.connect(self.show_house_targets_hnd)
+	EventBus.show_city_targets.connect(self.show_city_targets_hnd)
+	EventBus.show_road_targets.connect(self.show_road_targets_hnd)
+
 	EventBus.clear_targets.connect(self.clear_targets_hnd)
 	EventBus.set_house.connect(self.set_house_hnd)
+	EventBus.set_city.connect(self.set_city_hnd)
+	EventBus.set_road.connect(self.set_road_hnd)
+
+
 
 
 # debug function
@@ -81,23 +97,49 @@ func corner_to_screen(corner: Axial) -> Vector2:
 	var hexes := corner.hexes()
 	var sum := Vector2.ZERO
 
-	for hex in corner.hexes():		
+	for hex in hexes:		
 		sum += self.map_to_local(Axial.axial_to_offset(hex))
 
 	return sum / hexes.size()
 
 
+func edge_to_screen(edge: AxialEdge) -> Vector2:
+	var corners := edge.corners()
+	var sum := Vector2.ZERO
+
+	for corner in corners:		
+		sum += self.corner_to_screen(corner)
+
+	return sum / corners.size()
+
+
 func show_house_targets_hnd():
-	if self._active_houses[GameModel.self_id].size() == 0:
-		self._map.all_corners().for_each(self.show_corner_target)
+	if self._active_buildings[GameModel.self_id].size() == 0:
+		self.map.all_corners().for_each(self.show_corner_target)
 	else:
-		var houses := self._active_houses[GameModel.self_id]
-		var adjacent = houses.flat_map(Axial.neighbors_of)
-		var permitted = adjacent.flat_map(Axial.neighbors_of)		
-		permitted = permitted.difference(adjacent)
-		permitted = permitted.difference(houses)
-		permitted = permitted.intersect(self._map.all_corners())
+		var roads := self._active_roads[GameModel.self_id]
+		var road_corners := roads.corner_map(AxialEdge.corners_of)
+		var permitted = road_corners.difference(self._corner_black_list)
+		
+		permitted = permitted.intersect(self.map.all_corners())
 		permitted.for_each(self.show_corner_target)
+
+
+func show_city_targets_hnd():
+	var houses := self._active_buildings[GameModel.self_id]
+	houses.for_each(self.show_corner_target)
+
+
+func show_road_targets_hnd():
+	var houses := self._active_buildings[GameModel.self_id]
+	var roads := self._active_roads[GameModel.self_id]
+	var house_edges := houses.edge_map(Axial.edges_of)
+	var road_corners := roads.corner_map(AxialEdge.corners_of)
+	var neighbors := road_corners.edge_map(Axial.edges_of)
+
+	house_edges = house_edges.union(neighbors)
+	house_edges = house_edges.difference(roads)
+	house_edges.for_each(self.show_edge_target)
 
 
 func get_hexes_for_vertex(hex: Vector2i) -> Vec2iSet:
@@ -117,15 +159,36 @@ func clear_targets_hnd():
 
 
 func set_house_hnd(id: int, corner: Axial) -> void:
-	self._active_houses[id].add_item(corner)
+	self._active_buildings[id].add_item(corner)
 	var house_piece := HOUSE_PIECE.instantiate()
 	house_piece.position = self.corner_to_screen(corner)
 	%Structures.add_child(house_piece)
-	print("House placed at %s" % corner)
+	self._placed_pieces[corner.key()] = house_piece
+
+	self._corner_black_list.add_item(corner)
+	self._corner_black_list.add_all(corner.neighbors())
+
+
+func set_city_hnd(_id: int, corner: Axial) -> void:
+	var city_piece := CITY_PIECE.instantiate()
+	city_piece.position = self.corner_to_screen(corner)
+	%Structures.add_child(city_piece)
+	var house_piece := self._placed_pieces[corner.key()]
+	house_piece.queue_free()
+	self._placed_pieces[corner.key()] = city_piece
+
+
+func set_road_hnd(id: int, edge: AxialEdge) -> void:
+	var road_piece := ROAD_PIECE.instantiate()
+	road_piece.position = self.edge_to_screen(edge)
+	%Structures.add_child(road_piece)
+	self._placed_pieces[edge.key()] = road_piece
+	road_piece.rotation = edge.rotation
+	self._active_roads[id].add_item(edge)
 
 
 func show_corner_target(corner: Axial):
-	var target: Node2D = TARGET_PIECE.instantiate()
+	var target: Node2D = CORNER_TARGET.instantiate()
 	target.axial = corner
 	var screen_pos = self.corner_to_screen(corner)
 	target.position = screen_pos
@@ -134,12 +197,14 @@ func show_corner_target(corner: Axial):
 	self._active_targets.append(target)
 
 
-func show_city_targets():
-	pass
-
-
-func show_road_targets():
-	pass
+func show_edge_target(axial_edge: AxialEdge):
+	var target: Node2D = EDGE_TARGET.instantiate()
+	target.axial_edge = axial_edge
+	var screen_pos = self.edge_to_screen(axial_edge)
+	target.position = screen_pos
+	self.structures.add_child(target)
+	target.name = "TargetPiece"
+	self._active_targets.append(target)
 
 
 func _fill_terrain_bag() -> void:
@@ -161,4 +226,6 @@ func _place_tiles() -> void:
 		var vector := Axial.axial_to_offset(hex)
 		self.set_cell(vector, TERRAIN_SOURCE_ID, Vector2i(TERRAIN[terrain], 0))
 
-	self._map = HexCornerMap.new(hexes)
+	self.map = HexCornerMap.new(hexes)
+
+

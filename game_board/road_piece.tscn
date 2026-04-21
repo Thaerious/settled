@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmm1sjp21f57b"]
+
+[ext_resource type="PackedScene" uid="uid://n0j8qpa8egf7" path="res://game_board/game_piece.tscn" id="1_w3ef5"]
+[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="2_iv8em"]
+
+[node name="RoadPiece" instance=ExtResource("1_w3ef5")]
+texture = ExtResource("2_iv8em")
+sprite_size = Vector2(32, 32)

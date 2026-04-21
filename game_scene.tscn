@@ -1,25 +1,35 @@
-[gd_scene load_steps=7 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=8 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://cvd22dj1dxfs8" path="res://hud/hud.tscn" id="1_mlf6e"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
 [ext_resource type="Script" uid="uid://vrjehlf0myuy" path="res://standalone_scripts/event_bus/event_bus_logger.gd" id="4_mixcd"]
+[ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://camera_2d.gd" id="5_mj2jn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
 texture = ExtResource("2_v1wow")
 texture_region_size = Vector2i(111, 128)
 0:0/0 = 0
+0:0/0/custom_data_0 = "clay"
 1:0/0 = 0
+1:0/0/custom_data_0 = "forest"
 2:0/0 = 0
+2:0/0/custom_data_0 = "mountain"
 3:0/0 = 0
+3:0/0/custom_data_0 = "wheat"
 4:0/0 = 0
+4:0/0/custom_data_0 = "sheep"
 5:0/0 = 0
+5:0/0/custom_data_0 = "desert"
 6:0/0 = 0
+6:0/0/custom_data_0 = "water"
 
 [sub_resource type="TileSet" id="TileSet_mixcd"]
 tile_shape = 3
 tile_size = Vector2i(111, 128)
+custom_data_layer_0/name = "terrain_type"
+custom_data_layer_0/type = 4
 sources/0 = SubResource("TileSetAtlasSource_mixcd")
 
 [node name="Node2D" type="Node2D"]
@@ -40,3 +50,7 @@ position = Vector2(-1, 0)
 
 [node name="EventLogger" type="Node" parent="."]
 script = ExtResource("4_mixcd")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(961, 541)
+script = ExtResource("5_mj2jn")
