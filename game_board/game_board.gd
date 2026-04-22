@@ -10,32 +10,10 @@ const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")
 const CITY_PIECE: PackedScene = preload("res://game_board/city_piece.tscn")
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
-const TERRAIN_SOURCE_ID := 0
-
-const TERRAIN := {
-	"hills": 0,
-	"forest": 1,
-	"mountains": 2,
-	"fields": 3,
-	"pasture": 4,
-	"desert": 5,
-	"ocean": 6,
-}
-
-const TERRAIN_COUNTS := {
-	"hills": 3,
-	"forest": 4,
-	"mountains": 3,
-	"fields": 4,
-	"pasture": 4,
-	"desert": 1,
-}
 
 ## The offset to each vertex from a hex
 var vertex_offsets: Vec2iSet = (
-	Vec2iSet
-	. new(
-		[
+	Vec2iSet.new([
 			Vector2(0, -64),  # top
 			Vector2(55, -32),  # top-right
 			Vector2(55, 32),  # bottom-right
@@ -52,14 +30,13 @@ var _active_targets: Array[Node2D] = []                   # targets currently on
 var _active_buildings: Dictionary[int, AxialSet] = {}     # the locations of buildings the player owns (1:n)
 var _active_roads: Dictionary[int, AxialEdgeSet] = {}     # the locations (keys) of roads the player owns
 var _placed_pieces: Dictionary[String, GamePiece] = {}    # which game piece belongs to which axial (1:1)
-var _terrain_bag: Array[String] = []                      # used to setup the board
-var map: HexCornerMap = null                             # records valid hexes/corners
+var map: HexCornerMap = null                              # records valid hexes/corners
 
 
 func _ready() -> void:
-	self._fill_terrain_bag()
-	self._place_tiles()
-	GameBoardHelpers.place_numbers(self)
+	var setup = GameBoardSetup.new(self)
+	setup.place_tiles()
+	setup.place_numbers()
 
 	for i in range(4):
 		self._active_buildings[i] = AxialSet.new()
@@ -73,8 +50,6 @@ func _ready() -> void:
 	EventBus.set_house.connect(self.set_house_hnd)
 	EventBus.set_city.connect(self.set_city_hnd)
 	EventBus.set_road.connect(self.set_road_hnd)
-
-
 
 
 # debug function
@@ -97,7 +72,7 @@ func corner_to_screen(corner: Axial) -> Vector2:
 	var hexes := corner.hexes()
 	var sum := Vector2.ZERO
 
-	for hex in hexes:		
+	for hex in hexes:
 		sum += self.map_to_local(Axial.axial_to_offset(hex))
 
 	return sum / hexes.size()
@@ -205,27 +180,3 @@ func show_edge_target(axial_edge: AxialEdge):
 	self.structures.add_child(target)
 	target.name = "TargetPiece"
 	self._active_targets.append(target)
-
-
-func _fill_terrain_bag() -> void:
-	for terrain in TERRAIN_COUNTS:
-		for i in TERRAIN_COUNTS[terrain]:
-			self._terrain_bag.append(terrain)
-	self._terrain_bag.shuffle()
-
-
-func _place_tiles() -> void:
-	var bag_index := 0
-	var root: Axial = Axial.zero()
-	var hexes: AxialSet = root.neighbors().add_item(root)
-	hexes = hexes.flat_map(Axial.neighbors_of).union(hexes)
-
-	for hex in hexes:
-		var terrain: String = self._terrain_bag[bag_index]
-		bag_index += 1
-		var vector := Axial.axial_to_offset(hex)
-		self.set_cell(vector, TERRAIN_SOURCE_ID, Vector2i(TERRAIN[terrain], 0))
-
-	self.map = HexCornerMap.new(hexes)
-
-

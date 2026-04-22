@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=6 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
-[ext_resource type="PackedScene" uid="uid://jf1afc3rc62v" path="res://hud/store.tscn" id="4_w8tcp"]
+[ext_resource type="PackedScene" uid="uid://jf1afc3rc62v" path="res://hud/store/store.tscn" id="4_w8tcp"]
+[ext_resource type="PackedScene" uid="uid://b21qcmnle7jxn" path="res://hud/dice/dice_control.tscn" id="6_fjv1a"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/PlayerCard.tscn" id="7_0ivg5"]
 [ext_resource type="PackedScene" uid="uid://ccds24g8vhw1y" path="res://hud/bank.tscn" id="8_1kkc0"]
 
@@ -69,3 +70,10 @@ theme_type_variation = &"DefaultMargin"
 
 [node name="Store" parent="StoreMargin" instance=ExtResource("4_w8tcp")]
 layout_mode = 2
+
+[node name="Dice" parent="." instance=ExtResource("6_fjv1a")]
+layout_mode = 0
+offset_left = 1630.0
+offset_top = 75.0
+offset_right = 1792.0
+offset_bottom = 138.0

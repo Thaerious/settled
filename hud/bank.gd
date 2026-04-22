@@ -21,6 +21,7 @@ var tree_exchange_rate: int = 4:
 		if self.is_node_ready():
 			self.ex_tree.text = "%s:1" % value
 
+
 var tree_quantity: int = 0:
 	set(value):
 		tree_quantity = value
