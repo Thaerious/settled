@@ -180,3 +180,13 @@ static func offset_to_axial(vec: Vector2i) -> Axial:
 func _equals(other: Variant) -> bool:
 	if not other is Axial: return false
 	return self.q == other.q and self.r == other.r and self.s == other.s
+
+
+func map_to_local(tile_map_layer: TileMapLayer) -> Vector2:
+	if self.is_hex():
+		var vector := Axial.axial_to_offset(self)
+		return tile_map_layer.map_to_local(vector)
+	else:
+		var sum := Vector2.ZERO
+		for hex in self.hexes(): sum += hex.map_to_local(tile_map_layer)
+		return sum / 3

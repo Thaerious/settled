@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://h18xyxqj7sxf"
-path="res://.godot/imported/mountain.png-b2add8ed35f94e98573ad9ba99ceec37.ctex"
+uid="uid://d3tekarm7gxpq"
+path="res://.godot/imported/wool.png-96e4bbe7639b6d0ecee80929892294ad.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/mountain.png"
-dest_files=["res://.godot/imported/mountain.png-b2add8ed35f94e98573ad9ba99ceec37.ctex"]
+source_file="res://assets/resources/wool.png"
+dest_files=["res://.godot/imported/wool.png-96e4bbe7639b6d0ecee80929892294ad.ctex"]
 
 [params]
 

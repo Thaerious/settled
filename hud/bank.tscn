@@ -2,11 +2,11 @@
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_lwpt7"]
 [ext_resource type="Script" uid="uid://b42hn37oviq7n" path="res://hud/bank.gd" id="2_an3xg"]
-[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/clay-brick.png" id="3_10bef"]
-[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/tree.png" id="4_v0h8t"]
-[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/sheep.png" id="5_ll756"]
-[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/wheat.png" id="6_wc7gn"]
-[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/mountain.png" id="9_f67r3"]
+[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="3_10bef"]
+[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="4_v0h8t"]
+[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="5_ll756"]
+[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="6_wc7gn"]
+[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="9_f67r3"]
 
 [node name="Bank" type="PanelContainer"]
 theme = ExtResource("1_lwpt7")

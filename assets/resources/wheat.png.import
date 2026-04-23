@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3tekarm7gxpq"
-path="res://.godot/imported/sheep.png-8b8cd86b8428760487cf69c7697ecb0e.ctex"
+uid="uid://csmjrw6xu8fg0"
+path="res://.godot/imported/wheat.png-6b4eae503a74ca2f7f2c0fa9e077d41b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sheep.png"
-dest_files=["res://.godot/imported/sheep.png-8b8cd86b8428760487cf69c7697ecb0e.ctex"]
+source_file="res://assets/resources/wheat.png"
+dest_files=["res://.godot/imported/wheat.png-6b4eae503a74ca2f7f2c0fa9e077d41b.ctex"]
 
 [params]
 

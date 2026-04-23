@@ -51,6 +51,7 @@ func _ready() -> void:
 	EventBus.set_road.connect(self.set_road_hnd)
 
 
+
 # debug function
 var last = null
 func _input(event: InputEvent) -> void:
@@ -59,7 +60,11 @@ func _input(event: InputEvent) -> void:
 		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
 		var corners := hex.corners()
 
-		print("hex %s | corners %s" % [hex, corners])
+		print("GAME BOARD hex %s | corners %s" % [hex, corners])
+		if Game.model.all_hexes().contains(hex):
+			print(Game.model.get_hex_data(hex))
+		else:
+			print("Hex not found in model")
 
 		self.clear_targets_hnd()
 

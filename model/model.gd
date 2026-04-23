@@ -41,22 +41,23 @@ var _game_phase: GAME_PHASE = GAME_PHASE.NOT_STARTED
 var _robber: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
-var _terrain: Dictionary[String, String] = {}  # axial (hex) -> terrain
-var _numbers: Dictionary[String, int] = {}     # axial (hex) -> number
-var _houses: Dictionary[String, int] = {}      # axial (corner) -> player id
-var _cities: Dictionary[String, int] = {}      # axial (corner) -> player id
-var _roads: Dictionary[String, int] = {}       # axial edge -> player id
+var _terrain: Dictionary[String, String] = {}    # axial (hex) -> terrain
+var _numbers: Dictionary[String, int] = {}       # axial (hex) -> number
+var _houses: Dictionary[String, int] = {}        # axial (corner) -> player id
+var _cities: Dictionary[String, int] = {}        # axial (corner) -> player id
+var _roads: Dictionary[String, int] = {}         # axial edge -> player id
 
-var _houses_mirror: Dictionary[int, Array] = {}      # player id -> [axial (corner)]
-var _cities_mirror: Dictionary[int, Array] = {}      # player id -> [axial (corner)]
-var _roads_mirror: Dictionary[int, Array] = {}       # player id -> [axial edge]
+var _houses_mirror: Dictionary[int, Array] = {}  # player id -> [axial (corner)]
+var _cities_mirror: Dictionary[int, Array] = {}  # player id -> [axial (corner)]
+var _roads_mirror: Dictionary[int, Array] = {}   # player id -> [axial edge]
 
-var _bank: Dictionary[int, Dictionary] = {}    # player id -> resource -> quantity
-var _cards: Dictionary[int, Dictionary] = {}   # player id -> card -> quantity
-var _victory_points: Dictionary[int, int] = {} # player id -> points
-var _army : Dictionary[int, int] = {}          # player id -> soldier cards played
-var _supply: Dictionary[String, int] = {}      # resource -> quantity in bank
-var _ports: Dictionary[String, String] = {}    # axial edge -> resource ("any" for 3:1)
+var _bank: Dictionary[int, Dictionary] = {}      # player id -> resource -> quantity
+var _cards: Dictionary[int, Dictionary] = {}     # player id -> card -> quantity
+var _victory_points: Dictionary[int, int] = {}   # player id -> points
+var _army : Dictionary[int, int] = {}            # player id -> soldier cards played
+var _supply: Dictionary[String, int] = {}        # resource -> quantity in bank
+var _ports: Dictionary[String, String] = {}      # axial (corner) -> resource ("any" for 3:1)
+var _port_hosts: Dictionary[String, String] = {} # tiles that have ports
 
 func all_hexes() -> AxialSet: return self._hexes.duplicate(true)
 func all_corners() -> AxialSet:	return self._corners.duplicate(true)
@@ -67,10 +68,10 @@ func _init() -> void:
 	self._place_tiles()
 	self._place_numbers()
 	self._place_water()
+	self._place_ports()
 
 	EventBus.set_house.connect(func (id, ax): 
 		self._houses[ax.key()] = id
-		print(self._houses_mirror.size())
 		self._houses_mirror[id].append(ax)
 	)
 
@@ -106,17 +107,24 @@ func _init() -> void:
 
 func all_buildings(id: int) -> AxialSet:
 	var result := AxialSet.new()
-	result.add_items(self._houses_mirror[id])
-	result.add_items(self._cities_mirror[id])
+	result.add_all(self._houses_mirror[id])
+	result.add_all(self._cities_mirror[id])
 	return result
 
 
-func hex_data(ax: Axial) -> HexData:
+func get_hex_data(ax: Axial) -> HexData:
 	var data = HexData.new()
 	data.axial = ax.duplicate()
 	data.terrain = self._terrain[ax.key()]
 	data.number = self._numbers.get(ax.key(), -1)
 	data.robber = self._robber == ax
+	data.port_type = self._port_hosts.get(ax.key(), "none")
+
+	if data.port_type != "none":
+		for corner in ax.corners():
+			if not self._ports.has(corner.key()): continue
+			data.ports.add_item(corner.duplicate())
+
 	return data
 
 
@@ -136,6 +144,41 @@ func _place_tiles() -> void:
 	for hex in self._hexes:
 		var terrain: String = terrain_bag.pop_front()
 		self._terrain[hex.key()] = terrain
+
+
+func _place_ports() -> void:	
+	self._place_port(Axial.new(0, -3, 3), 2, "any")
+	self._place_port(Axial.new(0, -3, 3), 3, "any")
+
+	self._place_port(Axial.new(2, -3, 1), 3, "brick")
+	self._place_port(Axial.new(2, -3, 1), 4, "brick")
+
+	self._place_port(Axial.new(3, -2, -1), 3, "any")
+	self._place_port(Axial.new(3, -2, -1), 4, "any")
+
+	self._place_port(Axial.new(3, 0, -3), 4, "wood")
+	self._place_port(Axial.new(3, 0, -3), 5, "wood")
+
+	self._place_port(Axial.new(1, 2, -3), 5, "wool")
+	self._place_port(Axial.new(1, 2, -3), 0, "wool")
+
+	self._place_port(Axial.new(-1, 3, -2), 5, "rock")
+	self._place_port(Axial.new(-1, 3, -2), 0, "rock")	
+
+	self._place_port(Axial.new(-3, 3, 0), 0, "any")
+	self._place_port(Axial.new(-3, 3, 0), 1, "any")	
+
+	self._place_port(Axial.new(-3, 1, 2), 1, "wheat")
+	self._place_port(Axial.new(-3, 1, 2), 2, "wheat")	
+
+	self._place_port(Axial.new(-2, -1, 3), 1, "any")
+	self._place_port(Axial.new(-2, -1, 3), 2, "any")	
+
+
+func _place_port(ax: Axial, corner: int, value: String) -> void:
+	var cax = ax.corners().to_array()[corner]
+	self._ports[cax.key()] = value
+	self._port_hosts[ax.key()] = value
 
 
 func _place_water()-> void:

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbm4bsdt1sptl"
-path="res://.godot/imported/clay-brick.png-fd987ba0952fda21108e0d70ad226676.ctex"
+uid="uid://h18xyxqj7sxf"
+path="res://.godot/imported/rock.png-ef71757fc3873ffeed53066b51e5b8c8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/clay-brick.png"
-dest_files=["res://.godot/imported/clay-brick.png-fd987ba0952fda21108e0d70ad226676.ctex"]
+source_file="res://assets/resources/rock.png"
+dest_files=["res://.godot/imported/rock.png-ef71757fc3873ffeed53066b51e5b8c8.ctex"]
 
 [params]
 
