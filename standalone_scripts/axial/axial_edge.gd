@@ -17,8 +17,8 @@ func _init(a: Axial, b:Axial, rotation: float):
 		a = b
 		b = tmp
 
-	self.ax1 = a.clone()
-	self.ax2 = b.clone()
+	self.ax1 = a.duplicate()
+	self.ax2 = b.duplicate()
 
 
 func key() -> String:
@@ -29,12 +29,20 @@ func _to_string() -> String:
 	return "(%s→%s)" % [self.ax1, self.ax2]
 
 
+func duplicate() -> AxialEdge:
+	return AxialEdge.new(self.ax1, self.ax2, self.rotation)
+
+
 static func corners_of(ax: AxialEdge) -> AxialSet:
 	return ax.corners()
 
 
 func corners() -> AxialSet:
 	return AxialSet.new([
-		self.ax1.clone(),
-		self.ax2.clone()
+		self.ax1.duplicate(),
+		self.ax2.duplicate()
 	])
+
+func _equals(other: Variant) -> bool:
+	if not other is AxialEdge: return false
+	return self.ax1 == other.ax1 and self.ax2 == other.ax2	

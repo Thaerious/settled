@@ -42,7 +42,7 @@ func _on_success(_rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
 
 	if self._last_target: 
-		EventBus.set_road.emit(GameModel.self_id, _last_target.axial_edge)
+		EventBus.set_road.emit(Game.self_id, _last_target.axial_edge)
 	
 	self._last_target = null
 

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://b72ek6sidar60"]
+
+[ext_resource type="Texture2D" uid="uid://vc4l7udul7am" path="res://assets/anchor.png" id="1_bvl1i"]
+[ext_resource type="Script" uid="uid://d4bof1yxe04s" path="res://game_board/sprite_2d_exact.gd" id="2_1eadh"]
+
+[node name="NumberPiece" type="Node2D"]
+
+[node name="Sprite2DExact" type="Sprite2D" parent="."]
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("1_bvl1i")
+script = ExtResource("2_1eadh")
+sprite_size = Vector2(32, 32)
+metadata/_custom_type_script = "uid://d4bof1yxe04s"

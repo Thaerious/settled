@@ -39,7 +39,7 @@ func key() -> String:
 	return "%s.%s.%s" % [self.q, self.r, self.s]
 
 
-func clone() -> Axial:
+func duplicate() -> Axial:
 	return Axial.new(self.q, self.r, self.s)
 
 
@@ -59,6 +59,10 @@ func transform(other: Axial) -> Axial:
 	return Axial.new(self.q + other.q, self.r + other.r, self.s + other.s)
 
 
+func scale(x: int) -> Axial:
+	return Axial.new(self.q * x, self.r * x, self.s * x)
+
+
 func invert() -> Axial:
 	return Axial.new(self.q * -1, self.r * -1, self.s * -1)
 
@@ -69,17 +73,17 @@ func neighbors() -> AxialSet:
 	if self.is_hex():
 		for neighbor in Axial.NEIGHBORS:
 			var ax := Axial.from_vec3i(neighbor)
-			aset.add_item(self.clone().transform(ax))
+			aset.add_item(self.duplicate().transform(ax))
 	elif self.is_even():
 		print("is even")
-		aset.add_item(self.clone().transform(Axial.new(-1, 0, 0))) 
-		aset.add_item(self.clone().transform(Axial.new(0, -1, 0))) 
-		aset.add_item(self.clone().transform(Axial.new(0, 0, -1))) 
+		aset.add_item(self.duplicate().transform(Axial.new(-1, 0, 0))) 
+		aset.add_item(self.duplicate().transform(Axial.new(0, -1, 0))) 
+		aset.add_item(self.duplicate().transform(Axial.new(0, 0, -1))) 
 	else:
 		print("is odd")
-		aset.add_item(self.clone().transform(Axial.new(1, 0, 0))) 
-		aset.add_item(self.clone().transform(Axial.new(0, 1, 0))) 
-		aset.add_item(self.clone().transform(Axial.new(0, 0, 1))) 
+		aset.add_item(self.duplicate().transform(Axial.new(1, 0, 0))) 
+		aset.add_item(self.duplicate().transform(Axial.new(0, 1, 0))) 
+		aset.add_item(self.duplicate().transform(Axial.new(0, 0, 1))) 
 
 	return aset
 
@@ -113,7 +117,7 @@ func corners() -> AxialSet:
 	var aset := AxialSet.new()
 	for neighbor in Axial.CORNERS:
 		var ax := Axial.from_vec3i(neighbor)
-		aset.add_item(self.clone().transform(ax))
+		aset.add_item(self.duplicate().transform(ax))
 	return aset
 
 
@@ -127,7 +131,7 @@ func hexes() -> AxialSet:
 	var aset := AxialSet.new()
 	for neighbor in Axial.CORNERS:
 		var ax := Axial.from_vec3i(neighbor)
-		ax = self.clone().transform(ax.invert())
+		ax = self.duplicate().transform(ax.invert())
 		
 		if ax.is_hex(): 
 			aset.add_item(ax)
@@ -173,3 +177,6 @@ static func offset_to_axial(vec: Vector2i) -> Axial:
 	return Axial.new(q, r, -q - r)
 
 
+func _equals(other: Variant) -> bool:
+	if not other is Axial: return false
+	return self.q == other.q and self.r == other.r and self.s == other.s

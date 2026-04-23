@@ -30,7 +30,6 @@ var _active_targets: Array[Node2D] = []                   # targets currently on
 var _active_buildings: Dictionary[int, AxialSet] = {}     # the locations of buildings the player owns (1:n)
 var _active_roads: Dictionary[int, AxialEdgeSet] = {}     # the locations (keys) of roads the player owns
 var _placed_pieces: Dictionary[String, GamePiece] = {}    # which game piece belongs to which axial (1:1)
-var map: HexCornerMap = null                              # records valid hexes/corners
 
 
 func _ready() -> void:
@@ -53,19 +52,19 @@ func _ready() -> void:
 
 
 # debug function
-# var last = null
-# func _input(event: InputEvent) -> void:
-# 	if event is InputEventMouseButton and event.pressed:
-# 		var local_pos := self.get_local_mouse_position()
-# 		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
-# 		var corners := hex.corners()
+var last = null
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		var local_pos := self.get_local_mouse_position()
+		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
+		var corners := hex.corners()
 
-# 		print("hex %s | corners %s" % [hex, corners])
+		print("hex %s | corners %s" % [hex, corners])
 
-# 		self.clear_targets_hnd()
+		self.clear_targets_hnd()
 
-# 		for corner in corners:
-# 			self.show_corner_target(corner)
+		for corner in corners:
+			self.show_corner_target(corner)
 
 
 func corner_to_screen(corner: Axial) -> Vector2:
@@ -89,10 +88,10 @@ func edge_to_screen(edge: AxialEdge) -> Vector2:
 
 
 func show_house_targets_hnd():
-	if self._active_buildings[GameModel.self_id].size() == 0:
+	if self._active_buildings[Game.self_id].size() == 0:
 		self.map.all_corners().for_each(self.show_corner_target)
 	else:
-		var roads := self._active_roads[GameModel.self_id]
+		var roads := self._active_roads[Game.self_id]
 		var road_corners := roads.corner_map(AxialEdge.corners_of)
 		var permitted = road_corners.difference(self._corner_black_list)
 		
@@ -101,13 +100,13 @@ func show_house_targets_hnd():
 
 
 func show_city_targets_hnd():
-	var houses := self._active_buildings[GameModel.self_id]
+	var houses := self._active_buildings[Game.self_id]
 	houses.for_each(self.show_corner_target)
 
 
 func show_road_targets_hnd():
-	var houses := self._active_buildings[GameModel.self_id]
-	var roads := self._active_roads[GameModel.self_id]
+	var houses := self._active_buildings[Game.self_id]
+	var roads := self._active_roads[Game.self_id]
 	var house_edges := houses.edge_map(Axial.edges_of)
 	var road_corners := roads.corner_map(AxialEdge.corners_of)
 	var neighbors := road_corners.edge_map(Axial.edges_of)

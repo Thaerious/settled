@@ -3,82 +3,71 @@
 class_name AxialSet
 extends RefCounted
 
-var _data: Dictionary[Vector3i, bool] = {}
+var _data: Dictionary[String, Axial] = {}
 var _iter_index: int = 0
-var _iter_keys: Array = []
+var _item_values: Array[Axial] = []
 
 
 # Populates the set from an optional initial array of Axial values.
 # AxialSet.new([A, B, C]) → {A, B, C}
-func _init(items: Array = []) -> void:
+func _init(items: Array[Axial] = []) -> void:
 	for item in items:
-		self._data[self._key(item)] = true
-
-
-# Converts an Axial to a Vector3i for use as a dictionary key.
-# Axial(1, 2, -3) → Vector3i(1, 2, -3)
-func _key(ax: Axial) -> Vector3i:
-	return Vector3i(ax.q, ax.r, ax.s)
+		self._data[item.key()] = item
 
 
 # Called by the engine at the start of a for-in loop; captures current keys.
 # for ax in set → initialises iteration snapshot
 func _iter_init(_arg) -> bool:
-	self._iter_keys = self._data.keys()
+	self._item_values = self._data.values()
 	self._iter_index = 0
-	return self._iter_keys.size() > 0
+	return self._item_values.size() > 0
 
 
 # Called by the engine each iteration step; advances the cursor.
 # index 0 → 1 → 2 … until exhausted
 func _iter_next(_arg) -> bool:
 	self._iter_index += 1
-	return self._iter_index < self._iter_keys.size()
+	return self._iter_index < self._item_values.size()
 
 
 # Called by the engine to yield the current element during iteration.
 # keys[index] → Axial
 func _iter_get(_arg) -> Axial:
-	return self._vec_to_axial(self._iter_keys[self._iter_index])
-
-
-# Converts a stored Vector3i key back into an Axial value.
-# Vector3i(1, 2, -3) → Axial(1, 2, -3)
-func _vec_to_axial(v: Vector3i) -> Axial:
-	return Axial.new(v.x, v.y, v.z)
+	return self._item_values[self._iter_index]
 
 
 # Returns true if the set contains the given Axial.
 # A in {A, B, C} → true
 func has_item(ax: Axial) -> bool:
-	return self._data.has(self._key(ax))
+	return self._data.has(ax.key())
 
 
 ## Adds [param ax] to the set. Has no effect if already present.
 # {A, B} + C → {A, B, C}
 func add_item(ax: Axial) -> AxialSet:
-	self._data[self._key(ax)] = true
+	self._data[ax.key()] = ax
 	return self
 
 
 ## Removes [param ax] from the set. Has no effect if not present.
 # {A, B, C} - B → {A, C}
 func remove_item(ax: Axial) -> AxialSet:
-	self._data.erase(self._key(ax))
+	self._data.erase(ax.key())
 	return self
 
 
 ## Returns [code]true[/code] if [param ax] is in the set.
 # A in {A, B, C} → true
 func contains(ax: Axial) -> bool:
-	return self._key(ax) in self._data
+	return ax.key() in self._data
 
 
 ## Adds all items from [param items] to the set.
 # {A, B} + [C, D] → {A, B, C, D}
 func add_all(items: Variant) -> AxialSet:
 	for item in items:
-		self._data[self._key(item)] = true
+		var ax = item as Axial
+		self._data[ax.key()] = ax
 	return self
 
 
@@ -105,8 +94,8 @@ func _to_string() -> String:
 # {A, B, C} → [A, B, C]
 func to_array() -> Array[Axial]:
 	var result: Array[Axial] = []
-	for v in self._data.keys():
-		result.append(self._vec_to_axial(v))
+	for ax in self._data.values():
+		result.append(ax)
 	return result
 
 
@@ -122,9 +111,9 @@ func for_each(cb: Callable) -> AxialSet:
 # {A, B, C} & {B, C, D} → {B, C}
 func intersect(that: AxialSet) -> AxialSet:
 	var aset := AxialSet.new()
-	for v in self._data:
-		if that._data.has(v):
-			aset._data[v] = true
+	for ax in self:
+		if that.has_item(ax):
+			aset.add_item(ax)
 	return aset
 
 
@@ -132,9 +121,9 @@ func intersect(that: AxialSet) -> AxialSet:
 # {A, B, C} \ {B, C, D} → {A}
 func difference(that: AxialSet) -> AxialSet:
 	var aset := AxialSet.new()
-	for v in self._data:
-		if not that._data.has(v):
-			aset._data[v] = true
+	for ax in self:
+		if not that.has_item(ax):
+			aset.add_item(ax)
 	return aset
 
 
@@ -149,19 +138,19 @@ func union(that: AxialSet) -> AxialSet:
 
 ## Returns a new set with all coordinates offset by [param ax].
 # {A, B, C}.transform(D) → {A+D, B+D, C+D}
-func transform(ax: Axial) -> AxialSet:
+func transform(bx: Axial) -> AxialSet:
 	var aset := AxialSet.new()
-	for v in self._data:
-		aset._data[v + Vector3i(ax.q, ax.r, ax.s)] = true
+	for ax in self:
+		aset.add_item(ax.transform(bx))
 	return aset
 
 
-## Returns a new set with all coordinates scaled by [param scaler].
+## Returns a new set with all coordinates scaled by [param x].
 # {A, B, C}.scale(2) → {A*2, B*2, C*2}
-func scale(scaler: float) -> AxialSet:
+func scale(x: int) -> AxialSet:
 	var aset := AxialSet.new()
-	for v in self._data:
-		aset._data[Vector3i(v * scaler)] = true
+	for ax in self:
+		aset.add_item(ax.scale(x))
 	return aset
 
 
@@ -169,8 +158,8 @@ func scale(scaler: float) -> AxialSet:
 # {A, B, C}.map(fn) → {fn(A), fn(B), fn(C)}
 func map(cb: Callable) -> AxialSet:
 	var aset := AxialSet.new()
-	for v in self._data:
-		aset.add_item(cb.call(self._vec_to_axial(v)))
+	for ax in self:
+		aset.add_item(cb.call(ax))
 	return aset
 
 
@@ -178,17 +167,18 @@ func map(cb: Callable) -> AxialSet:
 # {A, B}.flat_map(fn) → fn(A) | fn(B)
 func flat_map(cb: Callable) -> AxialSet:
 	var aset := AxialSet.new()
-	for v in self._data:
-		aset.add_all(cb.call(self._vec_to_axial(v)))
+	for ax in self:
+		aset.add_all(cb.call(ax))
 	return aset
 
 
 # Maps each element to a set via cb, then flattens all results into one set.
+# Maps corners to edges
 # {A, B}.flat_map(fn) → fn(A) | fn(B)
 func edge_map(cb: Callable) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
-	for v in self._data:
-		aset.add_all(cb.call(self._vec_to_axial(v)))
+	for ax in self:
+		aset.add_all(cb.call(ax))
 	return aset
 
 
@@ -196,16 +186,19 @@ func edge_map(cb: Callable) -> AxialEdgeSet:
 # {A, B, C}.select(fn) → {x | fn(x) == true}
 func select(cb: Callable) -> AxialSet:
 	var aset := AxialSet.new()
-	for v in self._data:
-		var ax := self._vec_to_axial(v)
+	for ax in self:
 		if cb.call(ax):
-			aset._data[v] = true
+			aset.add_item(ax)
 	return aset
 
 
-# Returns a shallow copy of this set.
-# {A, B, C}.clone() → {A, B, C}
-func clone() -> AxialSet:
+# Returns a copy of this set.
+# {A, B, C}.duplicate() → {A, B, C}
+func duplicate(deep: bool = false) -> AxialSet:
 	var aset := AxialSet.new()
-	aset._data.merge(self._data)
+	if deep:
+		for ax in self:
+			aset.add_item(ax.duplicate())
+	else:
+		aset._data = self._data.duplicate()
 	return aset
