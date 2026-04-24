@@ -96,7 +96,13 @@ func edges() -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 
 	if self.is_hex():
-		push_error("Axial not a corner.")
+		var corners := self.corners().to_array()
+		aset.add_item(AxialEdge.new(corners[0], corners[1], deg_to_rad(0)))
+		aset.add_item(AxialEdge.new(corners[1], corners[2], deg_to_rad(0)))
+		aset.add_item(AxialEdge.new(corners[2], corners[3], deg_to_rad(0)))
+		aset.add_item(AxialEdge.new(corners[3], corners[4], deg_to_rad(0)))
+		aset.add_item(AxialEdge.new(corners[4], corners[5], deg_to_rad(0)))
+		aset.add_item(AxialEdge.new(corners[5], corners[0], deg_to_rad(0)))
 	elif self.is_even():
 		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(-1, 0, 0)), deg_to_rad(-30)))
 		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, -1, 0)), deg_to_rad(90)))

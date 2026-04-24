@@ -41,6 +41,7 @@ var _game_phase: GAME_PHASE = GAME_PHASE.NOT_STARTED
 var _robber: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
+var _edges: AxialEdgeSet = AxialEdgeSet.new()
 var _terrain: Dictionary[String, String] = {}    # axial (hex) -> terrain
 var _numbers: Dictionary[String, int] = {}       # axial (hex) -> number
 var _houses: Dictionary[String, int] = {}        # axial (corner) -> player id
@@ -59,13 +60,14 @@ var _supply: Dictionary[String, int] = {}        # resource -> quantity in bank
 var _ports: Dictionary[String, String] = {}      # axial (corner) -> resource ("any" for 3:1)
 var _port_hosts: Dictionary[String, String] = {} # tiles that have ports
 
-func all_hexes() -> AxialSet: return self._hexes.duplicate(true)
-func all_corners() -> AxialSet:	return self._corners.duplicate(true)
+func all_hexes() -> AxialSet: return self._hexes.duplicate(true) 
+func all_corners() -> AxialSet:	return self._corners.duplicate(true) # valid playable corners
+func all_edges() -> AxialEdgeSet:	return self._edges.duplicate(true) # valid playable corners
 
 
 func _init() -> void:
 	self._build_axials()
-	self._place_tiles()
+	self._place_land()
 	self._place_numbers()
 	self._place_water()
 	self._place_ports()
@@ -136,9 +138,12 @@ func _build_axials() -> void:
 	self._hexes.add_all(neighbors)
 	self._hexes.add_all(distant_neighbors)
 	self._corners = self._hexes.flat_map(Axial.corners_of)
+	print(self._hexes)
+	self._edges = self._hexes.edge_map(Axial.edges_of)
+	print(self._edges)
 
 
-func _place_tiles() -> void:
+func _place_land() -> void:
 	var terrain_bag := self._fill_terrain_bag()
 
 	for hex in self._hexes:

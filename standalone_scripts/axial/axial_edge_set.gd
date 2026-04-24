@@ -122,3 +122,25 @@ func difference(that: AxialEdgeSet) -> AxialEdgeSet:
 # {A, B, C} ∪ {B, C, D} → {A, B, C, D}
 func union(that: AxialEdgeSet) -> AxialEdgeSet:
 	return self.clone().add_all(that)
+
+
+# Returns a new set containing only elements present in both sets.
+# {A, B, C} & {B, C, D} → {B, C}
+func intersect(that: AxialEdgeSet) -> AxialEdgeSet:
+	var aset := AxialEdgeSet.new()
+	for ax in self:
+		if that.has_item(ax):
+			aset.add_item(ax)
+	return aset
+
+
+# Returns a copy of this set; deep=true duplicates each AxialEdge, shallow shares references.
+# {E1, E2, E3}.duplicate(true) → {E1', E2', E3'}
+func duplicate(deep: bool = false) -> AxialEdgeSet:
+	var aset := AxialEdgeSet.new()
+	if deep:
+		for edge in self._data.values():
+			aset.add_item(edge.duplicate())
+	else:
+		aset._data.merge(self._data)
+	return aset	

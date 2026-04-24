@@ -53,23 +53,21 @@ func _ready() -> void:
 
 
 # debug function
-var last = null
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		var local_pos := self.get_local_mouse_position()
-		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
-		var corners := hex.corners()
+# var last = null
+# func _input(event: InputEvent) -> void:
+# 	if event is InputEventMouseButton and event.pressed:
+# 		var local_pos := self.get_local_mouse_position()
+# 		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
+# 		var corners := hex.corners()
 
-		print("GAME BOARD hex %s | corners %s" % [hex, corners])
-		if Game.model.all_hexes().contains(hex):
-			print(Game.model.get_hex_data(hex))
-		else:
-			print("Hex not found in model")
+# 		print("GAME BOARD hex %s | corners %s" % [hex, corners])
+# 		if Game.model.all_hexes().contains(hex):
+# 			print(Game.model.get_hex_data(hex))
+# 		else:
+# 			print("Hex not found in model")
 
-		self.clear_targets_hnd()
-
-		for corner in corners:
-			self.show_corner_target(corner)
+# 		self.clear_targets_hnd()
+#       self.show_target(corners)
 
 
 func corner_to_screen(corner: Axial) -> Vector2:
@@ -93,20 +91,19 @@ func edge_to_screen(edge: AxialEdge) -> Vector2:
 
 
 func show_house_targets_hnd():
-	if self._active_buildings[Game.self_id].size() == 0:
-		self.map.all_corners().for_each(self.show_corner_target)
+	if self._active_buildings[Game.self_id].size() == 0:	
+		self.show_target(Game.model.all_corners())
 	else:
 		var roads := self._active_roads[Game.self_id]
 		var road_corners := roads.corner_map(AxialEdge.corners_of)
 		var permitted = road_corners.difference(self._corner_black_list)
 		
-		permitted = permitted.intersect(self.map.all_corners())
-		permitted.for_each(self.show_corner_target)
+		permitted = permitted.intersect(Game.model.all_corners())
+		self.show_target(permitted)		
 
 
 func show_city_targets_hnd():
-	var houses := self._active_buildings[Game.self_id]
-	houses.for_each(self.show_corner_target)
+	self.show_target(self._active_buildings[Game.self_id])
 
 
 func show_road_targets_hnd():
@@ -118,7 +115,8 @@ func show_road_targets_hnd():
 
 	house_edges = house_edges.union(neighbors)
 	house_edges = house_edges.difference(roads)
-	house_edges.for_each(self.show_edge_target)
+	house_edges = house_edges.intersect(Game.model.all_edges())
+	self.show_target(house_edges)
 
 
 func get_hexes_for_vertex(hex: Vector2i) -> Vec2iSet:
@@ -166,21 +164,19 @@ func set_road_hnd(id: int, edge: AxialEdge) -> void:
 	self._active_roads[id].add_item(edge)
 
 
-func show_corner_target(corner: Axial):
-	var target: Node2D = CORNER_TARGET.instantiate()
-	target.axial = corner
-	var screen_pos = self.corner_to_screen(corner)
-	target.position = screen_pos
-	self.structures.add_child(target)
-	target.name = "TargetPiece"
-	self._active_targets.append(target)
+func show_target(ax: Variant):
+	var target: Node2D
 
+	if ax is Axial:
+		target = CORNER_TARGET.instantiate()
+		target.axial = ax
+	elif ax is AxialEdge:
+		target = EDGE_TARGET.instantiate()
+		target.axial_edge = ax
+	else:
+		for _ax in ax: self.show_target(_ax)
+		return
 
-func show_edge_target(axial_edge: AxialEdge):
-	var target: Node2D = EDGE_TARGET.instantiate()
-	target.axial_edge = axial_edge
-	var screen_pos = self.edge_to_screen(axial_edge)
-	target.position = screen_pos
-	self.structures.add_child(target)
-	target.name = "TargetPiece"
+	target.position = ax.map_to_local(self)
 	self._active_targets.append(target)
+	self.structures.add_child(target)
