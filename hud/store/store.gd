@@ -13,4 +13,14 @@ func _ready() -> void:
 	HouseDragHnd.new(self._house_container)
 	CityDragHnd.new(self._city_container)
 	RoadDragHnd.new(self._road_container)
+
+	self._card_container.gui_input.connect(self._on_click_card_container)
+
+
+func _on_click_card_container(event: InputEvent) -> void:
+	if not event is InputEventMouseButton: return
+	if not event.button_index == MOUSE_BUTTON_LEFT: return
+	if event.pressed: return
+	EventBus.request_purchase_action_card.emit()
+		
 	

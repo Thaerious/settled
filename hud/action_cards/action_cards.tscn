@@ -30,7 +30,8 @@ texture_disabled = ExtResource("2_qotur")
 ignore_texture_size = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="HBoxContainer/KnightContainer"]
+[node name="QtyKnight" type="Label" parent="HBoxContainer/KnightContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
@@ -46,7 +47,8 @@ ignore_texture_size = true
 stretch_mode = 4
 script = SubResource("GDScript_prc73")
 
-[node name="Label" type="Label" parent="HBoxContainer/BuildRoadContainer"]
+[node name="QtyBuildRoad" type="Label" parent="HBoxContainer/BuildRoadContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
@@ -62,7 +64,8 @@ ignore_texture_size = true
 stretch_mode = 4
 script = SubResource("GDScript_prc73")
 
-[node name="Label" type="Label" parent="HBoxContainer/PlentyContainer"]
+[node name="QtyPlenty" type="Label" parent="HBoxContainer/PlentyContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
@@ -78,7 +81,8 @@ ignore_texture_size = true
 stretch_mode = 4
 script = SubResource("GDScript_prc73")
 
-[node name="Label" type="Label" parent="HBoxContainer/MonopolyContainer"]
+[node name="QtyMonopoly" type="Label" parent="HBoxContainer/MonopolyContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
@@ -94,7 +98,8 @@ ignore_texture_size = true
 stretch_mode = 4
 script = SubResource("GDScript_prc73")
 
-[node name="Label" type="Label" parent="HBoxContainer/VictoryPointsContainer"]
+[node name="QtyVictory" type="Label" parent="HBoxContainer/VictoryPointsContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1

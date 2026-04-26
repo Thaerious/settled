@@ -4,6 +4,7 @@ extends Object
 
 func _init() -> void:
 	EventBus.request_roll.connect(self._on_request_roll)
+	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 
 
 func _on_request_roll() -> void:
@@ -43,5 +44,30 @@ func _scan_cities(id:int, number:int, resources: Array[Model.ResourceTypes]):
 		resources.append(resource)
 
 
+func _on_request_purchase_action_card() -> void:
+	var cost: Array[Model.ResourceTypes] = [
+		Model.ResourceTypes.ROCK,
+		Model.ResourceTypes.WHEAT,
+		Model.ResourceTypes.WOOL,
+	]
+	EventBus.remove_resources.emit(Game.self_id, cost)
+
+	var card = weighted_random(Model.CARD_DISTRIBUTION)
+	EventBus.add_action_card.emit(Game.self_id, card)
+
+
+static func weighted_random(weights: Dictionary) -> Variant:
+	var total := 0
+	for key in weights:
+		total += weights[key]
+
+	var roll := randi_range(0, total - 1)
+	var cumulative := 0
+	for key in weights:
+		cumulative += weights[key]
+		if roll < cumulative:
+			return key
+
+	return weights.keys().back()
 
 	

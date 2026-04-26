@@ -120,3 +120,12 @@ func _ready() -> void:
 			if label:
 				label.text = str(label.text.to_int() + 1)
 	)
+
+	EventBus.remove_resources.connect(func(id: int, resources: Array) -> void:
+		if id != Game.self_id: return
+
+		for resource: Model.ResourceTypes in resources:
+			var label: Label = self.RESOURCE_LABEL_MAP.get(resource)
+			if label:
+				label.text = str(label.text.to_int() - 1)
+	)	

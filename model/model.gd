@@ -36,13 +36,21 @@ enum ResourceTypes {
 	WOOL
 }
 
-const ACTION_CARDS := [
-	"knight",
-	"build_road",
-	"plenty",
-	"monopoly",
-	"victory_points"
-]
+enum ActionCards {
+	KNIGHT,
+	BUILD_ROAD,
+	PLENTY,
+	MONOPOLY,
+	VICTORY_POINTS
+}
+
+const CARD_DISTRIBUTION : Dictionary[Model.ActionCards, int] = {
+	ActionCards.KNIGHT: 56,
+	ActionCards.BUILD_ROAD: 20,
+	ActionCards.PLENTY: 8,
+	ActionCards.MONOPOLY: 8,
+	ActionCards.VICTORY_POINTS: 8,
+}
 
 enum GamePhase {
 	NOT_STARTED,
@@ -142,6 +150,10 @@ func _init() -> void:
 			self._bank[id][resource] -= 1
 	)
 
+	EventBus.add_action_card.connect(func(id, card):
+		self._cards[id][card] += 1
+	)
+
 	for r in ResourceTypes:
 		self._supply[r] = 19
 
@@ -157,7 +169,7 @@ func _init() -> void:
 		for r in ResourceTypes.values():
 			self._bank[i][r] = 0
 
-		for c in ACTION_CARDS:
+		for c in ActionCards.values():
 			self._cards[i][c] = 0			
 
 
