@@ -51,7 +51,6 @@ func _ready() -> void:
 	EventBus.set_road.connect(self.set_road_hnd)
 
 
-
 # debug function
 # var last = null
 # func _input(event: InputEvent) -> void:
@@ -67,43 +66,28 @@ func _ready() -> void:
 # 			print("Hex not found in model")
 
 # 		self.clear_targets_hnd()
-#       self.show_target(corners)
+# 		self.show_targets(corners)
 
-
-func corner_to_screen(corner: Axial) -> Vector2:
-	var hexes := corner.hexes()
-	var sum := Vector2.ZERO
-
-	for hex in hexes:
-		sum += self.map_to_local(Axial.axial_to_offset(hex))
-
-	return sum / hexes.size()
-
-
-func edge_to_screen(edge: AxialEdge) -> Vector2:
-	var corners := edge.corners()
-	var sum := Vector2.ZERO
-
-	for corner in corners:		
-		sum += self.corner_to_screen(corner)
-
-	return sum / corners.size()
+# 		var edges = hex.edges()
+# 		edges.for_each(
+# 			func(ax): self.set_road_hnd(0, ax)
+# 		)
 
 
 func show_house_targets_hnd():
 	if self._active_buildings[Game.self_id].size() == 0:	
-		self.show_target(Game.model.all_corners())
+		self.show_targets(Game.model.all_corners())
 	else:
 		var roads := self._active_roads[Game.self_id]
 		var road_corners := roads.corner_map(AxialEdge.corners_of)
 		var permitted = road_corners.difference(self._corner_black_list)
 		
 		permitted = permitted.intersect(Game.model.all_corners())
-		self.show_target(permitted)		
+		self.show_targets(permitted)		
 
 
 func show_city_targets_hnd():
-	self.show_target(self._active_buildings[Game.self_id])
+	self.show_targets(self._active_buildings[Game.self_id])
 
 
 func show_road_targets_hnd():
@@ -116,7 +100,7 @@ func show_road_targets_hnd():
 	house_edges = house_edges.union(neighbors)
 	house_edges = house_edges.difference(roads)
 	house_edges = house_edges.intersect(Game.model.all_edges())
-	self.show_target(house_edges)
+	self.show_targets(house_edges)
 
 
 func get_hexes_for_vertex(hex: Vector2i) -> Vec2iSet:
@@ -138,7 +122,7 @@ func clear_targets_hnd():
 func set_house_hnd(id: int, corner: Axial) -> void:
 	self._active_buildings[id].add_item(corner)
 	var house_piece := HOUSE_PIECE.instantiate()
-	house_piece.position = self.corner_to_screen(corner)
+	house_piece.position = corner.map_to_local(self)
 	%Structures.add_child(house_piece)
 	self._placed_pieces[corner.key()] = house_piece
 
@@ -148,7 +132,7 @@ func set_house_hnd(id: int, corner: Axial) -> void:
 
 func set_city_hnd(_id: int, corner: Axial) -> void:
 	var city_piece := CITY_PIECE.instantiate()
-	city_piece.position = self.corner_to_screen(corner)
+	city_piece.position = corner.map_to_local(self)
 	%Structures.add_child(city_piece)
 	var house_piece := self._placed_pieces[corner.key()]
 	house_piece.queue_free()
@@ -157,14 +141,14 @@ func set_city_hnd(_id: int, corner: Axial) -> void:
 
 func set_road_hnd(id: int, edge: AxialEdge) -> void:
 	var road_piece := ROAD_PIECE.instantiate()
-	road_piece.position = self.edge_to_screen(edge)
+	road_piece.position = edge.map_to_local(self)
 	%Structures.add_child(road_piece)
 	self._placed_pieces[edge.key()] = road_piece
 	road_piece.rotation = edge.rotation
 	self._active_roads[id].add_item(edge)
 
 
-func show_target(ax: Variant):
+func show_targets(ax: Variant):
 	var target: Node2D
 
 	if ax is Axial:
@@ -174,7 +158,7 @@ func show_target(ax: Variant):
 		target = EDGE_TARGET.instantiate()
 		target.axial_edge = ax
 	else:
-		for _ax in ax: self.show_target(_ax)
+		for _ax in ax: self.show_targets(_ax)
 		return
 
 	target.position = ax.map_to_local(self)

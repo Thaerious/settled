@@ -65,6 +65,14 @@ func all_corners() -> AxialSet:	return self._corners.duplicate(true) # valid pla
 func all_edges() -> AxialEdgeSet:	return self._edges.duplicate(true) # valid playable corners
 
 
+# func cities(id: int = -1) -> AxialSet:
+	# pass
+	# if id == -1: 
+	# 	aset: AxialSet = self._cities_mirror[id]
+	# else:
+	# 	return AxialSet.new(self._cities_mirror[id]);
+
+
 func _init() -> void:
 	self._build_axials()
 	self._place_land()
@@ -138,9 +146,7 @@ func _build_axials() -> void:
 	self._hexes.add_all(neighbors)
 	self._hexes.add_all(distant_neighbors)
 	self._corners = self._hexes.flat_map(Axial.corners_of)
-	print(self._hexes)
 	self._edges = self._hexes.edge_map(Axial.edges_of)
-	print(self._edges)
 
 
 func _place_land() -> void:

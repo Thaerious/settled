@@ -43,6 +43,17 @@ func corners() -> AxialSet:
 		self.ax2.duplicate()
 	])
 
+
 func _equals(other: Variant) -> bool:
 	if not other is AxialEdge: return false
 	return self.ax1 == other.ax1 and self.ax2 == other.ax2	
+
+
+func map_to_local(tile_map_layer: TileMapLayer) -> Vector2:
+	var corners := self.corners()
+	var sum := Vector2.ZERO
+
+	for corner in corners:		
+		sum += corner.map_to_local(tile_map_layer)
+
+	return sum / corners.size()
