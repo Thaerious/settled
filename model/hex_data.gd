@@ -2,7 +2,7 @@ class_name HexData
 extends RefCounted
 
 var axial: Axial = null
-var terrain: String = ""
+var terrain: Model.Terrain
 var number: int = -1
 var robber: bool = false
 var ports: AxialSet = AxialSet.new()

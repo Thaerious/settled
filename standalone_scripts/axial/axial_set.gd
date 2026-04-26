@@ -159,7 +159,11 @@ func scale(x: int) -> AxialSet:
 func map(cb: Callable) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
-		aset.add_item(cb.call(ax))
+		var result = cb.call(ax)
+		if result is Axial: 
+			aset.add_item(result)
+		elif result is Array or result is Dictionary or result.has_method("_iter_init"):
+			aset.add_all(result)
 	return aset
 
 
@@ -168,8 +172,17 @@ func map(cb: Callable) -> AxialSet:
 func flat_map(cb: Callable) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
-		aset.add_all(cb.call(ax))
+		aset.add_all(cb.call(ax))		
 	return aset
+
+
+func map_to_array(cb: Callable) -> Array:
+	var an_array := []
+	for ax in self:
+		var result = cb.call(ax)
+		if result is Array:	an_array.append_array(result)
+		else: an_array.append(result)
+	return an_array	
 
 
 # Maps each element to a set via cb, then flattens all results into one set.

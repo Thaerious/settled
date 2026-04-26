@@ -4,13 +4,13 @@ class_name GameBoardSetup
 const TERRAIN_SOURCE_ID := 0
 
 const TERRAIN_TILE := {
-	"hill": Vector2i(0, 0),
-	"forest": Vector2i(1, 0),
-	"mountain": Vector2i(2, 0),
-	"field": Vector2i(3, 0),
-	"pasture": Vector2i(4, 0),
-	"desert": Vector2i(5, 0),
-	"water": Vector2i(6, 0),
+	Model.Terrain.HILL: Vector2i(0, 0),
+	Model.Terrain.FOREST: Vector2i(1, 0),
+	Model.Terrain.MOUNTAIN: Vector2i(2, 0),
+	Model.Terrain.FIELD: Vector2i(3, 0),
+	Model.Terrain.PASTURE: Vector2i(4, 0),
+	Model.Terrain.DESERT: Vector2i(5, 0),
+	Model.Terrain.WATER: Vector2i(6, 0),
 }
 
 const NUMBER_PIECE: PackedScene = preload("res://game_board/number_piece.tscn")          
@@ -42,7 +42,7 @@ func _init(board: GameBoard) -> void:
 func place_tiles() -> GameBoardSetup:
 	for ax: Axial in Game.model.all_hexes():
 		var hex_data = Game.model.get_hex_data(ax)
-		var terrain: String = hex_data.terrain
+		var terrain: Model.Terrain = hex_data.terrain
 		var vector := Axial.axial_to_offset(ax)
 		self._board.set_cell(vector, TERRAIN_SOURCE_ID, TERRAIN_TILE[terrain], 0)
 		
@@ -71,7 +71,7 @@ func place_numbers() -> GameBoardSetup:
 	for ax: Axial in Game.model.all_hexes():
 		var data = Game.model.get_hex_data(ax)
 		if data.number == -1: continue
-		if data.terrain == "desert": continue
+		if data.terrain == Model.Terrain.DESERT: continue
 
 		var piece: NumberPiece = NUMBER_PIECE.instantiate()
 		var offset := Axial.axial_to_offset(ax)

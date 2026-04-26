@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://c1voxdoftfv08"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrvmb"]
-bg_color = Color(0.16862746, 0.16862746, 0.16862746, 1)
+bg_color = Color(0.10673415, 0.10673412, 0.10673412, 1)
 
 [resource]
 default_font_size = 20
@@ -12,5 +12,6 @@ DefaultMargin/constants/margin_bottom = 20
 DefaultMargin/constants/margin_left = 20
 DefaultMargin/constants/margin_right = 20
 DefaultMargin/constants/margin_top = 20
+OuterVBox/base_type = &"VBoxContainer"
 QtyAnnotation/base_type = &"Label"
 QtyAnnotation/font_sizes/font_size = 20

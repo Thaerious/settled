@@ -2,21 +2,39 @@ class_name Model
 extends Object
 
 const TERRAIN_COUNTS := {
-	"hill": 3,
-	"forest": 4,
-	"mountain": 3,
-	"field": 4,
-	"pasture": 4,
-	"desert": 1,
+	Terrain.HILL: 3,
+	Terrain.FOREST: 4,
+	Terrain.MOUNTAIN: 3,
+	Terrain.FIELD: 4,
+	Terrain.PASTURE: 4,
+	Terrain.DESERT: 1,
 }
 
-const RESOURCE_NAMES := [
-	"brick",
-	"wood",
-	"rock",
-	"wheat",
-	"wool"
-]
+const TERRAIN_TO_RESOURCE : Dictionary[Terrain, ResourceTypes] = {
+	Terrain.HILL: ResourceTypes.BRICK,
+	Terrain.FOREST: ResourceTypes.WOOD,
+	Terrain.MOUNTAIN: ResourceTypes.ROCK,
+	Terrain.FIELD: ResourceTypes.WHEAT,
+	Terrain.PASTURE: ResourceTypes.WOOL,
+}
+
+enum Terrain {
+	HILL,
+	FOREST,
+	MOUNTAIN,
+	FIELD,
+	PASTURE,
+	DESERT,
+	WATER
+}
+
+enum ResourceTypes {
+	BRICK,
+	WOOD,
+	ROCK,
+	WHEAT,
+	WOOL
+}
 
 const ACTION_CARDS := [
 	"knight",
@@ -26,7 +44,7 @@ const ACTION_CARDS := [
 	"victory_points"
 ]
 
-enum GAME_PHASE {
+enum GamePhase {
 	NOT_STARTED,
 	SETUP_FORWARD,
 	SETUP_REVERSE,
@@ -37,12 +55,12 @@ enum GAME_PHASE {
 var _largest_army_player: int = -1
 var _longest_road_player: int = -1
 var _current_player: int = 1
-var _game_phase: GAME_PHASE = GAME_PHASE.NOT_STARTED
+var _game_phase: GamePhase = GamePhase.NOT_STARTED
 var _robber: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
 var _edges: AxialEdgeSet = AxialEdgeSet.new()
-var _terrain: Dictionary[String, String] = {}    # axial (hex) -> terrain
+var _terrain: Dictionary[String, Terrain] = {}   # axial (hex) -> terrain
 var _numbers: Dictionary[String, int] = {}       # axial (hex) -> number
 var _houses: Dictionary[String, int] = {}        # axial (corner) -> player id
 var _cities: Dictionary[String, int] = {}        # axial (corner) -> player id
@@ -65,15 +83,33 @@ func all_corners() -> AxialSet:	return self._corners.duplicate(true) # valid pla
 func all_edges() -> AxialEdgeSet:	return self._edges.duplicate(true) # valid playable corners
 
 
-# func cities(id: int = -1) -> AxialSet:
-	# pass
-	# if id == -1: 
-	# 	aset: AxialSet = self._cities_mirror[id]
-	# else:
-	# 	return AxialSet.new(self._cities_mirror[id]);
+func get_houses(id: int = -1) -> AxialSet:
+	var aset := AxialSet.new()
+
+	if id == -1:
+		for p in range(Game.player_count):
+			aset.add_all(self._houses_mirror[p])
+	else:
+		aset.add_all(self._houses_mirror[id])
+
+	return aset
+
+
+func get_cities(id: int = -1) -> AxialSet:
+	var aset := AxialSet.new()
+
+	if id == -1:
+		for p in range(Game.player_count):
+			aset.add_all(self._cities_mirror[p])
+	else:
+		aset.add_all(self._cities_mirror[id])
+
+	return aset
 
 
 func _init() -> void:
+	Service.new()
+
 	self._build_axials()
 	self._place_land()
 	self._place_numbers()
@@ -96,7 +132,17 @@ func _init() -> void:
 		self._roads_mirror[id].append(ax)
 	)
 
-	for r in RESOURCE_NAMES:
+	EventBus.add_resources.connect(func(id, resources):
+		for resource: ResourceTypes in resources:
+			self._bank[id][resource] += 1
+	)
+
+	EventBus.remove_resources.connect(func(id, resources):
+		for resource: ResourceTypes in resources:
+			self._bank[id][resource] -= 1
+	)
+
+	for r in ResourceTypes:
 		self._supply[r] = 19
 
 	for i in range(4):
@@ -108,7 +154,7 @@ func _init() -> void:
 		self._cities_mirror[i] = [] as Array[Axial]
 		self._roads_mirror[i] = [] as Array[Axial]
 
-		for r in RESOURCE_NAMES:
+		for r in ResourceTypes.values():
 			self._bank[i][r] = 0
 
 		for c in ACTION_CARDS:
@@ -153,7 +199,7 @@ func _place_land() -> void:
 	var terrain_bag := self._fill_terrain_bag()
 
 	for hex in self._hexes:
-		var terrain: String = terrain_bag.pop_front()
+		var terrain: Terrain = terrain_bag.pop_front()
 		self._terrain[hex.key()] = terrain
 
 
@@ -196,12 +242,12 @@ func _place_water()-> void:
 	var water := self._hexes.flat_map(Axial.neighbors_of)
 	water = water.difference(self._hexes) # keep the outside hexes only
 
-	for hex in water: self._terrain[hex.key()] = "water"
+	for hex in water: self._terrain[hex.key()] = Terrain.WATER
 	self._hexes.add_all(water)
 
 
-func _fill_terrain_bag() -> Array[String]:
-	var terrain_bag: Array[String] = []           
+func _fill_terrain_bag() -> Array[Terrain]:
+	var terrain_bag: Array[Terrain] = []           
 
 	for terrain in TERRAIN_COUNTS:
 		for i in TERRAIN_COUNTS[terrain]:
@@ -216,7 +262,11 @@ func _place_numbers() -> void:
 
 	number_bag.shuffle()
 	for hex in self._hexes:
-		if (self._terrain[hex.key()] == "desert"):
+		if (self._terrain[hex.key()] == Terrain.DESERT):
 			self._robber = hex
 		else:
 			self._numbers[hex.key()] = number_bag.pop_front()
+
+
+func get_robber() -> Axial:
+	return self._robber.duplicate()

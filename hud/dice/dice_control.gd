@@ -7,12 +7,11 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	self.button.button_up.connect(self.on_button_up)	
+	self.button.button_up.connect(func(): 
+		EventBus.request_roll.emit()
+	)
 
-
-func on_button_up() -> void:
-	var d1 := randi_range(1, 6)
-	var d2 := randi_range(1, 6)
-	die1.text = str(d1)
-	die2.text = str(d2)
-	EventBus.set_roll.emit(d1, d2)
+	EventBus.set_dice.connect(func(d1:int, d2:int):
+		die1.text = str(d1)
+		die2.text = str(d2)		
+	);

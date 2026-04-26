@@ -132,7 +132,7 @@ static func corners_of(ax: Axial) -> AxialSet:
 
 
 func hexes() -> AxialSet:
-	if self.is_hex(): push_error("Axial not a corner.") 
+	if self.is_hex(): push_error("Axial not a corner.") 	
 
 	var aset := AxialSet.new()
 	for neighbor in Axial.CORNERS:

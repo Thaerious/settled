@@ -62,24 +62,28 @@ offset_top = 75.0
 offset_right = 1792.0
 offset_bottom = 138.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -40.0
-offset_right = 20.0
+offset_left = -168.0
+offset_top = -214.0
+offset_right = 168.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = 4
+theme_type_variation = &"BGBox"
 
-[node name="ActionCards" parent="VBoxContainer" instance=ExtResource("6_0ivg5")]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="ActionCards" parent="PanelContainer/VBoxContainer" instance=ExtResource("6_0ivg5")]
 layout_mode = 2
 theme_type_variation = &""
 
-[node name="Bank" parent="VBoxContainer" instance=ExtResource("8_1kkc0")]
+[node name="Bank" parent="PanelContainer/VBoxContainer" instance=ExtResource("8_1kkc0")]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_type_variation = &""
