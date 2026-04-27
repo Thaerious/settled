@@ -12,7 +12,7 @@ var _card_label_map: Dictionary[Model.ActionCards, Label] = {}
 
 func _ready() -> void:
     self._card_label_map = {
-        Model.ActionCards.KNIGHT:        self.qty_knight,
+        Model.ActionCards.SOLDIER:        self.qty_knight,
         Model.ActionCards.BUILD_ROAD:    self.qty_build_road,
         Model.ActionCards.PLENTY:        self.qty_plenty,
         Model.ActionCards.MONOPOLY:      self.qty_monopoly,

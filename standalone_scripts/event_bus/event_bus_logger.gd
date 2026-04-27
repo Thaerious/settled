@@ -15,5 +15,4 @@ func _ready() -> void:
 	EventBus.add_resources.connect(func(id: int, resources: Array[Model.ResourceTypes]): print("EventBus.add_resources | id: %s | resources: %s" % [id, resources]))
 	EventBus.remove_resources.connect(func(id: int, resources: Array[Model.ResourceTypes]): print("EventBus.remove_resources | id: %s | resources: %s" % [id, resources]))
 	EventBus.add_action_card.connect(func(id: int, card: Model.ActionCards): print("EventBus.purchase_action_card | id: %s | card: %s" % [id, card]))
-	EventBus.add_card.connect(func(id: int, card: Model.ActionCards): print("EventBus.add_card | id: %s | card: %s" % [id, card]))
 

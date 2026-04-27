@@ -37,7 +37,7 @@ enum ResourceTypes {
 }
 
 enum ActionCards {
-	KNIGHT,
+	SOLDIER,
 	BUILD_ROAD,
 	PLENTY,
 	MONOPOLY,
@@ -45,7 +45,7 @@ enum ActionCards {
 }
 
 const CARD_DISTRIBUTION : Dictionary[Model.ActionCards, int] = {
-	ActionCards.KNIGHT: 56,
+	ActionCards.SOLDIER: 56,
 	ActionCards.BUILD_ROAD: 20,
 	ActionCards.PLENTY: 8,
 	ActionCards.MONOPOLY: 8,
@@ -86,10 +86,10 @@ var _supply: Dictionary[String, int] = {}        # resource -> quantity in bank
 var _ports: Dictionary[String, String] = {}      # axial (corner) -> resource ("any" for 3:1)
 var _port_hosts: Dictionary[String, String] = {} # tiles that have ports
 
-func all_hexes() -> AxialSet: return self._hexes.duplicate(true) 
-func all_corners() -> AxialSet:	return self._corners.duplicate(true) # valid playable corners
-func all_edges() -> AxialEdgeSet:	return self._edges.duplicate(true) # valid playable corners
-
+func all_hexes() -> AxialSet:     return self._hexes.duplicate(true) 
+func all_corners() -> AxialSet:	  return self._corners.duplicate(true) # valid playable corners
+func all_edges() -> AxialEdgeSet: return self._edges.duplicate(true) # valid playable corners
+func get_robber() -> Axial:       return self._robber.duplicate()
 
 func get_houses(id: int = -1) -> AxialSet:
 	var aset := AxialSet.new()
@@ -280,5 +280,4 @@ func _place_numbers() -> void:
 			self._numbers[hex.key()] = number_bag.pop_front()
 
 
-func get_robber() -> Axial:
-	return self._robber.duplicate()
+
