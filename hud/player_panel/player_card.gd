@@ -10,6 +10,8 @@ extends PanelContainer
 @onready var roads_view: AnnotatedTexture = %Roads
 @onready var soldiers_view: AnnotatedTexture = %Soldiers
 
+@export var player_id: int = 0
+
 @export var player_name: String = "Name Not Set":
 	set(value):
 		name = value
@@ -58,32 +60,32 @@ func _ready() -> void:
 
 	# Attach event listeners
 	EventBus.add_resources.connect(func(id: int, resources: Array) -> void:
-		if id != Game.self_id: return
+		if id != self.player_id: return
 		self.resources += resources.size()
 	)
 
 	EventBus.remove_resources.connect(func(id: int, resources: Array) -> void:
-		if id != Game.self_id: return
+		if id != self.player_id: return
 		self.resources -= resources.size()
 	)
 
 	EventBus.add_action_card.connect(func(id: int, _card: Model.ActionCards) -> void:
-		if id != Game.self_id: return
+		if id != self.player_id: return
 		self.action_cards += 1
 	)	
 
 	EventBus.update_victory_points.connect(func(id: int, delta: int) -> void:
-		if id != Game.self_id: return
+		if id != self.player_id: return
 		self.victory_points += delta
 	)	
 
 	EventBus.set_road.connect(func(id: int, _ax: AxialEdge) -> void:
-		if id != Game.self_id: return
+		if id != self.player_id: return
 		self.roads += 1
 	)	
 
 	EventBus.play_action_card.connect(func(id: int, card: Model.ActionCards) -> void:
-		if id != Game.self_id: return
+		if id != self.player_id: return
 		if card == Model.ActionCards.SOLDIER: self.soldiers += 1
 		self.action_cards -= 1
 	)

@@ -25,6 +25,7 @@ signal update_victory_points(id: int, delta: int)
 signal update_longest_road(id: int)
 signal update_largest_army(id: int)
 signal update_current_player(id: int)
+signal reset_view()
 
 # Debug and development signals
 signal set_player_view(id: int)

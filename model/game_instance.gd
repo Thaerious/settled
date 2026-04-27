@@ -8,3 +8,4 @@ var player_count: int = 4
 
 func _ready() -> void:
 	self.model = Model.new()
+	EventBus.set_player_view.connect(func(id: int): self.self_id = id)

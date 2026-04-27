@@ -129,3 +129,13 @@ func _ready() -> void:
 			if label:
 				label.text = str(label.text.to_int() - 1)
 	)	
+
+	EventBus.reset_view.connect(self._on_reset_view)
+
+func _on_reset_view() -> void:
+	var bank_model = Game.model.get_bank(Game.self_id)
+	self.qty_brick.text = str(bank_model[Model.ResourceTypes.BRICK])
+	self.qty_wood.text = str(bank_model[Model.ResourceTypes.WOOD])
+	self.qty_wheat.text = str(bank_model[Model.ResourceTypes.WHEAT])
+	self.qty_wool.text = str(bank_model[Model.ResourceTypes.WOOL])
+	self.qty_rock.text = str(bank_model[Model.ResourceTypes.ROCK])

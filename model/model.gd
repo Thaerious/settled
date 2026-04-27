@@ -68,23 +68,22 @@ var _robber: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
 var _edges: AxialEdgeSet = AxialEdgeSet.new()
-var _terrain: Dictionary[String, Terrain] = {}   # axial (hex) -> terrain
-var _numbers: Dictionary[String, int] = {}       # axial (hex) -> number
-var _houses: Dictionary[String, int] = {}        # axial (corner) -> player id
-var _cities: Dictionary[String, int] = {}        # axial (corner) -> player id
-var _roads: Dictionary[String, int] = {}         # axial edge -> player id
+var _terrain: Dictionary[String, Terrain] = {}       # axial (hex) -> terrain
+var _numbers: Dictionary[String, int] = {}           # axial (hex) -> number
+var _houses: Dictionary[String, int] = {}            # axial (corner) -> player id
+var _cities: Dictionary[String, int] = {}            # axial (corner) -> player id
+var _roads: Dictionary[String, int] = {}             # axial edge -> player id
 
-var _houses_mirror: Dictionary[int, Array] = {}  # player id -> [axial (corner)]
-var _cities_mirror: Dictionary[int, Array] = {}  # player id -> [axial (corner)]
-var _roads_mirror: Dictionary[int, Array] = {}   # player id -> [axial edge]
+var _houses_mirror: Dictionary[int, Array] = {}      # player id -> [axial (corner)]
+var _cities_mirror: Dictionary[int, Array] = {}      # player id -> [axial (corner)]
+var _roads_mirror: Dictionary[int, Array] = {}       # player id -> [axial edge]
 
-var _bank: Dictionary[int, Dictionary] = {}      # player id -> resource -> quantity
-var _cards: Dictionary[int, Dictionary] = {}     # player id -> card -> quantity
-var _victory_points: Dictionary[int, int] = {}   # player id -> points
-var _army : Dictionary[int, int] = {}            # player id -> soldier cards played
-var _supply: Dictionary[String, int] = {}        # resource -> quantity in bank
-var _ports: Dictionary[String, String] = {}      # axial (corner) -> resource ("any" for 3:1)
-var _port_hosts: Dictionary[String, String] = {} # tiles that have ports
+var _bank: Dictionary[int, Dictionary] = {}          # player id -> resource -> quantity
+var _action_cards: Dictionary[int, Dictionary] = {}  # player id -> card -> quantity
+var _victory_points: Dictionary[int, int] = {}       # player id -> points
+var _army : Dictionary[int, int] = {}                # player id -> soldier cards played
+var _ports: Dictionary[String, String] = {}          # axial (corner) -> resource ("any" for 3:1)
+var _port_hosts: Dictionary[String, String] = {}     # tiles that have ports
 
 func all_hexes() -> AxialSet:     return self._hexes.duplicate(true) 
 func all_corners() -> AxialSet:	  return self._corners.duplicate(true) # valid playable corners
@@ -113,6 +112,33 @@ func get_cities(id: int = -1) -> AxialSet:
 		aset.add_all(self._cities_mirror[id])
 
 	return aset
+
+
+func all_buildings(id: int) -> AxialSet:
+	var result := AxialSet.new()
+	result.add_all(self._houses_mirror[id])
+	result.add_all(self._cities_mirror[id])
+	return result
+
+
+func get_hex_data(ax: Axial) -> HexData:
+	var data = HexData.new()
+	data.axial = ax.duplicate()
+	data.terrain = self._terrain[ax.key()]
+	data.number = self._numbers.get(ax.key(), -1)
+	data.robber = self._robber == ax
+	data.port_type = self._port_hosts.get(ax.key(), "none")
+
+	if data.port_type != "none":
+		for corner in ax.corners():
+			if not self._ports.has(corner.key()): continue
+			data.ports.add_item(corner.duplicate())
+
+	return data
+
+
+func get_bank(id: int) -> Dictionary[ResourceTypes, int]:
+	return self._bank[id]
 
 
 func _init() -> void:
@@ -151,15 +177,12 @@ func _init() -> void:
 	)
 
 	EventBus.add_action_card.connect(func(id, card):
-		self._cards[id][card] += 1
+		self._action_cards[id][card] += 1
 	)
 
-	for r in ResourceTypes:
-		self._supply[r] = 19
-
 	for i in range(4):
-		self._bank[i] = {}
-		self._cards[i] = {}
+		self._bank[i] = {} as Dictionary[ResourceTypes, int]
+		self._action_cards[i] = {}
 		self._army[i] = 0
 		self._victory_points[i] = 0
 		self._houses_mirror[i] = [] as Array[Axial]
@@ -170,30 +193,7 @@ func _init() -> void:
 			self._bank[i][r] = 0
 
 		for c in ActionCards.values():
-			self._cards[i][c] = 0			
-
-
-func all_buildings(id: int) -> AxialSet:
-	var result := AxialSet.new()
-	result.add_all(self._houses_mirror[id])
-	result.add_all(self._cities_mirror[id])
-	return result
-
-
-func get_hex_data(ax: Axial) -> HexData:
-	var data = HexData.new()
-	data.axial = ax.duplicate()
-	data.terrain = self._terrain[ax.key()]
-	data.number = self._numbers.get(ax.key(), -1)
-	data.robber = self._robber == ax
-	data.port_type = self._port_hosts.get(ax.key(), "none")
-
-	if data.port_type != "none":
-		for corner in ax.corners():
-			if not self._ports.has(corner.key()): continue
-			data.ports.add_item(corner.duplicate())
-
-	return data
+			self._action_cards[i][c] = 0			
 
 
 func _build_axials() -> void:
@@ -278,6 +278,3 @@ func _place_numbers() -> void:
 			self._robber = hex
 		else:
 			self._numbers[hex.key()] = number_bag.pop_front()
-
-
-

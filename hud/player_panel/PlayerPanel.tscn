@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://4ustx1deyfr6"]
+[gd_scene load_steps=12 format=3 uid="uid://4ustx1deyfr6"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_m75cr"]
 [ext_resource type="Script" uid="uid://d2bffrxmbuewh" path="res://hud/player_panel/player_card.gd" id="2_ky2rh"]
 [ext_resource type="Texture2D" uid="uid://bndgc4abt4y1b" path="res://assets/portrait.png" id="3_7h5hl"]
+[ext_resource type="Script" uid="uid://2l75bw8yr4k3" path="res://hud/player_panel/portrait_texture.gd" id="4_hbbdm"]
 [ext_resource type="PackedScene" uid="uid://cuxvpopbo7l5k" path="res://hud/AnnotatedTexture.tscn" id="4_kj8gt"]
+[ext_resource type="Script" uid="uid://c0e8mqxsqorsr" path="res://standalone_scripts/click_handler.gd" id="5_hbbdm"]
 [ext_resource type="Texture2D" uid="uid://co4vl7gwwxney" path="res://assets/star.png" id="5_tkyku"]
 [ext_resource type="Texture2D" uid="uid://baife5oamxio6" path="res://assets/chest.png" id="6_impgr"]
 [ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/cards.png" id="7_n7w4d"]
@@ -23,8 +25,15 @@ layout_mode = 2
 [node name="PortraitTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 texture = ExtResource("3_7h5hl")
 expand_mode = 5
+script = ExtResource("4_hbbdm")
+
+[node name="Clickable" type="Node" parent="VBoxContainer/HBoxContainer/PortraitTexture"]
+script = ExtResource("5_hbbdm")
+use_signal = false
+metadata/_custom_type_script = "uid://c0e8mqxsqorsr"
 
 [node name="VictoryPoints" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_kj8gt")]
 unique_name_in_owner = true
@@ -54,6 +63,6 @@ texture = ExtResource("9_2xyif")
 [node name="NameLabel" type="Label" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Name Goes Here"
+text = "Name Not Set"
 horizontal_alignment = 1
 vertical_alignment = 1
