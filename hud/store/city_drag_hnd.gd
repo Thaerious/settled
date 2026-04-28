@@ -1,5 +1,5 @@
 class_name CityDragHnd
-extends ProductBase
+extends DragHandler
 
 const CITY_TEXTURE: Texture2D = preload("res://assets/city.png")
 const CITY_PIECE: PackedScene = preload("res://game_board/city_piece.tscn")

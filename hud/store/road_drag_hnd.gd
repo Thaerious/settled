@@ -1,5 +1,5 @@
 class_name RoadDragHnd
-extends ProductBase
+extends DragHandler
 
 const ROAD_TEXTURE: Texture2D = preload("res://assets/road_piece.png")
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")

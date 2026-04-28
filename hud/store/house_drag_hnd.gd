@@ -1,5 +1,5 @@
 class_name HouseDragHnd
-extends ProductBase
+extends DragHandler
 
 const HOUSE_TEXTURE: Texture2D = preload("res://assets/house.png")
 const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")

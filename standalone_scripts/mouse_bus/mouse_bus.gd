@@ -83,10 +83,6 @@ func clear_image() -> void:
 
 # ─── Coordinate Helpers ───
 
-## Returns the current mouse position in world space.
-func mouse_world_pos() -> Vector2:
-	return get_viewport().get_canvas_transform().affine_inverse() * get_viewport().get_mouse_position()
-
 
 ## Converts a canvas (screen) space position to world space.
 ## [param canvas_pos] The screen-space position to convert.
@@ -175,7 +171,6 @@ func _resolve_target() -> DragRecord:
 
 	var record := DragRecord.new()
 	record.draggable      = self._draggable
-	record.payload        = self._args.payload
 	record.screen_pos     = screen_pos
 	record.world_pos      = world
 	record.destination    = self._get_drop_target(world)
@@ -190,15 +185,6 @@ func _resolve_target() -> DragRecord:
 func _stop_drag() -> void:
 	if self._draggable == null: return
 	var record := self._resolve_target()
-	
-	if self._hover_target != null:
-		var hover := HoverRecord.new()
-		hover.draggable  = self._draggable
-		hover.payload    = self._args.payload
-		hover.screen_pos = record.screen_pos
-		hover.world_pos  = record.world_pos
-		hover.exited     = self._hover_target
-		hover.entered    = null
 
 	if record.destination: 
 		self._args.on_success.call(record)
@@ -213,7 +199,6 @@ func _stop_drag() -> void:
 func _generate_hover_record() -> HoverRecord:
 	var record := HoverRecord.new()
 	record.draggable  = self._draggable
-	record.payload    = self._args.payload
 	record.screen_pos = get_viewport().get_mouse_position()
 	record.world_pos  = self.world_pos(record.screen_pos)
 	record.exited     = self._hover_target
