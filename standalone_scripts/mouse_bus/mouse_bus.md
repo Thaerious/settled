@@ -23,6 +23,7 @@ The responsibilty for handling drag-drop actions rests with the calling method. 
 `drag_handler.gd` handles the typical case where a mouse press starts a drag and the mouse pointer is hidden when there is a texture. To use override the following fields and methods (call super on methods):
 * field - texture
 * field - texture_size
+* method - _start_drag
 * method - _on_success
 * method - _on_failure
 * method - _on_enter

@@ -1,10 +1,10 @@
 class_name DragHandler
-extends RefCounted
+extends Object
 
-## The texture used for the drag ghost. Assign in subclass or before first drag.
-## If null, the ghost renders as an empty rect and the mouse isn't hidden.
-var texture: Texture2D = null
-var texture_size := Vector2(32,32)
+## Set texture & texture_size for the drag ghost. Assign in subclass.
+## If not set, the ghost renders as an empty rect and the mouse isn't hidden.
+# var texture: Texture2D = null
+# var texture_size := Vector2(32,32)
 
 var _trigger: Control
 var _args: DragArgs
@@ -27,10 +27,12 @@ func _on_press(event: InputEvent) -> void:
 
 
 func _start_drag() -> void:
-	if self.texture != null:
+	if "texture" in self and "texture_size" in self:
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 		_args.texture = self.texture
 		_args.size = self.texture_size	
+		_args.offset  = self.texture_size / -2	
+
 	MouseBus.start_drag(self._args)
 
 
