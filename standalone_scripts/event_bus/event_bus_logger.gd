@@ -26,7 +26,7 @@ func _ready() -> void:
 	EventBus.update_victory_points.connect(func(id: int, delta: int): print("EventBus.update_victory_points | id: %s | delta: %s" % [id, delta]))
 	EventBus.update_longest_road.connect(func(id: int): print("EventBus.update_longest_road | id: %s" % id))
 	EventBus.update_largest_army.connect(func(id: int): print("EventBus.update_largest_army | id: %s" % id))
-	EventBus.update_current_player.connect(func(id: int): print("EventBus.update_current_player | id: %s" % id))
+	EventBus.update_player_phase.connect(func(id: int, phase): print("EventBus.update_current_player | id: %s | phase: %s" % [id, phase]))
 	EventBus.reset_view.connect(func(): print("EventBus.reset_view"))
 
 	# Debug

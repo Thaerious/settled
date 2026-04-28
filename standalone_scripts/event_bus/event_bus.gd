@@ -24,7 +24,7 @@ signal add_action_card(id: int, card: Model.ActionCards)
 signal update_victory_points(id: int, delta: int)
 signal update_longest_road(id: int)
 signal update_largest_army(id: int)
-signal update_current_player(id: int)
+signal update_player_phase(current_player: int, phase: Model.GamePhase)
 signal reset_view()
 
 # Debug and development signals

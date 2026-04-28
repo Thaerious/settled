@@ -10,13 +10,11 @@ var _last_target: CornerTarget = null
 
 
 func _start_drag() -> void:
-	super._start_drag()
 	self._city_piece = CITY_PIECE.instantiate()
 	EventBus.show_city_targets.emit()
 
 
 func _on_success(_rec: DragRecord) -> void:
-	super._on_success(_rec)
 	EventBus.clear_targets.emit()
 
 	if self._last_target: 
@@ -25,13 +23,11 @@ func _on_success(_rec: DragRecord) -> void:
 
 
 func _on_failure(_rec: DragRecord) -> void:
-	super._on_failure(_rec)
 	EventBus.clear_targets.emit()
 	self._last_target = null
 
 
 func _on_enter(rec: HoverRecord) -> void:	
-	super._on_enter(rec)
 	if not rec.entered.owner is CornerTarget: return		
 
 	var target := rec.entered.owner as CornerTarget
@@ -44,7 +40,6 @@ func _on_enter(rec: HoverRecord) -> void:
 	
 
 func _on_exit(rec: HoverRecord) -> void:
-	super._on_exit(rec)
 	if not rec.exited.owner is CornerTarget: return	
 
 	var target := rec.exited.owner as CornerTarget

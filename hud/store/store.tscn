@@ -32,24 +32,32 @@ layout_mode = 2
 texture = ExtResource("7_x3ys2")
 expand_mode = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/RoadContainer"]
+[node name="RoadCost" type="HBoxContainer" parent="VBoxContainer/RoadContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/RoadContainer/HBoxContainer"]
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/RoadContainer/RoadCost"]
 modulate = Color(0.6509804, 0.28627452, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("3_vdnqj")
 expand_mode = 4
 
-[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/RoadContainer/HBoxContainer"]
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/RoadContainer/RoadCost"]
 modulate = Color(0, 0.39215687, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("4_6yum6")
 expand_mode = 4
+
+[node name="RoadFree" type="Label" parent="VBoxContainer/RoadContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "FREE"
 
 [node name="HouseContainer" type="HBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
@@ -61,38 +69,46 @@ layout_mode = 2
 texture = ExtResource("2_gxy6w")
 expand_mode = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HouseContainer"]
+[node name="HouseCost" type="HBoxContainer" parent="VBoxContainer/HouseContainer"]
+unique_name_in_owner = true
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HouseContainer/HBoxContainer"]
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HouseContainer/HouseCost"]
 modulate = Color(0.6509804, 0.28627452, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("3_vdnqj")
 expand_mode = 4
 
-[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HouseContainer/HBoxContainer"]
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HouseContainer/HouseCost"]
 modulate = Color(0, 0.39215687, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("4_6yum6")
 expand_mode = 4
 
-[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HouseContainer/HBoxContainer"]
+[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HouseContainer/HouseCost"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("5_jkq34")
 expand_mode = 4
 
-[node name="TextureRect5" type="TextureRect" parent="VBoxContainer/HouseContainer/HBoxContainer"]
+[node name="TextureRect5" type="TextureRect" parent="VBoxContainer/HouseContainer/HouseCost"]
 modulate = Color(1, 0.69803923, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("6_q7xxg")
 expand_mode = 4
+
+[node name="HouseFree" type="Label" parent="VBoxContainer/HouseContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "FREE"
 
 [node name="CityContainer" type="HBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true

@@ -89,6 +89,7 @@ func all_hexes() -> AxialSet:     return self._hexes.duplicate(true)
 func all_corners() -> AxialSet:	  return self._corners.duplicate(true) # valid playable corners
 func all_edges() -> AxialEdgeSet: return self._edges.duplicate(true) # valid playable corners
 func get_robber() -> Axial:       return self._robber.duplicate()
+func get_current_player() -> int: return self._current_player
 
 func get_houses(id: int = -1) -> AxialSet:
 	var aset := AxialSet.new()
@@ -133,7 +134,6 @@ func get_hex_data(ax: Axial) -> HexData:
 		for corner in ax.corners():
 			if not self._ports.has(corner.key()): continue
 			data.ports.add_item(corner.duplicate())
-
 	return data
 
 

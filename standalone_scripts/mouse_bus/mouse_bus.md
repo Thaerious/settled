@@ -20,7 +20,7 @@ The responsibilty for handling drag-drop actions rests with the calling method. 
 4. release over valid drop target → args.on_success
 5. release over no valid drop target → args.on_failure
 
-`drag_handler.gd` handles the typical case where a mouse press starts a drag and the mouse pointer is hidden when there is a texture. To use override the following fields and methods (call super on methods):
+`drag_handler.gd` handles the typical case where a mouse press starts a drag and the mouse pointer is hidden when there is a texture. To use override the following fields and methods:
 * field - texture
 * field - texture_size
 * method - _start_drag
