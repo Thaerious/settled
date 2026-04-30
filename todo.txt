@@ -1,0 +1,26 @@
+
+# Implement bank-trade drag-drop
+# Integrate ports into house purchasing
+# Count victory points when buying house/city
+# Implement longest road
+## update player card
+# Implement largest army
+## update player card
+# Implement Action Cards
+## Solider
+## Road Building
+## Year of Plenty
+## Monopoly
+## Victory Point
+# Implement Robber
+## Steals resource
+## Move robber on 7
+## Discard excess resources on 7
+# Design and Implement roll protocol
+# Add road count indicator to bank
+# Implement game over splash screen
+# Implement multi-player
+# Implement not started splace screen
+## Wait for players to connect and click ready
+
+

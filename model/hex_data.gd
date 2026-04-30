@@ -3,6 +3,7 @@ extends RefCounted
 
 var axial: Axial = null
 var terrain: Model.Terrain
+var resource: Model.ResourceTypes
 var number: int = -1
 var robber: bool = false
 var ports: AxialSet = AxialSet.new()

@@ -5,6 +5,8 @@ extends Object
 func _init() -> void:
 	EventBus.request_roll.connect(self._on_request_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
+	EventBus.place_initial_house.connect(self.place_initial_house)
+	EventBus.place_initial_road.connect(self.place_initial_road)
 
 
 func _on_request_roll() -> void:
@@ -70,4 +72,46 @@ static func weighted_random(weights: Dictionary) -> Variant:
 
 	return weights.keys().back()
 
-	
+func _next_player() -> void:
+	var next = Game.model.get_current_player()
+	if Game.model.get_current_phase() == Model.GamePhase.SETUP_FORWARD_ROAD:
+		next = next + 1
+		if next > 3:
+			EventBus.update_player_phase.emit(3, Model.GamePhase.SETUP_REVERSE_HOUSE)
+		else:
+			EventBus.update_player_phase.emit(next, Model.GamePhase.SETUP_FORWARD_HOUSE)
+
+	elif Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE_ROAD:
+		next = next - 1
+		if next < 0:
+			EventBus.update_player_phase.emit(0, Model.GamePhase.MAIN)
+		else:
+			EventBus.update_player_phase.emit(next, Model.GamePhase.SETUP_REVERSE_HOUSE)
+
+
+func place_initial_house(id: int, corner: Axial) -> void:
+	assert(id >= 0 and id <= 3, "Player id out of range: %s" % id)
+	assert(not corner.is_hex(), "Axial is not a corner: %s" % corner)
+
+	EventBus.set_house.emit(id, corner)
+
+	if Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE_HOUSE:
+		var hexes = corner.hexes()
+
+		var payout: Array[Model.ResourceTypes] = []
+		for hex: Axial in hexes:
+			payout.append(self.get_resource(hex))
+
+		EventBus.add_resources.emit(id, payout)
+		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_REVERSE_ROAD)
+	else:
+		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_FORWARD_ROAD)
+
+
+func place_initial_road(id: int, edge: AxialEdge) -> void:
+	EventBus.set_road.emit(id, edge)
+	self._next_player()
+
+
+func get_resource(ax: Axial) -> Model.ResourceTypes:
+	return Game.model.get_hex_data(ax).resource

@@ -3,23 +3,76 @@ extends VBoxContainer
 
 @onready var button_not_started: Button = %ButtonNotStarted
 @onready var button_setup_forward: Button = %ButtonSetupForward
+@onready var button_setup_forward2: Button = %ButtonSetupForward2
 @onready var button_setup_reverse: Button = %ButtonSetupReverse
+@onready var button_setup_reverse2: Button = %ButtonSetupReverse2
 @onready var button_main: Button = %ButtonMain
 @onready var button_game_over: Button = %ButtonGameOver
+@onready var button_player1: Button = %Button1
+@onready var button_player2: Button = %Button2
+@onready var button_player3: Button = %Button3
+@onready var button_player4: Button = %Button4
+
 
 func _ready() -> void:
 	self.button_not_started.pressed.connect(func() -> void:
 		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.NOT_STARTED)
 	)
 	self.button_setup_forward.pressed.connect(func() -> void:
-		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_FORWARD)
+		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_FORWARD_HOUSE)
 	)
+	self.button_setup_forward2.pressed.connect(func() -> void:
+		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_FORWARD_ROAD)
+	)	
 	self.button_setup_reverse.pressed.connect(func() -> void:
-		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_REVERSE)
+		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_REVERSE_HOUSE)
 	)
+	self.button_setup_reverse2.pressed.connect(func() -> void:
+		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_REVERSE_ROAD)
+	)	
 	self.button_main.pressed.connect(func() -> void:
 		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.MAIN)
 	)
 	self.button_game_over.pressed.connect(func() -> void:
 		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.GAME_OVER)
 	)
+	self.button_player1.pressed.connect(func() -> void:
+		EventBus.update_player_phase.emit(0, Game.model.get_current_phase())
+	)
+	self.button_player2.pressed.connect(func() -> void:
+		EventBus.update_player_phase.emit(1, Game.model.get_current_phase())
+	)
+	self.button_player3.pressed.connect(func() -> void:
+		EventBus.update_player_phase.emit(2, Game.model.get_current_phase())
+	)
+	self.button_player4.pressed.connect(func() -> void:
+		EventBus.update_player_phase.emit(3, Game.model.get_current_phase())
+	)		
+
+	EventBus.update_player_phase.connect(self._on_phase_change)
+
+func _on_phase_change(current_player: int, phase: Model.GamePhase) -> void:
+	var phase_buttons := [
+		self.button_not_started,
+		self.button_setup_forward,
+		self.button_setup_forward2,
+		self.button_setup_reverse,
+		self.button_setup_reverse2,
+		self.button_main,
+		self.button_game_over,
+	]
+	var player_buttons := [
+		self.button_player1,
+		self.button_player2,
+		self.button_player3,
+		self.button_player4,
+	]
+
+	for button in phase_buttons:
+		button.modulate = Color.WHITE
+
+	for button in player_buttons:
+		button.modulate = Color.WHITE
+
+	phase_buttons[phase].modulate = Color.RED
+	player_buttons[current_player].modulate = Color.RED

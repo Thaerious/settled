@@ -32,7 +32,7 @@ func _on_enter(rec: HoverRecord) -> void:
 
 	var target := rec.entered.owner as EdgeTarget
 	if target == self._last_target: return  # already set, ignore
-
+	print("_on_enter")
 	rec.draggable.visible = false
 	if self._last_target: self._last_target.clear_piece()
 	self._last_target = rec.entered.owner as EdgeTarget

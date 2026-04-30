@@ -109,13 +109,25 @@ text = "Not Started
 [node name="ButtonSetupForward" type="Button" parent="PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Setup Forward
+text = "Setup Forward House
+"
+
+[node name="ButtonSetupForward2" type="Button" parent="PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Setup Forward Road
 "
 
 [node name="ButtonSetupReverse" type="Button" parent="PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Setup Reverse
+text = "Setup Reverse House
+"
+
+[node name="ButtonSetupReverse2" type="Button" parent="PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Setup Reverse Road
 "
 
 [node name="ButtonMain" type="Button" parent="PhaseButtons"]
@@ -129,3 +141,39 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Game Over
 "
+
+[node name="Panel" type="Panel" parent="PhaseButtons"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PhaseButtons/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button1" type="Button" parent="PhaseButtons/Panel/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+
+[node name="Button2" type="Button" parent="PhaseButtons/Panel/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2"
+
+[node name="Button3" type="Button" parent="PhaseButtons/Panel/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3"
+
+[node name="Button4" type="Button" parent="PhaseButtons/Panel/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "4"

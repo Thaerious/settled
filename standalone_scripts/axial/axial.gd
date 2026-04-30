@@ -75,12 +75,10 @@ func neighbors() -> AxialSet:
 			var ax := Axial.from_vec3i(neighbor)
 			aset.add_item(self.duplicate().transform(ax))
 	elif self.is_even():
-		print("is even")
 		aset.add_item(self.duplicate().transform(Axial.new(-1, 0, 0))) 
 		aset.add_item(self.duplicate().transform(Axial.new(0, -1, 0))) 
 		aset.add_item(self.duplicate().transform(Axial.new(0, 0, -1))) 
 	else:
-		print("is odd")
 		aset.add_item(self.duplicate().transform(Axial.new(1, 0, 0))) 
 		aset.add_item(self.duplicate().transform(Axial.new(0, 1, 0))) 
 		aset.add_item(self.duplicate().transform(Axial.new(0, 0, 1))) 

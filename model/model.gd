@@ -16,6 +16,8 @@ const TERRAIN_TO_RESOURCE : Dictionary[Terrain, ResourceTypes] = {
 	Terrain.MOUNTAIN: ResourceTypes.ROCK,
 	Terrain.FIELD: ResourceTypes.WHEAT,
 	Terrain.PASTURE: ResourceTypes.WOOL,
+	Terrain.DESERT: ResourceTypes.NONE,
+	Terrain.WATER: ResourceTypes.NONE
 }
 
 enum Terrain {
@@ -33,7 +35,8 @@ enum ResourceTypes {
 	WOOD,
 	ROCK,
 	WHEAT,
-	WOOL
+	WOOL,
+	NONE
 }
 
 enum ActionCards {
@@ -54,15 +57,17 @@ const CARD_DISTRIBUTION : Dictionary[Model.ActionCards, int] = {
 
 enum GamePhase {
 	NOT_STARTED,
-	SETUP_FORWARD,
-	SETUP_REVERSE,
+	SETUP_FORWARD_HOUSE,
+	SETUP_FORWARD_ROAD,
+	SETUP_REVERSE_HOUSE,
+	SETUP_REVERSE_ROAD,
 	MAIN,
 	GAME_OVER,	
 }
 
 var _largest_army_player: int = -1
 var _longest_road_player: int = -1
-var _current_player: int = 1
+var _current_player: int = 0
 var _game_phase: GamePhase = GamePhase.NOT_STARTED
 var _robber: Axial
 var _hexes: AxialSet = AxialSet.new()
@@ -85,11 +90,22 @@ var _army : Dictionary[int, int] = {}                # player id -> soldier card
 var _ports: Dictionary[String, String] = {}          # axial (corner) -> resource ("any" for 3:1)
 var _port_hosts: Dictionary[String, String] = {}     # tiles that have ports
 
-func all_hexes() -> AxialSet:     return self._hexes.duplicate(true) 
-func all_corners() -> AxialSet:	  return self._corners.duplicate(true) # valid playable corners
-func all_edges() -> AxialEdgeSet: return self._edges.duplicate(true) # valid playable corners
-func get_robber() -> Axial:       return self._robber.duplicate()
-func get_current_player() -> int: return self._current_player
+func all_hexes() -> AxialSet:          return self._hexes.duplicate(true) 
+func all_corners() -> AxialSet:	       return self._corners.duplicate(true) # valid playable corners
+func all_edges() -> AxialEdgeSet:      return self._edges.duplicate(true) # valid playable corners
+func get_robber() -> Axial:            return self._robber.duplicate()
+func get_current_player() -> int:      return self._current_player
+func get_current_phase() -> GamePhase: return self._game_phase
+
+func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: int) -> bool:
+	var bank = self._bank[id]
+	if bank[ResourceTypes.BRICK] < brick: return false
+	if bank[ResourceTypes.WOOD] < wood: return false
+	if bank[ResourceTypes.WOOL] < wool: return false
+	if bank[ResourceTypes.WHEAT] < wheat: return false
+	if bank[ResourceTypes.ROCK] < rock: return false
+	return true
+	
 
 func get_houses(id: int = -1) -> AxialSet:
 	var aset := AxialSet.new()
@@ -115,17 +131,26 @@ func get_cities(id: int = -1) -> AxialSet:
 	return aset
 
 
-func all_buildings(id: int) -> AxialSet:
+func all_buildings(id: int = -1) -> AxialSet:
 	var result := AxialSet.new()
-	result.add_all(self._houses_mirror[id])
-	result.add_all(self._cities_mirror[id])
+	
+	if id == -1:
+		for p in range(4):
+			result.add_all(self._houses_mirror[p])
+	else:
+		result.add_all(self._houses_mirror[id])
+		result.add_all(self._cities_mirror[id])
+
 	return result
 
 
 func get_hex_data(ax: Axial) -> HexData:
+	assert(ax.is_hex(), "Axial is not a hex.")
+
 	var data = HexData.new()
 	data.axial = ax.duplicate()
 	data.terrain = self._terrain[ax.key()]
+	data.resource = self.TERRAIN_TO_RESOURCE[data.terrain]
 	data.number = self._numbers.get(ax.key(), -1)
 	data.robber = self._robber == ax
 	data.port_type = self._port_hosts.get(ax.key(), "none")
@@ -180,6 +205,11 @@ func _init() -> void:
 		self._action_cards[id][card] += 1
 	)
 
+	EventBus.update_player_phase.connect(func(id, phase):
+		self._current_player = id
+		self._game_phase = phase
+	)
+
 	for i in range(4):
 		self._bank[i] = {} as Dictionary[ResourceTypes, int]
 		self._action_cards[i] = {}
@@ -187,7 +217,7 @@ func _init() -> void:
 		self._victory_points[i] = 0
 		self._houses_mirror[i] = [] as Array[Axial]
 		self._cities_mirror[i] = [] as Array[Axial]
-		self._roads_mirror[i] = [] as Array[Axial]
+		self._roads_mirror[i] = [] as Array[AxialEdge]
 
 		for r in ResourceTypes.values():
 			self._bank[i][r] = 0

@@ -9,6 +9,7 @@ extends Object
 var _trigger: Control
 var _args: DragArgs
 
+var enabled = true
 
 func _init(trigger: Control) -> void:
 	self._trigger = trigger
@@ -28,6 +29,7 @@ func _init(trigger: Control) -> void:
 	
 
 func _on_press(event: InputEvent) -> void:	
+	if not self.enabled: return
 	if not event is InputEventMouse: return
 	if is_left_click(event): self._do_start_drag()
 
@@ -35,9 +37,9 @@ func _on_press(event: InputEvent) -> void:
 func _do_start_drag() -> void:
 	if "texture" in self and "texture_size" in self:
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-		_args.texture = self.texture
-		_args.size = self.texture_size	
-		_args.offset  = self.texture_size / -2	
+		self._args.texture = self.texture
+		self._args.size    = self.texture_size	
+		self._args.offset  = self.texture_size / -2	
 
 	self._start_drag()
 	MouseBus.start_drag(self._args)
@@ -45,6 +47,7 @@ func _do_start_drag() -> void:
 
 func _start_drag() -> void:
 	pass
+
 
 func _on_success(_rec: DragRecord) -> void:
 	pass

@@ -44,6 +44,8 @@ func _ready() -> void:
 	EventBus.show_house_targets.connect(self.show_house_targets_hnd)
 	EventBus.show_city_targets.connect(self.show_city_targets_hnd)
 	EventBus.show_road_targets.connect(self.show_road_targets_hnd)
+	EventBus.show_initial_house_targets.connect(self.show_initial_house_targets_hnd)
+	EventBus.show_initial_road_targets.connect(self.show_initial_road_targets_hnd)
 
 	EventBus.clear_targets.connect(self.clear_targets_hnd)
 	EventBus.set_house.connect(self.set_house_hnd)
@@ -85,6 +87,21 @@ func show_house_targets_hnd():
 		permitted = permitted.intersect(Game.model.all_corners())
 		self.show_targets(permitted)		
 
+
+func show_initial_house_targets_hnd():
+	var corners = Game.model.all_corners()
+	var houses = Game.model.all_buildings()
+	var neighbors := houses.map(Axial.neighbors_of)
+	houses = houses.add_all(neighbors)
+	corners = corners.difference(houses)
+	self.show_targets(corners)
+
+
+func show_initial_road_targets_hnd(house_axial: Axial):
+	var edges = house_axial.edges()
+	print("show_initial_road_targets")
+	self.show_targets(edges)
+	
 
 func show_city_targets_hnd():
 	self.show_targets(self._active_buildings[Game.self_id])
