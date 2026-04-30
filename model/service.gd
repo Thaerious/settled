@@ -5,8 +5,8 @@ extends Object
 func _init() -> void:
 	EventBus.request_roll.connect(self._on_request_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
-	EventBus.place_initial_house.connect(self.place_initial_house)
-	EventBus.place_initial_road.connect(self.place_initial_road)
+	EventBus.request_initial_house.connect(self.place_initial_house)
+	EventBus.request_initial_road.connect(self.place_initial_road)
 
 
 func _on_request_roll() -> void:
@@ -87,6 +87,10 @@ func _next_player() -> void:
 			EventBus.update_player_phase.emit(0, Model.GamePhase.MAIN)
 		else:
 			EventBus.update_player_phase.emit(next, Model.GamePhase.SETUP_REVERSE_HOUSE)
+
+
+func place_house(id: int, corner: Axial) -> void:
+	EventBus.set_house.emit(id, corner)
 
 
 func place_initial_house(id: int, corner: Axial) -> void:

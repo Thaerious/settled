@@ -18,7 +18,7 @@ func _on_success(_rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
 
 	if self._last_target: 
-		EventBus.set_house.emit(Game.self_id, _last_target.axial)	
+		EventBus.request_house.emit(Game.self_id, _last_target.axial)	
 		self._last_target = null
 
 

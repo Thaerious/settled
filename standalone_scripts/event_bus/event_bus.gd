@@ -13,9 +13,12 @@ signal clear_targets()
 # View to service events
 signal request_roll()
 signal request_purchase_action_card()
-signal play_action_card(id: int, card: Model.ActionCards)
-signal place_initial_house(id: int, hex: Axial)
-signal place_initial_road(id: int, edge: AxialEdge)
+signal request_play_action_card(id: int, card: Model.ActionCards)
+signal request_initial_house(id: int, hex: Axial)
+signal request_initial_road(id: int, edge: AxialEdge)
+signal request_house(source_id: int, corner: Axial)
+signal request_city(source_id: int, corner: Axial)
+signal request_road(source_id: int, edge: AxialEdge)
 
 # Model/Service to view events
 signal set_dice(d1: int, d2:int)
@@ -28,7 +31,7 @@ signal update_largest_army(id: int)
 signal update_player_phase(current_player: int, phase: Model.GamePhase)
 signal reset_view()
 
-# Service to Model events
+# Service to Model/View events
 signal set_house(source_id: int, corner: Axial)
 signal set_city(source_id: int, corner: Axial)
 signal set_road(source_id: int, edge: AxialEdge)

@@ -15,9 +15,9 @@ func _ready() -> void:
 	# View to service
 	EventBus.request_roll.connect(func(): print("EventBus.request_roll"))
 	EventBus.request_purchase_action_card.connect(func(): print("EventBus.request_purchase_action_card"))
-	EventBus.play_action_card.connect(func(id: int, card: Model.ActionCards): print("EventBus.play_action_card | id: %s | card: %s" % [id, card]))
-	EventBus.place_initial_house.connect(func(id: int, hex: Axial): print("EventBus.place_initial_house | id: %s | hex: %s" % [id, hex]))
-	EventBus.place_initial_road.connect(func(id: int, edge: AxialEdge): print("EventBus.place_initial_road | id: %s | edge: %s" % [id, edge]))
+	EventBus.request_play_action_card.connect(func(id: int, card: Model.ActionCards): print("EventBus.play_action_card | id: %s | card: %s" % [id, card]))
+	EventBus.request_initial_house.connect(func(id: int, hex: Axial): print("EventBus.place_initial_house | id: %s | hex: %s" % [id, hex]))
+	EventBus.request_initial_road.connect(func(id: int, edge: AxialEdge): print("EventBus.place_initial_road | id: %s | edge: %s" % [id, edge]))
 
 	# Model/Service to view
 	EventBus.set_dice.connect(func(d1: int, d2: int): print("EventBus.set_dice | d1: %s | d2: %s" % [d1, d2]))

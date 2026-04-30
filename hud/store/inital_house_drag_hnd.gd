@@ -20,7 +20,7 @@ func _start_drag() -> void:
 
 func _on_success(_rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
-	EventBus.place_initial_house.emit(Game.self_id, self._last_target.axial)
+	EventBus.request_initial_house.emit(Game.self_id, self._last_target.axial)
 	self.house_container.enabled = false
 	self._road_container.enabled = true	
 

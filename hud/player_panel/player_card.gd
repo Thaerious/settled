@@ -84,7 +84,7 @@ func _ready() -> void:
 		self.roads += 1
 	)	
 
-	EventBus.play_action_card.connect(func(id: int, card: Model.ActionCards) -> void:
+	EventBus.request_play_action_card.connect(func(id: int, card: Model.ActionCards) -> void:
 		if id != self.player_id: return
 		if card == Model.ActionCards.SOLDIER: self.soldiers += 1
 		self.action_cards -= 1
