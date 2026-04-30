@@ -18,12 +18,12 @@ const ANCHOR_PIECE: PackedScene = preload("res://game_board/anchor_piece.tscn")
 const PORT_PIECE: PackedScene = preload("res://game_board/port_piece.tscn")       
 
 const resource_icons := {
-	"brick": preload("res://assets/resources/brick.png"),
-	"rock": preload("res://assets/resources/rock.png"),
-	"wheat": preload("res://assets/resources/wheat.png"),
-	"wood": preload("res://assets/resources/wood.png"),
-	"wool": preload("res://assets/resources/wool.png"),
-	"any": preload("res://assets/unknown.png"),
+	Model.ResourceTypes.BRICK: preload("res://assets/resources/brick.png"),
+	Model.ResourceTypes.ROCK: preload("res://assets/resources/rock.png"),
+	Model.ResourceTypes.WHEAT: preload("res://assets/resources/wheat.png"),
+	Model.ResourceTypes.WOOD: preload("res://assets/resources/wood.png"),
+	Model.ResourceTypes.WOOL: preload("res://assets/resources/wool.png"),
+	Model.ResourceTypes.ANY: preload("res://assets/unknown.png"),
 }
 
 const BRICK: Texture2D = preload("res://assets/resources/brick.png")
@@ -46,7 +46,7 @@ func place_tiles() -> GameBoardSetup:
 		var vector := Axial.axial_to_offset(ax)
 		self._board.set_cell(vector, TERRAIN_SOURCE_ID, TERRAIN_TILE[terrain], 0)
 		
-		if hex_data.port_type != "none":
+		if hex_data.port_type != Model.ResourceTypes.NONE:
 			self._place_ports(hex_data)
 
 	return self

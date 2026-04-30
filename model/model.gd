@@ -36,7 +36,8 @@ enum ResourceTypes {
 	ROCK,
 	WHEAT,
 	WOOL,
-	NONE
+	NONE,
+	ANY
 }
 
 enum ActionCards {
@@ -65,16 +66,17 @@ enum GamePhase {
 	GAME_OVER,	
 }
 
-var _largest_army_player: int = -1
-var _longest_road_player: int = -1
+# var _largest_army_player: int = -1
+# var _longest_road_player: int = -1
 var _current_player: int = 0
 var _game_phase: GamePhase = GamePhase.NOT_STARTED
 var _robber: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
 var _edges: AxialEdgeSet = AxialEdgeSet.new()
-var _terrain: Dictionary[String, Terrain] = {}       # axial (hex) -> terrain
-var _numbers: Dictionary[String, int] = {}           # axial (hex) -> number
+
+var _hex_data: Dictionary[String, HexData] = {}      # axial (hex) -> data
+
 var _houses: Dictionary[String, int] = {}            # axial (corner) -> player id
 var _cities: Dictionary[String, int] = {}            # axial (corner) -> player id
 var _roads: Dictionary[String, int] = {}             # axial edge -> player id
@@ -87,8 +89,7 @@ var _bank: Dictionary[int, Dictionary] = {}          # player id -> resource -> 
 var _action_cards: Dictionary[int, Dictionary] = {}  # player id -> card -> quantity
 var _victory_points: Dictionary[int, int] = {}       # player id -> points
 var _army : Dictionary[int, int] = {}                # player id -> soldier cards played
-var _ports: Dictionary[String, String] = {}          # axial (corner) -> resource ("any" for 3:1)
-var _port_hosts: Dictionary[String, String] = {}     # tiles that have ports
+var _ports: Dictionary[String, ResourceTypes] = {}   # axial (corner) -> resource ("any" for 3:1)
 
 func all_hexes() -> AxialSet:          return self._hexes.duplicate(true) 
 func all_corners() -> AxialSet:	       return self._corners.duplicate(true) # valid playable corners
@@ -144,22 +145,9 @@ func all_buildings(id: int = -1) -> AxialSet:
 	return result
 
 
-func get_hex_data(ax: Axial) -> HexData:
-	assert(ax.is_hex(), "Axial is not a hex.")
-
-	var data = HexData.new()
-	data.axial = ax.duplicate()
-	data.terrain = self._terrain[ax.key()]
-	data.resource = self.TERRAIN_TO_RESOURCE[data.terrain]
-	data.number = self._numbers.get(ax.key(), -1)
-	data.robber = self._robber == ax
-	data.port_type = self._port_hosts.get(ax.key(), "none")
-
-	if data.port_type != "none":
-		for corner in ax.corners():
-			if not self._ports.has(corner.key()): continue
-			data.ports.add_item(corner.duplicate())
-	return data
+func get_hex_data(hex: Axial) -> HexData:
+	assert(hex.is_hex(), "Axial is not a hex.")
+	return self._hex_data[hex.key()]
 
 
 func get_bank(id: int) -> Dictionary[ResourceTypes, int]:
@@ -226,6 +214,8 @@ func _init() -> void:
 			self._action_cards[i][c] = 0			
 
 
+# populate the _hexes, _corners, and _edges fields
+# these are the playable values (ie water has no edges)
 func _build_axials() -> void:
 	var neighbors := Axial.zero().neighbors() # first ring
 	var distant_neighbors := neighbors.flat_map(Axial.neighbors_of) # second ring
@@ -236,55 +226,64 @@ func _build_axials() -> void:
 	self._corners = self._hexes.flat_map(Axial.corners_of)
 	self._edges = self._hexes.edge_map(Axial.edges_of)
 
+	for hex in self._hexes:
+		self._hex_data[hex.key()] = HexData.new()
+		self._hex_data[hex.key()].axial = hex
 
+	
 func _place_land() -> void:
 	var terrain_bag := self._fill_terrain_bag()
 
 	for hex in self._hexes:
 		var terrain: Terrain = terrain_bag.pop_front()
-		self._terrain[hex.key()] = terrain
+		self._hex_data[hex.key()].terrain = terrain
 
 
 func _place_ports() -> void:	
-	self._place_port(Axial.new(0, -3, 3), 2, "any")
-	self._place_port(Axial.new(0, -3, 3), 3, "any")
+	self._place_port(Axial.new(0, -3, 3), 2, Model.ResourceTypes.ANY)
+	self._place_port(Axial.new(0, -3, 3), 3, Model.ResourceTypes.ANY)
 
-	self._place_port(Axial.new(2, -3, 1), 3, "brick")
-	self._place_port(Axial.new(2, -3, 1), 4, "brick")
+	self._place_port(Axial.new(2, -3, 1), 3, Model.ResourceTypes.BRICK)
+	self._place_port(Axial.new(2, -3, 1), 4, Model.ResourceTypes.BRICK)
 
-	self._place_port(Axial.new(3, -2, -1), 3, "any")
-	self._place_port(Axial.new(3, -2, -1), 4, "any")
+	self._place_port(Axial.new(3, -2, -1), 3, Model.ResourceTypes.ANY)
+	self._place_port(Axial.new(3, -2, -1), 4, Model.ResourceTypes.ANY)
 
-	self._place_port(Axial.new(3, 0, -3), 4, "wood")
-	self._place_port(Axial.new(3, 0, -3), 5, "wood")
+	self._place_port(Axial.new(3, 0, -3), 4, Model.ResourceTypes.WOOD)
+	self._place_port(Axial.new(3, 0, -3), 5, Model.ResourceTypes.WOOD)
 
-	self._place_port(Axial.new(1, 2, -3), 5, "wool")
-	self._place_port(Axial.new(1, 2, -3), 0, "wool")
+	self._place_port(Axial.new(1, 2, -3), 5, Model.ResourceTypes.WOOL)
+	self._place_port(Axial.new(1, 2, -3), 0, Model.ResourceTypes.WOOL)
 
-	self._place_port(Axial.new(-1, 3, -2), 5, "rock")
-	self._place_port(Axial.new(-1, 3, -2), 0, "rock")	
+	self._place_port(Axial.new(-1, 3, -2), 5, Model.ResourceTypes.ROCK)
+	self._place_port(Axial.new(-1, 3, -2), 0, Model.ResourceTypes.ROCK)	
 
-	self._place_port(Axial.new(-3, 3, 0), 0, "any")
-	self._place_port(Axial.new(-3, 3, 0), 1, "any")	
+	self._place_port(Axial.new(-3, 3, 0), 0, Model.ResourceTypes.ANY)
+	self._place_port(Axial.new(-3, 3, 0), 1, Model.ResourceTypes.ANY)	
 
-	self._place_port(Axial.new(-3, 1, 2), 1, "wheat")
-	self._place_port(Axial.new(-3, 1, 2), 2, "wheat")	
+	self._place_port(Axial.new(-3, 1, 2), 1, Model.ResourceTypes.WHEAT)
+	self._place_port(Axial.new(-3, 1, 2), 2, Model.ResourceTypes.WHEAT)	
 
-	self._place_port(Axial.new(-2, -1, 3), 1, "any")
-	self._place_port(Axial.new(-2, -1, 3), 2, "any")	
+	self._place_port(Axial.new(-2, -1, 3), 1, Model.ResourceTypes.ANY)
+	self._place_port(Axial.new(-2, -1, 3), 2, Model.ResourceTypes.ANY)	
 
 
-func _place_port(ax: Axial, corner: int, value: String) -> void:
-	var cax = ax.corners().to_array()[corner]
+func _place_port(hex: Axial, corner: int, value: ResourceTypes) -> void:
+	var cax = hex.corners().to_array()[corner]
 	self._ports[cax.key()] = value
-	self._port_hosts[ax.key()] = value
+	self._hex_data[hex.key()].ports.add_item(cax.duplicate())
+	self._hex_data[hex.key()].port_type = value
 
 
 func _place_water()-> void:
 	var water := self._hexes.flat_map(Axial.neighbors_of)
 	water = water.difference(self._hexes) # keep the outside hexes only
 
-	for hex in water: self._terrain[hex.key()] = Terrain.WATER
+	for hex in water:
+		self._hex_data[hex.key()] = HexData.new()
+		self._hex_data[hex.key()].axial = hex
+		self._hex_data[hex.key()].terrain = Terrain.WATER
+
 	self._hexes.add_all(water)
 
 
@@ -304,7 +303,8 @@ func _place_numbers() -> void:
 
 	number_bag.shuffle()
 	for hex in self._hexes:
-		if (self._terrain[hex.key()] == Terrain.DESERT):
+		if (self.get_hex_data(hex).terrain == Terrain.DESERT):
 			self._robber = hex
+			self._hex_data[hex.key()].robber = true
 		else:
-			self._numbers[hex.key()] = number_bag.pop_front()
+			self._hex_data[hex.key()].number = number_bag.pop_front()
