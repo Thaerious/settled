@@ -86,17 +86,21 @@ var _cities_mirror: Dictionary[int, Array] = {}      # player id -> [axial (corn
 var _roads_mirror: Dictionary[int, Array] = {}       # player id -> [axial edge]
 
 var _bank: Dictionary[int, Dictionary] = {}          # player id -> resource -> quantity
+var _exchange_rate: Dictionary[int, Dictionary] = {} # player id -> resource -> quantity
 var _action_cards: Dictionary[int, Dictionary] = {}  # player id -> card -> quantity
 var _victory_points: Dictionary[int, int] = {}       # player id -> points
 var _army : Dictionary[int, int] = {}                # player id -> soldier cards played
 var _ports: Dictionary[String, ResourceTypes] = {}   # axial (corner) -> resource ("any" for 3:1)
 
-func all_hexes() -> AxialSet:          return self._hexes.duplicate(true) 
-func all_corners() -> AxialSet:	       return self._corners.duplicate(true) # valid playable corners
-func all_edges() -> AxialEdgeSet:      return self._edges.duplicate(true) # valid playable corners
-func get_robber() -> Axial:            return self._robber.duplicate()
-func get_current_player() -> int:      return self._current_player
-func get_current_phase() -> GamePhase: return self._game_phase
+func all_hexes() -> AxialSet:               return self._hexes.duplicate(true) 
+func all_corners() -> AxialSet:	            return self._corners.duplicate(true) # valid playable corners
+func all_edges() -> AxialEdgeSet:           return self._edges.duplicate(true) # valid playable corners
+func get_robber() -> Axial:                 return self._robber.duplicate()
+func get_current_player() -> int:           return self._current_player
+func get_current_phase() -> GamePhase:      return self._game_phase
+func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), ResourceTypes.NONE)
+
+func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id][r]
 
 func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: int) -> bool:
 	var bank = self._bank[id]
@@ -162,7 +166,6 @@ func _init() -> void:
 	self._place_numbers()
 	self._place_water()
 	self._place_ports()
-
 	EventBus.set_house.connect(func (id, ax): 
 		self._houses[ax.key()] = id
 		self._houses_mirror[id].append(ax)
@@ -198,8 +201,13 @@ func _init() -> void:
 		self._game_phase = phase
 	)
 
+	EventBus.set_exchange_rate.connect(func(id, resource, value):
+		self._exchange_rate[id][resource] = value
+	)
+
 	for i in range(4):
 		self._bank[i] = {} as Dictionary[ResourceTypes, int]
+		self._exchange_rate[i] = {} as Dictionary[ResourceTypes, int]
 		self._action_cards[i] = {}
 		self._army[i] = 0
 		self._victory_points[i] = 0
@@ -209,6 +217,7 @@ func _init() -> void:
 
 		for r in ResourceTypes.values():
 			self._bank[i][r] = 0
+			self._exchange_rate[i][r] = 4
 
 		for c in ActionCards.values():
 			self._action_cards[i][c] = 0			

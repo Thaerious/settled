@@ -1,6 +1,14 @@
 class_name Service
 extends Object
 
+const EXCHANGABLE = [
+	Model.ResourceTypes.BRICK,
+	Model.ResourceTypes.WOOD,
+	Model.ResourceTypes.ROCK,
+	Model.ResourceTypes.WHEAT,
+	Model.ResourceTypes.WOOL
+]
+
 
 func _init() -> void:
 	EventBus.request_roll.connect(self._on_request_roll)
@@ -91,20 +99,30 @@ func _next_player() -> void:
 
 func place_house(id: int, corner: Axial) -> void:
 	EventBus.set_house.emit(id, corner)
+	var port_resource = Game.model.get_port(corner)
+
+	if port_resource == Model.ResourceTypes.ANY:
+		for r in EXCHANGABLE:
+			if Game.model.get_exchange_rate(id, r) > 3:
+				EventBus.set_exchange_rate.emit(id, r, 3)
+	elif port_resource != Model.ResourceTypes.NONE:
+		if Game.model.get_exchange_rate(id, port_resource) > 2:
+			EventBus.set_exchange_rate.emit(id, port_resource, 2)
 
 
 func place_initial_house(id: int, corner: Axial) -> void:
 	assert(id >= 0 and id <= 3, "Player id out of range: %s" % id)
 	assert(not corner.is_hex(), "Axial is not a corner: %s" % corner)
 
-	EventBus.set_house.emit(id, corner)
+	self.place_house(id, corner)
 
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE_HOUSE:
 		var hexes = corner.hexes()
 
 		var payout: Array[Model.ResourceTypes] = []
 		for hex: Axial in hexes:
-			payout.append(self.get_resource(hex))
+			var hexdata = Game.model.get_hex_data(hex)
+			payout.append(hexdata.terrain)
 
 		EventBus.add_resources.emit(id, payout)
 		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_REVERSE_ROAD)

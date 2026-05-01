@@ -73,7 +73,7 @@ func _ready() -> void:
 # 		var edges = hex.edges()
 # 		edges.for_each(
 # 			func(ax): self.set_road_hnd(0, ax)
-# 		)
+		# )
 
 
 func show_house_targets_hnd():

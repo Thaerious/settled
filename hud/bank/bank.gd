@@ -14,7 +14,8 @@ extends PanelContainer
 @onready var ex_brick: Label = %ExBrick
 @onready var qty_brick: Label = %QtyBrick
 
-var RESOURCE_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
+var RESOURCE_QTY_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
+var RESOURCE_EX_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
 
 var tree_exchange_rate: int = 4:
 	set(value):
@@ -83,12 +84,20 @@ var clay_quantity: int = 0:
 
 
 func _ready() -> void:
-	self.RESOURCE_LABEL_MAP = {
+	self.RESOURCE_QTY_LABEL_MAP = {
 		Model.ResourceTypes.BRICK: self.qty_brick,
 		Model.ResourceTypes.WOOD:  self.qty_wood,
 		Model.ResourceTypes.ROCK:  self.qty_rock,
 		Model.ResourceTypes.WHEAT: self.qty_wheat,
 		Model.ResourceTypes.WOOL:  self.qty_wool,
+	}
+
+	self.RESOURCE_EX_LABEL_MAP = {
+		Model.ResourceTypes.BRICK: self.ex_brick,
+		Model.ResourceTypes.WOOD:  self.ex_wood,
+		Model.ResourceTypes.ROCK:  self.ex_rock,
+		Model.ResourceTypes.WHEAT: self.ex_wheat,
+		Model.ResourceTypes.WOOL:  self.ex_wool,
 	}
 
 	if self.ex_wood:
@@ -116,7 +125,7 @@ func _ready() -> void:
 		if id != Game.self_id: return
 
 		for resource: Model.ResourceTypes in resources:
-			var label: Label = self.RESOURCE_LABEL_MAP.get(resource)
+			var label: Label = self.RESOURCE_QTY_LABEL_MAP.get(resource)
 			if label:
 				label.text = str(label.text.to_int() + 1)
 	)
@@ -125,17 +134,21 @@ func _ready() -> void:
 		if id != Game.self_id: return
 
 		for resource: Model.ResourceTypes in resources:
-			var label: Label = self.RESOURCE_LABEL_MAP.get(resource)
+			var label: Label = self.RESOURCE_QTY_LABEL_MAP.get(resource)
 			if label:
 				label.text = str(label.text.to_int() - 1)
 	)	
+
+	EventBus.set_exchange_rate.connect(func(id: int, r: Model.ResourceTypes, value: int) -> void:
+		if id != Game.self_id: return
+		RESOURCE_EX_LABEL_MAP[r].text = "%s:1" % value		
+	)
 
 	EventBus.reset_view.connect(self._on_reset_view)
 
 func _on_reset_view() -> void:
 	var bank_model = Game.model.get_bank(Game.self_id)
-	self.qty_brick.text = str(bank_model[Model.ResourceTypes.BRICK])
-	self.qty_wood.text = str(bank_model[Model.ResourceTypes.WOOD])
-	self.qty_wheat.text = str(bank_model[Model.ResourceTypes.WHEAT])
-	self.qty_wool.text = str(bank_model[Model.ResourceTypes.WOOL])
-	self.qty_rock.text = str(bank_model[Model.ResourceTypes.ROCK])
+
+	for r:Model.ResourceTypes in Service.EXCHANGABLE:
+		RESOURCE_QTY_LABEL_MAP[r].text = str(bank_model[r])
+		RESOURCE_EX_LABEL_MAP[r].text = "%s:1" % Game.model.get_exchange_rate(Game.self_id, r)	

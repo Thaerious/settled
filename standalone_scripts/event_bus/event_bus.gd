@@ -35,7 +35,7 @@ signal reset_view()
 signal set_house(source_id: int, corner: Axial)
 signal set_city(source_id: int, corner: Axial)
 signal set_road(source_id: int, edge: AxialEdge)
-
+signal set_exchange_rate(source_id: int, r: Model.ResourceTypes, value: int)
 
 # Debug and development signals
 signal set_player_view(id: int)

@@ -29,6 +29,7 @@ func _ready() -> void:
 	EventBus.update_largest_army.connect(func(id: int): print("EventBus.update_largest_army | id: %s" % id))
 	EventBus.update_player_phase.connect(func(current_player: int, phase: Model.GamePhase): print("EventBus.update_player_phase | current_player: %s | phase: %s" % [current_player, phase]))
 	EventBus.reset_view.connect(func(): print("EventBus.reset_view"))
+	EventBus.set_exchange_rate.connect(func(id, r, v): print("EventBus.set_exchange_rate | id: %s | resource: %s | value: %s" % [id, Model.ResourceTypes.keys()[r], v]))
 
 	# Service to Model
 	EventBus.set_house.connect(func(source_id: int, corner: Axial): print("EventBus.set_house | source_id: %s | corner: %s" % [source_id, corner]))
