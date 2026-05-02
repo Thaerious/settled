@@ -16,6 +16,7 @@ const TERRAIN_TILE := {
 const NUMBER_PIECE: PackedScene = preload("res://game_board/number_piece.tscn")          
 const ANCHOR_PIECE: PackedScene = preload("res://game_board/anchor_piece.tscn")     
 const PORT_PIECE: PackedScene = preload("res://game_board/port_piece.tscn")       
+const PIRATE_PIECE: PackedScene = preload("res://game_board/pirate_piece.tscn")       
 
 const resource_icons := {
 	Model.ResourceTypes.BRICK: preload("res://assets/resources/brick.png"),
@@ -49,6 +50,19 @@ func place_tiles() -> GameBoardSetup:
 		if hex_data.port_type != Model.ResourceTypes.NONE:
 			self._place_ports(hex_data)
 
+		if hex_data.number != -1:
+			var number_piece: NumberPiece = NUMBER_PIECE.instantiate()
+			var offset := Axial.axial_to_offset(ax)
+			number_piece.number = hex_data.number	
+			self._board.structures.add_child(number_piece)
+			number_piece.position = self._board.map_to_local(offset)
+	
+		if hex_data.pirate:
+			var pirate_piece: PiratePiece = PIRATE_PIECE.instantiate()
+			var offset := Axial.axial_to_offset(ax)			
+			self._board.structures.add_child(pirate_piece)
+			pirate_piece.position = self._board.map_to_local(offset)
+
 	return self
 
 
@@ -65,17 +79,3 @@ func _place_ports(data: HexData):
 		var anchor_piece := ANCHOR_PIECE.instantiate()
 		anchor_piece.position = hex_loc.lerp(corner_loc, 0.75)
 		self._board.structures.add_child(anchor_piece)
-
-
-func place_numbers() -> GameBoardSetup:
-	for ax: Axial in Game.model.all_hexes():
-		var data = Game.model.get_hex_data(ax)
-		if data.number == -1: continue
-		if data.terrain == Model.Terrain.DESERT: continue
-
-		var piece: NumberPiece = NUMBER_PIECE.instantiate()
-		var offset := Axial.axial_to_offset(ax)
-		piece.number = data.number	
-		piece.position = self._board.map_to_local(offset)
-		self._board.structures.add_child(piece)
-	return self

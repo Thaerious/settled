@@ -16,9 +16,11 @@ signal request_purchase_action_card()
 signal request_play_action_card(id: int, card: Model.ActionCards)
 signal request_initial_house(id: int, hex: Axial)
 signal request_initial_road(id: int, edge: AxialEdge)
-signal request_house(source_id: int, corner: Axial)
-signal request_city(source_id: int, corner: Axial)
-signal request_road(source_id: int, edge: AxialEdge)
+signal request_house(id: int, corner: Axial)
+signal request_city(id: int, corner: Axial)
+signal request_road(id: int, edge: AxialEdge)
+signal requst_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes)
+signal request_set_pirate(id: int, hex: Axial)
 
 # Model/Service to view events
 signal set_dice(d1: int, d2:int)
@@ -32,10 +34,11 @@ signal update_player_phase(current_player: int, phase: Model.GamePhase)
 signal reset_view()
 
 # Service to Model/View events
-signal set_house(source_id: int, corner: Axial)
-signal set_city(source_id: int, corner: Axial)
-signal set_road(source_id: int, edge: AxialEdge)
-signal set_exchange_rate(source_id: int, r: Model.ResourceTypes, value: int)
+signal set_house(id: int, corner: Axial)
+signal set_city(id: int, corner: Axial)
+signal set_road(id: int, edge: AxialEdge)
+signal set_exchange_rate(id: int, r: Model.ResourceTypes, value: int)
+signal set_pirate(hex: Axial)
 
 # Debug and development signals
 signal set_player_view(id: int)

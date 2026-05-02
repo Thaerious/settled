@@ -130,6 +130,18 @@ layout_mode = 2
 text = "Setup Reverse Road
 "
 
+[node name="ButtonMovePirate" type="Button" parent="PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Move Pirate
+"
+
+[node name="ButtonSteal" type="Button" parent="PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Steal Resources
+"
+
 [node name="ButtonMain" type="Button" parent="PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2

@@ -1,7 +1,14 @@
 
-# Implement bank-trade drag-drop
-# Integrate ports into house purchasing
+✓ Implement bank-trade drag-drop
+✓ Integrate ports into house purchasing
+
+# Implement pirate
+✓ Create pirate texture & scene
+## Steals resource
+## Move robber on 7
+## Discard excess resources on 7
 # Count victory points when buying house/city
+# Bank trading should only happen during the player's turn
 # Implement longest road
 ## update player card
 # Implement largest army
@@ -12,10 +19,6 @@
 ## Year of Plenty
 ## Monopoly
 ## Victory Point
-# Implement Robber
-## Steals resource
-## Move robber on 7
-## Discard excess resources on 7
 # Design and Implement roll protocol
 # Add road count indicator to bank
 # Implement game over splash screen
@@ -23,4 +26,8 @@
 # Implement not started splace screen
 ## Wait for players to connect and click ready
 
+# all view to service events need an id because they may get passed to a central service module
 
+# hover pirate to see what's underneith
+
+# Why does the pirate collision mask need to be 10 to detect input

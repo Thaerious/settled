@@ -9,9 +9,6 @@ var draggable:   Node
 ## The drop target the drag interacted with, or null if none.
 var destination: Variant
 
-## The payload carried from the originating DragArgs.
-var payload:     Variant
-
 ## Cursor position in the local coordinate space of the drop target.
 var local_pos:   Vector2
 

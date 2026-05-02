@@ -62,6 +62,8 @@ enum GamePhase {
 	SETUP_FORWARD_ROAD,
 	SETUP_REVERSE_HOUSE,
 	SETUP_REVERSE_ROAD,
+	MOVE_PIRATE,
+	STEAL_RESOURCES,
 	MAIN,
 	GAME_OVER,	
 }
@@ -70,7 +72,7 @@ enum GamePhase {
 # var _longest_road_player: int = -1
 var _current_player: int = 0
 var _game_phase: GamePhase = GamePhase.NOT_STARTED
-var _robber: Axial
+var _pirate: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
 var _edges: AxialEdgeSet = AxialEdgeSet.new()
@@ -95,7 +97,7 @@ var _ports: Dictionary[String, ResourceTypes] = {}   # axial (corner) -> resourc
 func all_hexes() -> AxialSet:               return self._hexes.duplicate(true) 
 func all_corners() -> AxialSet:	            return self._corners.duplicate(true) # valid playable corners
 func all_edges() -> AxialEdgeSet:           return self._edges.duplicate(true) # valid playable corners
-func get_robber() -> Axial:                 return self._robber.duplicate()
+func get_robber() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
 func get_current_phase() -> GamePhase:      return self._game_phase
 func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), ResourceTypes.NONE)
@@ -166,6 +168,7 @@ func _init() -> void:
 	self._place_numbers()
 	self._place_water()
 	self._place_ports()
+	
 	EventBus.set_house.connect(func (id, ax): 
 		self._houses[ax.key()] = id
 		self._houses_mirror[id].append(ax)
@@ -246,6 +249,9 @@ func _place_land() -> void:
 	for hex in self._hexes:
 		var terrain: Terrain = terrain_bag.pop_front()
 		self._hex_data[hex.key()].terrain = terrain
+		if terrain == Terrain.DESERT:
+			self._hex_data[hex.key()].pirate = true
+			self._pirate = hex
 
 
 func _place_ports() -> void:	
@@ -311,9 +317,7 @@ func _place_numbers() -> void:
 	var number_bag:Array[int] = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
 
 	number_bag.shuffle()
-	for hex in self._hexes:
-		if (self.get_hex_data(hex).terrain == Terrain.DESERT):
-			self._robber = hex
-			self._hex_data[hex.key()].robber = true
-		else:
-			self._hex_data[hex.key()].number = number_bag.pop_front()
+	for hex_data in self._hex_data.values():
+		if hex_data.terrain == Terrain.DESERT: continue
+		if hex_data.terrain == Terrain.WATER: continue
+		hex_data.number = number_bag.pop_front()

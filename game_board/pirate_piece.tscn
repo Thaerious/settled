@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://ytcs6q88bnkx"]
+
+[ext_resource type="Script" uid="uid://fwyc80kb78qs" path="res://game_board/pirate_piece.gd" id="1_p5y87"]
+[ext_resource type="Texture2D" uid="uid://bwuu7tun4vv1r" path="res://assets/pirate.png" id="1_qcyo4"]
+[ext_resource type="Script" uid="uid://d4bof1yxe04s" path="res://game_board/sprite_2d_exact.gd" id="2_p5y87"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p5y87"]
+radius = 64.0
+
+[node name="PiratePiece" type="Node2D"]
+script = ExtResource("1_p5y87")
+
+[node name="Sprite2DExact" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 1
+texture = ExtResource("1_qcyo4")
+script = ExtResource("2_p5y87")
+sprite_size = Vector2(64, 64)
+metadata/_custom_type_script = "uid://d4bof1yxe04s"
+
+[node name="Area2D" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 513
+collision_mask = 513
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_p5y87")
+debug_color = Color(0.9529412, 0, 0.56078434, 0.7882353)

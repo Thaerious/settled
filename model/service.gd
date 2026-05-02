@@ -15,7 +15,20 @@ func _init() -> void:
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 	EventBus.request_initial_house.connect(self.place_initial_house)
 	EventBus.request_initial_road.connect(self.place_initial_road)
+	EventBus.requst_exchange.connect(self.request_exchange)
 
+
+func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:
+	var rate = Game.model.get_exchange_rate(Game.self_id, from)
+	var count = Game.model.get_bank(Game.self_id)[from]
+	if count < rate: return
+
+	var from_array: Array[Model.ResourceTypes] = []
+	from_array.resize(rate)
+	from_array.fill(from)
+
+	EventBus.remove_resources.emit(id, from_array)
+	EventBus.add_resources.emit(id, [to])
 
 func _on_request_roll() -> void:
 	var d1: int = randi_range(1, 6)

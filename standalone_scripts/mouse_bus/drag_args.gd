@@ -23,7 +23,7 @@ var on_success: Callable = func(_rec: DragRecord): pass
 var on_failure: Callable = func(_rec: DragRecord): pass
 
 ## Called when the dragged item enters a valid drop target.
-var on_enter:   Callable = func(_rec: DragRecord): pass
+var on_enter:   Callable = func(_rec: HoverRecord): pass
 
 ## Called when the dragged item leaves a valid drop target.
-var on_exit:    Callable = func(_rec: DragRecord): pass
+var on_exit:    Callable = func(_rec: HoverRecord): pass

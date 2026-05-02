@@ -1,17 +1,15 @@
 # MouseBus
 
-`mouse_bus.gd` is an autoload singleton that owns all drag-and-drop state for the game. Nothing else tracks what is being dragged, what is hovered, or where the cursor is relative to a target — that responsibility lives here exclusively.
+The `MouseBus` class in `mouse_bus.gd` is an autoload singleton that owns all drag-and-drop state for the game. Nothing else tracks what is being dragged, what is hovered, or where the cursor is relative to a target — that responsibility lives here exclusively.
+
+The responsibilty for handling drag-drop actions rests with the caller.  The MouseBus is responsible for checking drop validity and maintaining the ghost image.  The event listeners are set in the `drag_args` object that is passed into `MouseBus.start_drag`.
+The methods are: on_success, on_failure, on_enter, and on_exit.
+
+A valid drop target is a Control node with the field `var can_drop: bool = true`, or an Area2D on the "mouse" physics layer (not mask, default 10).
 
 ---
 
 ## Usage Overview
-
-### Philosophy
-The responsibilty for handling drag-drop actions rests with the calling method.  The MouseBus is responsible for checking drop validity and maintaining the ghost image.
-
-### Given
-* A valid drop target is a Control node with can_drop == true, or an Area2D on the "mouse" physics layer (not mask).
-
 
 ### Usage Overview
 1. caller → start_drag(args: DragArgs)

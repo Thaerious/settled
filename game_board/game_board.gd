@@ -35,7 +35,6 @@ var _placed_pieces: Dictionary[String, GamePiece] = {}    # which game piece bel
 func _ready() -> void:
 	var setup = GameBoardSetup.new(self)
 	setup.place_tiles()
-	setup.place_numbers()
 
 	for i in range(4):
 		self._active_buildings[i] = AxialSet.new()
@@ -74,6 +73,28 @@ func _ready() -> void:
 # 		edges.for_each(
 # 			func(ax): self.set_road_hnd(0, ax)
 		# )
+
+
+# func _input(event: InputEvent) -> void:
+# 	if not event is InputEventMouseButton: return
+# 	if event.button_index != MOUSE_BUTTON_LEFT: return
+# 	if not event.pressed: return
+
+# 	var mouse := self.get_global_mouse_position()
+# 	print("--- nodes at ", mouse, " ---")
+# 	self._print_nodes_at(mouse, self.get_tree().root)
+
+
+# func _print_nodes_at(pos: Vector2, node: Node) -> void:
+# 	if node is Sprite2D:
+# 		var sprite := node as Sprite2D
+# 		var local := sprite.to_local(pos)
+# 		var rect := sprite.get_rect()
+# 		if rect.has_point(local):
+# 			print("HIT: %s | global_pos: %s" % [sprite.get_parent().name, sprite.global_position])
+
+# 	for child in node.get_children():
+# 		self._print_nodes_at(pos, child)
 
 
 func show_house_targets_hnd():

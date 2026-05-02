@@ -17,71 +17,6 @@ extends PanelContainer
 var RESOURCE_QTY_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
 var RESOURCE_EX_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
 
-var tree_exchange_rate: int = 4:
-	set(value):
-		tree_exchange_rate = value
-		if self.is_node_ready():
-			self.ex_wood.text = "%s:1" % value
-
-
-var tree_quantity: int = 0:
-	set(value):
-		tree_quantity = value
-		if self.is_node_ready():
-			self.qty_wood.text = "%s" % value
-
-
-var wheat_exchange_rate: int = 4:
-	set(value):
-		wheat_exchange_rate = value
-		if self.is_node_ready():
-			self.ex_wheat.text = "%s:1" % value
-
-var wheat_quantity: int = 0:
-	set(value):
-		wheat_quantity = value
-		if self.is_node_ready():
-			self.qty_wheat.text = "%s" % value
-
-
-var sheep_exchange_rate: int = 4:
-	set(value):
-		sheep_exchange_rate = value
-		if self.is_node_ready():
-			self.ex_wool.text = "%s:1" % value
-
-var sheep_quantity: int = 0:
-	set(value):
-		sheep_quantity = value
-		if self.is_node_ready():
-			self.qty_wool.text = "%s" % value
-
-
-var rock_exchange_rate: int = 4:
-	set(value):
-		rock_exchange_rate = value
-		if self.is_node_ready():
-			self.ex_rock.text = "%s:1" % value
-
-var rock_quantity: int = 0:
-	set(value):
-		rock_quantity = value
-		if self.is_node_ready():
-			self.qty_rock.text = "%s" % value
-
-
-var clay_exchange_rate: int = 4:
-	set(value):
-		clay_exchange_rate = value
-		if self.is_node_ready():
-			self.ex_brick.text = "%s:1" % value
-
-var clay_quantity: int = 0:
-	set(value):
-		clay_quantity = value
-		if self.is_node_ready():
-			self.qty_brick.text = "%s" % value
-
 
 func _ready() -> void:
 	self.RESOURCE_QTY_LABEL_MAP = {
@@ -99,27 +34,6 @@ func _ready() -> void:
 		Model.ResourceTypes.WHEAT: self.ex_wheat,
 		Model.ResourceTypes.WOOL:  self.ex_wool,
 	}
-
-	if self.ex_wood:
-		self.ex_wood.text = "%s:1" % self.tree_exchange_rate
-	if self.qty_wood:
-		self.qty_wood.text = "%s" % self.tree_quantity
-	if self.ex_wheat:
-		self.ex_wheat.text = "%s:1" % self.wheat_exchange_rate
-	if self.qty_wheat:
-		self.qty_wheat.text = "%s" % self.wheat_quantity
-	if self.ex_wool:
-		self.ex_wool.text = "%s:1" % self.sheep_exchange_rate
-	if self.qty_wool:
-		self.qty_wool.text = "%s" % self.sheep_quantity
-	if self.ex_rock:
-		self.ex_rock.text = "%s:1" % self.rock_exchange_rate
-	if self.qty_rock:
-		self.qty_rock.text = "%s" % self.rock_quantity
-	if self.ex_brick:
-		self.ex_brick.text = "%s:1" % self.clay_exchange_rate
-	if self.qty_brick:
-		self.qty_brick.text = "%s" % self.clay_quantity
 
 	EventBus.add_resources.connect(func(id: int, resources: Array) -> void:
 		if id != Game.self_id: return
@@ -145,6 +59,7 @@ func _ready() -> void:
 	)
 
 	EventBus.reset_view.connect(self._on_reset_view)
+
 
 func _on_reset_view() -> void:
 	var bank_model = Game.model.get_bank(Game.self_id)
