@@ -15,6 +15,7 @@ static func place_numbers(game_board: GameBoard) -> void:
 		if (terrain_type == "desert"): continue
 
 		var piece: NumberPiece = NUMBER_PIECE.instantiate()
+		piece.axial = hex
 		piece.number = number_bag.pop_front()		
 		piece.position = game_board.map_to_local(offset)
 		game_board.structures.add_child(piece)

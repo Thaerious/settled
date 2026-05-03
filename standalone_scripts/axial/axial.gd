@@ -39,6 +39,15 @@ func key() -> String:
 	return "%s.%s.%s" % [self.q, self.r, self.s]
 
 
+static func to_key(ax: Axial) -> String:
+	return ax.key()
+
+
+static func from_key(key: String) -> Axial:
+	var array = key.split(".")
+	return Axial.new(int(array[0]), int(array[1]), int(array[2]))
+
+
 func duplicate() -> Axial:
 	return Axial.new(self.q, self.r, self.s)
 
@@ -181,7 +190,7 @@ static func offset_to_axial(vec: Vector2i) -> Axial:
 	return Axial.new(q, r, -q - r)
 
 
-func _equals(other: Variant) -> bool:
+func equals(other: Variant) -> bool:
 	if not other is Axial: return false
 	return self.q == other.q and self.r == other.r and self.s == other.s
 

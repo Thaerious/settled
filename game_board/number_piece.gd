@@ -2,6 +2,8 @@ class_name NumberPiece
 extends Node2D
 
 @onready var number_label: Label = %NumberLabel
+var axial: Axial = null
+
 
 @export var number: int = 7:
 	set(value):

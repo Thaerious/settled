@@ -14,7 +14,8 @@ extends VBoxContainer
 @onready var button_player2: Button = %Button2
 @onready var button_player3: Button = %Button3
 @onready var button_player4: Button = %Button4
-
+@onready var button_save: Button = %ButtonSave
+@onready var button_load: Button = %ButtonLoad
 
 func _ready() -> void:
 	self.button_not_started.pressed.connect(func() -> void:
@@ -56,8 +57,21 @@ func _ready() -> void:
 	self.button_player4.pressed.connect(func() -> void:
 		EventBus.update_player_phase.emit(3, Game.model.get_current_phase())
 	)		
+	self.button_save.pressed.connect(func() -> void:
+		Game.model.save("user://savegame.json")
+	)	
+	self.button_load.pressed.connect(func() -> void:
+		Game.model.load("user://savegame.json")
+		EventBus.reset_view.emit()
+	)
 
 	EventBus.update_player_phase.connect(self._on_phase_change)
+	EventBus.reset_view.connect(self._reset_view)
+
+
+func _reset_view() -> void:
+	self._on_phase_change(Game.model.get_current_player(), Game.model.get_current_phase())
+	
 
 func _on_phase_change(current_player: int, phase: Model.GamePhase) -> void:
 	var phase_buttons := [

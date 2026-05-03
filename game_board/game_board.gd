@@ -1,8 +1,9 @@
 ## board.gd
 class_name GameBoard
-extends TileMapLayer
+extends Node2D
 
-@onready var structures = %Structures
+@onready var structures: Node2D = %Structures
+@onready var tiles: TileMapLayer = %Tiles
 
 const CORNER_TARGET: PackedScene = preload("res://game_board/corner_target.tscn")
 const EDGE_TARGET: PackedScene = preload("res://game_board/edge_target.tscn")
@@ -33,12 +34,7 @@ var _placed_pieces: Dictionary[String, GamePiece] = {}    # which game piece bel
 
 
 func _ready() -> void:
-	var setup = GameBoardSetup.new(self)
-	setup.place_tiles()
-
-	for i in range(4):
-		self._active_buildings[i] = AxialSet.new()
-		self._active_roads[i] = AxialEdgeSet.new()
+	self._setup()
 
 	EventBus.show_house_targets.connect(self.show_house_targets_hnd)
 	EventBus.show_city_targets.connect(self.show_city_targets_hnd)
@@ -50,6 +46,16 @@ func _ready() -> void:
 	EventBus.set_house.connect(self.set_house_hnd)
 	EventBus.set_city.connect(self.set_city_hnd)
 	EventBus.set_road.connect(self.set_road_hnd)
+
+	EventBus.reset_view.connect(self._reset_view)
+
+func _setup() -> void:
+	var setup = GameBoardSetup.new(self)
+	setup.place_tiles()
+
+	for i in range(4):
+		self._active_buildings[i] = AxialSet.new()
+		self._active_roads[i] = AxialEdgeSet.new()
 
 
 # debug function
@@ -95,6 +101,34 @@ func _ready() -> void:
 
 # 	for child in node.get_children():
 # 		self._print_nodes_at(pos, child)
+
+func _reset_view() -> void:
+	# clear targets
+	clear_targets_hnd()
+
+	# clear state
+	_placed_pieces.clear()
+	_corner_black_list.clear()
+	for i in range(4):
+		_active_buildings[i].clear()
+		_active_roads[i].clear()
+
+	# clear structures
+	for child in self.structures.get_children():
+		child.queue_free()
+
+	# replay from model
+	for i in range(4):
+		for corner in Game.model.get_houses(i):
+			set_house_hnd(i, corner)
+		for corner in Game.model.get_cities(i):
+			set_city_hnd(i, corner)
+		for edge in Game.model.get_roads(i):
+			set_road_hnd(i, edge)
+
+	# reset board
+	self.tiles.clear()	
+	self._setup()	
 
 
 func show_house_targets_hnd():
@@ -160,7 +194,7 @@ func clear_targets_hnd():
 func set_house_hnd(id: int, corner: Axial) -> void:
 	self._active_buildings[id].add_item(corner)
 	var house_piece := HOUSE_PIECE.instantiate()
-	house_piece.position = corner.map_to_local(self)
+	house_piece.position = corner.map_to_local(self.tiles)
 	%Structures.add_child(house_piece)
 	self._placed_pieces[corner.key()] = house_piece
 
@@ -170,7 +204,7 @@ func set_house_hnd(id: int, corner: Axial) -> void:
 
 func set_city_hnd(_id: int, corner: Axial) -> void:
 	var city_piece := CITY_PIECE.instantiate()
-	city_piece.position = corner.map_to_local(self)
+	city_piece.position = corner.map_to_local(self.tiles)
 	%Structures.add_child(city_piece)
 	var house_piece := self._placed_pieces[corner.key()]
 	house_piece.queue_free()
@@ -179,7 +213,7 @@ func set_city_hnd(_id: int, corner: Axial) -> void:
 
 func set_road_hnd(id: int, edge: AxialEdge) -> void:
 	var road_piece := ROAD_PIECE.instantiate()
-	road_piece.position = edge.map_to_local(self)
+	road_piece.position = edge.map_to_local(self.tiles)
 	%Structures.add_child(road_piece)
 	self._placed_pieces[edge.key()] = road_piece
 	road_piece.rotation = edge.rotation
@@ -199,6 +233,6 @@ func show_targets(ax: Variant):
 		for _ax in ax: self.show_targets(_ax)
 		return
 
-	target.position = ax.map_to_local(self)
+	target.position = ax.map_to_local(self.tiles)
 	self._active_targets.append(target)
 	self.structures.add_child(target)

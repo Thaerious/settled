@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://d4bof1yxe04s" path="res://game_board/sprite_2d_exact.gd" id="2_p5y87"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_p5y87"]
-radius = 64.0
+radius = 32.0
 
 [node name="PiratePiece" type="Node2D"]
 script = ExtResource("1_p5y87")
@@ -13,6 +13,7 @@ script = ExtResource("1_p5y87")
 [node name="Sprite2DExact" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 z_index = 1
+scale = Vector2(0.125, 0.125)
 texture = ExtResource("1_qcyo4")
 script = ExtResource("2_p5y87")
 sprite_size = Vector2(64, 64)

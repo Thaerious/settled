@@ -1,6 +1,7 @@
 
 ✓ Implement bank-trade drag-drop
 ✓ Integrate ports into house purchasing
+# Color pieces
 
 # Implement pirate
 ✓ Create pirate texture & scene
@@ -31,3 +32,5 @@
 # hover pirate to see what's underneith
 
 # Why does the pirate collision mask need to be 10 to detect input
+
+# Instead of init setting up all tiles and such right away, a reset event should be used to trigger setup.  This will just put the setup code all in one spot.

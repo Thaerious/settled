@@ -40,7 +40,7 @@ enum ResourceTypes {
 	ANY
 }
 
-enum ActionCards {
+enum ActionCardTypes {
 	SOLDIER,
 	BUILD_ROAD,
 	PLENTY,
@@ -48,12 +48,12 @@ enum ActionCards {
 	VICTORY_POINTS
 }
 
-const CARD_DISTRIBUTION : Dictionary[Model.ActionCards, int] = {
-	ActionCards.SOLDIER: 56,
-	ActionCards.BUILD_ROAD: 20,
-	ActionCards.PLENTY: 8,
-	ActionCards.MONOPOLY: 8,
-	ActionCards.VICTORY_POINTS: 8,
+const CARD_DISTRIBUTION : Dictionary[Model.ActionCardTypes, int] = {
+	ActionCardTypes.SOLDIER: 56,
+	ActionCardTypes.BUILD_ROAD: 20,
+	ActionCardTypes.PLENTY: 8,
+	ActionCardTypes.MONOPOLY: 8,
+	ActionCardTypes.VICTORY_POINTS: 8,
 }
 
 enum GamePhase {
@@ -101,6 +101,9 @@ func get_robber() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
 func get_current_phase() -> GamePhase:      return self._game_phase
 func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), ResourceTypes.NONE)
+func get_pirate() -> Axial:                 return self._pirate.duplicate()
+func get_army(id: int) -> int:              return self._army[id]
+func get_victory_points(id: int) -> int:    return self._victory_points[id]
 
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id][r]
 
@@ -114,27 +117,21 @@ func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: 
 	return true
 	
 
-func get_houses(id: int = -1) -> AxialSet:
-	var aset := AxialSet.new()
-
-	if id == -1:
-		for p in range(Game.player_count):
-			aset.add_all(self._houses_mirror[p])
-	else:
-		aset.add_all(self._houses_mirror[id])
-
+func get_roads(id: int) -> AxialEdgeSet:
+	var aset := AxialEdgeSet.new()
+	aset.add_all(self._roads_mirror[id])
 	return aset
 
 
-func get_cities(id: int = -1) -> AxialSet:
+func get_houses(id: int) -> AxialSet:
 	var aset := AxialSet.new()
+	aset.add_all(self._houses_mirror[id])
+	return aset
 
-	if id == -1:
-		for p in range(Game.player_count):
-			aset.add_all(self._cities_mirror[p])
-	else:
-		aset.add_all(self._cities_mirror[id])
 
+func get_cities(id: int) -> AxialSet:
+	var aset := AxialSet.new()
+	aset.add_all(self._cities_mirror[id])
 	return aset
 
 
@@ -158,6 +155,10 @@ func get_hex_data(hex: Axial) -> HexData:
 
 func get_bank(id: int) -> Dictionary[ResourceTypes, int]:
 	return self._bank[id]
+
+
+func get_action_cards(id: int) -> Dictionary[ActionCardTypes, int]:
+	return self._action_cards[id]
 
 
 func _init() -> void:
@@ -211,7 +212,7 @@ func _init() -> void:
 	for i in range(4):
 		self._bank[i] = {} as Dictionary[ResourceTypes, int]
 		self._exchange_rate[i] = {} as Dictionary[ResourceTypes, int]
-		self._action_cards[i] = {}
+		self._action_cards[i] = {} as Dictionary[ActionCardTypes, int]
 		self._army[i] = 0
 		self._victory_points[i] = 0
 		self._houses_mirror[i] = [] as Array[Axial]
@@ -222,7 +223,7 @@ func _init() -> void:
 			self._bank[i][r] = 0
 			self._exchange_rate[i][r] = 4
 
-		for c in ActionCards.values():
+		for c in ActionCardTypes.values():
 			self._action_cards[i][c] = 0			
 
 
@@ -321,3 +322,172 @@ func _place_numbers() -> void:
 		if hex_data.terrain == Terrain.DESERT: continue
 		if hex_data.terrain == Terrain.WATER: continue
 		hex_data.number = number_bag.pop_front()
+
+
+## Save / Load Methods and Helpers
+func save(path: String) -> void:
+	var data := {
+		"current_player": _current_player,
+		"game_phase": _game_phase,
+		"pirate": _pirate.key(),
+		"hex_data": _serialize_hex_data(),
+		"houses": _houses,
+		"cities": _cities,
+		"roads": _serialize_roads(),
+		"houses_mirror": _serialize_axial_mirror(_houses_mirror),
+		"cities_mirror": _serialize_axial_mirror(_cities_mirror),
+		"roads_mirror": _serialize_edge_mirror(_roads_mirror),
+		"bank": _serialize_int_keyed(_bank),
+		"exchange_rate": _serialize_int_keyed(_exchange_rate),
+		"action_cards": _serialize_int_keyed(_action_cards),
+		"victory_points": _victory_points,
+		"army": _army,
+		"ports": _serialize_ports(),
+	}
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	f.store_string(JSON.stringify(data))
+
+
+func load(path: String) -> void:
+	var f := FileAccess.open(path, FileAccess.READ)
+	var data: Dictionary = JSON.parse_string(f.get_as_text())
+
+	_current_player = int(data["current_player"])
+	_game_phase = int(data["game_phase"]) as GamePhase
+	_pirate = Axial.from_key(data["pirate"])
+
+	_deserialize_hex_data(data["hex_data"])
+
+	_houses.clear()
+	for k in data["houses"]: _houses[k] = int(data["houses"][k])
+
+	_cities.clear()
+	for k in data["cities"]: _cities[k] = int(data["cities"][k])
+
+	_deserialize_roads(data["roads"])
+	_deserialize_axial_mirror(_houses_mirror, data["houses_mirror"])
+	_deserialize_axial_mirror(_cities_mirror, data["cities_mirror"])
+	_deserialize_edge_mirror(_roads_mirror, data["roads_mirror"])
+	_deserialize_int_keyed(_bank, data["bank"])
+	_deserialize_int_keyed(_exchange_rate, data["exchange_rate"])
+	_deserialize_int_keyed(_action_cards, data["action_cards"])
+
+	_victory_points.clear()
+	for k in data["victory_points"]: _victory_points[int(k)] = int(data["victory_points"][k])
+
+	_army.clear()
+	for k in data["army"]: _army[int(k)] = int(data["army"][k])
+
+	_deserialize_ports(data["ports"])
+
+
+# --- Serialize Helpers ---
+
+func _serialize_hex_data() -> Dictionary:
+	var out := {}
+	for k in _hex_data:
+		var hd: HexData = _hex_data[k]
+		out[k] = {
+			"axial": hd.axial.key(),
+			"terrain": hd.terrain,
+			"number": hd.number,
+			"pirate": hd.pirate,
+			"port_type": hd.port_type,
+			"ports": hd.ports.to_array().map(Axial.to_key),
+		}
+	return out
+
+
+func _deserialize_hex_data(data: Dictionary) -> void:
+	_hex_data.clear()
+	for k in data:
+		var d: Dictionary = data[k]
+		var hd := HexData.new()
+		hd.axial = Axial.from_key(d["axial"])
+		hd.terrain = int(d["terrain"]) as Model.Terrain
+		hd.number = int(d["number"])
+		hd.pirate = bool(d["pirate"])
+		hd.port_type = int(d["port_type"]) as Model.ResourceTypes
+		for pk in d["ports"]:
+			hd.ports.add_item(Axial.from_key(pk))
+		_hex_data[k] = hd
+
+
+func _serialize_roads() -> Dictionary:
+	var out := {}
+	for k in _roads:
+		out[k] = _roads[k]
+	return out
+
+
+func _deserialize_roads(data: Dictionary) -> void:
+	_roads.clear()
+	for k in data: _roads[k] = int(data[k])
+
+
+func _serialize_axial_mirror(mirror: Dictionary) -> Dictionary:
+	var out := {}
+	for id in mirror:
+		out[str(id)] = (mirror[id] as Array).map(Axial.to_key)
+	return out
+
+
+func _deserialize_axial_mirror(mirror: Dictionary, data: Dictionary) -> void:
+	for id in mirror:
+		mirror[id].clear()
+	for k in data:
+		var id := int(k)
+		for ak in data[k]:
+			mirror[id].append(Axial.from_key(ak))
+
+
+func _serialize_edge_mirror(mirror: Dictionary) -> Dictionary:
+	var out := {}
+	for id in mirror:
+		out[str(id)] = (mirror[id] as Array).map(func(e: AxialEdge): return {
+			"key": e.key(),
+			"rot": e.rotation
+		})
+	return out
+
+
+func _deserialize_edge_mirror(mirror: Dictionary, data: Dictionary) -> void:
+	for id in mirror:
+		mirror[id].clear()
+	for k in data:
+		var id := int(k)
+		for ed in data[k]:
+			var edge := AxialEdge.from_key(ed["key"])
+			edge.rotation = float(ed["rot"])
+			mirror[id].append(edge)
+
+
+func _serialize_int_keyed(d: Dictionary) -> Dictionary:
+	var out := {}
+	for id in d:
+		var inner := {}
+		for k in d[id]: inner[str(k)] = d[id][k]
+		out[str(id)] = inner
+	return out
+
+
+func _deserialize_int_keyed(target: Dictionary, data: Dictionary) -> void:
+	for id in target:
+		target[id].clear()
+	for k in data:
+		var id := int(k)
+		for ik in data[k]:
+			target[id][int(ik)] = int(data[k][ik])
+
+
+func _serialize_ports() -> Dictionary:
+	var out := {}
+	for k in _ports: out[k] = _ports[k]
+	return out
+
+
+func _deserialize_ports(data: Dictionary) -> void:
+	_ports.clear()
+	for k in data: _ports[k] = int(data[k]) as Model.ResourceTypes
+
+	

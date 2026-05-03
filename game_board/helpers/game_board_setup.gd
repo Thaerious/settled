@@ -45,7 +45,7 @@ func place_tiles() -> GameBoardSetup:
 		var hex_data = Game.model.get_hex_data(ax)
 		var terrain: Model.Terrain = hex_data.terrain
 		var vector := Axial.axial_to_offset(ax)
-		self._board.set_cell(vector, TERRAIN_SOURCE_ID, TERRAIN_TILE[terrain], 0)
+		self._board.tiles.set_cell(vector, TERRAIN_SOURCE_ID, TERRAIN_TILE[terrain], 0)
 		
 		if hex_data.port_type != Model.ResourceTypes.NONE:
 			self._place_ports(hex_data)
@@ -53,21 +53,22 @@ func place_tiles() -> GameBoardSetup:
 		if hex_data.number != -1:
 			var number_piece: NumberPiece = NUMBER_PIECE.instantiate()
 			var offset := Axial.axial_to_offset(ax)
+			number_piece.axial = ax
 			number_piece.number = hex_data.number	
 			self._board.structures.add_child(number_piece)
-			number_piece.position = self._board.map_to_local(offset)
+			number_piece.position = self._board.tiles.map_to_local(offset)
 	
 		if hex_data.pirate:
 			var pirate_piece: PiratePiece = PIRATE_PIECE.instantiate()
 			var offset := Axial.axial_to_offset(ax)			
 			self._board.structures.add_child(pirate_piece)
-			pirate_piece.position = self._board.map_to_local(offset)
+			pirate_piece.position = self._board.tiles.map_to_local(offset)
 
 	return self
 
 
 func _place_ports(data: HexData):
-	var hex_loc = data.axial.map_to_local(self._board)
+	var hex_loc = data.axial.map_to_local(self._board.tiles)
 	var port_piece := PORT_PIECE.instantiate()
 	port_piece.position = hex_loc
 	self._board.structures.add_child(port_piece)
@@ -75,7 +76,7 @@ func _place_ports(data: HexData):
 	port_piece.sprite.modulate = Color.BLACK
 
 	for cax in data.ports:
-		var corner_loc = cax.map_to_local(self._board)
+		var corner_loc = cax.map_to_local(self._board.tiles)
 		var anchor_piece := ANCHOR_PIECE.instantiate()
 		anchor_piece.position = hex_loc.lerp(corner_loc, 0.75)
 		self._board.structures.add_child(anchor_piece)

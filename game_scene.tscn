@@ -38,15 +38,18 @@ sources/0 = SubResource("TileSetAtlasSource_mixcd")
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("1_mlf6e")]
 
-[node name="GameBoard" type="TileMapLayer" parent="."]
+[node name="GameBoard" type="Node2D" parent="."]
+script = ExtResource("3_v1wow")
+
+[node name="Tiles" type="TileMapLayer" parent="GameBoard"]
+unique_name_in_owner = true
 position = Vector2(957, 486)
 tile_set = SubResource("TileSet_mixcd")
-script = ExtResource("3_v1wow")
 
 [node name="Structures" type="Node2D" parent="GameBoard"]
 unique_name_in_owner = true
 editor_description = "Place all game pieces and targets here."
-position = Vector2(-1, 0)
+position = Vector2(956, 486)
 
 [node name="EventLogger" type="Node" parent="."]
 script = ExtResource("4_mixcd")

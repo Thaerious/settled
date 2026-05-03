@@ -28,8 +28,8 @@ func _ready() -> void:
 
 	self._card_container.gui_input.connect(self._on_click_card_container)
 	EventBus.update_player_phase.connect(self._update_player_phase)
-	EventBus.add_resources.connect(func(_id, _res): self._do_update())
-	EventBus.remove_resources.connect(func(_id, _res): self._do_update())
+	EventBus.add_resources.connect(func(_id, _res): self._update_main_phase())
+	EventBus.remove_resources.connect(func(_id, _res): self._update_main_phase())
 	
 	EventBus.reset_view.connect(func():
 		self._update_player_phase(Game.model.get_current_player(), Game.model.get_current_phase())
@@ -44,7 +44,7 @@ func _on_click_card_container(event: InputEvent) -> void:
 	EventBus.request_purchase_action_card.emit()		
 
 
-# turn the bank "off"
+# turn the store "off"
 func _reset_state():
 	self._road_free.visible = false
 	self._house_free.visible = false
@@ -62,31 +62,36 @@ func _reset_state():
 	self._inital_house_hnd.enabled = false		
 
 
-func _enable_initial_state():
-	self._house_free.visible = true
-	self._road_free.visible = true
-	self._road_cost.visible = false
-	self._house_cost.visible = false	
-	self._road_container.enabled = false	
-	self._house_container.enabled = true
-	self._city_container.enabled = false		
-	self._inital_house_hnd.enabled = true
-
-
 func _update_player_phase(current_player: int, phase: Model.GamePhase) -> void:
 	self._reset_state()
-	
-	if current_player != Game.self_id: 
-		return
-	elif phase == Model.GamePhase.GAME_OVER:
-		return
-	elif phase == Model.GamePhase.MAIN:
-		self._do_update()
-	else:
-		self._enable_initial_state()
+	if current_player != Game.self_id: return
+
+	match phase:
+		Model.GamePhase.MAIN:
+			self._update_main_phase()
+		Model.GamePhase.SETUP_FORWARD_HOUSE:
+			self._house_free.visible = true
+			self._house_cost.visible = false	
+			self._inital_house_hnd.enabled = true
+			self._house_cost.visible = false	
+			self._house_container.enabled = true
+		Model.GamePhase.SETUP_REVERSE_HOUSE:
+			self._house_free.visible = true
+			self._house_cost.visible = false
+			self._inital_house_hnd.enabled = true
+			self._house_cost.visible = false	
+			self._house_container.enabled = true
+		Model.GamePhase.SETUP_FORWARD_ROAD:
+			self._road_free.visible = true
+			self._road_cost.visible = false
+			self._road_container.enabled = true	
+		Model.GamePhase.SETUP_REVERSE_ROAD:
+			self._road_free.visible = true
+			self._road_cost.visible = false
+			self._road_container.enabled = true	
 
 
-func _do_update():
+func _update_main_phase():
 	if Game.model.has_resources(Game.self_id, 1, 1, 0, 0, 0):
 		self._road_container.enabled = true
 		self._road_hnd.enabled = true

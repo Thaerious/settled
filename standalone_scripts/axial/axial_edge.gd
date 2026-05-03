@@ -57,3 +57,10 @@ func map_to_local(tile_map_layer: TileMapLayer) -> Vector2:
 		sum += corner.map_to_local(tile_map_layer)
 
 	return sum / corners.size()
+
+
+static func from_key(key: String) -> AxialEdge:
+	var p := key.split(".")
+	var a := Axial.new(int(p[0]), int(p[1]), int(p[2]))
+	var b := Axial.new(int(p[3]), int(p[4]), int(p[5]))
+	return AxialEdge.new(a, b, 0.0)
