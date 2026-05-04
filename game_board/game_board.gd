@@ -12,6 +12,15 @@ const CITY_PIECE: PackedScene = preload("res://game_board/city_piece.tscn")
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
 
+## player tint for game pieces
+var tint: Array = [
+	Color("#ff0000"),
+	Color("#00ff00"),
+	Color("#0000ff"),
+	Color("#ffffff")
+]
+
+
 ## The offset to each vertex from a hex
 var vertex_offsets: Vec2iSet = (
 	Vec2iSet.new([
@@ -59,26 +68,33 @@ func _setup() -> void:
 
 
 # debug function
-# var last = null
-# func _input(event: InputEvent) -> void:
-# 	if event is InputEventMouseButton and event.pressed:
-# 		var local_pos := self.get_local_mouse_position()
-# 		var hex := Axial.offset_to_axial(self.local_to_map(local_pos))
-# 		var corners := hex.corners()
+var last: Array = []
+func _input(event: InputEvent) -> void:
+	
+	if event is InputEventMouseButton and event.pressed and event.alt_pressed:				
+		var local_pos := self.tiles.get_local_mouse_position()
+		print(local_pos)
+		var hex := Axial.offset_to_axial(self.tiles.local_to_map(local_pos))
+		var corners := hex.corners()
 
-# 		print("GAME BOARD hex %s | corners %s" % [hex, corners])
-# 		if Game.model.all_hexes().contains(hex):
-# 			print(Game.model.get_hex_data(hex))
-# 		else:
-# 			print("Hex not found in model")
+		print("GAME BOARD hex %s | corners %s" % [hex, corners])
+		print(" - %s" % [Game.model.get_hex_data(hex)])
 
-# 		self.clear_targets_hnd()
-# 		self.show_targets(corners)
+		self.clear_targets_hnd()
+		self.show_targets(corners)
 
-# 		var edges = hex.edges()
-# 		edges.for_each(
-# 			func(ax): self.set_road_hnd(0, ax)
-		# )
+		for road in last:
+			if is_instance_valid(road):
+				road.queue_free()
+
+		last = []
+
+		var edges = hex.edges()
+		edges.for_each(
+			func(ax): 
+				var road = self.set_road_hnd(0, ax)
+				last.append(road)
+		)
 
 
 # func _input(event: InputEvent) -> void:
@@ -194,6 +210,7 @@ func clear_targets_hnd():
 func set_house_hnd(id: int, corner: Axial) -> void:
 	self._active_buildings[id].add_item(corner)
 	var house_piece := HOUSE_PIECE.instantiate()
+	house_piece.modulate = self.tint[id]
 	house_piece.position = corner.map_to_local(self.tiles)
 	%Structures.add_child(house_piece)
 	self._placed_pieces[corner.key()] = house_piece
@@ -202,8 +219,9 @@ func set_house_hnd(id: int, corner: Axial) -> void:
 	self._corner_black_list.add_all(corner.neighbors())
 
 
-func set_city_hnd(_id: int, corner: Axial) -> void:
+func set_city_hnd(id: int, corner: Axial) -> void:
 	var city_piece := CITY_PIECE.instantiate()
+	city_piece.modulate = self.tint[id]
 	city_piece.position = corner.map_to_local(self.tiles)
 	%Structures.add_child(city_piece)
 	var house_piece := self._placed_pieces[corner.key()]
@@ -211,13 +229,16 @@ func set_city_hnd(_id: int, corner: Axial) -> void:
 	self._placed_pieces[corner.key()] = city_piece
 
 
-func set_road_hnd(id: int, edge: AxialEdge) -> void:
+func set_road_hnd(id: int, edge: AxialEdge) -> Node2D:
 	var road_piece := ROAD_PIECE.instantiate()
+	road_piece.modulate = self.tint[id]
 	road_piece.position = edge.map_to_local(self.tiles)
 	%Structures.add_child(road_piece)
 	self._placed_pieces[edge.key()] = road_piece
 	road_piece.rotation = edge.rotation
 	self._active_roads[id].add_item(edge)
+
+	return road_piece
 
 
 func show_targets(ax: Variant):

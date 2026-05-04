@@ -4,6 +4,8 @@ extends Node
 
 
 func _ready() -> void:
+	print("EventBusLogger Ready")
+
 	# View to view
 	EventBus.show_house_targets.connect(func(): print("EventBus.show_house_targets"))
 	EventBus.show_initial_house_targets.connect(func(): print("EventBus.show_initial_house_targets"))

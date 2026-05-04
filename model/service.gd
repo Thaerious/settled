@@ -45,7 +45,7 @@ func _on_request_roll() -> void:
 func _scan_houses(id:int, number:int, resources: Array[Model.ResourceTypes]):
 	var houses := Game.model.get_houses(id)
 	var hexes := houses.map(Axial.hexes_of)
-	hexes = hexes.remove_item(Game.model.get_robber())
+	hexes = hexes.remove_item(Game.model.get_pirate())
 
 	for hex:Axial in hexes:
 		var data := Game.model.get_hex_data(hex)
@@ -57,7 +57,7 @@ func _scan_houses(id:int, number:int, resources: Array[Model.ResourceTypes]):
 func _scan_cities(id:int, number:int, resources: Array[Model.ResourceTypes]):
 	var cities := Game.model.get_cities(id)
 	var hexes := cities.map(Axial.hexes_of)
-	hexes = hexes.remove_item(Game.model.get_robber())
+	hexes = hexes.remove_item(Game.model.get_pirate())
 
 	for hex:Axial in hexes:
 		var data := Game.model.get_hex_data(hex)

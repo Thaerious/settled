@@ -1,7 +1,8 @@
 
 ✓ Implement bank-trade drag-drop
 ✓ Integrate ports into house purchasing
-# Color pieces
+✓ Color pieces
+# Add color to bank pieces
 
 # Implement pirate
 ✓ Create pirate texture & scene

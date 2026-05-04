@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=9 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="PackedScene" uid="uid://jf1afc3rc62v" path="res://hud/store/store.tscn" id="4_w8tcp"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_panel/PlayerPanel.tscn" id="7_0ivg5"]
 [ext_resource type="Script" uid="uid://dkb8kt1spwhmh" path="res://hud/phase_buttons.gd" id="7_1kkc0"]
 [ext_resource type="PackedScene" uid="uid://ccds24g8vhw1y" path="res://hud/bank/bank.tscn" id="8_1kkc0"]
+[ext_resource type="PackedScene" uid="uid://baabjnmmu7oxg" path="res://hud/pirate_dialog/pirate_dialog.tscn" id="8_qv4qp"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -214,3 +215,10 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Load"
+
+[node name="PirateDialog" parent="." instance=ExtResource("8_qv4qp")]
+layout_mode = 0
+offset_left = 905.0
+offset_top = 360.0
+offset_right = 1017.0
+offset_bottom = 516.0

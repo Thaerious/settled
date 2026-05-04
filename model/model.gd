@@ -96,18 +96,18 @@ var _ports: Dictionary[String, ResourceTypes] = {}   # axial (corner) -> resourc
 func all_hexes() -> AxialSet:               return self._hexes.duplicate(true) 
 func all_corners() -> AxialSet:	            return self._corners.duplicate(true) # valid playable corners
 func all_edges() -> AxialEdgeSet:           return self._edges.duplicate(true) # valid playable corners
-func get_robber() -> Axial:                 return self._pirate.duplicate()
+func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
 func get_current_phase() -> GamePhase:      return self._game_phase
 func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), ResourceTypes.NONE)
-func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_army(id: int) -> int:              return self._army[id]
 func get_victory_points(id: int) -> int:    return self._victory_points[id]
 
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id][r]
 
-func count_resource(id: int) -> int:
+func count_resources(id: int) -> int:
 	var bank = self.get_bank(id)
+	print(bank)
 
 	var sum:int = 0
 	sum = sum + bank[ResourceTypes.BRICK]
@@ -171,8 +171,7 @@ func get_all_buildings(id: int = -1) -> AxialSet:
 
 
 func get_hex_data(hex: Axial) -> HexData:
-	assert(hex.is_hex(), "Axial is not a hex.")
-	return self._hex_data[hex.key()]
+	return self._hex_data.get(hex.key(), null)
 
 
 func get_bank(id: int) -> Dictionary[ResourceTypes, int]:
@@ -229,6 +228,11 @@ func _init() -> void:
 
 	EventBus.set_exchange_rate.connect(func(id, resource, value):
 		self._exchange_rate[id][resource] = value
+	)
+
+	EventBus.request_set_pirate.connect(func(_id, ax):
+		print("Model Set Pirate %s" % ax)
+		self._pirate = ax.duplicate()
 	)
 
 	self.player_names.resize(4)

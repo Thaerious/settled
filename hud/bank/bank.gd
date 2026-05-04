@@ -56,8 +56,8 @@ func _ready() -> void:
 		RESOURCE_EX_LABEL_MAP[r].text = "%s:1" % value		
 	)
 
-	EventBus.update_player_phase.connect(func(id: int, phase: Model.GamePhase) -> void:
-		print
+	EventBus.update_player_phase.connect(func(_id: int, _phase: Model.GamePhase) -> void:
+		pass
 	)
 
 	EventBus.reset_view.connect(self._on_reset_view)

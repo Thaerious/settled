@@ -1,15 +1,19 @@
 class_name PirateDialog
 extends PanelContainer
 
-
-var buttons: Array[Button]
+@onready var buttons: Array[Button] = [
+	%Button0,
+	%Button1,
+	%Button2,
+	%Button3
+]
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
+	print("Pirate Dialog Ready")
 	EventBus.update_player_phase.connect(self._update_player_phase)
-	for i in range(4):
-		buttons[i] = get_node("%Button%s" % i)
+
 
 func _label_buttons() -> void:
 	for id in range(Game.player_count):
@@ -20,6 +24,7 @@ func _label_buttons() -> void:
 
 
 func _update_player_phase(current_player: int, phase: Model.GamePhase) -> void:
+	print("pirate dialog update player phase")
 	self.visible = false	
 
 	if phase != Model.GamePhase.STEAL_RESOURCES: return
@@ -27,17 +32,17 @@ func _update_player_phase(current_player: int, phase: Model.GamePhase) -> void:
 
 	self._label_buttons()
 
-	var robber := Game.model.get_robber()
+	var robber := Game.model.get_pirate()
 	var corners := robber.corners()
+	print(robber, corners)
+	print(Game.model.get_all_buildings())
 	var buildings := corners.intersect(Game.model.get_all_buildings())
 
 	for ax:Axial in buildings:
 		var corner_owner = Game.model.get_owner(ax)
+		print("axial %s owner %s" % [ax, corner_owner])
 		if corner_owner == -1: continue
 		if corner_owner == Game.self_id: continue
 		buttons[corner_owner].visible = true
 
 	self.visible = true
-
-
-
