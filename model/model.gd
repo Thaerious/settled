@@ -68,9 +68,8 @@ enum GamePhase {
 	GAME_OVER,	
 }
 
-# var _largest_army_player: int = -1
-# var _longest_road_player: int = -1
 var _current_player: int = 0
+var player_names: Array = [] ## todo this needs a getter
 var _game_phase: GamePhase = GamePhase.NOT_STARTED
 var _pirate: Axial
 var _hexes: AxialSet = AxialSet.new()
@@ -107,6 +106,19 @@ func get_victory_points(id: int) -> int:    return self._victory_points[id]
 
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id][r]
 
+func count_resource(id: int) -> int:
+	var bank = self.get_bank(id)
+
+	var sum:int = 0
+	sum = sum + bank[ResourceTypes.BRICK]
+	sum = sum + bank[ResourceTypes.WOOD]
+	sum = sum + bank[ResourceTypes.WOOL]
+	sum = sum + bank[ResourceTypes.WHEAT]
+	sum = sum + bank[ResourceTypes.ROCK]
+
+	return sum
+
+
 func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: int) -> bool:
 	var bank = self._bank[id]
 	if bank[ResourceTypes.BRICK] < brick: return false
@@ -116,6 +128,16 @@ func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: 
 	if bank[ResourceTypes.ROCK] < rock: return false
 	return true
 	
+
+func get_owner(ax: Axial) -> int:
+	if self._cities.has(ax.key()):
+		return self._cities[ax.key()]
+
+	if self._houses.has(ax.key()):
+		return self._houses[ax.key()]
+
+	return -1		
+
 
 func get_roads(id: int) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
@@ -135,7 +157,7 @@ func get_cities(id: int) -> AxialSet:
 	return aset
 
 
-func all_buildings(id: int = -1) -> AxialSet:
+func get_all_buildings(id: int = -1) -> AxialSet:
 	var result := AxialSet.new()
 	
 	if id == -1:
@@ -208,6 +230,8 @@ func _init() -> void:
 	EventBus.set_exchange_rate.connect(func(id, resource, value):
 		self._exchange_rate[id][resource] = value
 	)
+
+	self.player_names.resize(4)
 
 	for i in range(4):
 		self._bank[i] = {} as Dictionary[ResourceTypes, int]
@@ -327,6 +351,7 @@ func _place_numbers() -> void:
 ## Save / Load Methods and Helpers
 func save(path: String) -> void:
 	var data := {
+		"player_names": _serialize_player_names(),
 		"current_player": _current_player,
 		"game_phase": _game_phase,
 		"pirate": _pirate.key(),
@@ -371,6 +396,7 @@ func load(path: String) -> void:
 	_deserialize_int_keyed(_bank, data["bank"])
 	_deserialize_int_keyed(_exchange_rate, data["exchange_rate"])
 	_deserialize_int_keyed(_action_cards, data["action_cards"])
+	_deserialize_player_names(data["player_names"])
 
 	_victory_points.clear()
 	for k in data["victory_points"]: _victory_points[int(k)] = int(data["victory_points"][k])
@@ -396,6 +422,20 @@ func _serialize_hex_data() -> Dictionary:
 			"ports": hd.ports.to_array().map(Axial.to_key),
 		}
 	return out
+
+
+func _serialize_player_names() -> Dictionary:
+	var out := {}
+	for i in self.player_names.size():
+		out[i] = self.player_names[i]
+	return out
+
+
+func _deserialize_player_names(data: Dictionary) -> void:
+	self.player_names = []
+	self.player_names.resize(data.size())
+	for k in data:
+		self.player_names[int(k)] = data[k]
 
 
 func _deserialize_hex_data(data: Dictionary) -> void:

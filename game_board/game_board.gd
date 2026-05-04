@@ -145,7 +145,7 @@ func show_house_targets_hnd():
 
 func show_initial_house_targets_hnd():
 	var corners = Game.model.all_corners()
-	var houses = Game.model.all_buildings()
+	var houses = Game.model.get_all_buildings()
 	var neighbors := houses.map(Axial.neighbors_of)
 	houses = houses.add_all(neighbors)
 	corners = corners.difference(houses)

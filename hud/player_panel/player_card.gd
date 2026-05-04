@@ -87,15 +87,16 @@ func _ready() -> void:
 
 
 func _reset_view() -> void:
-	var cards := Game.model.get_action_cards(player_id)
-	var bank := Game.model.get_bank(player_id)
+	var cards := Game.model.get_action_cards(self.player_id)
+	var bank := Game.model.get_bank(self.player_id)
 	var total_cards := 0
 	for c in cards: total_cards += cards[c]
 
+	self.player_name = Game.model.player_names[self.player_id]
 	self.action_cards = total_cards
-	self.soldiers = Game.model.get_army(player_id)
-	self.roads = Game.model.get_roads(player_id).size()
-	self.victory_points = Game.model.get_victory_points(player_id)
+	self.soldiers = Game.model.get_army(self.player_id)
+	self.roads = Game.model.get_roads(self.player_id).size()
+	self.victory_points = Game.model.get_victory_points(self.player_id)
 
 	var total_resources := 0
 	for r in bank: total_resources += bank[r]

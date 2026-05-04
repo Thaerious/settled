@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://baabjnmmu7oxg"]
+
+[ext_resource type="Script" uid="uid://djb2mcfegs8yw" path="res://hud/pirate_dialog/pirate_dialog.gd" id="1_06ele"]
+
+[node name="PirateDialog" type="PanelContainer"]
+script = ExtResource("1_06ele")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button0" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Steal From"
+
+[node name="Button1" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Steal From"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Steal From"
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Steal From"
