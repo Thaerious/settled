@@ -19,8 +19,9 @@ signal request_initial_road(id: int, edge: AxialEdge)
 signal request_house(id: int, corner: Axial)
 signal request_city(id: int, corner: Axial)
 signal request_road(id: int, edge: AxialEdge)
-signal requst_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes)
+signal request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes)
 signal request_set_pirate(id: int, hex: Axial)
+signal request_steal_from(id: int)
 
 signal update_player_phase(current_player: int, phase: Model.GamePhase)
 

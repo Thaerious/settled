@@ -107,7 +107,6 @@ func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_
 
 func count_resources(id: int) -> int:
 	var bank = self.get_bank(id)
-	print(bank)
 
 	var sum:int = 0
 	sum = sum + bank[ResourceTypes.BRICK]
@@ -171,7 +170,14 @@ func get_all_buildings(id: int = -1) -> AxialSet:
 
 
 func get_hex_data(hex: Axial) -> HexData:
-	return self._hex_data.get(hex.key(), null)
+	var data = self._hex_data.get(hex.key(), null)
+
+	if data and hex.equals(self._pirate):
+		data.pirate = true
+	else:
+		data.pirate = false
+
+	return data
 
 
 func get_bank(id: int) -> Dictionary[ResourceTypes, int]:
@@ -231,7 +237,6 @@ func _init() -> void:
 	)
 
 	EventBus.request_set_pirate.connect(func(_id, ax):
-		print("Model Set Pirate %s" % ax)
 		self._pirate = ax.duplicate()
 	)
 
@@ -409,6 +414,8 @@ func load(path: String) -> void:
 	for k in data["army"]: _army[int(k)] = int(data["army"][k])
 
 	_deserialize_ports(data["ports"])
+
+	print("loaded pirate: %s" % self._pirate)
 
 
 # --- Serialize Helpers ---

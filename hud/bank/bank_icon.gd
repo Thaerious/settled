@@ -29,7 +29,7 @@ func _gui_input(event) -> void:
 
 func _on_drop(rec: DragRecord) -> void:
 	if not rec.destination is BankIcon: return
-	EventBus.requst_exchange.emit(Game.self_id, self.resource, rec.destination.resource)
+	EventBus.request_exchange.emit(Game.self_id, self.resource, rec.destination.resource)
 
 
 # for dev/debut adding resources

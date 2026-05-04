@@ -4,6 +4,7 @@ class_name PlayerCard
 extends PanelContainer
 
 @onready var name_label: Label = %NameLabel
+@onready var portrait: TextureRect = %PortraitTexture
 @onready var vic_points_view: AnnotatedTexture = %VictoryPoints
 @onready var resources_view: AnnotatedTexture = %Resources
 @onready var action_cards_view: AnnotatedTexture = %ActionCards
@@ -51,6 +52,8 @@ var soldiers: int = 0:
 
 func _ready() -> void:
 
+	self.portrait.modulate = GameBoard.tint[self.player_id]
+
 	# Attach event listeners
 	EventBus.add_resources.connect(func(id: int, resources: Array) -> void:
 		if id != self.player_id: return
@@ -87,6 +90,11 @@ func _ready() -> void:
 
 
 func _reset_view() -> void:
+	if (Game.self_id == self.player_id):
+		self.name_label.add_theme_color_override("font_color", Color.RED)
+	else:
+		self.name_label.add_theme_color_override("font_color", Color.WHITE)
+
 	var cards := Game.model.get_action_cards(self.player_id)
 	var bank := Game.model.get_bank(self.player_id)
 	var total_cards := 0

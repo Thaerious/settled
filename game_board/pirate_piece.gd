@@ -13,6 +13,7 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 	if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 	if not event.pressed: return
 	if Game.model.get_current_phase() != Model.GamePhase.MOVE_PIRATE: return
+	if Game.model.get_current_player() != Game.self_id: return
 
 	var drag_args = DragArgs.new()
 	drag_args.texture = self._sprite.texture
@@ -34,6 +35,8 @@ func _on_drop(rec: DragRecord):
 	var target = rec.destination.owner.axial
 
 	self.position = rec.destination.owner.position
+
+	print("ON DROP %s %s %s" % [target, source, target.equals(source)])
 
 	if not target.equals(source):
 		EventBus.request_set_pirate.emit(Game.self_id, target)

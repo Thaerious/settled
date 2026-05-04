@@ -17,3 +17,6 @@ var world_pos:   Vector2
 
 ## Cursor position in screen (viewport) space.
 var screen_pos:  Vector2
+
+func _to_string():
+	return "DragRecord | draggable: %s | destination: %s | local_pos: %s | world_pos: %s | screen_pos: %s" % [draggable, destination, local_pos, world_pos, screen_pos]

@@ -13,7 +13,7 @@ const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
 
 ## player tint for game pieces
-var tint: Array = [
+static var tint: Array = [
 	Color("#ff0000"),
 	Color("#00ff00"),
 	Color("#0000ff"),

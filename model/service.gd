@@ -15,7 +15,26 @@ func _init() -> void:
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 	EventBus.request_initial_house.connect(self.place_initial_house)
 	EventBus.request_initial_road.connect(self.place_initial_road)
-	EventBus.requst_exchange.connect(self.request_exchange)
+	EventBus.request_exchange.connect(self.request_exchange)
+	EventBus.request_steal_from.connect(self.request_steal_from)
+
+
+func request_steal_from(id: int) -> void:
+	var bank := Game.model.get_bank(id)
+	var count := Game.model.count_resources(id)
+	var i = randi_range(0, count - 1)
+	var sum = 0
+
+	for r in Model.ResourceTypes.values():
+		sum = sum + bank[r]
+		if sum > i:
+			EventBus.remove_resources.emit(id, [r] as Array[Model.ResourceTypes])
+			EventBus.add_resources.emit(Game.self_id, [r] as Array[Model.ResourceTypes])
+			break
+
+	EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.MAIN)
+
+
 
 
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:
