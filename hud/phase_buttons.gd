@@ -7,6 +7,7 @@ extends VBoxContainer
 @onready var button_setup_reverse: Button = %ButtonSetupReverse
 @onready var button_setup_reverse2: Button = %ButtonSetupReverse2
 @onready var button_move_pirate: Button = %ButtonMovePirate
+@onready var button_discard: Button = %ButtonDiscard
 @onready var button_steal_resources: Button = %ButtonSteal
 @onready var button_main: Button = %ButtonMain
 @onready var button_game_over: Button = %ButtonGameOver
@@ -39,6 +40,9 @@ func _ready() -> void:
 	)
 	self.button_steal_resources.pressed.connect(func() -> void:
 		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.STEAL_RESOURCES)
+	)		
+	self.button_discard.pressed.connect(func() -> void:
+		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.DISCARD)
 	)		
 	self.button_main.pressed.connect(func() -> void:
 		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.MAIN)
@@ -85,6 +89,7 @@ func _on_phase_change(current_player: int, phase: Model.GamePhase) -> void:
 		self.button_setup_reverse,
 		self.button_setup_reverse2,
 		self.button_move_pirate,
+		self.button_discard,
 		self.button_steal_resources,
 		self.button_main,
 		self.button_game_over,

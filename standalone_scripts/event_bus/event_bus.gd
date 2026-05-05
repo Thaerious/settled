@@ -23,6 +23,7 @@ signal request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTy
 signal request_set_pirate(id: int, hex: Axial)
 signal request_steal_from(id: int)
 
+signal discard_resources(id:int, discard: Dictionary[Model.ResourceTypes, int])
 signal update_player_phase(current_player: int, phase: Model.GamePhase)
 
 # Model/Service to view events
@@ -46,3 +47,4 @@ signal set_pirate(hex: Axial)
 signal set_player_view(id: int)
 signal save_model_state()
 signal load_model_state()
+signal specify_roll(d1: int, d2: int)

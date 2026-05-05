@@ -63,6 +63,7 @@ enum GamePhase {
 	SETUP_REVERSE_HOUSE,
 	SETUP_REVERSE_ROAD,
 	MOVE_PIRATE,
+	DISCARD,
 	STEAL_RESOURCES,
 	MAIN,
 	GAME_OVER,	
@@ -252,7 +253,7 @@ func _init() -> void:
 		self._cities_mirror[i] = [] as Array[Axial]
 		self._roads_mirror[i] = [] as Array[AxialEdge]
 
-		for r in ResourceTypes.values():
+		for r in [ResourceTypes.BRICK, ResourceTypes.WOOD, ResourceTypes.ROCK, ResourceTypes.WHEAT, ResourceTypes.WOOL]:
 			self._bank[i][r] = 0
 			self._exchange_rate[i][r] = 4
 

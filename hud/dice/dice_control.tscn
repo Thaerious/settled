@@ -1,24 +1,128 @@
-[gd_scene load_steps=2 format=3 uid="uid://b21qcmnle7jxn"]
+[gd_scene load_steps=4 format=3 uid="uid://b21qcmnle7jxn"]
 
 [ext_resource type="Script" uid="uid://dwfmcqk4yph8a" path="res://hud/dice/dice_control.gd" id="1_8w2tc"]
+[ext_resource type="ButtonGroup" uid="uid://b4s20841femm4" path="res://hud/dice/group1.tres" id="2_o0qpa"]
+[ext_resource type="ButtonGroup" uid="uid://e8e13jvfvana" path="res://hud/dice/group2.tres" id="3_1yalu"]
 
 [node name="Dice" type="PanelContainer"]
 script = ExtResource("1_8w2tc")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Die1" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="HBoxContainer"]
+[node name="Die1CB1" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die1"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "ROLL"
+size_flags_horizontal = 5
+size_flags_vertical = 5
+button_group = ExtResource("2_o0qpa")
+text = "1"
 
-[node name="Die1" type="Label" parent="HBoxContainer"]
+[node name="CheckBox2" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die1"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+button_group = ExtResource("2_o0qpa")
+text = "2"
+
+[node name="CheckBox3" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die1"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+button_group = ExtResource("2_o0qpa")
+text = "3"
+
+[node name="CheckBox4" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die1"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+button_group = ExtResource("2_o0qpa")
+text = "4"
+
+[node name="CheckBox5" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die1"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+button_group = ExtResource("2_o0qpa")
+text = "5"
+
+[node name="CheckBox6" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die1"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+button_group = ExtResource("2_o0qpa")
+text = "6"
+
+[node name="CheckBox7" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die1"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+button_pressed = true
+button_group = ExtResource("2_o0qpa")
+text = "R"
+
+[node name="Label1" type="Label" parent="VBoxContainer/HBoxContainer/Die1"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "1"
+horizontal_alignment = 1
 
-[node name="Die2" type="Label" parent="HBoxContainer"]
+[node name="Die2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Die2CB1" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die2"]
 unique_name_in_owner = true
 layout_mode = 2
+button_group = ExtResource("3_1yalu")
+text = "1"
+
+[node name="CheckBox2" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die2"]
+layout_mode = 2
+button_group = ExtResource("3_1yalu")
+text = "2"
+
+[node name="CheckBox3" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die2"]
+layout_mode = 2
+button_group = ExtResource("3_1yalu")
+text = "3"
+
+[node name="CheckBox4" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die2"]
+layout_mode = 2
+button_group = ExtResource("3_1yalu")
+text = "4"
+
+[node name="CheckBox5" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die2"]
+layout_mode = 2
+button_group = ExtResource("3_1yalu")
+text = "5"
+
+[node name="CheckBox6" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die2"]
+layout_mode = 2
+button_group = ExtResource("3_1yalu")
 text = "6"
+
+[node name="CheckBox7" type="CheckBox" parent="VBoxContainer/HBoxContainer/Die2"]
+layout_mode = 2
+button_pressed = true
+button_group = ExtResource("3_1yalu")
+text = "R"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/Die2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="ButtonRoll" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Roll"

@@ -12,12 +12,17 @@ const EXCHANGABLE = [
 
 func _init() -> void:
 	EventBus.request_roll.connect(self._on_request_roll)
+	EventBus.specify_roll.connect(self._on_specify_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 	EventBus.request_initial_house.connect(self.place_initial_house)
 	EventBus.request_initial_road.connect(self.place_initial_road)
 	EventBus.request_exchange.connect(self.request_exchange)
 	EventBus.request_steal_from.connect(self.request_steal_from)
+	EventBus.discard_resources.connect(self.discard_resources)
 
+
+func discard_resources(id:int, discard: Dictionary[Model.ResourceTypes, int]) -> void:
+	pass
 
 func request_steal_from(id: int) -> void:
 	var bank := Game.model.get_bank(id)
@@ -52,6 +57,16 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 func _on_request_roll() -> void:
 	var d1: int = randi_range(1, 6)
 	var d2: int = randi_range(1, 6)
+	EventBus.set_dice.emit(d1, d2)	
+	
+	for id in range(Game.player_count):	
+		var resources: Array[Model.ResourceTypes] = []
+		self._scan_houses(id, d1 + d2, resources)
+		self._scan_cities(id, d1 + d2, resources)
+		EventBus.add_resources.emit(id, resources)
+
+
+func _on_specify_roll(d1: int, d2: int) -> void:
 	EventBus.set_dice.emit(d1, d2)	
 	
 	for id in range(Game.player_count):	

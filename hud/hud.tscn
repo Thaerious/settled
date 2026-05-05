@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=10 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="PackedScene" uid="uid://jf1afc3rc62v" path="res://hud/store/store.tscn" id="4_w8tcp"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dkb8kt1spwhmh" path="res://hud/phase_buttons.gd" id="7_1kkc0"]
 [ext_resource type="PackedScene" uid="uid://ccds24g8vhw1y" path="res://hud/bank/bank.tscn" id="8_1kkc0"]
 [ext_resource type="PackedScene" uid="uid://baabjnmmu7oxg" path="res://hud/pirate_dialog/pirate_dialog.tscn" id="8_qv4qp"]
+[ext_resource type="PackedScene" uid="uid://duwsa3m666m7m" path="res://hud/pirate_discard_dialog/discard_dialog.tscn" id="8_sh35x"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -97,72 +98,81 @@ offset_bottom = 504.0
 grow_horizontal = 0
 theme_type_variation = &"DefaultMargin"
 
-[node name="PhaseButtons" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Dice" parent="MarginContainer/HBoxContainer" instance=ExtResource("6_fjv1a")]
+layout_mode = 2
+
+[node name="PhaseButtons" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 script = ExtResource("7_1kkc0")
 
-[node name="Dice" parent="MarginContainer/PhaseButtons" instance=ExtResource("6_fjv1a")]
-layout_mode = 2
-
-[node name="ButtonNotStarted" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonNotStarted" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Not Started
 "
 
-[node name="ButtonSetupForward" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonSetupForward" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Forward House
 "
 
-[node name="ButtonSetupForward2" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonSetupForward2" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Forward Road
 "
 
-[node name="ButtonSetupReverse" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonSetupReverse" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Reverse House
 "
 
-[node name="ButtonSetupReverse2" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonSetupReverse2" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Reverse Road
 "
 
-[node name="ButtonMovePirate" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonMovePirate" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Move Pirate
 "
 
-[node name="ButtonSteal" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonDiscard" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Discard
+"
+
+[node name="ButtonSteal" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Steal Resources
 "
 
-[node name="ButtonMain" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonMain" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Main
 "
 
-[node name="ButtonGameOver" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonGameOver" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Game Over
 "
 
-[node name="Panel1" type="Panel" parent="MarginContainer/PhaseButtons"]
+[node name="Panel1" type="Panel" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PhaseButtons/Panel1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -170,35 +180,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button1" type="Button" parent="MarginContainer/PhaseButtons/Panel1/HBoxContainer"]
+[node name="Button1" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel1/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "1"
 
-[node name="Button2" type="Button" parent="MarginContainer/PhaseButtons/Panel1/HBoxContainer"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel1/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2"
 
-[node name="Button3" type="Button" parent="MarginContainer/PhaseButtons/Panel1/HBoxContainer"]
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel1/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "3"
 
-[node name="Button4" type="Button" parent="MarginContainer/PhaseButtons/Panel1/HBoxContainer"]
+[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel1/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "4"
 
-[node name="Panel2" type="Panel" parent="MarginContainer/PhaseButtons"]
+[node name="Panel2" type="Panel" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PhaseButtons/Panel2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -206,22 +216,29 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ButtonSave" type="Button" parent="MarginContainer/PhaseButtons/Panel2/HBoxContainer"]
+[node name="ButtonSave" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Save"
 
-[node name="ButtonLoad" type="Button" parent="MarginContainer/PhaseButtons/Panel2/HBoxContainer"]
+[node name="ButtonLoad" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Load"
 
-[node name="ButtonReset" type="Button" parent="MarginContainer/PhaseButtons"]
+[node name="ButtonReset" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Reset"
+
+[node name="DiscardDialog" parent="." instance=ExtResource("8_sh35x")]
+layout_mode = 0
+offset_left = 827.0
+offset_top = 558.0
+offset_right = 1093.0
+offset_bottom = 776.0
 
 [node name="PirateDialog" parent="." instance=ExtResource("8_qv4qp")]
 layout_mode = 0

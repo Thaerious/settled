@@ -34,6 +34,7 @@ func _ready() -> void:
 	EventBus.set_exchange_rate.connect(func(id, r, v): print("EventBus.set_exchange_rate | id: %s | resource: %s | value: %s" % [id, Model.ResourceTypes.keys()[r], v]))
 	EventBus.request_set_pirate.connect(func(id: int, hex: Axial): print("EventBus.request_set_pirate | id: %s | hex: %s" % [id, hex]))
 	EventBus.request_steal_from.connect(func(id: int): print("EventBus.request_steal_from | id: %d" % id))
+	EventBus.discard_resources.connect(func(id: int, discard: Dictionary[Model.ResourceTypes, int]): print("EventBus.discard_resources | id: %s | discard: %s" % [id, discard]))
 
 	# Service to Model
 	EventBus.set_house.connect(func(source_id: int, corner: Axial): print("EventBus.set_house | source_id: %s | corner: %s" % [source_id, corner]))
@@ -42,4 +43,4 @@ func _ready() -> void:
 
 	# Debug
 	EventBus.set_player_view.connect(func(id: int): print("EventBus.set_player_view | id: %s" % id))
-	
+	EventBus.specify_roll.connect(func(d1: int, d2: int): print("EventBus.specify_roll | d1: %s | d2: %s" % [d1, d2]))	
