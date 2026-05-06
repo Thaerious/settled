@@ -1,22 +1,11 @@
 class_name DiscardDialog
 extends PanelContainer
 
-var RESOURCE_QTY_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
-var RESOURCE_DIS_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
-var RESOURCE_TR_MAP: Dictionary[Model.ResourceTypes, TextureRect] = {}
+@onready var _main_container := %MainContainer
+@onready var _pending_label := %PendingLabel
+@onready var _button_ok := %ButtonOk
 
-var bank:Dictionary[Model.ResourceTypes, int]
-var discard:Dictionary[Model.ResourceTypes, int]
-
-func _ready() -> void:
-	%ButtonOk.pressed.connect(func():
-		EventBus.discard_resources.emit(Game.self_id, discard)
-	)
-
-	EventBus.update_player_phase.connect(self._update_player_phase_hnd)
-	EventBus.reset_view.connect(self._reset_view_hnd)
-
-	RESOURCE_QTY_LABEL_MAP = {
+@onready var RESOURCE_QTY_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {
 		Model.ResourceTypes.BRICK: %QtyBrick,
 		Model.ResourceTypes.WOOD:  %QtyWood,
 		Model.ResourceTypes.ROCK:  %QtyRock,
@@ -24,7 +13,7 @@ func _ready() -> void:
 		Model.ResourceTypes.WOOL:  %QtyWool,
 	}
 
-	RESOURCE_DIS_LABEL_MAP = {
+@onready var RESOURCE_DIS_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {
 		Model.ResourceTypes.BRICK: %DisBrick,
 		Model.ResourceTypes.WOOD:  %DisWood,
 		Model.ResourceTypes.ROCK:  %DisRock,
@@ -32,7 +21,7 @@ func _ready() -> void:
 		Model.ResourceTypes.WOOL:  %DisWool,
 	}
 
-	RESOURCE_TR_MAP = {
+@onready var RESOURCE_TEXTURE_MAP: Dictionary[Model.ResourceTypes, TextureRect] = {
 		Model.ResourceTypes.BRICK: %BrickTexture,
 		Model.ResourceTypes.WOOD:  %WoodTexture,
 		Model.ResourceTypes.ROCK:  %RockTexture,
@@ -40,13 +29,28 @@ func _ready() -> void:
 		Model.ResourceTypes.WOOL:  %WoolTexture,
 	}
 
-	for resource in RESOURCE_TR_MAP.keys():
-		var texture_rect = RESOURCE_TR_MAP[resource]
+var bank: Wallet
+var discard: Wallet
+var _must_discard: int
 
+func _ready() -> void:
+	self._button_ok.pressed.connect(self._ok_pressed)
+
+	EventBus.update_player_phase.connect(self._update_player_phase_hnd)
+	EventBus.reset_view.connect(self._reset_view_hnd)
+
+	for r in RESOURCE_TEXTURE_MAP.keys():
+		var texture_rect = self.RESOURCE_TEXTURE_MAP[r]
 		texture_rect.gui_input.connect(func(event: InputEvent) -> void:
 			if not event is InputEventMouseButton: return
-			self._on_input(resource, event)
-		)
+			self._on_input(r, event)
+		)	
+
+
+func _ok_pressed() -> void:	
+	EventBus.discard_resources.emit(Game.self_id, discard)
+	self._main_container.visible = false
+	self._pending_label.visible = true
 
 
 func _reset_view_hnd() -> void:
@@ -63,19 +67,20 @@ func _update_player_phase_hnd(_id: int, phase: Model.GamePhase) -> void:
 
 func _setup_view() -> void:
 	self.bank = Game.model.get_bank(Game.self_id)
-	print(bank)
+	self.bank.link_view(self.RESOURCE_QTY_LABEL_MAP)
 
-	self.discard = {
-		Model.ResourceTypes.BRICK: 0,
-		Model.ResourceTypes.WOOD:  0,
-		Model.ResourceTypes.ROCK:  0,
-		Model.ResourceTypes.WHEAT: 0,
-		Model.ResourceTypes.WOOL:  0,
-	}
+	self.discard = Wallet.new()
+	self.discard.link_view(self.RESOURCE_DIS_LABEL_MAP)
 
-	print(self.bank)
-	for resource in self.bank.keys():
-		self.RESOURCE_QTY_LABEL_MAP[resource].text = str(bank[resource])
+	if self.bank.count_resources() <= 7:
+		self._main_container.visible = false
+		self._pending_label.visible = true
+		self._must_discard = 0
+	else:		
+		self._main_container.visible = true
+		self._pending_label.visible = false		
+		self._button_ok.disabled = true		
+		self._must_discard = ceili((self.bank.count_resources() - 7.0) / 2.0)		
 
 
 func _on_input(resource: Model.ResourceTypes, event: InputEventMouseButton):
@@ -83,10 +88,16 @@ func _on_input(resource: Model.ResourceTypes, event: InputEventMouseButton):
 	if not event.pressed: return
 
 	if event.shift_pressed:
-		if discard[resource] > 0:
-			discard[resource] = discard[resource] - 1
-			bank[resource] = bank[resource] + 1
+		if discard.has_resource(resource):
+			discard.add_resource(resource, -1)			
+			bank.add_resource(resource, 1)			
 	else:
-		if bank[resource] > 0:
-			bank[resource] = bank[resource] - 1
-			discard[resource] = discard[resource] + 1
+		if bank.get_resource(resource) > 0:
+			bank.add_resource(resource, -1)
+			discard.add_resource(resource, 1)
+	
+	if self.discard.count_resources() == self._must_discard:
+		self._button_ok.disabled = false
+	else:
+		self._button_ok.disabled = true
+		

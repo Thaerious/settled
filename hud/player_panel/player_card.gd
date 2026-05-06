@@ -105,7 +105,4 @@ func _reset_view() -> void:
 	self.soldiers = Game.model.get_army(self.player_id)
 	self.roads = Game.model.get_roads(self.player_id).size()
 	self.victory_points = Game.model.get_victory_points(self.player_id)
-
-	var total_resources := 0
-	for r in bank: total_resources += bank[r]
-	self.resources = total_resources
+	self.resources = bank.count_resources()

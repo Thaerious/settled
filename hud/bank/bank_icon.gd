@@ -16,7 +16,7 @@ func _gui_input(event) -> void:
 
 	# don't start drag if there is not enough resources
 	var rate = Game.model.get_exchange_rate(Game.self_id, self.resource)
-	var count = Game.model.get_bank(Game.self_id)[self.resource]
+	var count = Game.model.get_bank(Game.self_id).get_resource(self.resource)
 	if count < rate: return
 
 	var drag_args = DragArgs.new()

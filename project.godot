@@ -19,11 +19,14 @@ config/icon="res://icon.svg"
 
 MouseBus="*res://standalone_scripts/mouse_bus/mouse_bus.gd"
 EventBus="*res://standalone_scripts/event_bus/event_bus.gd"
+MainLogger="*res://standalone_scripts/event_bus/event_bus_logger.gd"
+ServiceModule="*res://model/services/main_service.gd"
 Game="*res://model/game_instance.gd"
 
 [debug]
 
 gdscript/warnings/shadowed_variable=0
+gdscript/warnings/integer_division=0
 
 [display]
 

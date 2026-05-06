@@ -1,5 +1,5 @@
-class_name Service
-extends Object
+class_name MainService
+extends Node
 
 const EXCHANGABLE = [
 	Model.ResourceTypes.BRICK,
@@ -10,7 +10,12 @@ const EXCHANGABLE = [
 ]
 
 
-func _init() -> void:
+func _ready() -> void:
+	# Sub-Services
+	self.add_child(DiscardService.new())
+
+	# Listeners
+	EventBus.service_error.connect(self._on_service_error)
 	EventBus.request_roll.connect(self._on_request_roll)
 	EventBus.specify_roll.connect(self._on_specify_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
@@ -18,11 +23,11 @@ func _init() -> void:
 	EventBus.request_initial_road.connect(self.place_initial_road)
 	EventBus.request_exchange.connect(self.request_exchange)
 	EventBus.request_steal_from.connect(self.request_steal_from)
-	EventBus.discard_resources.connect(self.discard_resources)
 
 
-func discard_resources(id:int, discard: Dictionary[Model.ResourceTypes, int]) -> void:
-	pass
+func _on_service_error(id: int, msg: String) -> void:
+	push_error("service error from id=%s: %s" % [id, msg])
+
 
 func request_steal_from(id: int) -> void:
 	var bank := Game.model.get_bank(id)
@@ -31,7 +36,7 @@ func request_steal_from(id: int) -> void:
 	var sum = 0
 
 	for r in Model.ResourceTypes.values():
-		sum = sum + bank[r]
+		sum = sum + bank.get_resource(r)
 		if sum > i:
 			EventBus.remove_resources.emit(id, [r] as Array[Model.ResourceTypes])
 			EventBus.add_resources.emit(Game.self_id, [r] as Array[Model.ResourceTypes])
@@ -40,11 +45,9 @@ func request_steal_from(id: int) -> void:
 	EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.MAIN)
 
 
-
-
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:
 	var rate = Game.model.get_exchange_rate(Game.self_id, from)
-	var count = Game.model.get_bank(Game.self_id)[from]
+	var count = Game.model.get_bank(Game.self_id).get_resource(from)
 	if count < rate: return
 
 	var from_array: Array[Model.ResourceTypes] = []

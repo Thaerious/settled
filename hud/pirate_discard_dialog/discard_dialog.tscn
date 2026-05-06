@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://duwsa3m666m7m"]
+[gd_scene load_steps=7 format=3 uid="uid://duwsa3m666m7m"]
 
 [ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="1_7as5r"]
 [ext_resource type="Script" uid="uid://b03017rxir28u" path="res://hud/pirate_discard_dialog/discard_dialog.gd" id="1_seqkp"]
-[ext_resource type="Script" uid="uid://cln280504bctw" path="res://hud/bank/bank_icon.gd" id="2_seqkp"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="3_maxt8"]
 [ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="4_pi0ue"]
 [ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="5_weovp"]
@@ -11,27 +10,35 @@
 [node name="DiscardDialog" type="PanelContainer"]
 script = ExtResource("1_seqkp")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="PendingLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Waiting on Other Players"
+horizontal_alignment = 1
+
+[node name="MainContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="MainContainer"]
 layout_mode = 2
 text = "Discard (Left Click)"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer1" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer1" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="DisBrick" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+[node name="DisBrick" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer1"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="BrickTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+[node name="BrickTexture" type="TextureRect" parent="MainContainer/HBoxContainer/VBoxContainer1"]
 unique_name_in_owner = true
 modulate = Color(0.6515811, 0.2864562, 2.8878452e-07, 1)
 custom_minimum_size = Vector2(50, 50)
@@ -39,25 +46,23 @@ layout_mode = 2
 texture = ExtResource("1_7as5r")
 expand_mode = 3
 stretch_mode = 4
-script = ExtResource("2_seqkp")
-resource = 0
 
-[node name="QtyBrick" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+[node name="QtyBrick" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer1"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="DisWood" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="DisWood" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="WoodTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="WoodTexture" type="TextureRect" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 modulate = Color(0, 0.39215687, 0, 1)
 custom_minimum_size = Vector2(50, 50)
@@ -65,25 +70,23 @@ layout_mode = 2
 texture = ExtResource("3_maxt8")
 expand_mode = 3
 stretch_mode = 4
-script = ExtResource("2_seqkp")
-resource = 1
 
-[node name="QtyWood" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="QtyWood" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="DisWheat" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
+[node name="DisWheat" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="WheatTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
+[node name="WheatTexture" type="TextureRect" parent="MainContainer/HBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
 modulate = Color(1, 0.69803923, 0, 1)
 custom_minimum_size = Vector2(50, 50)
@@ -91,50 +94,46 @@ layout_mode = 2
 texture = ExtResource("4_pi0ue")
 expand_mode = 3
 stretch_mode = 4
-script = ExtResource("2_seqkp")
-resource = 3
 
-[node name="QtyWheat" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
+[node name="QtyWheat" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer4" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="DisWool" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
+[node name="DisWool" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="WoolTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
+[node name="WoolTexture" type="TextureRect" parent="MainContainer/HBoxContainer/VBoxContainer4"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("5_weovp")
 expand_mode = 3
 stretch_mode = 4
-script = ExtResource("2_seqkp")
-resource = 4
 
-[node name="QtyWool" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
+[node name="QtyWool" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer5" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="DisRock" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
+[node name="DisRock" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer5"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="RockTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
+[node name="RockTexture" type="TextureRect" parent="MainContainer/HBoxContainer/VBoxContainer5"]
 unique_name_in_owner = true
 modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
 custom_minimum_size = Vector2(50, 50)
@@ -142,21 +141,20 @@ layout_mode = 2
 texture = ExtResource("6_58twf")
 expand_mode = 3
 stretch_mode = 4
-script = ExtResource("2_seqkp")
-resource = 2
 
-[node name="QtyRock" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
+[node name="QtyRock" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer5"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="VBoxContainer"]
+[node name="Label2" type="Label" parent="MainContainer"]
 layout_mode = 2
 text = "Keep (Shift Left Click)"
 horizontal_alignment = 1
 
-[node name="ButtonOk" type="Button" parent="VBoxContainer"]
+[node name="ButtonOk" type="Button" parent="MainContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+disabled = true
 text = "Ok"

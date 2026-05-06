@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=7 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://cvd22dj1dxfs8" path="res://hud/hud.tscn" id="1_mlf6e"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
-[ext_resource type="Script" uid="uid://vrjehlf0myuy" path="res://standalone_scripts/event_bus/event_bus_logger.gd" id="4_mixcd"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://camera_2d.gd" id="5_mj2jn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
@@ -34,12 +33,11 @@ sources/0 = SubResource("TileSetAtlasSource_mixcd")
 
 [node name="Node2D" type="Node2D"]
 
-[node name="EventLogger" type="Node" parent="."]
-script = ExtResource("4_mixcd")
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("1_mlf6e")]
+offset_left = 2.0
+offset_right = 2.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")

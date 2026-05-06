@@ -56,16 +56,30 @@ func _ready() -> void:
 		RESOURCE_EX_LABEL_MAP[r].text = "%s:1" % value		
 	)
 
-	EventBus.update_player_phase.connect(func(_id: int, _phase: Model.GamePhase) -> void:
-		pass
+	EventBus.update_player_phase.connect(func(_id: int, phase: Model.GamePhase) -> void:
+		print("phase int: %s" % phase)
+		print(phase == Model.GamePhase.DISCARD)
+		
+		match phase:
+			Model.GamePhase.DISCARD:
+				self.visible = false
+			_:
+				self.visible = true
 	)
 
 	EventBus.reset_view.connect(self._on_reset_view)
 
 
 func _on_reset_view() -> void:
+	print("bank.reset_view '%s'" % Model.GamePhase.find_key(Game.model.get_current_phase()))
 	var bank_model = Game.model.get_bank(Game.self_id)
 
-	for r:Model.ResourceTypes in Service.EXCHANGABLE:
-		RESOURCE_QTY_LABEL_MAP[r].text = str(bank_model[r])
+	match Game.model.get_current_phase():
+		Model.GamePhase.DISCARD:
+			self.visible = false
+		_:
+			self.visible = true
+
+	for r:Model.ResourceTypes in ServiceModule.EXCHANGABLE:
+		RESOURCE_QTY_LABEL_MAP[r].text = str(bank_model.get_resource(r))
 		RESOURCE_EX_LABEL_MAP[r].text = "%s:1" % Game.model.get_exchange_rate(Game.self_id, r)	

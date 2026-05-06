@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=11 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
+[ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
 [ext_resource type="PackedScene" uid="uid://jf1afc3rc62v" path="res://hud/store/store.tscn" id="4_w8tcp"]
 [ext_resource type="PackedScene" uid="uid://c3xnds1ojmmjj" path="res://hud/action_cards/action_cards.tscn" id="6_0ivg5"]
 [ext_resource type="PackedScene" uid="uid://b21qcmnle7jxn" path="res://hud/dice/dice_control.tscn" id="6_fjv1a"]
@@ -62,7 +63,7 @@ theme_type_variation = &"DefaultMargin"
 [node name="Store" parent="StoreMargin" instance=ExtResource("4_w8tcp")]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="HandPanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -75,15 +76,16 @@ offset_right = 168.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_type_variation = &"BGBox"
+script = ExtResource("4_sh35x")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HandPanelContainer"]
 layout_mode = 2
 
-[node name="ActionCards" parent="PanelContainer/VBoxContainer" instance=ExtResource("6_0ivg5")]
+[node name="ActionCards" parent="HandPanelContainer/VBoxContainer" instance=ExtResource("6_0ivg5")]
 layout_mode = 2
 theme_type_variation = &""
 
-[node name="Bank" parent="PanelContainer/VBoxContainer" instance=ExtResource("8_1kkc0")]
+[node name="Bank" parent="HandPanelContainer/VBoxContainer" instance=ExtResource("8_1kkc0")]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &""
@@ -235,10 +237,10 @@ text = "Reset"
 
 [node name="DiscardDialog" parent="." instance=ExtResource("8_sh35x")]
 layout_mode = 0
-offset_left = 827.0
-offset_top = 558.0
-offset_right = 1093.0
-offset_bottom = 776.0
+offset_left = 829.0
+offset_top = 857.0
+offset_right = 1095.0
+offset_bottom = 1075.0
 
 [node name="PirateDialog" parent="." instance=ExtResource("8_qv4qp")]
 layout_mode = 0

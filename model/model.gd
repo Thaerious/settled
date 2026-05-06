@@ -66,37 +66,37 @@ enum GamePhase {
 	DISCARD,
 	STEAL_RESOURCES,
 	MAIN,
-	GAME_OVER,	
+	GAME_OVER,
 }
 
 var _current_player: int = 0
-var player_names: Array = [] ## todo this needs a getter
+var player_names: Array = []
 var _game_phase: GamePhase = GamePhase.NOT_STARTED
 var _pirate: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
 var _edges: AxialEdgeSet = AxialEdgeSet.new()
 
-var _hex_data: Dictionary[String, HexData] = {}      # axial (hex) -> data
+var _hex_data: Dictionary[String, HexData] = {}
 
-var _houses: Dictionary[String, int] = {}            # axial (corner) -> player id
-var _cities: Dictionary[String, int] = {}            # axial (corner) -> player id
-var _roads: Dictionary[String, int] = {}             # axial edge -> player id
+var _houses: Dictionary[String, int] = {}
+var _cities: Dictionary[String, int] = {}
+var _roads: Dictionary[String, int] = {}
 
-var _houses_mirror: Dictionary[int, Array] = {}      # player id -> [axial (corner)]
-var _cities_mirror: Dictionary[int, Array] = {}      # player id -> [axial (corner)]
-var _roads_mirror: Dictionary[int, Array] = {}       # player id -> [axial edge]
+var _houses_mirror: Dictionary[int, Array] = {}
+var _cities_mirror: Dictionary[int, Array] = {}
+var _roads_mirror: Dictionary[int, Array] = {}
 
-var _bank: Dictionary[int, Dictionary] = {}          # player id -> resource -> quantity
-var _exchange_rate: Dictionary[int, Dictionary] = {} # player id -> resource -> quantity
-var _action_cards: Dictionary[int, Dictionary] = {}  # player id -> card -> quantity
-var _victory_points: Dictionary[int, int] = {}       # player id -> points
-var _army : Dictionary[int, int] = {}                # player id -> soldier cards played
-var _ports: Dictionary[String, ResourceTypes] = {}   # axial (corner) -> resource ("any" for 3:1)
+var _bank: Dictionary[int, Wallet] = {}
+var _exchange_rate: Dictionary[int, Dictionary] = {}
+var _action_cards: Dictionary[int, Dictionary] = {}
+var _victory_points: Dictionary[int, int] = {}
+var _army: Dictionary[int, int] = {}
+var _ports: Dictionary[String, ResourceTypes] = {}
 
-func all_hexes() -> AxialSet:               return self._hexes.duplicate(true) 
-func all_corners() -> AxialSet:	            return self._corners.duplicate(true) # valid playable corners
-func all_edges() -> AxialEdgeSet:           return self._edges.duplicate(true) # valid playable corners
+func all_hexes() -> AxialSet:               return self._hexes.duplicate(true)
+func all_corners() -> AxialSet:             return self._corners.duplicate(true)
+func all_edges() -> AxialEdgeSet:           return self._edges.duplicate(true)
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
 func get_current_phase() -> GamePhase:      return self._game_phase
@@ -106,37 +106,25 @@ func get_victory_points(id: int) -> int:    return self._victory_points[id]
 
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id][r]
 
+func get_bank(id: int) -> Wallet:
+	return self._bank[id].duplicate()
+
+func get_action_cards(id: int) -> Dictionary[ActionCardTypes, int]:
+	return self._action_cards[id]
+
 func count_resources(id: int) -> int:
-	var bank = self.get_bank(id)
-
-	var sum:int = 0
-	sum = sum + bank[ResourceTypes.BRICK]
-	sum = sum + bank[ResourceTypes.WOOD]
-	sum = sum + bank[ResourceTypes.WOOL]
-	sum = sum + bank[ResourceTypes.WHEAT]
-	sum = sum + bank[ResourceTypes.ROCK]
-
-	return sum
-
+	return self._bank[id].count_resources()
 
 func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: int) -> bool:
-	var bank = self._bank[id]
-	if bank[ResourceTypes.BRICK] < brick: return false
-	if bank[ResourceTypes.WOOD] < wood: return false
-	if bank[ResourceTypes.WOOL] < wool: return false
-	if bank[ResourceTypes.WHEAT] < wheat: return false
-	if bank[ResourceTypes.ROCK] < rock: return false
-	return true
-	
+	return self._bank[id].has_resources(brick, wood, rock, wheat, wool)
+
 
 func get_owner(ax: Axial) -> int:
 	if self._cities.has(ax.key()):
 		return self._cities[ax.key()]
-
 	if self._houses.has(ax.key()):
 		return self._houses[ax.key()]
-
-	return -1		
+	return -1
 
 
 func get_roads(id: int) -> AxialEdgeSet:
@@ -159,69 +147,55 @@ func get_cities(id: int) -> AxialSet:
 
 func get_all_buildings(id: int = -1) -> AxialSet:
 	var result := AxialSet.new()
-	
 	if id == -1:
 		for p in range(4):
 			result.add_all(self._houses_mirror[p])
 	else:
 		result.add_all(self._houses_mirror[id])
 		result.add_all(self._cities_mirror[id])
-
 	return result
 
 
 func get_hex_data(hex: Axial) -> HexData:
 	var data = self._hex_data.get(hex.key(), null)
-
 	if data and hex.equals(self._pirate):
 		data.pirate = true
 	else:
 		data.pirate = false
-
 	return data
 
 
-func get_bank(id: int) -> Dictionary[ResourceTypes, int]:
-	return self._bank[id]
-
-
-func get_action_cards(id: int) -> Dictionary[ActionCardTypes, int]:
-	return self._action_cards[id]
-
-
-func _init() -> void:
-	Service.new()
-
+func _init() -> void:	
 	self._build_axials()
 	self._place_land()
 	self._place_numbers()
 	self._place_water()
 	self._place_ports()
-	
-	EventBus.set_house.connect(func (id, ax): 
+
+	EventBus.set_house.connect(func(id, ax):
 		self._houses[ax.key()] = id
 		self._houses_mirror[id].append(ax)
 	)
 
-	EventBus.set_city.connect(func (id, ax):
+	EventBus.set_city.connect(func(id, ax):
 		self._cities[ax.key()] = id
 		self._cities_mirror[id].append(ax)
 		self._houses_mirror[id].erase(ax)
 	)
 
-	EventBus.set_road.connect(func (id, ax):
+	EventBus.set_road.connect(func(id, ax):
 		self._roads[ax.key()] = id
 		self._roads_mirror[id].append(ax)
 	)
 
 	EventBus.add_resources.connect(func(id, resources):
 		for resource: ResourceTypes in resources:
-			self._bank[id][resource] += 1
+			self._bank[id].add_resource(resource, 1)
 	)
 
 	EventBus.remove_resources.connect(func(id, resources):
 		for resource: ResourceTypes in resources:
-			self._bank[id][resource] -= 1
+			self._bank[id].add_resource(resource, -1)
 	)
 
 	EventBus.add_action_card.connect(func(id, card):
@@ -244,7 +218,7 @@ func _init() -> void:
 	self.player_names.resize(4)
 
 	for i in range(4):
-		self._bank[i] = {} as Dictionary[ResourceTypes, int]
+		self._bank[i] = Wallet.new()
 		self._exchange_rate[i] = {} as Dictionary[ResourceTypes, int]
 		self._action_cards[i] = {} as Dictionary[ActionCardTypes, int]
 		self._army[i] = 0
@@ -254,18 +228,15 @@ func _init() -> void:
 		self._roads_mirror[i] = [] as Array[AxialEdge]
 
 		for r in [ResourceTypes.BRICK, ResourceTypes.WOOD, ResourceTypes.ROCK, ResourceTypes.WHEAT, ResourceTypes.WOOL]:
-			self._bank[i][r] = 0
 			self._exchange_rate[i][r] = 4
 
 		for c in ActionCardTypes.values():
-			self._action_cards[i][c] = 0			
+			self._action_cards[i][c] = 0
 
 
-# populate the _hexes, _corners, and _edges fields
-# these are the playable values (ie water has no edges)
 func _build_axials() -> void:
-	var neighbors := Axial.zero().neighbors() # first ring
-	var distant_neighbors := neighbors.flat_map(Axial.neighbors_of) # second ring
+	var neighbors := Axial.zero().neighbors()
+	var distant_neighbors := neighbors.flat_map(Axial.neighbors_of)
 
 	self._hexes.add_item(Axial.zero())
 	self._hexes.add_all(neighbors)
@@ -277,7 +248,7 @@ func _build_axials() -> void:
 		self._hex_data[hex.key()] = HexData.new()
 		self._hex_data[hex.key()].axial = hex
 
-	
+
 func _place_land() -> void:
 	var terrain_bag := self._fill_terrain_bag()
 
@@ -289,7 +260,7 @@ func _place_land() -> void:
 			self._pirate = hex
 
 
-func _place_ports() -> void:	
+func _place_ports() -> void:
 	self._place_port(Axial.new(0, -3, 3), 2, Model.ResourceTypes.ANY)
 	self._place_port(Axial.new(0, -3, 3), 3, Model.ResourceTypes.ANY)
 
@@ -306,16 +277,16 @@ func _place_ports() -> void:
 	self._place_port(Axial.new(1, 2, -3), 0, Model.ResourceTypes.WOOL)
 
 	self._place_port(Axial.new(-1, 3, -2), 5, Model.ResourceTypes.ROCK)
-	self._place_port(Axial.new(-1, 3, -2), 0, Model.ResourceTypes.ROCK)	
+	self._place_port(Axial.new(-1, 3, -2), 0, Model.ResourceTypes.ROCK)
 
 	self._place_port(Axial.new(-3, 3, 0), 0, Model.ResourceTypes.ANY)
-	self._place_port(Axial.new(-3, 3, 0), 1, Model.ResourceTypes.ANY)	
+	self._place_port(Axial.new(-3, 3, 0), 1, Model.ResourceTypes.ANY)
 
 	self._place_port(Axial.new(-3, 1, 2), 1, Model.ResourceTypes.WHEAT)
-	self._place_port(Axial.new(-3, 1, 2), 2, Model.ResourceTypes.WHEAT)	
+	self._place_port(Axial.new(-3, 1, 2), 2, Model.ResourceTypes.WHEAT)
 
 	self._place_port(Axial.new(-2, -1, 3), 1, Model.ResourceTypes.ANY)
-	self._place_port(Axial.new(-2, -1, 3), 2, Model.ResourceTypes.ANY)	
+	self._place_port(Axial.new(-2, -1, 3), 2, Model.ResourceTypes.ANY)
 
 
 func _place_port(hex: Axial, corner: int, value: ResourceTypes) -> void:
@@ -325,9 +296,9 @@ func _place_port(hex: Axial, corner: int, value: ResourceTypes) -> void:
 	self._hex_data[hex.key()].port_type = value
 
 
-func _place_water()-> void:
+func _place_water() -> void:
 	var water := self._hexes.flat_map(Axial.neighbors_of)
-	water = water.difference(self._hexes) # keep the outside hexes only
+	water = water.difference(self._hexes)
 
 	for hex in water:
 		self._hex_data[hex.key()] = HexData.new()
@@ -338,7 +309,7 @@ func _place_water()-> void:
 
 
 func _fill_terrain_bag() -> Array[Terrain]:
-	var terrain_bag: Array[Terrain] = []           
+	var terrain_bag: Array[Terrain] = []
 
 	for terrain in TERRAIN_COUNTS:
 		for i in TERRAIN_COUNTS[terrain]:
@@ -349,7 +320,7 @@ func _fill_terrain_bag() -> Array[Terrain]:
 
 
 func _place_numbers() -> void:
-	var number_bag:Array[int] = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
+	var number_bag: Array[int] = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
 
 	number_bag.shuffle()
 	for hex_data in self._hex_data.values():
@@ -358,7 +329,6 @@ func _place_numbers() -> void:
 		hex_data.number = number_bag.pop_front()
 
 
-## Save / Load Methods and Helpers
 func save(path: String) -> void:
 	var data := {
 		"player_names": _serialize_player_names(),
@@ -372,7 +342,7 @@ func save(path: String) -> void:
 		"houses_mirror": _serialize_axial_mirror(_houses_mirror),
 		"cities_mirror": _serialize_axial_mirror(_cities_mirror),
 		"roads_mirror": _serialize_edge_mirror(_roads_mirror),
-		"bank": _serialize_int_keyed(_bank),
+		"bank": _serialize_bank(),
 		"exchange_rate": _serialize_int_keyed(_exchange_rate),
 		"action_cards": _serialize_int_keyed(_action_cards),
 		"victory_points": _victory_points,
@@ -403,7 +373,7 @@ func load(path: String) -> void:
 	_deserialize_axial_mirror(_houses_mirror, data["houses_mirror"])
 	_deserialize_axial_mirror(_cities_mirror, data["cities_mirror"])
 	_deserialize_edge_mirror(_roads_mirror, data["roads_mirror"])
-	_deserialize_int_keyed(_bank, data["bank"])
+	_deserialize_bank(data["bank"])
 	_deserialize_int_keyed(_exchange_rate, data["exchange_rate"])
 	_deserialize_int_keyed(_action_cards, data["action_cards"])
 	_deserialize_player_names(data["player_names"])
@@ -418,8 +388,6 @@ func load(path: String) -> void:
 
 	print("loaded pirate: %s" % self._pirate)
 
-
-# --- Serialize Helpers ---
 
 func _serialize_hex_data() -> Dictionary:
 	var out := {}
@@ -532,6 +500,22 @@ func _deserialize_int_keyed(target: Dictionary, data: Dictionary) -> void:
 			target[id][int(ik)] = int(data[k][ik])
 
 
+func _serialize_bank() -> Dictionary:
+	var out := {}
+	for id in _bank:
+		out[str(id)] = {}
+		for r in _bank[id].to_dict():
+			out[str(id)][str(r)] = _bank[id].to_dict()[r]
+	return out
+
+
+func _deserialize_bank(data: Dictionary) -> void:
+	for k in data:
+		var id := int(k)
+		for rk in data[k]:
+			_bank[id].set_resource(int(rk) as Model.ResourceTypes, int(data[k][rk]))
+
+
 func _serialize_ports() -> Dictionary:
 	var out := {}
 	for k in _ports: out[k] = _ports[k]
@@ -541,5 +525,3 @@ func _serialize_ports() -> Dictionary:
 func _deserialize_ports(data: Dictionary) -> void:
 	_ports.clear()
 	for k in data: _ports[k] = int(data[k]) as Model.ResourceTypes
-
-	
