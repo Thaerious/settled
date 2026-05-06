@@ -97,8 +97,7 @@ func _reset_view() -> void:
 
 	var cards := Game.model.get_action_cards(self.player_id)
 	var bank := Game.model.get_bank(self.player_id)
-	var total_cards := 0
-	for c in cards: total_cards += cards[c]
+	var total_cards := cards.count_cards()
 
 	self.player_name = Game.model.player_names[self.player_id]
 	self.action_cards = total_cards

@@ -1,0 +1,142 @@
+[gd_scene load_steps=9 format=3 uid="uid://cpyo2scica4vg"]
+
+[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="1_nubc5"]
+[ext_resource type="Script" uid="uid://cln280504bctw" path="res://hud/bank/bank_icon.gd" id="2_57r6v"]
+[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="3_qfym0"]
+[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="4_ktrp8"]
+[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="5_gcvnk"]
+[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="6_rt72v"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_46feo"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_gadpp"]
+
+[node name="PlentyDialog" type="Node2D"]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="ClayTexture" type="TextureRect" parent="HBoxContainer/VBoxContainer1"]
+modulate = Color(0.6515811, 0.2864562, 2.8878452e-07, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("1_nubc5")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_57r6v")
+resource = 0
+
+[node name="CBClay1" type="CheckBox" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_46feo")
+
+[node name="CBClay2" type="CheckBox" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_gadpp")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="WoodTexture" type="TextureRect" parent="HBoxContainer/VBoxContainer2"]
+modulate = Color(0, 0.39215687, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("3_qfym0")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_57r6v")
+resource = 1
+
+[node name="CBWood1" type="CheckBox" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_46feo")
+
+[node name="CBWood2" type="CheckBox" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_gadpp")
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="WheatTexture" type="TextureRect" parent="HBoxContainer/VBoxContainer3"]
+modulate = Color(1, 0.69803923, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("4_ktrp8")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_57r6v")
+resource = 3
+
+[node name="CBWheat1" type="CheckBox" parent="HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_46feo")
+
+[node name="CBWheat2" type="CheckBox" parent="HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_gadpp")
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="WoolTexture" type="TextureRect" parent="HBoxContainer/VBoxContainer4"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("5_gcvnk")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_57r6v")
+resource = 4
+
+[node name="CBWool1" type="CheckBox" parent="HBoxContainer/VBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_46feo")
+
+[node name="CBWool2" type="CheckBox" parent="HBoxContainer/VBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_gadpp")
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="RockTexture" type="TextureRect" parent="HBoxContainer/VBoxContainer5"]
+modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("6_rt72v")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_57r6v")
+resource = 2
+
+[node name="CBRock1" type="CheckBox" parent="HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_46feo")
+
+[node name="CBRock2" type="CheckBox" parent="HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_group = SubResource("ButtonGroup_gadpp")

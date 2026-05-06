@@ -66,6 +66,10 @@ enum GamePhase {
 	DISCARD,
 	STEAL_RESOURCES,
 	MAIN,
+	YEAR_OF_PLENTY,
+	MONOPOLY,
+	ROAD_BUILDING,
+	SOLDIER,
 	GAME_OVER,
 }
 
@@ -88,8 +92,8 @@ var _cities_mirror: Dictionary[int, Array] = {}
 var _roads_mirror: Dictionary[int, Array] = {}
 
 var _bank: Dictionary[int, Wallet] = {}
-var _exchange_rate: Dictionary[int, Dictionary] = {}
-var _action_cards: Dictionary[int, Dictionary] = {}
+var _exchange_rate: Dictionary[int, Wallet] = {}
+var _action_cards: Dictionary[int, ActionCardWallet] = {}
 var _victory_points: Dictionary[int, int] = {}
 var _army: Dictionary[int, int] = {}
 var _ports: Dictionary[String, ResourceTypes] = {}
@@ -104,12 +108,12 @@ func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), Re
 func get_army(id: int) -> int:              return self._army[id]
 func get_victory_points(id: int) -> int:    return self._victory_points[id]
 
-func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id][r]
+func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id].get_resource(r)
 
 func get_bank(id: int) -> Wallet:
 	return self._bank[id].duplicate()
 
-func get_action_cards(id: int) -> Dictionary[ActionCardTypes, int]:
+func get_action_cards(id: int) -> ActionCardWallet:
 	return self._action_cards[id]
 
 func count_resources(id: int) -> int:
@@ -165,7 +169,7 @@ func get_hex_data(hex: Axial) -> HexData:
 	return data
 
 
-func _init() -> void:	
+func _init() -> void:
 	self._build_axials()
 	self._place_land()
 	self._place_numbers()
@@ -199,7 +203,7 @@ func _init() -> void:
 	)
 
 	EventBus.add_action_card.connect(func(id, card):
-		self._action_cards[id][card] += 1
+		self._action_cards[id].add_card(card)
 	)
 
 	EventBus.update_player_phase.connect(func(id, phase):
@@ -208,7 +212,7 @@ func _init() -> void:
 	)
 
 	EventBus.set_exchange_rate.connect(func(id, resource, value):
-		self._exchange_rate[id][resource] = value
+		self._exchange_rate[id].set_resource(resource, value)
 	)
 
 	EventBus.request_set_pirate.connect(func(_id, ax):
@@ -219,19 +223,14 @@ func _init() -> void:
 
 	for i in range(4):
 		self._bank[i] = Wallet.new()
-		self._exchange_rate[i] = {} as Dictionary[ResourceTypes, int]
-		self._action_cards[i] = {} as Dictionary[ActionCardTypes, int]
+		self._exchange_rate[i] = Wallet.new()
+		self._exchange_rate[i].set_all(4)
+		self._action_cards[i] = ActionCardWallet.new()
 		self._army[i] = 0
 		self._victory_points[i] = 0
 		self._houses_mirror[i] = [] as Array[Axial]
 		self._cities_mirror[i] = [] as Array[Axial]
 		self._roads_mirror[i] = [] as Array[AxialEdge]
-
-		for r in [ResourceTypes.BRICK, ResourceTypes.WOOD, ResourceTypes.ROCK, ResourceTypes.WHEAT, ResourceTypes.WOOL]:
-			self._exchange_rate[i][r] = 4
-
-		for c in ActionCardTypes.values():
-			self._action_cards[i][c] = 0
 
 
 func _build_axials() -> void:
@@ -342,9 +341,9 @@ func save(path: String) -> void:
 		"houses_mirror": _serialize_axial_mirror(_houses_mirror),
 		"cities_mirror": _serialize_axial_mirror(_cities_mirror),
 		"roads_mirror": _serialize_edge_mirror(_roads_mirror),
-		"bank": _serialize_bank(),
-		"exchange_rate": _serialize_int_keyed(_exchange_rate),
-		"action_cards": _serialize_int_keyed(_action_cards),
+		"bank": _serialize_wallet_collection(_bank),
+		"exchange_rate": _serialize_wallet_collection(_exchange_rate),
+		"action_cards": _serialize_action_card_collection(_action_cards),
 		"victory_points": _victory_points,
 		"army": _army,
 		"ports": _serialize_ports(),
@@ -373,9 +372,9 @@ func load(path: String) -> void:
 	_deserialize_axial_mirror(_houses_mirror, data["houses_mirror"])
 	_deserialize_axial_mirror(_cities_mirror, data["cities_mirror"])
 	_deserialize_edge_mirror(_roads_mirror, data["roads_mirror"])
-	_deserialize_bank(data["bank"])
-	_deserialize_int_keyed(_exchange_rate, data["exchange_rate"])
-	_deserialize_int_keyed(_action_cards, data["action_cards"])
+	_deserialize_wallet_collection(data["bank"], _bank)
+	_deserialize_wallet_collection(data["exchange_rate"], _exchange_rate)
+	_deserialize_action_card_collection(data["action_cards"], _action_cards)
 	_deserialize_player_names(data["player_names"])
 
 	_victory_points.clear()
@@ -482,38 +481,40 @@ func _deserialize_edge_mirror(mirror: Dictionary, data: Dictionary) -> void:
 			mirror[id].append(edge)
 
 
-func _serialize_int_keyed(d: Dictionary) -> Dictionary:
+func _serialize_wallet_collection(input: Dictionary) -> Dictionary:
 	var out := {}
-	for id in d:
+	for id in input:
+		var w: Wallet = input[id]
 		var inner := {}
-		for k in d[id]: inner[str(k)] = d[id][k]
+		for r in w.keys():
+			inner[str(r)] = w.get_resource(r)
 		out[str(id)] = inner
 	return out
 
 
-func _deserialize_int_keyed(target: Dictionary, data: Dictionary) -> void:
-	for id in target:
-		target[id].clear()
+func _deserialize_wallet_collection(data: Dictionary, target: Dictionary) -> void:
 	for k in data:
-		var id := int(k)
-		for ik in data[k]:
-			target[id][int(ik)] = int(data[k][ik])
+		var w: Wallet = target[int(k)]
+		for r in data[k]:
+			w.set_resource(int(r) as Model.ResourceTypes, int(data[k][r]))
 
 
-func _serialize_bank() -> Dictionary:
+func _serialize_action_card_collection(input: Dictionary) -> Dictionary:
 	var out := {}
-	for id in _bank:
-		out[str(id)] = {}
-		for r in _bank[id].to_dict():
-			out[str(id)][str(r)] = _bank[id].to_dict()[r]
+	for id in input:
+		var w: ActionCardWallet = input[id]
+		var inner := {}
+		for c in w.keys():
+			inner[str(c)] = w.get_card(c)
+		out[str(id)] = inner
 	return out
 
 
-func _deserialize_bank(data: Dictionary) -> void:
+func _deserialize_action_card_collection(data: Dictionary, target: Dictionary) -> void:
 	for k in data:
-		var id := int(k)
-		for rk in data[k]:
-			_bank[id].set_resource(int(rk) as Model.ResourceTypes, int(data[k][rk]))
+		var w: ActionCardWallet = target[int(k)]
+		for c in data[k]:
+			w.set_card(int(c) as Model.ActionCardTypes, int(data[k][c]))
 
 
 func _serialize_ports() -> Dictionary:

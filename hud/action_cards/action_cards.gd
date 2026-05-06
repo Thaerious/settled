@@ -28,7 +28,7 @@ func _reset_view() -> void:
 
 	for card: Model.ActionCardTypes in self._card_label_map.keys():
 		var label: Label = self._card_label_map.get(card)
-		var count = action_cards_model[card]
+		var count = action_cards_model.get_card(card)
 		label.text = str(count)	
 
 

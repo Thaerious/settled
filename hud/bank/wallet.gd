@@ -26,6 +26,11 @@ func get_resource(r: Model.ResourceTypes) -> int:
 	return self._data[r]
 
 
+func set_all(amount: int) -> void:
+	for r in self._data.keys():
+		self.set_resource(r, amount)	
+
+
 func set_resource(r: Model.ResourceTypes, value: int) -> void:
 	assert(self._data.has(r), "Wallet: invalid resource type: %s" % r)
 	self._data[r] = value

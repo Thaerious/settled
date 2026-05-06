@@ -37,3 +37,5 @@
 
 # Smell: Fix bank texture labels
 # add message to let other players know discard is taking place
+
+# prevent action cards from being played on the same turn they are purchased
