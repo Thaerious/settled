@@ -17,9 +17,6 @@ func _ready() -> void:
 	_button_group1.get_buttons()[6].button_pressed = true
 	_button_group2.get_buttons()[6].button_pressed = true	
 
-	print(_button_group1.get_pressed_button())
-	print(_button_group2.get_pressed_button())
-
 	self._button_roll.button_up.connect(self._do_roll)
 
 	EventBus.set_dice.connect(func(d1:int, d2:int):

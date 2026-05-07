@@ -39,3 +39,5 @@
 # add message to let other players know discard is taking place
 
 # prevent action cards from being played on the same turn they are purchased
+
+# use resource buttons in dialogs

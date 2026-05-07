@@ -23,7 +23,15 @@ func _ready() -> void:
 	EventBus.request_initial_road.connect(self.place_initial_road)
 	EventBus.request_exchange.connect(self.request_exchange)
 	EventBus.request_steal_from.connect(self.request_steal_from)
+	EventBus.play_monopoly_card.connect(self._play_monopoly_card)
 
+
+func _play_monopoly_card(id: int, wallet: Wallet):
+	if wallet.count_resources() != 2:
+		EventBus.service_error.emit(id, "Improper Monopoly Count.")
+		return
+
+	EventBus.add_resources.emit(id, wallet)
 
 func _on_service_error(id: int, msg: String) -> void:
 	push_error("service error from id=%s: %s" % [id, msg])

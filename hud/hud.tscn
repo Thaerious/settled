@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=12 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
@@ -6,10 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://c3xnds1ojmmjj" path="res://hud/action_cards/action_cards.tscn" id="6_0ivg5"]
 [ext_resource type="PackedScene" uid="uid://b21qcmnle7jxn" path="res://hud/dice/dice_control.tscn" id="6_fjv1a"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_panel/PlayerPanel.tscn" id="7_0ivg5"]
-[ext_resource type="Script" uid="uid://dkb8kt1spwhmh" path="res://hud/phase_buttons.gd" id="7_1kkc0"]
 [ext_resource type="PackedScene" uid="uid://ccds24g8vhw1y" path="res://hud/bank/bank.tscn" id="8_1kkc0"]
+[ext_resource type="Script" uid="uid://rbdx1k5bjh7u" path="res://hud/phase_buttons/phase_buttons.gd" id="8_gms7k"]
 [ext_resource type="PackedScene" uid="uid://baabjnmmu7oxg" path="res://hud/pirate_dialog/pirate_dialog.tscn" id="8_qv4qp"]
 [ext_resource type="PackedScene" uid="uid://duwsa3m666m7m" path="res://hud/pirate_discard_dialog/discard_dialog.tscn" id="8_sh35x"]
+[ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="9_gms7k"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -107,68 +108,134 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="PhaseButtons" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("7_1kkc0")
+script = ExtResource("8_gms7k")
 
 [node name="ButtonNotStarted" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Not Started
 "
+script = ExtResource("9_gms7k")
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSetupForward" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+[node name="ButtonSetupForwardHouse" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Forward House
 "
+script = ExtResource("9_gms7k")
+phase = 1
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSetupForward2" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+[node name="ButtonSetupForwardRoad" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Forward Road
 "
+script = ExtResource("9_gms7k")
+phase = 2
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSetupReverse" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+[node name="ButtonSetupReverseHouse" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Reverse House
 "
+script = ExtResource("9_gms7k")
+phase = 3
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSetupReverse2" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+[node name="ButtonSetupReverseRoad" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Reverse Road
 "
+script = ExtResource("9_gms7k")
+phase = 4
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMovePirate" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Move Pirate
 "
+script = ExtResource("9_gms7k")
+phase = 5
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonDiscard" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Discard
 "
+script = ExtResource("9_gms7k")
+phase = 6
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonSteal" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Steal Resources
 "
+script = ExtResource("9_gms7k")
+phase = 7
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMain" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Main
 "
+script = ExtResource("9_gms7k")
+phase = 8
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonPlenty" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Plenty
+"
+script = ExtResource("9_gms7k")
+phase = 9
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonMonopoly" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Monopoly
+"
+script = ExtResource("9_gms7k")
+phase = 10
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonRoadBuilding" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Road Building
+"
+script = ExtResource("9_gms7k")
+phase = 11
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonSoldier" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Soldier
+"
+script = ExtResource("9_gms7k")
+phase = 12
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonGameOver" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Game Over
 "
+script = ExtResource("9_gms7k")
+phase = 13
+metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="Panel1" type="Panel" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 custom_minimum_size = Vector2(0, 50)

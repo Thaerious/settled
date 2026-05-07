@@ -57,9 +57,6 @@ func _ready() -> void:
 	)
 
 	EventBus.update_player_phase.connect(func(_id: int, phase: Model.GamePhase) -> void:
-		print("phase int: %s" % phase)
-		print(phase == Model.GamePhase.DISCARD)
-		
 		match phase:
 			Model.GamePhase.DISCARD:
 				self.visible = false

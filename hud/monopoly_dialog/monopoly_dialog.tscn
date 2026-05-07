@@ -1,0 +1,137 @@
+[gd_scene load_steps=10 format=3 uid="uid://keoxfbt80qfy"]
+
+[ext_resource type="Script" uid="uid://c56j2iyw1x8fq" path="res://hud/monopoly_dialog/monopoly_dialog.gd" id="1_fgov0"]
+[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="1_qmfdq"]
+[ext_resource type="Script" uid="uid://cln280504bctw" path="res://hud/bank/bank_icon.gd" id="2_ydnt5"]
+[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="3_oe00j"]
+[ext_resource type="Script" uid="uid://dnhahkelcqfpx" path="res://hud/resource_button.gd" id="4_sklcr"]
+[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="4_v4wlq"]
+[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="5_054xi"]
+[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="6_oxrh8"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_46feo"]
+
+[node name="MonopolyDialog" type="Node2D"]
+script = ExtResource("1_fgov0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ClayTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+modulate = Color(0.6515811, 0.2864562, 2.8878452e-07, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("1_qmfdq")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_ydnt5")
+resource = 0
+
+[node name="CheckBrick" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_sklcr")
+resource = 0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="WoodTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+modulate = Color(0, 0.39215687, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("3_oe00j")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_ydnt5")
+resource = 1
+
+[node name="CheckWood" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+toggle_mode = true
+button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_sklcr")
+resource = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="WheatTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
+modulate = Color(1, 0.69803923, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("4_v4wlq")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_ydnt5")
+resource = 3
+
+[node name="CheckWheat" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+toggle_mode = true
+button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_sklcr")
+resource = 3
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="WoolTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("5_054xi")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_ydnt5")
+resource = 4
+
+[node name="CheckWool" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+toggle_mode = true
+button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_sklcr")
+resource = 4
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RockTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
+modulate = Color(0.27450982, 0.27450982, 0.3529412, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("6_oxrh8")
+expand_mode = 3
+stretch_mode = 4
+script = ExtResource("2_ydnt5")
+resource = 2
+
+[node name="CheckRock" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+toggle_mode = true
+button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_sklcr")
+resource = 2
+
+[node name="OkButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Ok"

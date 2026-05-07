@@ -193,13 +193,19 @@ func _init() -> void:
 	)
 
 	EventBus.add_resources.connect(func(id, resources):
-		for resource: ResourceTypes in resources:
-			self._bank[id].add_resource(resource, 1)
+		if resources is Array:
+			for resource: ResourceTypes in resources:
+				self._bank[id].add_resource(resource, 1)
+		elif resources is Wallet:
+			self._bank[id].add_resources(resources)
 	)
 
 	EventBus.remove_resources.connect(func(id, resources):
-		for resource: ResourceTypes in resources:
-			self._bank[id].add_resource(resource, -1)
+		if resources is Array:
+			for resource: ResourceTypes in resources:
+				self._bank[id].add_resource(resource, -1)
+		elif resources is Wallet:
+			self._bank[id].remove_resources(resources)
 	)
 
 	EventBus.add_action_card.connect(func(id, card):

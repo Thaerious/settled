@@ -22,14 +22,15 @@ signal request_road(id: int, edge: AxialEdge)
 signal request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes)
 signal request_set_pirate(id: int, hex: Axial)
 signal request_steal_from(id: int)
+signal play_monopoly_card(id: int, wallet: Wallet)
 
 signal discard_resources(id:int, discard: Wallet)
 signal update_player_phase(current_player: int, phase: Model.GamePhase)
 
 # Model/Service to view events
 signal set_dice(d1: int, d2:int)
-signal add_resources(id: int, resources: Array[Model.ResourceTypes])
-signal remove_resources(id: int, resources: Array[Model.ResourceTypes])
+signal add_resources(id: int, wallet: Variant)
+signal remove_resources(id: int, wallet: Variant)
 signal add_action_card(id: int, card: Model.ActionCardTypes)
 signal update_victory_points(id: int, delta: int)
 signal update_longest_road(id: int)
