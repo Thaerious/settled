@@ -12,11 +12,8 @@ var phase_buttons: Dictionary = {}
 @onready var button_reset: Button = %ButtonReset
 
 func _ready() -> void:
-	print("PhaseButtons")
-
 	for child in %PhaseButtons.get_children():
 		if not child is PhaseButton: continue
-		print("phase button: %s" % child)
 		var phase_button = child as PhaseButton
 		self.phase_buttons[phase_button.phase] = phase_button
 		

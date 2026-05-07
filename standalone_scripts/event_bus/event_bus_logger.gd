@@ -23,8 +23,8 @@ func _ready() -> void:
 
 	# Model/Service to view
 	EventBus.set_dice.connect(func(d1: int, d2: int): print("EventBus.set_dice | d1: %s | d2: %s" % [d1, d2]))
-	EventBus.add_resources.connect(func(id: int, resources: Array[Model.ResourceTypes]): print("EventBus.add_resources | id: %s | resources: %s" % [id, resources]))
-	EventBus.remove_resources.connect(func(id: int, resources: Array[Model.ResourceTypes]): print("EventBus.remove_resources | id: %s | resources: %s" % [id, resources]))
+	EventBus.add_resources.connect(func(id: int, resources: Wallet): print("EventBus.add_resources | id: %s | resources: %s" % [id, resources]))
+	EventBus.remove_resources.connect(func(id: int, resources: Wallet): print("EventBus.remove_resources | id: %s | resources: %s" % [id, resources]))
 	EventBus.add_action_card.connect(func(id: int, card: Model.ActionCardTypes): print("EventBus.add_action_card | id: %s | card: %s" % [id, card]))
 	EventBus.update_victory_points.connect(func(id: int, delta: int): print("EventBus.update_victory_points | id: %s | delta: %s" % [id, delta]))
 	EventBus.update_longest_road.connect(func(id: int): print("EventBus.update_longest_road | id: %s" % id))
@@ -35,6 +35,7 @@ func _ready() -> void:
 	EventBus.request_set_pirate.connect(func(id: int, hex: Axial): print("EventBus.request_set_pirate | id: %s | hex: %s" % [id, hex]))
 	EventBus.request_steal_from.connect(func(id: int): print("EventBus.request_steal_from | id: %d" % id))
 	EventBus.discard_resources.connect(func(id: int, discard: Wallet): print("EventBus.discard_resources | id: %s | discard: %s" % [id, discard]))
+	EventBus.play_monopoly_card.connect(func(id: int, resource: Model.ResourceTypes): print("EventBus.play_monopoly_card | id: %s | resource: %s" % [id, Model.ResourceTypes.find_key(resource)]))
 
 	# Service to Model
 	EventBus.set_house.connect(func(source_id: int, corner: Axial): print("EventBus.set_house | source_id: %s | corner: %s" % [source_id, corner]))

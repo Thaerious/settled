@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=13 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://baabjnmmu7oxg" path="res://hud/pirate_dialog/pirate_dialog.tscn" id="8_qv4qp"]
 [ext_resource type="PackedScene" uid="uid://duwsa3m666m7m" path="res://hud/pirate_discard_dialog/discard_dialog.tscn" id="8_sh35x"]
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="9_gms7k"]
+[ext_resource type="PackedScene" uid="uid://keoxfbt80qfy" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="12_hwufu"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -63,33 +64,6 @@ theme_type_variation = &"DefaultMargin"
 
 [node name="Store" parent="StoreMargin" instance=ExtResource("4_w8tcp")]
 layout_mode = 2
-
-[node name="HandPanelContainer" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -168.0
-offset_top = -214.0
-offset_right = 168.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_type_variation = &"BGBox"
-script = ExtResource("4_sh35x")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HandPanelContainer"]
-layout_mode = 2
-
-[node name="ActionCards" parent="HandPanelContainer/VBoxContainer" instance=ExtResource("6_0ivg5")]
-layout_mode = 2
-theme_type_variation = &""
-
-[node name="Bank" parent="HandPanelContainer/VBoxContainer" instance=ExtResource("8_1kkc0")]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &""
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -302,16 +276,60 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Reset"
 
+[node name="HandPanelContainer" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -168.0
+offset_top = -214.0
+offset_right = 168.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"BGBox"
+script = ExtResource("4_sh35x")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HandPanelContainer"]
+layout_mode = 2
+
+[node name="ActionCards" parent="HandPanelContainer/VBoxContainer" instance=ExtResource("6_0ivg5")]
+layout_mode = 2
+theme_type_variation = &""
+
+[node name="Bank" parent="HandPanelContainer/VBoxContainer" instance=ExtResource("8_1kkc0")]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &""
+
 [node name="DiscardDialog" parent="." instance=ExtResource("8_sh35x")]
+visible = false
 layout_mode = 0
-offset_left = 829.0
+offset_left = 825.0
 offset_top = 857.0
-offset_right = 1095.0
+offset_right = 1091.0
 offset_bottom = 1075.0
 
 [node name="PirateDialog" parent="." instance=ExtResource("8_qv4qp")]
+visible = false
 layout_mode = 0
 offset_left = 905.0
 offset_top = 360.0
 offset_right = 1017.0
 offset_bottom = 516.0
+
+[node name="MonopolyDialog" parent="." instance=ExtResource("12_hwufu")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -131.0
+offset_top = -165.0
+offset_right = 139.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 0

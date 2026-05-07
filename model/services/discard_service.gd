@@ -32,8 +32,8 @@ func _discard_resources_hnd(id:int, discard: Wallet) -> void:
 	
 	if self._has_discarded == Game.player_count:
 		for key in self._discards.keys():
-			var value = self._discards[key].to_array()
-			EventBus.remove_resources.emit(key, value)
+			EventBus.remove_resources.emit(key, self._discards[key])
+			
 		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.MOVE_PIRATE)
 
 	

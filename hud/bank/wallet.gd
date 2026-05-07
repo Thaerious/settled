@@ -3,6 +3,9 @@ extends RefCounted
 
 
 var _linked_view: Dictionary = {}
+var _iter_index: int = 0
+var _iter_array: Array = []
+
 
 var _data: Dictionary[Model.ResourceTypes, int] = {
 	Model.ResourceTypes.BRICK: 0,
@@ -13,10 +16,35 @@ var _data: Dictionary[Model.ResourceTypes, int] = {
 }
 
 
+func _init(initial: Array = []) -> void:
+	for r in initial: self.add_resource(r)
+
+
+func _iter_init(_arg) -> bool:
+	self._iter_array = self.to_array()
+	self._iter_index = 0
+	return self._iter_array.size() > 0
+
+
+func _iter_next(_arg) -> bool:
+	self._iter_index += 1
+	return self._iter_index < self._iter_array.size()
+
+
+func _iter_get(_arg) -> Model.ResourceTypes:
+	return self._iter_array[self._iter_index]
+
+
 func duplicate() -> Wallet:
 	var new_wallet = Wallet.new()
 	new_wallet.add_resources(self)
 	return new_wallet
+
+
+# retain only the specified
+func keep(resouce: Model.ResourceTypes) -> void:
+	for r in self._data.keys():
+		if r != resouce: self.set_resource(r, 0)
 
 
 func keys() -> Array[Model.ResourceTypes]: return self._data.keys()

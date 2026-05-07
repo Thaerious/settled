@@ -13,9 +13,9 @@ const TERRAIN_COUNTS := {
 const TERRAIN_TO_RESOURCE : Dictionary[Terrain, ResourceTypes] = {
 	Terrain.HILL: ResourceTypes.BRICK,
 	Terrain.FOREST: ResourceTypes.WOOD,
-	Terrain.MOUNTAIN: ResourceTypes.ROCK,
 	Terrain.FIELD: ResourceTypes.WHEAT,
 	Terrain.PASTURE: ResourceTypes.WOOL,
+	Terrain.MOUNTAIN: ResourceTypes.ROCK,	
 	Terrain.DESERT: ResourceTypes.NONE,
 	Terrain.WATER: ResourceTypes.NONE
 }
@@ -33,9 +33,9 @@ enum Terrain {
 enum ResourceTypes {
 	BRICK,
 	WOOD,
-	ROCK,
 	WHEAT,
 	WOOL,
+	ROCK,	
 	NONE,
 	ANY
 }
@@ -193,19 +193,11 @@ func _init() -> void:
 	)
 
 	EventBus.add_resources.connect(func(id, resources):
-		if resources is Array:
-			for resource: ResourceTypes in resources:
-				self._bank[id].add_resource(resource, 1)
-		elif resources is Wallet:
 			self._bank[id].add_resources(resources)
 	)
 
 	EventBus.remove_resources.connect(func(id, resources):
-		if resources is Array:
-			for resource: ResourceTypes in resources:
-				self._bank[id].add_resource(resource, -1)
-		elif resources is Wallet:
-			self._bank[id].remove_resources(resources)
+		self._bank[id].remove_resources(resources)
 	)
 
 	EventBus.add_action_card.connect(func(id, card):
@@ -213,7 +205,7 @@ func _init() -> void:
 	)
 
 	EventBus.update_player_phase.connect(func(id, phase):
-		self._current_player = id
+		if id != -1: self._current_player = id
 		self._game_phase = phase
 	)
 

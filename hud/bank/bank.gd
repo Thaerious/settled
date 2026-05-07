@@ -35,7 +35,7 @@ func _ready() -> void:
 		Model.ResourceTypes.WOOL:  self.ex_wool,
 	}
 
-	EventBus.add_resources.connect(func(id: int, resources: Array) -> void:
+	EventBus.add_resources.connect(func(id: int, resources: Wallet) -> void:
 		if id != Game.self_id: return
 
 		for resource: Model.ResourceTypes in resources:
@@ -43,7 +43,7 @@ func _ready() -> void:
 			if label: label.text = str(label.text.to_int() + 1)
 	)
 
-	EventBus.remove_resources.connect(func(id: int, resources: Array) -> void:
+	EventBus.remove_resources.connect(func(id: int, resources: Wallet) -> void:
 		if id != Game.self_id: return
 
 		for resource: Model.ResourceTypes in resources:
@@ -58,10 +58,8 @@ func _ready() -> void:
 
 	EventBus.update_player_phase.connect(func(_id: int, phase: Model.GamePhase) -> void:
 		match phase:
-			Model.GamePhase.DISCARD:
-				self.visible = false
-			_:
-				self.visible = true
+			Model.GamePhase.DISCARD: self.visible = false
+			_: self.visible = true
 	)
 
 	EventBus.reset_view.connect(self._on_reset_view)

@@ -32,19 +32,20 @@ func _on_drop(rec: DragRecord) -> void:
 	EventBus.request_exchange.emit(Game.self_id, self.resource, rec.destination.resource)
 
 
-# for dev/debut adding resources
+# for dev/debug adding resources
 func _dev_gui_input(event) -> bool:
 	if not event is InputEventMouseButton: return false
 	var mouse_event = event as InputEventMouseButton
 	if mouse_event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return false
 	if not mouse_event.pressed: return false
-
 	if not mouse_event.ctrl_pressed: return false
 
+	var wallet = Wallet.new([resource])
+
 	if mouse_event.shift_pressed:
-		EventBus.remove_resources.emit(Game.self_id, [resource] as Array[Model.ResourceTypes])
+		EventBus.remove_resources.emit(Game.self_id, wallet)
 	else:
-		EventBus.add_resources.emit(Game.self_id, [resource] as Array[Model.ResourceTypes])
+		EventBus.add_resources.emit(Game.self_id, wallet)
 	
 	return true
 	

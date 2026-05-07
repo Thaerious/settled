@@ -4,9 +4,9 @@ extends Node
 const EXCHANGABLE = [
 	Model.ResourceTypes.BRICK,
 	Model.ResourceTypes.WOOD,
-	Model.ResourceTypes.ROCK,
 	Model.ResourceTypes.WHEAT,
-	Model.ResourceTypes.WOOL
+	Model.ResourceTypes.WOOL,
+	Model.ResourceTypes.ROCK
 ]
 
 
@@ -26,12 +26,16 @@ func _ready() -> void:
 	EventBus.play_monopoly_card.connect(self._play_monopoly_card)
 
 
-func _play_monopoly_card(id: int, wallet: Wallet):
-	if wallet.count_resources() != 2:
-		EventBus.service_error.emit(id, "Improper Monopoly Count.")
-		return
-
-	EventBus.add_resources.emit(id, wallet)
+func _play_monopoly_card(id: int, resource: Model.ResourceTypes):
+	for p in Game.player_count:
+		if p == id: continue
+		var bank := Game.model.get_bank(p)
+		bank.keep(resource)
+		EventBus.add_resources.emit(id, bank)
+		EventBus.remove_resources.emit(p, bank)
+	
+	EventBus.update_player_phase.emit(-1, Model.GamePhase.MAIN)
+	
 
 func _on_service_error(id: int, msg: String) -> void:
 	push_error("service error from id=%s: %s" % [id, msg])
@@ -46,8 +50,8 @@ func request_steal_from(id: int) -> void:
 	for r in Model.ResourceTypes.values():
 		sum = sum + bank.get_resource(r)
 		if sum > i:
-			EventBus.remove_resources.emit(id, [r] as Array[Model.ResourceTypes])
-			EventBus.add_resources.emit(Game.self_id, [r] as Array[Model.ResourceTypes])
+			EventBus.remove_resources.emit(id, Wallet.new([r]))
+			EventBus.add_resources.emit(Game.self_id, Wallet.new([r]))
 			break
 
 	EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.MAIN)
@@ -63,7 +67,7 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 	from_array.fill(from)
 
 	EventBus.remove_resources.emit(id, from_array)
-	EventBus.add_resources.emit(id, [to])
+	EventBus.add_resources.emit(id, Wallet.new([to]))
 
 func _on_request_roll() -> void:
 	var d1: int = randi_range(1, 6)
@@ -71,7 +75,7 @@ func _on_request_roll() -> void:
 	EventBus.set_dice.emit(d1, d2)	
 	
 	for id in range(Game.player_count):	
-		var resources: Array[Model.ResourceTypes] = []
+		var resources := Wallet.new()
 		self._scan_houses(id, d1 + d2, resources)
 		self._scan_cities(id, d1 + d2, resources)
 		EventBus.add_resources.emit(id, resources)
@@ -81,13 +85,13 @@ func _on_specify_roll(d1: int, d2: int) -> void:
 	EventBus.set_dice.emit(d1, d2)	
 	
 	for id in range(Game.player_count):	
-		var resources: Array[Model.ResourceTypes] = []
+		var resources := Wallet.new()
 		self._scan_houses(id, d1 + d2, resources)
 		self._scan_cities(id, d1 + d2, resources)
 		EventBus.add_resources.emit(id, resources)
 
 
-func _scan_houses(id:int, number:int, resources: Array[Model.ResourceTypes]):
+func _scan_houses(id:int, number:int, resources: Wallet):
 	var houses := Game.model.get_houses(id)
 	var hexes := houses.map(Axial.hexes_of)
 	hexes = hexes.remove_item(Game.model.get_pirate())
@@ -96,10 +100,10 @@ func _scan_houses(id:int, number:int, resources: Array[Model.ResourceTypes]):
 		var data := Game.model.get_hex_data(hex)
 		if data.number != number: continue
 		var resource := Game.model.TERRAIN_TO_RESOURCE[data.terrain]			
-		resources.append(resource)
+		resources.add_resource(resource)
 
 
-func _scan_cities(id:int, number:int, resources: Array[Model.ResourceTypes]):
+func _scan_cities(id:int, number:int, resources: Wallet):
 	var cities := Game.model.get_cities(id)
 	var hexes := cities.map(Axial.hexes_of)
 	hexes = hexes.remove_item(Game.model.get_pirate())
@@ -108,8 +112,8 @@ func _scan_cities(id:int, number:int, resources: Array[Model.ResourceTypes]):
 		var data := Game.model.get_hex_data(hex)
 		if data.number != number: continue
 		var resource := Game.model.TERRAIN_TO_RESOURCE[data.terrain]			
-		resources.append(resource)
-		resources.append(resource)
+		resources.add_resource(resource)
+		resources.add_resource(resource)
 
 
 func _on_request_purchase_action_card() -> void:
@@ -177,7 +181,7 @@ func place_initial_house(id: int, corner: Axial) -> void:
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE_HOUSE:
 		var hexes = corner.hexes()
 
-		var payout: Array[Model.ResourceTypes] = []
+		var payout := Wallet.new()
 		for hex: Axial in hexes:
 			var hexdata = Game.model.get_hex_data(hex)
 			payout.append(hexdata.terrain)

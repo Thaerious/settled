@@ -1,7 +1,6 @@
 class_name MonopolyDialog
 extends Control
 
-
 var _button_group: ButtonGroup
 	
 
@@ -27,3 +26,4 @@ func _update_player_phase(current_player: int, phase: Model.GamePhase) -> void:
 
 func _on_accept() -> void:
 	var button = self._button_group.get_pressed_button()
+	EventBus.play_monopoly_card.emit(Game.self_id, button.resource)	

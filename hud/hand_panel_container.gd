@@ -12,7 +12,7 @@ func _ready():
 
 func _update(_id: int, phase: Model.GamePhase) -> void:
 	match phase:
-		Model.GamePhase.DISCARD:
-			self.visible = false
-		_:
-			self.visible = true	
+		Model.GamePhase.DISCARD:self.visible = false
+		Model.GamePhase.MONOPOLY: self.visible = false
+		Model.GamePhase.YEAR_OF_PLENTY: self.visible = false
+		_: self.visible = true	

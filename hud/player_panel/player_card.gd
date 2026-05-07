@@ -55,14 +55,14 @@ func _ready() -> void:
 	self.portrait.modulate = GameBoard.tint[self.player_id]
 
 	# Attach event listeners
-	EventBus.add_resources.connect(func(id: int, resources: Array) -> void:
+	EventBus.add_resources.connect(func(id: int, resources: Wallet) -> void:
 		if id != self.player_id: return
-		self.resources += resources.size()
+		self.resources += resources.count_resources()
 	)
 
-	EventBus.remove_resources.connect(func(id: int, resources: Array) -> void:
+	EventBus.remove_resources.connect(func(id: int, resources: Wallet) -> void:
 		if id != self.player_id: return
-		self.resources -= resources.size()
+		self.resources -= resources.count_resources()
 	)
 
 	EventBus.add_action_card.connect(func(id: int, _card: Model.ActionCardTypes) -> void:
