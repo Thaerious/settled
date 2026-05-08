@@ -77,6 +77,11 @@ func remove_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
 	self.trigger_linked_view(r)
 
 
+func copy_from(that: Wallet) -> void:
+	for r in self._data.keys():
+		self.set_resource(r, that.get_resource(r))
+
+
 func add_resources(that: Wallet) -> void:
 	for r in self._data.keys():
 		self.add_resource(r, that.get_resource(r))

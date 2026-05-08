@@ -29,6 +29,7 @@ func _on_failure(_rec: DragRecord) -> void:
 
 func _on_enter(rec: HoverRecord) -> void:	
 	if not rec.entered.owner is EdgeTarget: return		
+	print("on enter %s" % rec.entered.owner.axial_edge)
 
 	var target := rec.entered.owner as EdgeTarget
 	if target == self._last_target: return  # already set, ignore
@@ -41,6 +42,7 @@ func _on_enter(rec: HoverRecord) -> void:
 
 func _on_exit(rec: HoverRecord) -> void:
 	if not rec.exited.owner is EdgeTarget: return	
+	print("on exit %s" % rec.exited.owner.axial_edge)
 
 	var target := rec.exited.owner as EdgeTarget
 	if target != self._last_target: return  # already moved on, ignore

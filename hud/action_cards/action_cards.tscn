@@ -3,12 +3,11 @@
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_63nwv"]
 [ext_resource type="Script" uid="uid://vxje4yjpo1kp" path="res://hud/action_cards/action_cards.gd" id="2_0atqr"]
 [ext_resource type="Texture2D" uid="uid://demi577aj2enu" path="res://assets/action_cards/knight.png" id="2_qotur"]
+[ext_resource type="Script" uid="uid://ct75lud6ny3bq" path="res://hud/action_cards/action_card_icon.gd" id="3_0atqr"]
 [ext_resource type="Texture2D" uid="uid://ccpkisxjwdal7" path="res://assets/action_cards/road_building.png" id="3_lw7kr"]
 [ext_resource type="Texture2D" uid="uid://sfwaxf30fwsr" path="res://assets/action_cards/plenty.png" id="4_0atqr"]
-[ext_resource type="Texture2D" uid="uid://v6ti4h2kyw2s" path="res://assets/action_cards/monopoly.png" id="5_prc73"]
-[ext_resource type="Texture2D" uid="uid://cjust6wg6yh64" path="res://assets/action_cards/victory.png" id="6_rftng"]
-
-[sub_resource type="GDScript" id="GDScript_prc73"]
+[ext_resource type="Texture2D" uid="uid://crrm8u8rd6e6o" path="res://assets/coins.png" id="6_prc73"]
+[ext_resource type="Texture2D" uid="uid://co4vl7gwwxney" path="res://assets/star.png" id="7_rftng"]
 
 [node name="ActionCards" type="PanelContainer"]
 theme = ExtResource("1_63nwv")
@@ -21,14 +20,16 @@ layout_mode = 2
 [node name="KnightContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="HBoxContainer/KnightContainer"]
-custom_minimum_size = Vector2(64, 64)
+[node name="ActionCardIcon" type="TextureRect" parent="HBoxContainer/KnightContainer"]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("2_qotur")
-texture_pressed = ExtResource("2_qotur")
-texture_disabled = ExtResource("2_qotur")
-ignore_texture_size = true
+mouse_default_cursor_shape = 2
+texture = ExtResource("2_qotur")
+expand_mode = 3
 stretch_mode = 4
+script = ExtResource("3_0atqr")
+action_card = 0
+metadata/_custom_type_script = "uid://ct75lud6ny3bq"
 
 [node name="QtyKnight" type="Label" parent="HBoxContainer/KnightContainer"]
 unique_name_in_owner = true
@@ -39,13 +40,15 @@ horizontal_alignment = 1
 [node name="BuildRoadContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="HBoxContainer/BuildRoadContainer"]
-custom_minimum_size = Vector2(64, 64)
+[node name="ActionCardIcon" type="TextureRect" parent="HBoxContainer/BuildRoadContainer"]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("3_lw7kr")
-ignore_texture_size = true
+mouse_default_cursor_shape = 2
+texture = ExtResource("3_lw7kr")
+expand_mode = 3
 stretch_mode = 4
-script = SubResource("GDScript_prc73")
+script = ExtResource("3_0atqr")
+metadata/_custom_type_script = "uid://ct75lud6ny3bq"
 
 [node name="QtyBuildRoad" type="Label" parent="HBoxContainer/BuildRoadContainer"]
 unique_name_in_owner = true
@@ -56,13 +59,16 @@ horizontal_alignment = 1
 [node name="PlentyContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="HBoxContainer/PlentyContainer"]
-custom_minimum_size = Vector2(64, 64)
+[node name="ActionCardIcon" type="TextureRect" parent="HBoxContainer/PlentyContainer"]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("4_0atqr")
-ignore_texture_size = true
+mouse_default_cursor_shape = 2
+texture = ExtResource("4_0atqr")
+expand_mode = 3
 stretch_mode = 4
-script = SubResource("GDScript_prc73")
+script = ExtResource("3_0atqr")
+action_card = 2
+metadata/_custom_type_script = "uid://ct75lud6ny3bq"
 
 [node name="QtyPlenty" type="Label" parent="HBoxContainer/PlentyContainer"]
 unique_name_in_owner = true
@@ -73,13 +79,16 @@ horizontal_alignment = 1
 [node name="MonopolyContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="HBoxContainer/MonopolyContainer"]
-custom_minimum_size = Vector2(64, 64)
+[node name="ActionCardIcon" type="TextureRect" parent="HBoxContainer/MonopolyContainer"]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("5_prc73")
-ignore_texture_size = true
+mouse_default_cursor_shape = 2
+texture = ExtResource("6_prc73")
+expand_mode = 3
 stretch_mode = 4
-script = SubResource("GDScript_prc73")
+script = ExtResource("3_0atqr")
+action_card = 3
+metadata/_custom_type_script = "uid://ct75lud6ny3bq"
 
 [node name="QtyMonopoly" type="Label" parent="HBoxContainer/MonopolyContainer"]
 unique_name_in_owner = true
@@ -90,13 +99,16 @@ horizontal_alignment = 1
 [node name="VictoryPointsContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="HBoxContainer/VictoryPointsContainer"]
-custom_minimum_size = Vector2(64, 64)
+[node name="ActionCardIcon" type="TextureRect" parent="HBoxContainer/VictoryPointsContainer"]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("6_rftng")
-ignore_texture_size = true
+mouse_default_cursor_shape = 2
+texture = ExtResource("7_rftng")
+expand_mode = 3
 stretch_mode = 4
-script = SubResource("GDScript_prc73")
+script = ExtResource("3_0atqr")
+action_card = 4
+metadata/_custom_type_script = "uid://ct75lud6ny3bq"
 
 [node name="QtyVictory" type="Label" parent="HBoxContainer/VictoryPointsContainer"]
 unique_name_in_owner = true

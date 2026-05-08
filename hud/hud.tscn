@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=14 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://duwsa3m666m7m" path="res://hud/pirate_discard_dialog/discard_dialog.tscn" id="8_sh35x"]
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="9_gms7k"]
 [ext_resource type="PackedScene" uid="uid://keoxfbt80qfy" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="12_hwufu"]
+[ext_resource type="PackedScene" uid="uid://cpyo2scica4vg" path="res://hud/year_of_plenty_dialog/plenty_dialog.tscn" id="13_mq7b8"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -20,6 +21,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.0023409, 1)
 mouse_filter = 1
 theme = ExtResource("1_6ca3a")
 
@@ -277,7 +279,6 @@ layout_mode = 2
 text = "Reset"
 
 [node name="HandPanelContainer" type="PanelContainer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -297,6 +298,7 @@ layout_mode = 2
 
 [node name="ActionCards" parent="HandPanelContainer/VBoxContainer" instance=ExtResource("6_0ivg5")]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_type_variation = &""
 
 [node name="Bank" parent="HandPanelContainer/VBoxContainer" instance=ExtResource("8_1kkc0")]
@@ -321,6 +323,7 @@ offset_right = 1017.0
 offset_bottom = 516.0
 
 [node name="MonopolyDialog" parent="." instance=ExtResource("12_hwufu")]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -333,3 +336,11 @@ offset_right = 139.0
 offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="PlentyDialog" parent="." instance=ExtResource("13_mq7b8")]
+visible = false
+layout_mode = 0
+offset_left = 904.91235
+offset_top = 822.42096
+offset_right = 904.91235
+offset_bottom = 822.42096

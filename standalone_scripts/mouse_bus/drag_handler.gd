@@ -36,7 +36,7 @@ func _on_press(event: InputEvent) -> void:
 
 func _do_start_drag() -> void:
 	if "texture" in self and "texture_size" in self:
-		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+		# Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 		self._args.texture = self.texture
 		self._args.size    = self.texture_size	
 		self._args.offset  = self.texture_size / -2	

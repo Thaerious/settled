@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cpyo2scica4vg"]
+[gd_scene load_steps=11 format=3 uid="uid://cpyo2scica4vg"]
 
 [ext_resource type="Script" uid="uid://k6wnyxp1tu87" path="res://hud/year_of_plenty_dialog/plenty_dialog.gd" id="1_57r6v"]
 [ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="1_nubc5"]
 [ext_resource type="Script" uid="uid://cln280504bctw" path="res://hud/bank/bank_icon.gd" id="2_57r6v"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="3_qfym0"]
 [ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="4_ktrp8"]
+[ext_resource type="Script" uid="uid://bnxo1hnwefjhu" path="res://hud/resource_check_box.gd" id="4_qfym0"]
 [ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="5_gcvnk"]
 [ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="6_rt72v"]
 
@@ -12,10 +13,13 @@
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_gadpp"]
 
-[node name="PlentyDialog" type="Node2D"]
+[node name="PlentyDialog" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_57r6v")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -35,17 +39,27 @@ stretch_mode = 4
 script = ExtResource("2_57r6v")
 resource = 0
 
-[node name="CBClay1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+[node name="CheckBrick1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+button_pressed = true
 button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_qfym0")
+resource = 0
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
-[node name="CBClay2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+[node name="CheckBrick2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer1"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+button_pressed = true
 button_group = SubResource("ButtonGroup_gadpp")
+script = ExtResource("4_qfym0")
+resource = 0
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -60,17 +74,23 @@ stretch_mode = 4
 script = ExtResource("2_57r6v")
 resource = 1
 
-[node name="CBWood1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="CheckWood1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_qfym0")
+resource = 1
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
-[node name="CBWood2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="CheckWood2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 button_group = SubResource("ButtonGroup_gadpp")
+script = ExtResource("4_qfym0")
+resource = 1
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -83,19 +103,25 @@ texture = ExtResource("4_ktrp8")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("2_57r6v")
-resource = 3
+resource = 2
 
-[node name="CBWheat1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
+[node name="CheckWheat1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_qfym0")
+resource = 2
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
-[node name="CBWheat2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
+[node name="CheckWheat2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 button_group = SubResource("ButtonGroup_gadpp")
+script = ExtResource("4_qfym0")
+resource = 2
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -107,19 +133,25 @@ texture = ExtResource("5_gcvnk")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("2_57r6v")
-resource = 4
+resource = 3
 
-[node name="CBWool1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
+[node name="CheckWool1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_qfym0")
+resource = 3
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
-[node name="CBWool2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
+[node name="CheckWool2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 button_group = SubResource("ButtonGroup_gadpp")
+script = ExtResource("4_qfym0")
+resource = 3
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
 [node name="VBoxContainer5" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -132,20 +164,27 @@ texture = ExtResource("6_rt72v")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("2_57r6v")
-resource = 2
+resource = 4
 
-[node name="CBRock1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
+[node name="CheckRock1" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 button_group = SubResource("ButtonGroup_46feo")
+script = ExtResource("4_qfym0")
+resource = 4
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
-[node name="CBRock2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
+[node name="CheckRock2" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 button_group = SubResource("ButtonGroup_gadpp")
+script = ExtResource("4_qfym0")
+resource = 4
+metadata/_custom_type_script = "uid://bnxo1hnwefjhu"
 
 [node name="OkButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Ok"

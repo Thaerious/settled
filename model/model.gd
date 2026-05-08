@@ -170,9 +170,7 @@ func get_hex_data(hex: Axial) -> HexData:
 
 
 func _init() -> void:
-	self._build_axials()
-	self._place_land()
-	self._place_numbers()
+	self._place_tiles()
 	self._place_water()
 	self._place_ports()
 
@@ -202,7 +200,13 @@ func _init() -> void:
 
 	EventBus.add_action_card.connect(func(id, card):
 		self._action_cards[id].add_card(card)
+		EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
 	)
+
+	EventBus.remove_action_card.connect(func(id, card):
+		self._action_cards[id].remove_card(card)
+		EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
+	)	
 
 	EventBus.update_player_phase.connect(func(id, phase):
 		if id != -1: self._current_player = id
@@ -213,8 +217,16 @@ func _init() -> void:
 		self._exchange_rate[id].set_resource(resource, value)
 	)
 
-	EventBus.request_set_pirate.connect(func(_id, ax):
+	EventBus.set_pirate.connect(func(ax):
 		self._pirate = ax.duplicate()
+	)
+
+	EventBus.add_victory_point.connect(func(id: int):
+		self._victory_points[id] += 1
+	)
+
+	EventBus.add_soldier.connect(func(id: int):
+		self._army[id] += 1
 	)
 
 	self.player_names.resize(4)
@@ -231,7 +243,14 @@ func _init() -> void:
 		self._roads_mirror[i] = [] as Array[AxialEdge]
 
 
-func _build_axials() -> void:
+# populates (non-wate) hexes, corners, edges
+# populate hexdata with hex, terrain, resource
+# set pirate
+func _place_tiles() -> void:
+	var terrain_bag := self._fill_terrain_bag()
+	var number_bag: Array[int] = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
+	number_bag.shuffle()
+
 	var neighbors := Axial.zero().neighbors()
 	var distant_neighbors := neighbors.flat_map(Axial.neighbors_of)
 
@@ -242,19 +261,18 @@ func _build_axials() -> void:
 	self._edges = self._hexes.edge_map(Axial.edges_of)
 
 	for hex in self._hexes:
-		self._hex_data[hex.key()] = HexData.new()
-		self._hex_data[hex.key()].axial = hex
+		var hex_data = HexData.new()
+		self._hex_data[hex.key()] = hex_data
 
+		hex_data.axial    = hex
+		hex_data.terrain  = terrain_bag.pop_front()
+		hex_data.pirate   = hex_data.terrain == Terrain.DESERT
+		hex_data.resource = TERRAIN_TO_RESOURCE[hex_data.terrain]
 
-func _place_land() -> void:
-	var terrain_bag := self._fill_terrain_bag()
-
-	for hex in self._hexes:
-		var terrain: Terrain = terrain_bag.pop_front()
-		self._hex_data[hex.key()].terrain = terrain
-		if terrain == Terrain.DESERT:
-			self._hex_data[hex.key()].pirate = true
+		if hex_data.terrain == Terrain.DESERT: 
 			self._pirate = hex
+		else: 
+			hex_data.number = number_bag.pop_front()
 
 
 func _place_ports() -> void:
@@ -286,6 +304,8 @@ func _place_ports() -> void:
 	self._place_port(Axial.new(-2, -1, 3), 2, Model.ResourceTypes.ANY)
 
 
+# populate ports
+# populate hexdata with ports & port type
 func _place_port(hex: Axial, corner: int, value: ResourceTypes) -> void:
 	var cax = hex.corners().to_array()[corner]
 	self._ports[cax.key()] = value
@@ -293,6 +313,7 @@ func _place_port(hex: Axial, corner: int, value: ResourceTypes) -> void:
 	self._hex_data[hex.key()].port_type = value
 
 
+# populates water hexes and hexdata
 func _place_water() -> void:
 	var water := self._hexes.flat_map(Axial.neighbors_of)
 	water = water.difference(self._hexes)
@@ -314,16 +335,6 @@ func _fill_terrain_bag() -> Array[Terrain]:
 	terrain_bag.shuffle()
 
 	return terrain_bag
-
-
-func _place_numbers() -> void:
-	var number_bag: Array[int] = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
-
-	number_bag.shuffle()
-	for hex_data in self._hex_data.values():
-		if hex_data.terrain == Terrain.DESERT: continue
-		if hex_data.terrain == Terrain.WATER: continue
-		hex_data.number = number_bag.pop_front()
 
 
 func save(path: String) -> void:
@@ -388,17 +399,16 @@ func load(path: String) -> void:
 
 func _serialize_hex_data() -> Dictionary:
 	var out := {}
-	for k in _hex_data:
-		var hd: HexData = _hex_data[k]
-		out[k] = {
-			"axial": hd.axial.key(),
-			"terrain": hd.terrain,
-			"number": hd.number,
-			"pirate": hd.pirate,
-			"port_type": hd.port_type,
-			"ports": hd.ports.to_array().map(Axial.to_key),
-		}
+	for k in _hex_data: # k is axial.key()
+		out[k] = _hex_data[k].serialize()
 	return out
+
+
+func _deserialize_hex_data(data: Dictionary) -> void:
+	_hex_data.clear()
+	for k in data: # k is axial.key()
+		var hd = HexData.deserialize(data[k])		
+		_hex_data[k] = hd
 
 
 func _serialize_player_names() -> Dictionary:
@@ -415,19 +425,7 @@ func _deserialize_player_names(data: Dictionary) -> void:
 		self.player_names[int(k)] = data[k]
 
 
-func _deserialize_hex_data(data: Dictionary) -> void:
-	_hex_data.clear()
-	for k in data:
-		var d: Dictionary = data[k]
-		var hd := HexData.new()
-		hd.axial = Axial.from_key(d["axial"])
-		hd.terrain = int(d["terrain"]) as Model.Terrain
-		hd.number = int(d["number"])
-		hd.pirate = bool(d["pirate"])
-		hd.port_type = int(d["port_type"]) as Model.ResourceTypes
-		for pk in d["ports"]:
-			hd.ports.add_item(Axial.from_key(pk))
-		_hex_data[k] = hd
+
 
 
 func _serialize_roads() -> Dictionary:

@@ -4,6 +4,13 @@
 ✓ Color pieces
 ✓ Create development dice
 
+# Implement Action Cards
+## Solider
+## Road Building
+## Year of Plenty
+## Monopoly
+## Victory Point
+
 # Implement pirate
 ✓ Create pirate texture & scene
 ✓ Steals resource
@@ -17,12 +24,7 @@
 ## update player card
 # Implement largest army
 ## update player card
-# Implement Action Cards
-## Solider
-## Road Building
-## Year of Plenty
-## Monopoly
-## Victory Point
+
 # Design and Implement roll protocol
 # Add road count indicator to bank
 # Implement game over splash screen
@@ -41,3 +43,5 @@
 # prevent action cards from being played on the same turn they are purchased
 
 # use resource buttons in dialogs
+
+# Smell: in model Array[Axial] and Array[AxialEdge] should be AxialSet and AxialEdgeSet

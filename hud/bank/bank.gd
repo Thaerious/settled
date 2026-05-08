@@ -49,7 +49,7 @@ func _ready() -> void:
 		for resource: Model.ResourceTypes in resources:
 			var label: Label = self.RESOURCE_QTY_LABEL_MAP.get(resource)
 			if label: label.text = str(label.text.to_int() - 1)
-	)	
+	)
 
 	EventBus.set_exchange_rate.connect(func(id: int, r: Model.ResourceTypes, value: int) -> void:
 		if id != Game.self_id: return

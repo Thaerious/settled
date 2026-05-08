@@ -215,3 +215,14 @@ func duplicate(deep: bool = false) -> AxialSet:
 	else:
 		aset._data = self._data.duplicate()
 	return aset
+
+
+func serialize() -> Array:
+	return self._data.keys()
+
+
+static func deserialize(data: Array) -> AxialSet:
+	var aset := AxialSet.new()
+	for key in data:
+		aset.add_item(Axial.from_key(key))
+	return aset

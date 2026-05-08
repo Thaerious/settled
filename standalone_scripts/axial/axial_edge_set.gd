@@ -144,3 +144,14 @@ func duplicate(deep: bool = false) -> AxialEdgeSet:
 	else:
 		aset._data.merge(self._data)
 	return aset	
+
+
+func serialize() -> Array:
+	return self._data.keys()
+
+
+static func deserialize(data: Array) -> AxialEdgeSet:
+	var aset := AxialEdgeSet.new()
+	for key in data:
+		aset.add_item(AxialEdge.from_key(key))
+	return aset	

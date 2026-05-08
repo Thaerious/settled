@@ -36,11 +36,8 @@ func _on_drop(rec: DragRecord):
 
 	self.position = rec.destination.owner.position
 
-	print("ON DROP %s %s %s" % [target, source, target.equals(source)])
-
 	if not target.equals(source):
 		EventBus.request_set_pirate.emit(Game.self_id, target)
-		EventBus.update_player_phase.emit(Game.model._current_player, Model.GamePhase.STEAL_RESOURCES)
 
 
 func _revert_drop(_rec: DragRecord):

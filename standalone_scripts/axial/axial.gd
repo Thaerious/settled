@@ -203,3 +203,15 @@ func map_to_local(tile_map_layer: TileMapLayer) -> Vector2:
 		var sum := Vector2.ZERO
 		for hex in self.hexes(): sum += hex.map_to_local(tile_map_layer)
 		return sum / 3
+
+
+func serialize() -> Dictionary:
+	return {
+		"q": self.q,
+		"r": self.r,
+		"s": self.s
+	}
+
+
+static func deserialize(data: Dictionary) -> Axial:
+	return Axial.new(data["q"], data["r"], data["s"])

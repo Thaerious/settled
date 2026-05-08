@@ -64,3 +64,19 @@ static func from_key(key: String) -> AxialEdge:
 	var a := Axial.new(int(p[0]), int(p[1]), int(p[2]))
 	var b := Axial.new(int(p[3]), int(p[4]), int(p[5]))
 	return AxialEdge.new(a, b, 0.0)
+
+
+func serialize() -> Dictionary:
+	return {
+		"ax1": self.ax1.serialize(),
+		"ax2": self.ax2.serialize(),
+		"rotation": self.rotation
+	}
+
+
+static func deserialize(data: Dictionary) -> AxialEdge:
+	return AxialEdge.new(
+		Axial.deserialize(data["ax1"]),
+		Axial.deserialize(data["ax2"]),
+		data["rotation"]
+	)	
