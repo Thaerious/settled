@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=17 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
@@ -6,11 +6,14 @@
 [ext_resource type="PackedScene" uid="uid://c3xnds1ojmmjj" path="res://hud/action_cards/action_cards.tscn" id="6_0ivg5"]
 [ext_resource type="PackedScene" uid="uid://b21qcmnle7jxn" path="res://hud/dice/dice_control.tscn" id="6_fjv1a"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_panel/PlayerPanel.tscn" id="7_0ivg5"]
+[ext_resource type="Script" uid="uid://b5v478atluche" path="res://hud/phase_buttons/button_save.gd" id="7_0jxvb"]
+[ext_resource type="Script" uid="uid://c77hxmeldfwl7" path="res://hud/phase_buttons/player_button.gd" id="7_jvpmi"]
 [ext_resource type="PackedScene" uid="uid://ccds24g8vhw1y" path="res://hud/bank/bank.tscn" id="8_1kkc0"]
-[ext_resource type="Script" uid="uid://rbdx1k5bjh7u" path="res://hud/phase_buttons/phase_buttons.gd" id="8_gms7k"]
+[ext_resource type="Script" uid="uid://bs88moiyiupa8" path="res://hud/phase_buttons/button_load.gd" id="8_pt78x"]
 [ext_resource type="PackedScene" uid="uid://baabjnmmu7oxg" path="res://hud/pirate_dialog/pirate_dialog.tscn" id="8_qv4qp"]
 [ext_resource type="PackedScene" uid="uid://duwsa3m666m7m" path="res://hud/pirate_discard_dialog/discard_dialog.tscn" id="8_sh35x"]
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="9_gms7k"]
+[ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="9_put16"]
 [ext_resource type="PackedScene" uid="uid://keoxfbt80qfy" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="12_hwufu"]
 [ext_resource type="PackedScene" uid="uid://cpyo2scica4vg" path="res://hud/year_of_plenty_dialog/plenty_dialog.tscn" id="13_mq7b8"]
 
@@ -86,7 +89,6 @@ layout_mode = 2
 [node name="PhaseButtons" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("8_gms7k")
 
 [node name="ButtonNotStarted" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
@@ -230,24 +232,32 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "1"
+script = ExtResource("7_jvpmi")
+id = 0
 
 [node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel1/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "2"
+script = ExtResource("7_jvpmi")
+id = 1
 
 [node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel1/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "3"
+script = ExtResource("7_jvpmi")
+id = 2
 
 [node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel1/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "4"
+script = ExtResource("7_jvpmi")
+id = 3
 
 [node name="Panel2" type="Panel" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 custom_minimum_size = Vector2(0, 50)
@@ -266,17 +276,20 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Save"
+script = ExtResource("7_0jxvb")
 
 [node name="ButtonLoad" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons/Panel2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Load"
+script = ExtResource("8_pt78x")
 
 [node name="ButtonReset" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Reset"
+script = ExtResource("9_put16")
 
 [node name="HandPanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1

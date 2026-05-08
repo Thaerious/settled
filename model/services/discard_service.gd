@@ -13,10 +13,15 @@ func _init() -> void:
 
 func _update_player_phase_hnd(_current_player: int, phase: Model.GamePhase) -> void:
 	if phase != Model.GamePhase.DISCARD: return
+
 	for i in Game.player_count:
 		var bank := Game.model.get_bank(i)
 		if bank.count_resources() <= 7:
 			self._has_discarded += 1
+
+	if self._has_discarded == Game.player_count:
+		self._has_discarded = 0
+		EventBus.update_player_phase.emit.bind(-1, Model.GamePhase.MOVE_PIRATE).call_deferred()
 
 
 func _discard_resources_hnd(id:int, discard: Wallet) -> void:
@@ -31,6 +36,7 @@ func _discard_resources_hnd(id:int, discard: Wallet) -> void:
 	self._discards[id] = discard
 	
 	if self._has_discarded == Game.player_count:
+		self._has_discarded = 0
 		for key in self._discards.keys():
 			EventBus.remove_resources.emit(key, self._discards[key])
 			

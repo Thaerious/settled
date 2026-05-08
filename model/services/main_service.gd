@@ -17,7 +17,7 @@ func _ready() -> void:
 	# Listeners
 	EventBus.service_error.connect(self._on_service_error)
 	EventBus.request_roll.connect(self._on_request_roll)
-	EventBus.specify_roll.connect(self._on_specify_roll)
+	EventBus.specify_roll.connect(self._do_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 	EventBus.request_initial_house.connect(self.place_initial_house)
 	EventBus.request_initial_road.connect(self.place_initial_road)
@@ -102,7 +102,7 @@ func request_steal_from(id: int) -> void:
 			EventBus.add_resources.emit(Game.self_id, Wallet.new([r]))
 			break
 
-	EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.MAIN)
+	EventBus.update_player_phase.emit(-1, Model.GamePhase.MAIN)
 
 
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:
@@ -120,18 +120,15 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 func _on_request_roll() -> void:
 	var d1: int = randi_range(1, 6)
 	var d2: int = randi_range(1, 6)
-	EventBus.set_dice.emit(d1, d2)	
-	
-	for id in range(Game.player_count):	
-		var resources := Wallet.new()
-		self._scan_houses(id, d1 + d2, resources)
-		self._scan_cities(id, d1 + d2, resources)
-		EventBus.add_resources.emit(id, resources)
+	self._do_roll(d1, d2)
 
 
-func _on_specify_roll(d1: int, d2: int) -> void:
-	EventBus.set_dice.emit(d1, d2)	
-	
+func _do_roll(d1: int, d2: int) -> void:
+	EventBus.set_dice.emit(d1, d2)
+	if d1 + d2 == 7:
+		EventBus.update_player_phase.emit(-1, Model.GamePhase.DISCARD)
+		return
+
 	for id in range(Game.player_count):	
 		var resources := Wallet.new()
 		self._scan_houses(id, d1 + d2, resources)

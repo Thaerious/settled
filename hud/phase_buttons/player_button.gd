@@ -1,7 +1,7 @@
-class_name PhaseButton
+class_name PlayerButton
 extends Button
 
-@export var phase: Model.GamePhase = Model.GamePhase.NOT_STARTED
+@export var id: int = -1
 
 
 func _ready() -> void:
@@ -10,18 +10,18 @@ func _ready() -> void:
 
 
 func _pressed():
-	EventBus.update_player_phase.emit(-1, self.phase)
+	EventBus.update_player_phase.emit(self.id, Game.model.get_current_phase())
 
 
-func _update(_id: int, phase: Model.GamePhase):
-	if phase == self.phase:
+func _update(id: int, _phase: Model.GamePhase):
+	if id == self.id:
 		self.modulate = Color.RED
 	else:
 		self.modulate = Color.WHITE
 
 
 func _reset():
-	if Game.model.get_current_phase() == self.phase:
+	if Game.model.get_current_player() == self.id:
 		self.modulate = Color.RED
 	else:
 		self.modulate = Color.WHITE
