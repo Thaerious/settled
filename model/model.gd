@@ -208,10 +208,13 @@ func _init() -> void:
 		EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
 	)	
 
-	EventBus.update_player_phase.connect(func(id, phase):
-		if id != -1: self._current_player = id
+	EventBus.update_phase.connect(func(phase):
 		self._game_phase = phase
 	)
+
+	EventBus.update_player.connect(func(id):
+		self._current_player = id
+	)	
 
 	EventBus.set_exchange_rate.connect(func(id, resource, value):
 		self._exchange_rate[id].set_resource(resource, value)

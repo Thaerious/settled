@@ -3,14 +3,14 @@ extends PanelContainer
 
 
 func _ready():
-	EventBus.update_player_phase.connect(self._update)
+	EventBus.update_phase.connect(self._update)
 
 	EventBus.reset_view.connect(func():
-		self._update(Game.self_id, Game.model.get_current_phase())
+		self._update(Game.model.get_current_phase())
 	)
 
 
-func _update(_id: int, phase: Model.GamePhase) -> void:
+func _update(phase: Model.GamePhase) -> void:
 	match phase:
 		Model.GamePhase.DISCARD:self.visible = false
 		Model.GamePhase.MONOPOLY: self.visible = false

@@ -56,7 +56,7 @@ func _ready() -> void:
 		RESOURCE_EX_LABEL_MAP[r].text = "%s:1" % value		
 	)
 
-	EventBus.update_player_phase.connect(func(_id: int, phase: Model.GamePhase) -> void:
+	EventBus.update_phase.connect(func(phase: Model.GamePhase) -> void:
 		match phase:
 			Model.GamePhase.DISCARD: self.visible = false
 			_: self.visible = true

@@ -27,12 +27,12 @@ func _ready() -> void:
 	self._reset_state()
 
 	self._card_container.gui_input.connect(self._on_click_card_container)
-	EventBus.update_player_phase.connect(self._update_player_phase)
+	EventBus.update_phase.connect(self._update_phase)
 	EventBus.add_resources.connect(func(_id, _res): self._update_main_phase())
 	EventBus.remove_resources.connect(func(_id, _res): self._update_main_phase())
 	
 	EventBus.reset_view.connect(func():
-		self._update_player_phase(Game.model.get_current_player(), Game.model.get_current_phase())
+		self._update_phase(Game.model.get_current_phase())
 	)
 
 
@@ -62,9 +62,9 @@ func _reset_state():
 	self._inital_house_hnd.enabled = false		
 
 
-func _update_player_phase(current_player: int, phase: Model.GamePhase) -> void:
+func _update_phase(phase: Model.GamePhase) -> void:
 	self._reset_state()
-	if current_player != Game.self_id: return
+	if not Game.model.get_current_player() == Game.self_id: return
 
 	match phase:
 		Model.GamePhase.MAIN:

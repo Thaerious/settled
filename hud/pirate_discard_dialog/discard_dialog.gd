@@ -36,7 +36,7 @@ var _must_discard: int
 func _ready() -> void:
 	self._button_ok.pressed.connect(self._ok_pressed)
 
-	EventBus.update_player_phase.connect(self._update_player_phase_hnd)
+	EventBus.update_phase.connect(self._update_phase_hnd)
 	EventBus.reset_view.connect(self._reset_view_hnd)
 
 	for r in RESOURCE_TEXTURE_MAP.keys():
@@ -54,10 +54,10 @@ func _ok_pressed() -> void:
 
 
 func _reset_view_hnd() -> void:
-	self._update_player_phase_hnd(Game.self_id, Game.model.get_current_phase())
+	self._update_phase_hnd(Game.self_id, Game.model.get_current_phase())
 
 
-func _update_player_phase_hnd(_id: int, phase: Model.GamePhase) -> void:
+func _update_phase_hnd(_id: int, phase: Model.GamePhase) -> void:
 	if phase != Model.GamePhase.DISCARD:
 		self.visible = false
 	else:

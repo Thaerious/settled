@@ -23,5 +23,6 @@ func reset() -> void:
 
 
 func _emit_initial_state() -> void:
-	EventBus.update_player_phase.emit(0, Model.GamePhase.NOT_STARTED)
+	EventBus.update_player.emit(0)
+	EventBus.update_phase.emit(Model.GamePhase.NOT_STARTED)
 	EventBus.reset_view.emit()

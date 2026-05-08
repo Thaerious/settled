@@ -32,7 +32,8 @@ func _ready() -> void:
 	EventBus.play_road_building_card.connect(func(id: int): print("EventBus.play_road_building_card | id: %s" % [id]))
 
 	EventBus.discard_resources.connect(func(id: int, discard: Wallet): print("EventBus.discard_resources | id: %s | discard: %s" % [id, discard]))
-	EventBus.update_player_phase.connect(func(current_player: int, phase: Model.GamePhase): print("EventBus.update_player_phase | current_player: %s | phase: %s" % [current_player, Model.GamePhase.find_key(phase)]))
+	EventBus.update_player.connect(func(current_player: int): print("EventBus.update_player | current_player: %s" % [current_player]))
+	EventBus.update_phase.connect(func(phase: Model.GamePhase): print("EventBus.update_phase | phase: %s" % [Model.GamePhase.find_key(phase)]))
 
 	EventBus.set_dice.connect(func(d1: int, d2: int): print("EventBus.set_dice | d1: %s | d2: %s" % [d1, d2]))
 	EventBus.add_resources.connect(func(id: int, wallet: Wallet): print("EventBus.add_resources | id: %s | wallet: %s" % [id, wallet]))
@@ -40,7 +41,7 @@ func _ready() -> void:
 	EventBus.update_action_card.connect(func(id: int, cards: ActionCardsContainer): print("EventBus.update_action_card | id: %s | cards: %s" % [id, cards]))
 	EventBus.update_victory_points.connect(func(id: int, delta: int): print("EventBus.update_victory_points | id: %s | delta: %s" % [id, delta]))
 	EventBus.update_longest_road.connect(func(id: int): print("EventBus.update_longest_road | id: %s" % [id]))
-	EventBus.update_largest_army.connect(func(id: int): print("EventBus.update_largest_army | id: %s" % [id]))
+	EventBus.update_largest_army.connect(func(id: int): print("EventBus.update_largest_army | id: %s" %[id]))
 	EventBus.reset_view.connect(func(): print("EventBus.reset_view"))
 
 	EventBus.set_house.connect(func(id: int, corner: Axial): print("EventBus.set_house | id: %s | corner: %s" % [id, corner]))
@@ -51,6 +52,7 @@ func _ready() -> void:
 	EventBus.add_victory_point.connect(func(id: int): print("EventBus.add_victory_point | id: %s" % [id]))
 	EventBus.add_soldier.connect(func(id: int): print("EventBus.add_soldier | id: %s" % [id]))
 	EventBus.add_action_card.connect(func(id: int, c: Model.ActionCardTypes): print("EventBus.add_action_card | id: %s | c: %s" % [id, Model.ActionCardTypes.find_key(c)]))
+	EventBus.remove_action_card.connect(func(id: int, c: Model.ActionCardTypes): print("EventBus.remove_action_card | id: %s | c: %s" % [id, Model.ActionCardTypes.find_key(c)]))
 	EventBus.set_action_cards.connect(func(id: int, ac_wallet: ActionCardWallet): print("EventBus.set_action_cards | id: %s | ac_wallet: %s" % [id, ac_wallet]))
 
 	EventBus.set_player_view.connect(func(id: int): print("EventBus.set_player_view | id: %s" % [id]))

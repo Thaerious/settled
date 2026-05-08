@@ -5,15 +5,15 @@ extends Button
 
 
 func _ready() -> void:
-	EventBus.update_player_phase.connect(self._update)
+	EventBus.update_player.connect(self._update)
 	EventBus.reset_view.connect(self._reset)
 
 
 func _pressed():
-	EventBus.update_player_phase.emit(self.id, Game.model.get_current_phase())
+	EventBus.update_player.emit(self.id)
 
 
-func _update(id: int, _phase: Model.GamePhase):
+func _update(id: int):
 	if id == self.id:
 		self.modulate = Color.RED
 	else:

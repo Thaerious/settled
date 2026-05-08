@@ -30,7 +30,8 @@ signal play_soldier_card(id: int)
 signal play_road_building_card(id: int)
 
 signal discard_resources(id:int, discard: Wallet)
-signal update_player_phase(current_player: int, phase: Model.GamePhase)
+signal update_player(current_player: int)
+signal update_phase(phase: Model.GamePhase)
 
 # Model/Service to view events
 signal set_dice(d1: int, d2:int)

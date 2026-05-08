@@ -13,10 +13,10 @@ extends PanelContainer
 func _ready() -> void:
 	self._label_buttons()
 
-	EventBus.update_player_phase.connect(self._update_player_phase)
+	EventBus.update_phase.connect(self._update_phase)
 
 	EventBus.reset_view.connect(func(): 
-		self._update_player_phase(Game.model.get_current_player(), Game.model.get_current_phase())
+		self._update_phase(Game.model.get_current_phase())
 	)
 
 
@@ -32,11 +32,11 @@ func _label_buttons() -> void:
 		self.visible = false
 
 
-func _update_player_phase(current_player: int, phase: Model.GamePhase) -> void:
+func _update_phase(phase: Model.GamePhase) -> void:
 	self.visible = false	
 
 	if phase != Model.GamePhase.STEAL_RESOURCES: return
-	if current_player != Game.self_id: return
+	if not Game.model.get_current_player() == Game.self_id: return
 
 	var robber := Game.model.get_pirate()
 	var corners := robber.corners()

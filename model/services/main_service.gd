@@ -22,7 +22,7 @@ func _ready() -> void:
 	EventBus.request_initial_house.connect(self.place_initial_house)
 	EventBus.request_initial_road.connect(self.place_initial_road)
 	EventBus.request_exchange.connect(self.request_exchange)
-	EventBus.request_steal_from.connect(self.request_steal_from)
+
 
 	EventBus.request_play_action_card.connect(self._request_play_action_card)
 	EventBus.play_monopoly_card.connect(self._play_monopoly_card)
@@ -42,10 +42,10 @@ func _request_set_pirate(_id: int, hex: Axial):
 		var corner_owner = Game.model.get_owner(ax)
 		if corner_owner == -1: continue
 		if corner_owner == Game.self_id: continue
-		EventBus.update_player_phase.emit(-1, Model.GamePhase.STEAL_RESOURCES)
+		EventBus.update_phase.emit(Model.GamePhase.STEAL_RESOURCES)
 		return
 
-	EventBus.update_player_phase.emit(-1, Model.GamePhase.MAIN)
+	EventBus.update_phase.emit(Model.GamePhase.MAIN)
 
 
 func _request_play_action_card(id: int, card: Model.ActionCardTypes) -> void:
@@ -53,13 +53,13 @@ func _request_play_action_card(id: int, card: Model.ActionCardTypes) -> void:
 	
 	match card:
 		Model.ActionCardTypes.SOLDIER:			
-			EventBus.update_player_phase.emit(-1, Model.GamePhase.MOVE_PIRATE)
+			EventBus.update_phase.emit(Model.GamePhase.MOVE_PIRATE)
 		Model.ActionCardTypes.BUILD_ROAD:
-			EventBus.update_player_phase.emit(-1, Model.GamePhase.ROAD_BUILDING)
+			EventBus.update_phase.emit(Model.GamePhase.ROAD_BUILDING)
 		Model.ActionCardTypes.PLENTY:
-			EventBus.update_player_phase.emit(-1, Model.GamePhase.YEAR_OF_PLENTY)
+			EventBus.update_phase.emit(Model.GamePhase.YEAR_OF_PLENTY)
 		Model.ActionCardTypes.MONOPOLY:
-			EventBus.update_player_phase.emit(-1, Model.GamePhase.MONOPOLY)
+			EventBus.update_phase.emit(Model.GamePhase.MONOPOLY)
 		Model.ActionCardTypes.VICTORY_POINTS:
 			EventBus.add_victory_point.emit(id)
 
@@ -72,12 +72,12 @@ func _play_monopoly_card(id: int, resource: Model.ResourceTypes):
 		EventBus.add_resources.emit(id, bank)
 		EventBus.remove_resources.emit(p, bank)
 	
-	EventBus.update_player_phase.emit(-1, Model.GamePhase.MAIN)
+	EventBus.update_phase.emit(Model.GamePhase.MAIN)
 
 
 func _play_plenty_card(id: int, wallet: Wallet):
 	EventBus.add_resources.emit(id, wallet)
-	EventBus.update_player_phase.emit(-1, Model.GamePhase.MAIN)
+	EventBus.update_phase.emit(Model.GamePhase.MAIN)
 
 
 func _play_road_building_card(id: int, roads: AxialEdgeSet) -> void:
@@ -87,22 +87,6 @@ func _play_road_building_card(id: int, roads: AxialEdgeSet) -> void:
 
 func _on_service_error(id: int, msg: String) -> void:
 	push_error("service error from id=%s: %s" % [id, msg])
-
-
-func request_steal_from(id: int) -> void:
-	var bank := Game.model.get_bank(id)
-	var count := Game.model.count_resources(id)
-	var i = randi_range(0, count - 1)
-	var sum = 0
-
-	for r in Model.ResourceTypes.values():
-		sum = sum + bank.get_resource(r)
-		if sum > i:
-			EventBus.remove_resources.emit(id, Wallet.new([r]))
-			EventBus.add_resources.emit(Game.self_id, Wallet.new([r]))
-			break
-
-	EventBus.update_player_phase.emit(-1, Model.GamePhase.MAIN)
 
 
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:
@@ -126,7 +110,7 @@ func _on_request_roll() -> void:
 func _do_roll(d1: int, d2: int) -> void:
 	EventBus.set_dice.emit(d1, d2)
 	if d1 + d2 == 7:
-		EventBus.update_player_phase.emit(-1, Model.GamePhase.DISCARD)
+		EventBus.update_phase.emit(Model.GamePhase.DISCARD)
 		return
 
 	for id in range(Game.player_count):	
@@ -192,16 +176,20 @@ func _next_player() -> void:
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP_FORWARD_ROAD:
 		next = next + 1
 		if next > 3:
-			EventBus.update_player_phase.emit(3, Model.GamePhase.SETUP_REVERSE_HOUSE)
+			EventBus.update_player.emit(3)
+			EventBus.update_phase.emit(Model.GamePhase.SETUP_REVERSE_HOUSE)
 		else:
-			EventBus.update_player_phase.emit(next, Model.GamePhase.SETUP_FORWARD_HOUSE)
+			EventBus.update_player.emit(next)
+			EventBus.update_phase.emit(Model.GamePhase.SETUP_FORWARD_HOUSE)
 
 	elif Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE_ROAD:
 		next = next - 1
 		if next < 0:
-			EventBus.update_player_phase.emit(0, Model.GamePhase.MAIN)
+			EventBus.update_player.emit(0)
+			EventBus.update_phase.emit(Model.GamePhase.MAIN)
 		else:
-			EventBus.update_player_phase.emit(next, Model.GamePhase.SETUP_REVERSE_HOUSE)
+			EventBus.update_player.emit(next)
+			EventBus.update_phase.emit(Model.GamePhase.SETUP_REVERSE_HOUSE)
 
 
 func place_house(id: int, corner: Axial) -> void:
@@ -232,9 +220,9 @@ func place_initial_house(id: int, corner: Axial) -> void:
 			payout.add_resource(hexdata.resource)
 
 		EventBus.add_resources.emit(id, payout)
-		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_REVERSE_ROAD)
+		EventBus.update_phase.emit(Model.GamePhase.SETUP_REVERSE_ROAD)
 	else:
-		EventBus.update_player_phase.emit(Game.model.get_current_player(), Model.GamePhase.SETUP_FORWARD_ROAD)
+		EventBus.update_phase.emit(Model.GamePhase.SETUP_FORWARD_ROAD)
 
 
 func place_initial_road(id: int, edge: AxialEdge) -> void:
