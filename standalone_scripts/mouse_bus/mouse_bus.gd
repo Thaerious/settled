@@ -6,16 +6,10 @@ extends Node
 
 # ─── Constants ───
 
-## The CanvasLayer index used for the drag ghost. Renders above all UI.
-const DRAG_LAYER: int = 10
-
 ## The mouse button that initiates and releases drags.
 const DRAG_BUTTON: int = MouseButton.MOUSE_BUTTON_LEFT
 
 # ─── State ───
-
-## Bitmask for physics layer
-var _mouse_mask: int = 0
 
 ## The active drag arguments. [code]null[/code] when no drag is active.
 var _args: DragArgs = null
@@ -37,9 +31,7 @@ var _hover_target: Node = null
 func _ready() -> void:
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	self._drag_layer = CanvasLayer.new()
-	self._drag_layer.layer = DRAG_LAYER
 	self.add_child(self._drag_layer)
-	self._mouse_mask = self._get_mouse_mask()
 
 
 ## Listens for mouse button release to end an active drag.
@@ -64,9 +56,10 @@ func _process(_delta: float) -> void:
 ## [param args] The drag configuration and callbacks.
 func start_drag(args: DragArgs) -> void:
 	assert(self._draggable == null, "MouseBus: drag started while one is already active")
-	self._args      = args
+	self._args = args
 	self._draggable = self._generate_rect(args.texture, args.size)
 	self._drag_layer.add_child(self._draggable)
+	print("mask %s" % args.mask)
 
 
 ## Returns whether a drag is currently in progress.
@@ -108,14 +101,6 @@ func get_local(target: Variant, world_pos_in: Vector2) -> Vector2:
 
 # ─── Internals ───
 
-func _get_mouse_mask() -> int:
-	for i in range(32):
-		if ProjectSettings.get_setting("layer_names/2d_physics/layer_%d" % (i + 1)).to_lower() == "mouse":
-			return 1 << i
-	push_error("MouseBus: no physics layer named 'mouse' found")
-	return 0
-
-
 ## Creates and returns a [TextureRect] configured as a drag ghost.
 ## [param texture] The texture to display.
 ## [param size] The minimum size of the rect.
@@ -138,7 +123,7 @@ func _get_world_target(world: Vector2) -> Node:
 	query.position = world
 	query.collide_with_areas = true
 	query.collide_with_bodies = false	
-	query.collision_mask = self._mouse_mask
+	query.collision_mask = self._args.mask
 
 	for result in space.intersect_point(query):
 		targets.append(result.collider)

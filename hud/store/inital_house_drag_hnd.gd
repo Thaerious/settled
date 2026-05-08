@@ -7,10 +7,12 @@ var _road_container: StoreItemContainer
 
 func _init(house_trigger: StoreItemContainer, road_trigger: StoreItemContainer) -> void:
 	super._init(house_trigger)
+
 	self._road_drag_hnd = InitialRoadDragHnd.new(road_trigger)
 	self._road_drag_hnd.enabled = false
 	self.house_container = house_trigger
 	self._road_container = road_trigger
+	self.mask = 0x02
 
 
 func _start_drag() -> void:

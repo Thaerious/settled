@@ -12,9 +12,6 @@ var exited:     Variant
 ## The drop target that was just entered, or null if the drag left without entering a new one.
 var entered:    Variant
 
-## The payload carried from the originating DragArgs.
-var payload:    Variant
-
 ## Cursor position in the local coordinate space of the entered target.
 var local_pos:  Vector2
 

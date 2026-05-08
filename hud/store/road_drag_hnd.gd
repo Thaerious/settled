@@ -9,6 +9,11 @@ var _road_piece = ROAD_PIECE.instantiate()
 var _last_target: EdgeTarget = null
 
 
+func _init(road_trigger: StoreItemContainer) -> void:
+	super._init(road_trigger)
+	self.mask = 0x02
+	
+
 func _start_drag() -> void:
 	self._road_piece = ROAD_PIECE.instantiate()
 	EventBus.show_road_targets.emit()

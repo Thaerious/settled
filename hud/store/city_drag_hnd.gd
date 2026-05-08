@@ -9,6 +9,11 @@ var _city_piece = CITY_PIECE.instantiate()
 var _last_target: CornerTarget = null
 
 
+func _init(trigger) -> void:
+	super._init(trigger)
+	self.mask = 0x02
+
+
 func _start_drag() -> void:
 	self._city_piece = CITY_PIECE.instantiate()
 	EventBus.show_city_targets.emit()

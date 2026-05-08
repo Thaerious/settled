@@ -9,6 +9,10 @@ var _house_piece = HOUSE_PIECE.instantiate()
 var _last_target: CornerTarget = null
 
 
+func _init(trigger) -> void:
+	super._init(trigger)
+	self.mask = 0x02
+
 func _start_drag() -> void:
 	self._house_piece = HOUSE_PIECE.instantiate()
 	EventBus.show_house_targets.emit()
