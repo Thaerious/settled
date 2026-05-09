@@ -16,7 +16,7 @@ func _gui_input(event) -> void:
 	if not mouse_event.pressed: return
 	
 	if mouse_event.ctrl_pressed:
-		EventBus.add_action_card.emit(Game.self_id, action_card)
+		EventBus.request_add_action_card.emit(Game.self_id, action_card)
 	else:
 		EventBus.request_play_action_card.emit(Game.self_id, action_card)
 	

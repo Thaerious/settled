@@ -51,22 +51,22 @@ func _ready() -> void:
 			if label: label.text = str(label.text.to_int() - 1)
 	)
 
-	EventBus.set_exchange_rate.connect(func(id: int, r: Model.ResourceTypes, value: int) -> void:
+	EventBus.exchange_rate_set.connect(func(id: int, r: Model.ResourceTypes, value: int) -> void:
 		if id != Game.self_id: return
 		RESOURCE_EX_LABEL_MAP[r].text = "%s:1" % value		
 	)
 
-	EventBus.update_phase.connect(func(phase: Model.GamePhase) -> void:
+	EventBus.phase_updated.connect(func(phase: Model.GamePhase) -> void:
 		match phase:
 			Model.GamePhase.DISCARD: self.visible = false
 			_: self.visible = true
 	)
 
-	EventBus.reset_view.connect(self._on_reset_view)
+	EventBus.model_loaded.connect(self._on_model_loaded)
 
 
-func _on_reset_view() -> void:
-	print("bank.reset_view '%s'" % Model.GamePhase.find_key(Game.model.get_current_phase()))
+func _on_model_loaded() -> void:
+	print("bank._on_model_loaded '%s'" % Model.GamePhase.find_key(Game.model.get_current_phase()))
 	var bank_model = Game.model.get_bank(Game.self_id)
 
 	match Game.model.get_current_phase():

@@ -19,7 +19,7 @@ func _ready() -> void:
 
 	self._button_roll.button_up.connect(self._do_roll)
 
-	EventBus.set_dice.connect(func(d1:int, d2:int):
+	EventBus.dice_set.connect(func(d1:int, d2:int):
 		self._label1.text = str(d1)
 		self._label2.text = str(d2)		
 	);
@@ -38,4 +38,4 @@ func _do_roll() -> void:
 	if button2.text != "R":		
 		d2 = int(button2.text)
 	
-	EventBus.specify_roll.emit(d1, d2)
+	EventBus.development_roll.emit(d1, d2)

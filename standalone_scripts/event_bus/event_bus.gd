@@ -30,37 +30,38 @@ signal play_soldier_card(id: int)
 signal play_road_building_card(id: int)
 
 signal discard_resources(id:int, discard: Wallet)
-signal update_player(current_player: int)
-signal update_phase(phase: Model.GamePhase)
+
 
 # Model/Service to view events
-signal set_dice(d1: int, d2:int)
-signal add_resources(id: int, wallet: Wallet)
-signal remove_resources(id: int, wallet: Wallet)
-signal update_action_card(id: int, cards: ActionCardsContainer)
-signal update_victory_points(id: int, delta: int)
 signal update_longest_road(id: int)
 signal update_largest_army(id: int)
-signal reset_view()
 
-# Service to Model/View events (add, remove, set)
-signal set_house(id: int, corner: Axial)
-signal set_city(id: int, corner: Axial)
-signal set_road(id: int, edge: AxialEdge)
-signal set_exchange_rate(id: int, r: Model.ResourceTypes, value: int)
-signal set_pirate(hex: Axial)
-signal add_victory_point(id: int)
-signal add_soldier(id: int)
+# Model outgoing events (only the model should emit these)
+signal pirate_set(hex: Axial)
+signal victory_points_updated(id: int, amt: int)
+signal soldier_added(id: int)
+signal exchange_rate_set(id: int, r: Model.ResourceTypes, value: int)
+signal player_updated(current_player: int)
+signal phase_updated(phase: Model.GamePhase)
+signal action_cards_updated(id: int, cards: ActionCardWallet)
+signal house_added(id: int, corner: Axial)
+signal city_added(id: int, corner: Axial)
+signal road_added(id: int, edge: AxialEdge)
+signal dice_set(d1: int, d2:int)
 
-signal add_action_card(id: int, c: Model.ActionCardTypes)
-signal remove_action_card(id: int, c: Model.ActionCardTypes)
+signal request_add_action_card(id: int, c: Model.ActionCardTypes)
 signal set_action_cards(id: int, ac_wallet: ActionCardWallet)
+
+signal add_resources(id: int, wallet: Wallet)
+signal remove_resources(id: int, wallet: Wallet)
 
 # Debug and development signals
 signal set_player_view(id: int)
 signal save_model_state()
 signal load_model_state()
-signal specify_roll(d1: int, d2: int)
+signal development_roll(d1: int, d2: int)
 
 # Terminal Events
 signal service_error(id: int, msg: String)
+
+signal model_loaded()

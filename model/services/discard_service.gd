@@ -6,9 +6,9 @@ var _discards: Dictionary[int, Wallet] = {}
 
 
 func _init() -> void:
-	EventBus.update_phase.connect(self._update_phase_hnd)
+	EventBus.phase_updated.connect(self._update_phase_hnd)
 	EventBus.discard_resources.connect(self._discard_resources_hnd)
-	EventBus.reset_view.connect(func(): self._update_phase_hnd(Game.model.get_current_phase()))
+	EventBus.model_loaded.connect(func(): self._update_phase_hnd(Game.model.get_current_phase()))
 
 
 func _update_phase_hnd(phase: Model.GamePhase) -> void:
@@ -21,8 +21,7 @@ func _update_phase_hnd(phase: Model.GamePhase) -> void:
 
 	if self._has_discarded == Game.player_count:
 		self._has_discarded = 0
-		EventBus.update_phase.emit.bind(Model.GamePhase.MOVE_PIRATE).call_deferred()
-
+		Game.model.do_update_phase.bind(Model.GamePhase.MOVE_PIRATE).call_deferred()
 
 func _discard_resources_hnd(id:int, discard: Wallet) -> void:
 	var bank := Game.model.get_bank(id)
@@ -40,6 +39,4 @@ func _discard_resources_hnd(id:int, discard: Wallet) -> void:
 		for key in self._discards.keys():
 			EventBus.remove_resources.emit(key, self._discards[key])
 			
-		EventBus.update_phase.emit(Model.GamePhase.MOVE_PIRATE)
-
-	
+		Game.model.do_update_phase(Model.GamePhase.MOVE_PIRATE)

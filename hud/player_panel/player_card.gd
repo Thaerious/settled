@@ -65,17 +65,17 @@ func _ready() -> void:
 		self.resources -= resources.count_resources()
 	)
 
-	EventBus.add_action_card.connect(func(id: int, _card: Model.ActionCardTypes) -> void:
+	EventBus.action_cards_updated.connect(func(id: int, cards: ActionCardWallet) -> void:
 		if id != self.player_id: return
-		self.action_cards += 1
+		self.action_cards = cards.count_cards()
 	)	
 
-	EventBus.update_victory_points.connect(func(id: int, delta: int) -> void:
+	EventBus.victory_points_updated.connect(func(id: int, delta: int) -> void:
 		if id != self.player_id: return
 		self.victory_points += delta
 	)	
 
-	EventBus.set_road.connect(func(id: int, _ax: AxialEdge) -> void:
+	EventBus.road_added.connect(func(id: int, _ax: AxialEdge) -> void:
 		if id != self.player_id: return
 		self.roads += 1
 	)	
@@ -86,10 +86,10 @@ func _ready() -> void:
 		self.action_cards -= 1
 	)
 
-	EventBus.reset_view.connect(self._reset_view)
+	EventBus.model_loaded.connect(self._model_loaded)
 
 
-func _reset_view() -> void:
+func _model_loaded() -> void:
 	if (Game.self_id == self.player_id):
 		self.name_label.add_theme_color_override("font_color", Color.RED)
 	else:

@@ -52,11 +52,11 @@ func _ready() -> void:
 	EventBus.show_initial_road_targets.connect(self.show_initial_road_targets_hnd)
 
 	EventBus.clear_targets.connect(self.clear_targets_hnd)
-	EventBus.set_house.connect(self.set_house_hnd)
-	EventBus.set_city.connect(self.set_city_hnd)
-	EventBus.set_road.connect(self.set_road_hnd)
+	EventBus.house_added.connect(self.set_house_hnd)
+	EventBus.city_added.connect(self.set_city_hnd)
+	EventBus.road_added.connect(self.set_road_hnd)
 
-	EventBus.reset_view.connect(self._reset_view)
+	EventBus.model_loaded.connect(self._model_loaded)
 
 func _setup() -> void:
 	var setup = GameBoardSetup.new(self)
@@ -97,7 +97,7 @@ func _input(event: InputEvent) -> void:
 		)
 
 
-func _reset_view() -> void:
+func _model_loaded() -> void:
 	# clear targets
 	clear_targets_hnd()
 

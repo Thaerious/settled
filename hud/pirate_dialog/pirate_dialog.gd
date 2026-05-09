@@ -11,9 +11,9 @@ extends PanelContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	EventBus.update_phase.connect(self._update_phase)
+	EventBus.phase_updated.connect(self._update_phase)
 
-	EventBus.reset_view.connect(func(): 
+	EventBus.model_loaded.connect(func(): 
 		self._update_phase(Game.model.get_current_phase())
 	)
 

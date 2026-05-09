@@ -98,6 +98,9 @@ var _victory_points: Dictionary[int, int] = {}
 var _army: Dictionary[int, int] = {}
 var _ports: Dictionary[String, ResourceTypes] = {}
 
+var _dice: Array[int] = [1, 1]
+
+
 func all_hexes() -> AxialSet:               return self._hexes.duplicate(true)
 func all_corners() -> AxialSet:             return self._corners.duplicate(true)
 func all_edges() -> AxialEdgeSet:           return self._edges.duplicate(true)
@@ -107,6 +110,7 @@ func get_current_phase() -> GamePhase:      return self._game_phase
 func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), ResourceTypes.NONE)
 func get_army(id: int) -> int:              return self._army[id]
 func get_victory_points(id: int) -> int:    return self._victory_points[id]
+func get_dice() -> Array[int]:              return self._dice.duplicate()
 
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id].get_resource(r)
 
@@ -169,68 +173,92 @@ func get_hex_data(hex: Axial) -> HexData:
 	return data
 
 
+func do_set_dice(d1: int, d2:int) -> void:
+	self._dice[0] = d1
+	self._dice[1] = d2
+	EventBus.dice_set.emit(d1, d2)
+
+
+func do_set_house(id: int, ax: Axial) -> void:	
+	self._houses[ax.key()] = id
+	self._houses_mirror[id].append(ax)
+	self.do_add_victory_point(id)
+	EventBus.house_added.emit(id, ax)
+
+
+func do_set_city(id: int, ax: Axial) -> void:
+	self._cities[ax.key()] = id
+	self._cities_mirror[id].append(ax)
+	self._houses_mirror[id].erase(ax)
+	self.do_add_victory_point(id)
+	EventBus.city_added.emit(id, ax)
+
+
+func do_set_road(id: int, edge: AxialEdge) -> void:
+	self._roads[edge.key()] = id
+	self._roads_mirror[id].append(edge)
+	EventBus.road_added.emit(id, edge)
+
+
+func do_add_resources(id: int, resources) -> void:
+	self._bank[id].add_resources(resources)
+	EventBus.add_resources.emit(id, resources)
+
+
+func do_remove_resources(id: int, resources) -> void:
+	self._bank[id].remove_resources(resources)
+	EventBus.remove_resources.emit(id, resources)
+
+
+func do_add_action_card(id: int, card) -> void:
+	self._action_cards[id].add_card(card)
+	EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
+
+
+func do_remove_action_card(id: int, card) -> void:
+	self._action_cards[id].remove_card(card)
+	EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
+
+
+func do_update_phase(phase: GamePhase) -> void:
+	self._game_phase = phase
+	EventBus.phase_updated.emit(phase)
+
+
+func do_update_player(id: int) -> void:
+	self._current_player = id
+	EventBus.player_updated.emit(id)
+
+
+func do_set_exchange_rate(id: int, resource, value: int) -> void:
+	self._exchange_rate[id].set_resource(resource, value)
+	EventBus.exchange_rate_set.emit(id, resource, value)
+
+
+func do_set_pirate(ax: Axial) -> void:
+	self._pirate = ax.duplicate()
+	EventBus.pirate_set.emit(ax.duplicate())
+
+
+func do_add_victory_point(id: int, amt: int = 1) -> void:
+	self._victory_points[id] += amt
+	EventBus.victory_points_updated.emit(id, self._victory_points[id])
+
+
+func do_remove_victory_point(id: int, amt: int = 1) -> void:
+	self._victory_points[id] -= amt
+	EventBus.victory_points_updated.emit(id, self._victory_points[id])
+
+
+func do_add_soldier(id: int) -> void:
+	self._army[id] += 1
+	EventBus.soldier_added.emit(id)
+
+
 func _init() -> void:
 	self._place_tiles()
 	self._place_water()
 	self._place_ports()
-
-	EventBus.set_house.connect(func(id, ax):
-		self._houses[ax.key()] = id
-		self._houses_mirror[id].append(ax)
-	)
-
-	EventBus.set_city.connect(func(id, ax):
-		self._cities[ax.key()] = id
-		self._cities_mirror[id].append(ax)
-		self._houses_mirror[id].erase(ax)
-	)
-
-	EventBus.set_road.connect(func(id, ax):
-		self._roads[ax.key()] = id
-		self._roads_mirror[id].append(ax)
-	)
-
-	EventBus.add_resources.connect(func(id, resources):
-			self._bank[id].add_resources(resources)
-	)
-
-	EventBus.remove_resources.connect(func(id, resources):
-		self._bank[id].remove_resources(resources)
-	)
-
-	EventBus.add_action_card.connect(func(id, card):
-		self._action_cards[id].add_card(card)
-		EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
-	)
-
-	EventBus.remove_action_card.connect(func(id, card):
-		self._action_cards[id].remove_card(card)
-		EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
-	)	
-
-	EventBus.update_phase.connect(func(phase):
-		self._game_phase = phase
-	)
-
-	EventBus.update_player.connect(func(id):
-		self._current_player = id
-	)	
-
-	EventBus.set_exchange_rate.connect(func(id, resource, value):
-		self._exchange_rate[id].set_resource(resource, value)
-	)
-
-	EventBus.set_pirate.connect(func(ax):
-		self._pirate = ax.duplicate()
-	)
-
-	EventBus.add_victory_point.connect(func(id: int):
-		self._victory_points[id] += 1
-	)
-
-	EventBus.add_soldier.connect(func(id: int):
-		self._army[id] += 1
-	)
 
 	self.player_names.resize(4)
 
@@ -426,9 +454,6 @@ func _deserialize_player_names(data: Dictionary) -> void:
 	self.player_names.resize(data.size())
 	for k in data:
 		self.player_names[int(k)] = data[k]
-
-
-
 
 
 func _serialize_roads() -> Dictionary:

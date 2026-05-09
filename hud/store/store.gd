@@ -27,11 +27,11 @@ func _ready() -> void:
 	self._reset_state()
 
 	self._card_container.gui_input.connect(self._on_click_card_container)
-	EventBus.update_phase.connect(self._update_phase)
+	EventBus.phase_updated.connect(self._update_phase)
 	EventBus.add_resources.connect(func(_id, _res): self._update_main_phase())
 	EventBus.remove_resources.connect(func(_id, _res): self._update_main_phase())
 	
-	EventBus.reset_view.connect(func():
+	EventBus.model_loaded.connect(func():
 		self._update_phase(Game.model.get_current_phase())
 	)
 

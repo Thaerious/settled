@@ -43,9 +43,9 @@ func _dev_gui_input(event) -> bool:
 	var wallet = Wallet.new([resource])
 
 	if mouse_event.shift_pressed:
-		EventBus.remove_resources.emit(Game.self_id, wallet)
+		Game.model.do_remove_resources(Game.self_id, wallet)
 	else:
-		EventBus.add_resources.emit(Game.self_id, wallet)
+		Game.model.do_add_resources(Game.self_id, wallet)
 	
 	return true
 	

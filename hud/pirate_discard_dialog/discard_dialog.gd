@@ -36,8 +36,8 @@ var _must_discard: int
 func _ready() -> void:
 	self._button_ok.pressed.connect(self._ok_pressed)
 
-	EventBus.update_phase.connect(self._update_phase_hnd)
-	EventBus.reset_view.connect(self._reset_view_hnd)
+	EventBus.phase_updated.connect(self._update_phase_hnd)
+	EventBus.model_loaded.connect(self._model_loaded_hnd)
 
 	for r in RESOURCE_TEXTURE_MAP.keys():
 		var texture_rect = self.RESOURCE_TEXTURE_MAP[r]
@@ -53,11 +53,11 @@ func _ok_pressed() -> void:
 	self._pending_label.visible = true
 
 
-func _reset_view_hnd() -> void:
-	self._update_phase_hnd(Game.self_id, Game.model.get_current_phase())
+func _model_loaded_hnd() -> void:
+	self._update_phase_hnd(Game.model.get_current_phase())
 
 
-func _update_phase_hnd(_id: int, phase: Model.GamePhase) -> void:
+func _update_phase_hnd(phase: Model.GamePhase) -> void:
 	if phase != Model.GamePhase.DISCARD:
 		self.visible = false
 	else:

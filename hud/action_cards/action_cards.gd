@@ -13,15 +13,14 @@ func _ready() -> void:
 		Model.ActionCardTypes.VICTORY_POINTS: %QtyVictory,		
 	})
 
+	EventBus.action_cards_updated.connect(self._action_cards_updated)
+	EventBus.model_loaded.connect(self._model_loaded)
 
-	EventBus.add_action_card.connect(self._on_add_action_card)
-	EventBus.reset_view.connect(self._reset_view)
 
-
-func _reset_view() -> void:
+func _model_loaded() -> void:
 	self.ac_wallet.copy_from(Game.model.get_action_cards(Game.self_id))
 
 
-func _on_add_action_card(id: int, _card: Model.ActionCardTypes) -> void:
+func _action_cards_updated(id: int, cards: ActionCardWallet) -> void:
 	if not id == Game.self_id: return
-	self.ac_wallet.copy_from(Game.model.get_action_cards(Game.self_id))
+	self.ac_wallet.copy_from(cards)

@@ -45,3 +45,5 @@
 # use resource buttons in dialogs
 
 # Smell: in model Array[Axial] and Array[AxialEdge] should be AxialSet and AxialEdgeSet
+
+# View:  Wheat and sheep in bank are in the wrong order

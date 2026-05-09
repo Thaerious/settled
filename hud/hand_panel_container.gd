@@ -3,9 +3,9 @@ extends PanelContainer
 
 
 func _ready():
-	EventBus.update_phase.connect(self._update)
+	EventBus.phase_updated.connect(self._update)
 
-	EventBus.reset_view.connect(func():
+	EventBus.model_loaded.connect(func():
 		self._update(Game.model.get_current_phase())
 	)
 

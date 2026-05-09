@@ -5,12 +5,12 @@ extends Button
 
 
 func _ready() -> void:
-	EventBus.update_player.connect(self._update)
-	EventBus.reset_view.connect(self._reset)
+	EventBus.player_updated.connect(self._update)
+	EventBus.model_loaded.connect(self._reset)
 
 
 func _pressed():
-	EventBus.update_player.emit(self.id)
+	Game.model.do_update_player(self.id)
 
 
 func _update(id: int):

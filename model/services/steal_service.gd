@@ -15,8 +15,8 @@ func request_steal_from(id: int) -> void:
 	for r in Model.ResourceTypes.values():
 		sum = sum + bank.get_resource(r)
 		if sum > i:
-			EventBus.remove_resources.emit(id, Wallet.new([r]))
-			EventBus.add_resources.emit(Game.self_id, Wallet.new([r]))
+			Game.model.do_remove_resources(id, Wallet.new([r]))
+			Game.model.do_add_resources(Game.self_id, Wallet.new([r]))
 			break
 
-	EventBus.update_phase.emit(Model.GamePhase.MAIN)	
+	Game.model.do_update_phase(Model.GamePhase.MAIN)

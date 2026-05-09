@@ -58,8 +58,7 @@ func start_drag(args: DragArgs) -> void:
 	assert(self._draggable == null, "MouseBus: drag started while one is already active")
 	self._args = args
 	self._draggable = self._generate_rect(args.texture, args.size)
-	self._drag_layer.add_child(self._draggable)
-	print("mask %s" % args.mask)
+	self._drag_layer.add_child(self._draggable)	
 
 
 ## Returns whether a drag is currently in progress.
