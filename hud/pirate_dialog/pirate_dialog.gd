@@ -11,13 +11,16 @@ extends PanelContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	self._label_buttons()
-
 	EventBus.update_phase.connect(self._update_phase)
 
 	EventBus.reset_view.connect(func(): 
 		self._update_phase(Game.model.get_current_phase())
 	)
+
+	for id in range(Game.player_count):
+		buttons[id].button_up.connect(func():
+			EventBus.request_steal_from.emit(id)
+		)	
 
 
 func _label_buttons() -> void:
@@ -26,14 +29,13 @@ func _label_buttons() -> void:
 		var player_name = Game.model.player_names[id]
 		buttons[id].text = "Steal from %s with %s resourses" % [player_name, count]
 		buttons[id].visible = false
-		buttons[id].button_up.connect(func():
-			EventBus.request_steal_from.emit(id)
-		)
+
 		self.visible = false
 
 
 func _update_phase(phase: Model.GamePhase) -> void:
 	self.visible = false	
+	self._label_buttons()
 
 	if phase != Model.GamePhase.STEAL_RESOURCES: return
 	if not Game.model.get_current_player() == Game.self_id: return
