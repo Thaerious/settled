@@ -111,20 +111,11 @@ func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), Re
 func get_army(id: int) -> int:              return self._army[id]
 func get_victory_points(id: int) -> int:    return self._victory_points[id]
 func get_dice() -> Array[int]:              return self._dice.duplicate()
-
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id].get_resource(r)
-
-func get_bank(id: int) -> Wallet:
-	return self._bank[id].duplicate()
-
-func get_action_cards(id: int) -> ActionCardWallet:
-	return self._action_cards[id]
-
-func count_resources(id: int) -> int:
-	return self._bank[id].count_resources()
-
-func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: int) -> bool:
-	return self._bank[id].has_resources(brick, wood, rock, wheat, wool)
+func get_bank(id: int) -> Wallet: return self._bank[id].duplicate()
+func get_action_cards(id: int) -> ActionCardWallet: return self._action_cards[id]
+func count_resources(id: int) -> int: return self._bank[id].count_resources()
+func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: int) -> bool: return self._bank[id].has_resources(brick, wood, rock, wheat, wool)
 
 
 func get_owner(ax: Axial) -> int:
@@ -135,32 +126,52 @@ func get_owner(ax: Axial) -> int:
 	return -1
 
 
-func get_roads(id: int) -> AxialEdgeSet:
+func get_roads(id: int = -1) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
-	aset.add_all(self._roads_mirror[id])
-	return aset
+
+	if id == -1:
+		for p in range(4):
+			aset.add_all(self.get_roads(p))
+	else:
+		aset.add_all(self._roads_mirror[id])
+
+	return aset	
 
 
-func get_houses(id: int) -> AxialSet:
+func get_houses(id: int = -1) -> AxialSet:
 	var aset := AxialSet.new()
-	aset.add_all(self._houses_mirror[id])
-	return aset
+
+	if id == -1:
+		for p in range(4):
+			aset.add_all(self.get_houses(p))
+	else:
+		aset.add_all(self._houses_mirror[id])
+
+	return aset	
 
 
-func get_cities(id: int) -> AxialSet:
+func get_cities(id: int = -1) -> AxialSet:
 	var aset := AxialSet.new()
-	aset.add_all(self._cities_mirror[id])
+
+	if id == -1:
+		for p in range(4):
+			aset.add_all(self.get_cities(p))
+	else:
+		aset.add_all(self._cities_mirror[id])
+
 	return aset
 
 
 func get_all_buildings(id: int = -1) -> AxialSet:
 	var result := AxialSet.new()
+
 	if id == -1:
 		for p in range(4):
-			result.add_all(self._houses_mirror[p])
+			result.add_all(self.get_houses(p))
+			result.add_all(self.get_cities(p))
 	else:
-		result.add_all(self._houses_mirror[id])
-		result.add_all(self._cities_mirror[id])
+		result.add_all(self.get_houses(id))
+		result.add_all(self.get_cities(id))
 	return result
 
 
@@ -200,17 +211,17 @@ func do_set_road(id: int, edge: AxialEdge) -> void:
 	EventBus.road_added.emit(id, edge)
 
 
-func do_add_resources(id: int, resources) -> void:
+func do_add_resources(id: int, resources: Wallet) -> void:
 	self._bank[id].add_resources(resources)
 	EventBus.add_resources.emit(id, resources)
 
 
-func do_remove_resources(id: int, resources) -> void:
+func do_remove_resources(id: int, resources:Wallet) -> void:
 	self._bank[id].remove_resources(resources)
 	EventBus.remove_resources.emit(id, resources)
 
 
-func do_add_action_card(id: int, card) -> void:
+func do_add_action_card(id: int, card: ActionCardTypes) -> void:
 	self._action_cards[id].add_card(card)
 	EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
 
@@ -283,12 +294,12 @@ func _place_tiles() -> void:
 	number_bag.shuffle()
 
 	var neighbors := Axial.zero().neighbors()
-	var distant_neighbors := neighbors.flat_map(Axial.neighbors_of)
+	var distant_neighbors := neighbors.map(Axial.neighbors_of)
 
 	self._hexes.add_item(Axial.zero())
 	self._hexes.add_all(neighbors)
 	self._hexes.add_all(distant_neighbors)
-	self._corners = self._hexes.flat_map(Axial.corners_of)
+	self._corners = self._hexes.map(Axial.corners_of)
 	self._edges = self._hexes.edge_map(Axial.edges_of)
 
 	for hex in self._hexes:
@@ -346,7 +357,7 @@ func _place_port(hex: Axial, corner: int, value: ResourceTypes) -> void:
 
 # populates water hexes and hexdata
 func _place_water() -> void:
-	var water := self._hexes.flat_map(Axial.neighbors_of)
+	var water := self._hexes.map(Axial.neighbors_of)
 	water = water.difference(self._hexes)
 
 	for hex in water:

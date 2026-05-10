@@ -80,3 +80,13 @@ static func deserialize(data: Dictionary) -> AxialEdge:
 		Axial.deserialize(data["ax2"]),
 		data["rotation"]
 	)	
+
+func neighbors() -> AxialEdgeSet:
+	var corners = self.corners()
+	var edges =  corners.edge_map(Axial.edges_of)	
+	edges.remove_item(self)
+	return edges
+
+
+static func neighbors_of(edge: AxialEdge) -> AxialEdgeSet:
+	return edge.neighbors()

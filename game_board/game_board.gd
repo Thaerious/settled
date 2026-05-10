@@ -77,8 +77,10 @@ func _input(event: InputEvent) -> void:
 		var hex := Axial.offset_to_axial(self.tiles.local_to_map(local_pos))
 		var corners := hex.corners()
 
-		print("GAME BOARD hex %s | corners %s" % [hex, corners])
-		print(" - %s" % [Game.model.get_hex_data(hex)])
+		print(" hex     - %s" % hex)
+		print(" data    - %s" % [Game.model.get_hex_data(hex)])
+		print(" corners - %s" % [hex.corners()])
+		print(" edges   - %s" % [hex.edges()])
 
 		self.clear_targets_hnd()
 		self.show_targets(corners)
@@ -123,19 +125,20 @@ func _model_loaded() -> void:
 
 	# reset board
 	self.tiles.clear()	
-	self._setup()	
+	self._setup()
 
 
 func show_house_targets_hnd():
-	if self._active_buildings[Game.self_id].size() == 0:	
-		self.show_targets(Game.model.all_corners())
-	else:
-		var roads := self._active_roads[Game.self_id]
-		var road_corners := roads.corner_map(AxialEdge.corners_of)
-		var permitted = road_corners.difference(self._corner_black_list)
-		
-		permitted = permitted.intersect(Game.model.all_corners())
-		self.show_targets(permitted)		
+	var black_list = Game.model.get_all_buildings()
+	black_list = black_list.union(black_list.map(Axial.neighbors_of))
+	var white_list = Game.model.all_corners().difference(black_list)
+	print(white_list)
+
+	var roads := self._active_roads[Game.self_id]
+	var road_corners := roads.corner_map(AxialEdge.corners_of)
+	var permitted = road_corners.intersect(white_list)
+
+	self.show_targets(permitted)		
 
 
 func show_initial_house_targets_hnd():
@@ -158,16 +161,11 @@ func show_city_targets_hnd():
 
 
 func show_road_targets_hnd():
-	var houses := self._active_buildings[Game.self_id]
-	var roads := self._active_roads[Game.self_id]
-	var house_edges := houses.edge_map(Axial.edges_of)
-	var road_corners := roads.corner_map(AxialEdge.corners_of)
-	var neighbors := road_corners.edge_map(Axial.edges_of)
-
-	house_edges = house_edges.union(neighbors)
-	house_edges = house_edges.difference(roads)
-	house_edges = house_edges.intersect(Game.model.all_edges())
-	self.show_targets(house_edges)
+	var roads = Game.model.get_roads(Game.self_id)
+	var candidates = roads.map(AxialEdge.neighbors_of)
+	candidates = candidates.difference(roads)
+	candidates = candidates.intersect(Game.model.all_edges())
+	self.show_targets(candidates)
 
 
 func get_hexes_for_vertex(hex: Vector2i) -> Vec2iSet:

@@ -7,6 +7,7 @@ func _ready() -> void:
 
 
 func request_steal_from(id: int) -> void:
+	print("Steal Service")
 	var bank := Game.model.get_bank(id)
 	var count := Game.model.count_resources(id)
 	var i = randi_range(0, count - 1)

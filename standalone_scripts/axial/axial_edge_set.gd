@@ -155,3 +155,16 @@ static func deserialize(data: Array) -> AxialEdgeSet:
 	for key in data:
 		aset.add_item(AxialEdge.from_key(key))
 	return aset	
+
+
+func map(cb: Callable) -> AxialEdgeSet:
+	var aset := AxialEdgeSet.new()
+	for ax in self:
+		var result = cb.call(ax)
+		if result is AxialEdge: 
+			aset.add_item(result)
+		elif result is Array or result is Dictionary or result.has_method("_iter_init"):
+			aset.add_all(result)
+		else:
+			push_warning("Unhandled map result of type '%s' ignored." % result.get_class())			
+	return aset

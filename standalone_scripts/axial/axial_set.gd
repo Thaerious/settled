@@ -154,7 +154,8 @@ func scale(x: int) -> AxialSet:
 	return aset
 
 
-# Returns a new set by applying cb to each element; cb must return an Axial.
+## Transforms each element using cb and returns a new AxialSet.
+## cb may return a single Axial, or a collection of Axials (Array, Dictionary, or iterable).
 # {A, B, C}.map(fn) → {fn(A), fn(B), fn(C)}
 func map(cb: Callable) -> AxialSet:
 	var aset := AxialSet.new()
@@ -164,15 +165,8 @@ func map(cb: Callable) -> AxialSet:
 			aset.add_item(result)
 		elif result is Array or result is Dictionary or result.has_method("_iter_init"):
 			aset.add_all(result)
-	return aset
-
-
-# Maps each element to a set via cb, then flattens all results into one set.
-# {A, B}.flat_map(fn) → fn(A) | fn(B)
-func flat_map(cb: Callable) -> AxialSet:
-	var aset := AxialSet.new()
-	for ax in self:
-		aset.add_all(cb.call(ax))		
+		else:
+			push_warning("Unhandled map result of type '%s' ignored." % result.get_class())			
 	return aset
 
 
@@ -187,7 +181,7 @@ func map_to_array(cb: Callable) -> Array:
 
 # Maps each element to a set via cb, then flattens all results into one set.
 # Maps corners to edges
-# {A, B}.flat_map(fn) → fn(A) | fn(B)
+# {A, B}.edge_map(fn) → fn(A) | fn(B)
 func edge_map(cb: Callable) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 	for ax in self:

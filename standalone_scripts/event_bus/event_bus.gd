@@ -3,9 +3,9 @@
 extends Node
 
 # View to view events (show, clear)
-signal show_house_targets()
 signal show_initial_house_targets()
 signal show_initial_road_targets(house_axial: Axial)
+signal show_house_targets()
 signal show_city_targets()
 signal show_road_targets()
 signal clear_targets()
