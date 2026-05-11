@@ -45,3 +45,5 @@
 # Smell: in model Array[Axial] and Array[AxialEdge] should be AxialSet and AxialEdgeSet
 
 # View:  Wheat and sheep in bank are in the wrong order
+
+# Smell: model.has_resources should accept a wallet, and need to be centralized

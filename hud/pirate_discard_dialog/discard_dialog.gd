@@ -58,7 +58,7 @@ func _model_loaded_hnd() -> void:
 
 
 func _update_phase_hnd(phase: Model.GamePhase) -> void:
-	if phase != Model.GamePhase.DISCARD:
+	if phase != Model.GamePhase.DURING_DISCARD:
 		self.visible = false
 	else:
 		self.visible = true
@@ -66,21 +66,24 @@ func _update_phase_hnd(phase: Model.GamePhase) -> void:
 
 
 func _setup_view() -> void:
+	var discarded := Game.model.get_discarded()
+	
+	# false means I don't need to discard
+	if not discarded[Game.self_id]:
+		self._main_container.visible = false
+		self._pending_label.visible = true
+		return		
+
+	self._main_container.visible = true
+	self._pending_label.visible = false		
+	self._button_ok.disabled = true
+
 	self.bank = Game.model.get_bank(Game.self_id)
 	self.bank.link_view(self.RESOURCE_QTY_LABEL_MAP)
 
 	self.discard = Wallet.new()
-	self.discard.link_view(self.RESOURCE_DIS_LABEL_MAP)
-
-	if self.bank.count_resources() <= 7:
-		self._main_container.visible = false
-		self._pending_label.visible = true
-		self._must_discard = 0
-	else:		
-		self._main_container.visible = true
-		self._pending_label.visible = false		
-		self._button_ok.disabled = true		
-		self._must_discard = ceili((self.bank.count_resources() - 7.0) / 2.0)		
+	self.discard.link_view(self.RESOURCE_DIS_LABEL_MAP)	
+	self._must_discard = ceili((self.bank.count_resources() - 7.0) / 2.0)		
 
 
 func _on_input(resource: Model.ResourceTypes, event: InputEventMouseButton):

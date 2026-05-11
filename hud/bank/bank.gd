@@ -58,19 +58,18 @@ func _ready() -> void:
 
 	EventBus.phase_updated.connect(func(phase: Model.GamePhase) -> void:
 		match phase:
-			Model.GamePhase.DISCARD: self.visible = false
+			Model.GamePhase.DURING_DISCARD: self.visible = false
 			_: self.visible = true
 	)
 
 	EventBus.model_loaded.connect(self._on_model_loaded)
 
 
-func _on_model_loaded() -> void:
-	print("bank._on_model_loaded '%s'" % Model.GamePhase.find_key(Game.model.get_current_phase()))
+func _on_model_loaded() -> void:	
 	var bank_model = Game.model.get_bank(Game.self_id)
 
 	match Game.model.get_current_phase():
-		Model.GamePhase.DISCARD:
+		Model.GamePhase.DURING_DISCARD:
 			self.visible = false
 		_:
 			self.visible = true

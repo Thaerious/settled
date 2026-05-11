@@ -63,7 +63,8 @@ enum GamePhase {
 	SETUP_REVERSE_HOUSE,
 	SETUP_REVERSE_ROAD,
 	MOVE_PIRATE,
-	DISCARD,
+	INIT_DISCARD,
+	DURING_DISCARD,
 	STEAL_RESOURCES,
 	MAIN,
 	YEAR_OF_PLENTY,
@@ -80,6 +81,7 @@ var _pirate: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
 var _edges: AxialEdgeSet = AxialEdgeSet.new()
+var _players_discarded: Dictionary[int, bool] # player_id -> needs to discard
 
 var _hex_data: Dictionary[String, HexData] = {}
 
@@ -116,6 +118,7 @@ func get_bank(id: int) -> Wallet: return self._bank[id].duplicate()
 func get_action_cards(id: int) -> ActionCardWallet: return self._action_cards[id]
 func count_resources(id: int) -> int: return self._bank[id].count_resources()
 func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: int) -> bool: return self._bank[id].has_resources(brick, wood, rock, wheat, wool)
+func get_discarded() -> Dictionary[int, bool]: return self._players_discarded.duplicate()
 
 
 func get_owner(ax: Axial) -> int:
@@ -266,10 +269,25 @@ func do_add_soldier(id: int) -> void:
 	EventBus.soldier_added.emit(id)
 
 
+func do_discard(id: int, wallet: Wallet) -> void:
+	self.do_remove_resources(id, wallet)
+	self._players_discarded[id] = false
+
+
+func reset_discard() -> void:
+	for id in Game.player_count:
+		self._players_discarded[id] = false
+
+
+func set_discard(id: int, value: bool) -> void:	
+	self._players_discarded[id] = value
+
+
 func _init() -> void:
 	self._place_tiles()
 	self._place_water()
 	self._place_ports()
+	self.reset_discard()
 
 	self.player_names.resize(4)
 
@@ -382,6 +400,7 @@ func _fill_terrain_bag() -> Array[Terrain]:
 func save(path: String) -> void:
 	var data := {
 		"player_names": _serialize_player_names(),
+		"discarded": _players_discarded,
 		"current_player": _current_player,
 		"game_phase": _game_phase,
 		"pirate": _pirate.key(),
@@ -406,6 +425,10 @@ func save(path: String) -> void:
 func load(path: String) -> void:
 	var f := FileAccess.open(path, FileAccess.READ)
 	var data: Dictionary = JSON.parse_string(f.get_as_text())
+
+	_players_discarded = {}
+	for key in data["discarded"]:
+		_players_discarded[int(key)] = data["discarded"][key] as bool
 
 	_current_player = int(data["current_player"])
 	_game_phase = int(data["game_phase"]) as GamePhase
@@ -435,8 +458,6 @@ func load(path: String) -> void:
 	for k in data["army"]: _army[int(k)] = int(data["army"][k])
 
 	_deserialize_ports(data["ports"])
-
-	print("loaded pirate: %s" % self._pirate)
 
 
 func _serialize_hex_data() -> Dictionary:

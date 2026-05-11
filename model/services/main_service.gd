@@ -145,7 +145,7 @@ func _on_request_roll() -> void:
 func _development_roll(d1: int, d2: int) -> void:
 	Game.model.do_set_dice(d1, d2)
 	if d1 + d2 == 7:
-		Game.model.do_update_phase(Model.GamePhase.DISCARD)
+		Game.model.do_update_phase(Model.GamePhase.INIT_DISCARD)
 		return
 
 	for id in range(Game.player_count):	
