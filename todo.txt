@@ -5,7 +5,7 @@
 ✓ Monopoly
 ✓ Victory Point
 
-# Bank trading should only happen during the player's turn
+✓ Bank trading should only happen during the player's turn
 # Implement longest road
 # Implement largest army
 
@@ -34,6 +34,8 @@
 x Why does the pirate collision mask need to be 10 to detect input
 # Instead of init setting up all tiles and such right away, a reset event should be used to trigger setup.  This will just put the setup code all in one spot.
 # Add color to bank pieces
+
+# Prevent action cards from being played on the turn they are purchased
 
 # Smell: Fix bank texture labels
 # add message to let other players know discard is taking place

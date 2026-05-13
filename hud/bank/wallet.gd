@@ -40,6 +40,26 @@ func duplicate() -> Wallet:
 	new_wallet.add_resources(self)
 	return new_wallet
 
+var brick: int:
+	get: return self.get_resource(Model.ResourceTypes.BRICK)
+	set(v): self.set_resource(Model.ResourceTypes.BRICK, v)
+
+var wood: int:
+	get: return self.get_resource(Model.ResourceTypes.WOOD)
+	set(v): self.set_resource(Model.ResourceTypes.WOOD, v)
+
+var wool: int:
+	get: return self.get_resource(Model.ResourceTypes.WOOL)
+	set(v): self.set_resource(Model.ResourceTypes.WOOL, v)
+
+var wheat: int:
+	get: return self.get_resource(Model.ResourceTypes.WHEAT)
+	set(v): self.set_resource(Model.ResourceTypes.WHEAT, v)
+
+var rock: int:
+	get: return self.get_resource(Model.ResourceTypes.ROCK)
+	set(v): self.set_resource(Model.ResourceTypes.ROCK, v)
+
 
 # retain only the specified
 func keep(resouce: Model.ResourceTypes) -> void:
@@ -123,12 +143,12 @@ func has_resource(r: Model.ResourceTypes) -> bool:
 	return self._data[r] > 0
 
 
-func has_resources(brick: int, wood: int, rock: int, wheat: int, wool: int) -> bool:
-	if self._data[Model.ResourceTypes.BRICK] < brick: return false
-	if self._data[Model.ResourceTypes.WOOD]  < wood:  return false
-	if self._data[Model.ResourceTypes.ROCK]  < rock:  return false
-	if self._data[Model.ResourceTypes.WHEAT] < wheat: return false
-	if self._data[Model.ResourceTypes.WOOL]  < wool:  return false
+func has_resources(that: Wallet) -> bool:
+	if self._data[Model.ResourceTypes.BRICK] < that.brick: return false
+	if self._data[Model.ResourceTypes.WOOD]  < that.wood:  return false
+	if self._data[Model.ResourceTypes.ROCK]  < that.rock:  return false
+	if self._data[Model.ResourceTypes.WHEAT] < that.wheat: return false
+	if self._data[Model.ResourceTypes.WOOL]  < that.wool:  return false
 	return true
 
 

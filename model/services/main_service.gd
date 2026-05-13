@@ -11,15 +11,6 @@ const EXCHANGABLE = [
 	Model.ResourceTypes.ROCK
 ]
 
-
-var COSTS = {
-	"house" : Wallet.new([RES.WOOD, RES.BRICK, RES.WOOL, RES.WHEAT]),
-	"city" :  Wallet.new([RES.WHEAT, RES.WHEAT, RES.WHEAT, RES.ROCK, RES.ROCK]),
-	"road" :  Wallet.new([RES.WOOD, RES.BRICK,]),
-	"card" :  Wallet.new([RES.WOOL, RES.WHEAT, RES.ROCK])
-}
-
-
 func _ready() -> void:
 	# Sub-Services
 	Game.model = Game.model
@@ -51,17 +42,17 @@ func _request_update_phase(phase: Model.GamePhase):
 
 
 func _request_house(id: int, corner: Axial) -> void:
-	Game.model.do_remove_resources(id, self.COSTS["house"])
+	Game.model.do_remove_resources(id, Model.COSTS["house"])
 	Game.model.do_set_house(id, corner)
 
 
 func _request_city(id: int, corner: Axial) -> void:
-	Game.model.do_remove_resources(id, self.COSTS["city"])
+	Game.model.do_remove_resources(id, Model.COSTS["city"])
 	Game.model.do_set_city(id, corner)
 
 
 func _request_road(id: int, edge: AxialEdge) -> void:
-	Game.model.do_remove_resources(id, self.COSTS["road"])
+	Game.model.do_remove_resources(id, Model.COSTS["road"])
 	Game.model.do_set_road(id, edge)
 
 
@@ -183,7 +174,7 @@ func _scan_cities(id:int, number:int, resources: Wallet):
 
 
 func _on_request_purchase_action_card() -> void:
-	Game.model.do_remove_resources(Game.self_id, self.COSTS["card"])
+	Game.model.do_remove_resources(Game.self_id, Model.COSTS["card"])
 	var card = weighted_random(Model.CARD_DISTRIBUTION)
 	Game.model.do_add_action_card(Game.self_id, card)
 

@@ -70,9 +70,9 @@ func _ready() -> void:
 		self.action_cards = cards.count_cards()
 	)	
 
-	EventBus.victory_points_updated.connect(func(id: int, delta: int) -> void:
+	EventBus.victory_points_updated.connect(func(id: int, value: int) -> void:
 		if id != self.player_id: return
-		self.victory_points += delta
+		self.victory_points = value
 	)	
 
 	EventBus.road_added.connect(func(id: int, _ax: AxialEdge) -> void:
@@ -84,6 +84,16 @@ func _ready() -> void:
 		if id != self.player_id: return
 		if card == Model.ActionCardTypes.SOLDIER: self.soldiers += 1
 		self.action_cards -= 1
+	)
+
+	EventBus.update_longest_road.connect(func(id: int) -> void:
+		self.roads_view.modulate = Color.WHITE	
+		if id == self.player_id: self.roads_view.modulate = Color.YELLOW	
+	)
+
+	EventBus.update_largest_army.connect(func(id: int) -> void:
+		self.soldiers_view.modulate = Color.WHITE	
+		if id == Game.self_id: self.soldiers_view.modulate = Color.YELLOW	
 	)
 
 	EventBus.model_loaded.connect(self._model_loaded)
@@ -105,3 +115,6 @@ func _model_loaded() -> void:
 	self.roads = Game.model.get_roads(self.player_id).size()
 	self.victory_points = Game.model.get_victory_points(self.player_id)
 	self.resources = bank.count_resources()
+
+	if Game.model.get_longest_road() == self.player_id:
+		self.roads_view.modulate = Color.YELLOW	

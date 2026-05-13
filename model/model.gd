@@ -74,6 +74,14 @@ enum GamePhase {
 	GAME_OVER,
 }
 
+static var COSTS = {
+	"house" : Wallet.new([ResourceTypes.WOOD, ResourceTypes.BRICK, ResourceTypes.WOOL, ResourceTypes.WHEAT]),
+	"city" :  Wallet.new([ResourceTypes.WHEAT, ResourceTypes.WHEAT, ResourceTypes.WHEAT, ResourceTypes.ROCK, ResourceTypes.ROCK]),
+	"road" :  Wallet.new([ResourceTypes.WOOD, ResourceTypes.BRICK,]),
+	"card" :  Wallet.new([ResourceTypes.WOOL, ResourceTypes.WHEAT, ResourceTypes.ROCK])
+}
+
+
 var _current_player: int = 0
 var player_names: Array = []
 var _game_phase: GamePhase = GamePhase.NOT_STARTED
@@ -100,6 +108,9 @@ var _victory_points: Dictionary[int, int] = {}
 var _army: Dictionary[int, int] = {}
 var _ports: Dictionary[String, ResourceTypes] = {}
 
+var _longest_road:int = -1
+var _largest_army:int = -1
+
 var _dice: Array[int] = [1, 1]
 
 
@@ -117,9 +128,12 @@ func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_
 func get_bank(id: int) -> Wallet: return self._bank[id].duplicate()
 func get_action_cards(id: int) -> ActionCardWallet: return self._action_cards[id]
 func count_resources(id: int) -> int: return self._bank[id].count_resources()
-func has_resources(id: int, brick: int, wood: int, wool: int, wheat: int, rock: int) -> bool: return self._bank[id].has_resources(brick, wood, rock, wheat, wool)
 func get_discarded() -> Dictionary[int, bool]: return self._players_discarded.duplicate()
+func get_longest_road() -> int: return self._longest_road 
+func get_largest_army() -> int: return self._largest_army
 
+func has_resources(id: int, wallet: Wallet) -> bool: 
+	return self._bank[id].has_resources(wallet)
 
 func get_owner(ax: Axial) -> int:
 	if self._cities.has(ax.key()):
@@ -213,6 +227,26 @@ func do_set_road(id: int, edge: AxialEdge) -> void:
 	self._roads_mirror[id].append(edge)
 	EventBus.road_added.emit(id, edge)
 
+	var longest_road_length = 4	
+	if self._longest_road != -1:
+		longest_road_length = self._roads_mirror[self._longest_road].size()
+
+	for p in range(Game.player_count):
+		var player_road_length = self._roads_mirror[p].size()
+		if player_road_length > longest_road_length:
+			longest_road_length = player_road_length
+			self._set_longest_road(p)
+
+
+func _set_longest_road(id: int) -> void:
+	if self._longest_road != -1:
+		self._victory_points[self._longest_road] -= 2
+		self.do_remove_victory_point(self._longest_road, 2)
+
+	self._longest_road = id
+	self._victory_points[id] += 2
+	EventBus.update_longest_road.emit(id)
+	self.do_add_victory_point(self._longest_road, 2)
 
 func do_add_resources(id: int, resources: Wallet) -> void:
 	self._bank[id].add_resources(resources)
@@ -417,6 +451,8 @@ func save(path: String) -> void:
 		"victory_points": _victory_points,
 		"army": _army,
 		"ports": _serialize_ports(),
+		"longest_road": self._longest_road,
+		"largest_army": self._largest_army
 	}
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data))
@@ -430,6 +466,8 @@ func load(path: String) -> void:
 	for key in data["discarded"]:
 		_players_discarded[int(key)] = data["discarded"][key] as bool
 
+	_longest_road = int(data["longest_road"])
+	_largest_army = int(data["largest_army"])
 	_current_player = int(data["current_player"])
 	_game_phase = int(data["game_phase"]) as GamePhase
 	_pirate = Axial.from_key(data["pirate"])

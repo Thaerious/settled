@@ -27,15 +27,16 @@ func _ready() -> void:
 	self._inital_house_hnd = InitialHouseDragHnd.new(self._house_container, self._road_container)
 	self._free_road_hnd = FreeRoadDragHnd.new(self._road_container)
 
-	self._reset_state()
+	self._disable_all()
 
 	self._card_container.gui_input.connect(self._on_click_card_container)
-	EventBus.phase_updated.connect(self._update_phase)
-	EventBus.add_resources.connect(func(_id, _res): self._update_main_phase())
-	EventBus.remove_resources.connect(func(_id, _res): self._update_main_phase())
+	EventBus.phase_updated.connect(self._update_from_model)
+	EventBus.player_updated.connect(self._update_from_model)
+	EventBus.add_resources.connect(func(_id, _res): self._update_for_main())
+	EventBus.remove_resources.connect(func(_id, _res): self._update_for_main())
 	
 	EventBus.model_loaded.connect(func():
-		self._update_phase(Game.model.get_current_phase())
+		self._update_from_model(Game.model.get_current_phase())
 	)
 
 
@@ -48,7 +49,7 @@ func _on_click_card_container(event: InputEvent) -> void:
 
 
 # turn the store "off"
-func _reset_state():
+func _disable_all():
 	self._road_free.visible = false
 	self._house_free.visible = false
 	self._road_cost.visible = true
@@ -66,64 +67,70 @@ func _reset_state():
 	self._free_road_hnd.enabled = false
 
 
-func _update_phase(phase: Model.GamePhase) -> void:
-	self._reset_state()
-	if not Game.model.get_current_player() == Game.self_id: return
+func _update_from_model(__: int) -> void:
+	self._disable_all()
 
-	match phase:
+	if not Game.model.get_current_player() == Game.self_id: return
+	
+	match Game.model.get_current_phase():
 		Model.GamePhase.MAIN:
-			self._update_main_phase()
+			self._update_for_main()
 		Model.GamePhase.SETUP_FORWARD_HOUSE:
 			self._house_free.visible = true
 			self._house_cost.visible = false	
 			self._inital_house_hnd.enabled = true
-			self._house_cost.visible = false	
 			self._house_container.enabled = true
-		Model.GamePhase.SETUP_REVERSE_HOUSE:
-			self._house_free.visible = true
-			self._house_cost.visible = false
-			self._inital_house_hnd.enabled = true
-			self._house_cost.visible = false	
-			self._house_container.enabled = true
-		Model.GamePhase.SETUP_FORWARD_ROAD:
-			self._road_free.visible = true
-			self._road_cost.visible = false
-			self._road_container.enabled = true	
-		Model.GamePhase.SETUP_REVERSE_ROAD:
-			self._road_free.visible = true
-			self._road_cost.visible = false
-			self._road_container.enabled = true	
-		Model.GamePhase.ROAD_BUILDING:
-			self._road_free.visible = true
-			self._road_cost.visible = false
-			self._road_container.enabled = true	
-			self._road_hnd.enabled = false
-			self._free_road_hnd.enabled = true
+		# Model.GamePhase.SETUP_REVERSE_HOUSE:
+		# 	self._house_free.visible = true
+		# 	self._house_cost.visible = false
+		# 	self._inital_house_hnd.enabled = true
+		# 	self._house_container.enabled = true
+		# Model.GamePhase.SETUP_FORWARD_ROAD:
+		# 	self._road_free.visible = true
+		# 	self._road_cost.visible = false
+		# 	self._road_container.enabled = true	
+		# Model.GamePhase.SETUP_REVERSE_ROAD:
+		# 	self._road_free.visible = true
+		# 	self._road_cost.visible = false
+		# 	self._road_container.enabled = true	
+		# Model.GamePhase.ROAD_BUILDING:
+		# 	self._road_free.visible = true
+		# 	self._road_cost.visible = false
+		# 	self._road_container.enabled = true	
+		# 	self._road_hnd.enabled = false
+		# 	self._free_road_hnd.enabled = true
 
 
-func _update_main_phase():
-	if Game.model.has_resources(Game.self_id, 1, 1, 0, 0, 0):
+func _update_for_main():
+	self._disable_all()
+
+	if not Game.model.get_current_phase() == Model.GamePhase.MAIN: return
+	if not Game.model.get_current_player() == Game.self_id: return
+
+	var wallet = Game.model.get_bank(Game.self_id)
+
+	if wallet.has_resources(Model.COSTS["road"]):
 		self._road_container.enabled = true
 		self._road_hnd.enabled = true
 	else:
 		self._road_container.enabled = false
 		self._road_hnd.enabled = false
 
-	if Game.model.has_resources(Game.self_id, 1, 1, 1, 1, 0):
+	if wallet.has_resources(Model.COSTS["house"]):
 		self._house_container.enabled = true
 		self._house_hnd.enabled = true
 	else:
 		self._house_container.enabled = false
 		self._house_hnd.enabled = false
 
-	if Game.model.has_resources(Game.self_id, 0, 0, 0, 2, 3):
+	if wallet.has_resources(Model.COSTS["city"]):
 		self._city_container.enabled = true
 		self._city_hnd.enabled = true
 	else:
 		self._city_container.enabled = false
 		self._city_hnd.enabled = false
 
-	if Game.model.has_resources(Game.self_id, 0, 0, 1, 1, 1):
+	if wallet.has_resources(Model.COSTS["card"]):
 		self._card_container.enabled = true
 	else:
 		self._card_container.enabled = false						
