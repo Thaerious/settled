@@ -370,7 +370,7 @@ grow_vertical = 0
 [node name="PlentyDialog" parent="." instance=ExtResource("13_mq7b8")]
 visible = false
 layout_mode = 0
-offset_left = 904.91235
-offset_top = 822.42096
-offset_right = 904.91235
-offset_bottom = 822.42096
+offset_left = 833.0499
+offset_top = 903.0
+offset_right = 833.0499
+offset_bottom = 903.0

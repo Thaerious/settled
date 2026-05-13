@@ -13,6 +13,11 @@ func _gui_input(event) -> void:
 	if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 	if not event.pressed: return
 
+	# don't start drag if it's not your turn
+	if Game.model.get_current_player() != Game.self_id: return
+
+	# dont' start drag if it's not the main phase
+	if Game.model.get_current_phase() != Model.GamePhase.MAIN: return
 
 	# don't start drag if there is not enough resources
 	var rate = Game.model.get_exchange_rate(Game.self_id, self.resource)
@@ -29,6 +34,7 @@ func _gui_input(event) -> void:
 
 func _on_drop(rec: DragRecord) -> void:
 	if not rec.destination is BankIcon: return
+	if self.resource == rec.destination.resource: return
 	EventBus.request_exchange.emit(Game.self_id, self.resource, rec.destination.resource)
 
 

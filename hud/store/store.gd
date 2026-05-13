@@ -16,6 +16,8 @@ var _house_hnd: HouseDragHnd
 var _city_hnd: CityDragHnd
 var _road_hnd: RoadDragHnd
 var _inital_house_hnd: InitialHouseDragHnd
+var _free_road_hnd: FreeRoadDragHnd
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,6 +25,7 @@ func _ready() -> void:
 	self._city_hnd = CityDragHnd.new(self._city_container)
 	self._road_hnd = RoadDragHnd.new(self._road_container)
 	self._inital_house_hnd = InitialHouseDragHnd.new(self._house_container, self._road_container)
+	self._free_road_hnd = FreeRoadDragHnd.new(self._road_container)
 
 	self._reset_state()
 
@@ -60,6 +63,7 @@ func _reset_state():
 	self._house_hnd.enabled = false
 	self._city_hnd.enabled = false
 	self._inital_house_hnd.enabled = false		
+	self._free_road_hnd.enabled = false
 
 
 func _update_phase(phase: Model.GamePhase) -> void:
@@ -89,6 +93,12 @@ func _update_phase(phase: Model.GamePhase) -> void:
 			self._road_free.visible = true
 			self._road_cost.visible = false
 			self._road_container.enabled = true	
+		Model.GamePhase.ROAD_BUILDING:
+			self._road_free.visible = true
+			self._road_cost.visible = false
+			self._road_container.enabled = true	
+			self._road_hnd.enabled = false
+			self._free_road_hnd.enabled = true
 
 
 func _update_main_phase():

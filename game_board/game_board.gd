@@ -34,12 +34,8 @@ var vertex_offsets: Vec2iSet = (
 	)
 )
 
-# Storage structures for easy iterator
-var _corner_black_list: AxialSet = AxialSet.new()         # locations that are not permitted houses
-var _active_targets: Array[Node2D] = []                   # targets currently on the board, used to clear
-var _active_buildings: Dictionary[int, AxialSet] = {}     # the locations of buildings the player owns (1:n)
-var _active_roads: Dictionary[int, AxialEdgeSet] = {}     # the locations (keys) of roads the player owns
-var _placed_pieces: Dictionary[String, GamePiece] = {}    # which game piece belongs to which axial (1:1)
+
+var _untracked_road: AxialEdge = null # prevent targets from first free road
 
 
 func _ready() -> void:
@@ -55,16 +51,13 @@ func _ready() -> void:
 	EventBus.house_added.connect(self.set_house_hnd)
 	EventBus.city_added.connect(self.set_city_hnd)
 	EventBus.road_added.connect(self.set_road_hnd)
+	EventBus.set_road_view_only.connect(self.set_road_view_only_hnd)
 
 	EventBus.model_loaded.connect(self._model_loaded)
 
 func _setup() -> void:
 	var setup = GameBoardSetup.new(self)
 	setup.place_tiles()
-
-	for i in range(4):
-		self._active_buildings[i] = AxialSet.new()
-		self._active_roads[i] = AxialEdgeSet.new()
 
 
 # debug function
@@ -85,30 +78,10 @@ func _input(event: InputEvent) -> void:
 		self.clear_targets_hnd()
 		self.show_targets(corners)
 
-		for road in last:
-			if is_instance_valid(road):
-				road.queue_free()
-
-		last = []
-
-		var edges = hex.edges()
-		edges.for_each(
-			func(ax): 
-				var road = self.set_road_hnd(0, ax)
-				last.append(road)
-		)
-
 
 func _model_loaded() -> void:
 	# clear targets
 	clear_targets_hnd()
-
-	# clear state
-	_placed_pieces.clear()
-	_corner_black_list.clear()
-	for i in range(4):
-		_active_buildings[i].clear()
-		_active_roads[i].clear()
 
 	# clear structures
 	for child in self.structures.get_children():
@@ -134,7 +107,7 @@ func show_house_targets_hnd():
 	var white_list = Game.model.all_corners().difference(black_list)
 	print(white_list)
 
-	var roads := self._active_roads[Game.self_id]
+	var roads := Game.model.get_roads(Game.self_id)
 	var road_corners := roads.corner_map(AxialEdge.corners_of)
 	var permitted = road_corners.intersect(white_list)
 
@@ -157,14 +130,16 @@ func show_initial_road_targets_hnd(house_axial: Axial):
 	
 
 func show_city_targets_hnd():
-	self.show_targets(self._active_buildings[Game.self_id])
+	self.show_targets(Game.model.get_houses(Game.self_id))
 
 
 func show_road_targets_hnd():
 	var roads = Game.model.get_roads(Game.self_id)
+	roads.add_item(self._untracked_road)
 	var candidates = roads.map(AxialEdge.neighbors_of)
 	candidates = candidates.difference(roads)
 	candidates = candidates.intersect(Game.model.all_edges())
+	candidates.remove_item(self._untracked_road)
 	self.show_targets(candidates)
 
 
@@ -177,45 +152,45 @@ func get_vertex_neighbors(vector: Vector2i):
 
 
 func clear_targets_hnd():
-	for target in self._active_targets:
-		target.get_parent().remove_child(target)
-		target.queue_free()
-
-	self._active_targets.clear()
+	for child in self.structures.get_children():
+		if child is EdgeTarget: child.queue_free()
+		if child is CornerTarget: child.queue_free()
 
 
 func set_house_hnd(id: int, corner: Axial) -> void:
-	self._active_buildings[id].add_item(corner)
 	var house_piece := HOUSE_PIECE.instantiate()
 	house_piece.modulate = self.tint[id]
 	house_piece.position = corner.map_to_local(self.tiles)
+	house_piece.axial = corner
 	%Structures.add_child(house_piece)
-	self._placed_pieces[corner.key()] = house_piece
-
-	self._corner_black_list.add_item(corner)
-	self._corner_black_list.add_all(corner.neighbors())
 
 
 func set_city_hnd(id: int, corner: Axial) -> void:
 	var city_piece := CITY_PIECE.instantiate()
 	city_piece.modulate = self.tint[id]
 	city_piece.position = corner.map_to_local(self.tiles)
-	%Structures.add_child(city_piece)
-	var house_piece := self._placed_pieces[corner.key()]
-	house_piece.queue_free()
-	self._placed_pieces[corner.key()] = city_piece
+	%Structures.add_child(city_piece)	
+	self.remove_house_piece(corner)		
 
 
-func set_road_hnd(id: int, edge: AxialEdge) -> Node2D:
+func remove_house_piece(corner: Axial):
+	for child in self.structures.get_children():
+		if not child is HousePiece: continue
+		if not child.axial.equals(corner): continue
+		child.queue_free()
+
+
+func set_road_hnd(id: int, edge: AxialEdge) -> void:
 	var road_piece := ROAD_PIECE.instantiate()
 	road_piece.modulate = self.tint[id]
 	road_piece.position = edge.map_to_local(self.tiles)
 	%Structures.add_child(road_piece)
-	self._placed_pieces[edge.key()] = road_piece
 	road_piece.rotation = edge.rotation
-	self._active_roads[id].add_item(edge)
 
-	return road_piece
+
+func set_road_view_only_hnd(id: int, edge: AxialEdge) -> void:
+	self.set_road_hnd(id, edge)
+	self._untracked_road = edge
 
 
 func show_targets(ax: Variant):
@@ -232,5 +207,4 @@ func show_targets(ax: Variant):
 		return
 
 	target.position = ax.map_to_local(self.tiles)
-	self._active_targets.append(target)
 	self.structures.add_child(target)

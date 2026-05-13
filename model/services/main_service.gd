@@ -43,6 +43,11 @@ func _ready() -> void:
 	EventBus.request_house.connect(self._request_house)
 	EventBus.request_city.connect(self._request_city)
 	EventBus.request_road.connect(self._request_road)
+	EventBus.request_update_phase.connect(self._request_update_phase)
+
+
+func _request_update_phase(phase: Model.GamePhase):
+	Game.model.do_update_phase(phase)
 
 
 func _request_house(id: int, corner: Axial) -> void:

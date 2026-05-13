@@ -39,14 +39,16 @@ func _iter_get(_arg) -> AxialEdge:
 # Returns true if the set contains the given AxialEdge.
 # E in {E1, E2, E3} → true
 func has_item(edge: AxialEdge) -> bool:
+	if edge == null: return false
 	return self._data.has(edge.key())
 
 
 # Adds edge to the set. Has no effect if already present.
 # {E1, E2} + E3 → {E1, E2, E3}
-func add_item(edge: AxialEdge) -> AxialEdgeSet:
+func add_item(edge: AxialEdge) -> bool:
+	if edge == null: return false
 	self._data[edge.key()] = edge
-	return self
+	return true
 
 
 # Adds all items from items to the set.
@@ -60,6 +62,7 @@ func add_all(items: Variant) -> AxialEdgeSet:
 # Removes edge from the set. Has no effect if not present.
 # {E1, E2, E3} - E2 → {E1, E3}
 func remove_item(edge: AxialEdge) -> AxialEdgeSet:
+	if not self.has_item(edge): return
 	self._data.erase(edge.key())
 	return self
 

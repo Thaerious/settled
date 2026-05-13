@@ -3,36 +3,28 @@
 class_name Bank
 extends PanelContainer
 
-@onready var ex_wood: Label = %ExWood
-@onready var qty_wood: Label = %QtyWood
-@onready var ex_wheat: Label = %ExWheat
-@onready var qty_wheat: Label = %QtyWheat
-@onready var ex_wool: Label = %ExWool
-@onready var qty_wool: Label = %QtyWool
-@onready var ex_rock: Label = %ExRock
-@onready var qty_rock: Label = %QtyRock
-@onready var ex_brick: Label = %ExBrick
-@onready var qty_brick: Label = %QtyBrick
-
 var RESOURCE_QTY_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
 var RESOURCE_EX_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
+
+@onready var monopoly_dialig = %MonopolyDialog
+@onready var plenty_dialig = %PlentyDialog
 
 
 func _ready() -> void:
 	self.RESOURCE_QTY_LABEL_MAP = {
-		Model.ResourceTypes.BRICK: self.qty_brick,
-		Model.ResourceTypes.WOOD:  self.qty_wood,
-		Model.ResourceTypes.ROCK:  self.qty_rock,
-		Model.ResourceTypes.WHEAT: self.qty_wheat,
-		Model.ResourceTypes.WOOL:  self.qty_wool,
+		Model.ResourceTypes.BRICK: %QtyBrick,
+		Model.ResourceTypes.WOOD:  %QtyWood,
+		Model.ResourceTypes.ROCK:  %QtyRock,
+		Model.ResourceTypes.WHEAT: %QtyWheat,
+		Model.ResourceTypes.WOOL:  %QtyWool,
 	}
 
 	self.RESOURCE_EX_LABEL_MAP = {
-		Model.ResourceTypes.BRICK: self.ex_brick,
-		Model.ResourceTypes.WOOD:  self.ex_wood,
-		Model.ResourceTypes.ROCK:  self.ex_rock,
-		Model.ResourceTypes.WHEAT: self.ex_wheat,
-		Model.ResourceTypes.WOOL:  self.ex_wool,
+		Model.ResourceTypes.BRICK: %ExBrick,
+		Model.ResourceTypes.WOOD:  %ExWood,
+		Model.ResourceTypes.ROCK:  %ExRock,
+		Model.ResourceTypes.WHEAT: %ExWheat,
+		Model.ResourceTypes.WOOL:  %ExWool,
 	}
 
 	EventBus.add_resources.connect(func(id: int, resources: Wallet) -> void:
@@ -58,7 +50,12 @@ func _ready() -> void:
 
 	EventBus.phase_updated.connect(func(phase: Model.GamePhase) -> void:
 		match phase:
-			Model.GamePhase.DURING_DISCARD: self.visible = false
+			Model.GamePhase.DURING_DISCARD: 
+				self.visible = false
+			Model.GamePhase.YEAR_OF_PLENTY:
+				self.visible = false
+			Model.GamePhase.MONOPOLY:
+				self.visible = false
 			_: self.visible = true
 	)
 

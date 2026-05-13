@@ -1,37 +1,37 @@
+✓ Implement Action Cards
+✓ Solider
+✓ Road Building
+✓ Year of Plenty
+✓ Monopoly
+✓ Victory Point
+
+# Bank trading should only happen during the player's turn
+# Implement longest road
+# Implement largest army
 
 ✓ Implement bank-trade drag-drop
 ✓ Integrate ports into house purchasing
 ✓ Color pieces
 ✓ Create development dice
 
-# Implement Action Cards
-## Solider
-## Road Building
-## Year of Plenty
-## Monopoly
-## Victory Point
-
 ✓ Implement pirate
 ✓ Create pirate texture & scene
 ✓ Steals resource
-# Discard excess resources on 7 <-- discard is broken
+✓ Discard excess resources on 7 
 ✓ Move pirate on 7
 ✓ number with pirate doesn't collect
 
 ✓ Count victory points when buying house/city
-# Bank trading should only happen during the player's turn
-# Implement longest road
-# Implement largest army
 
 # Design and Implement roll protocol
 # Add road count indicator to bank
 # Implement game over splash screen
 # Implement multi-player
-# Implement not started splace screen
+# Implement not started splash screen
 ## Wait for players to connect and click ready
 # all view to service events need an id because they may get passed to a central service module
 # hover pirate to see what's underneith
-# Why does the pirate collision mask need to be 10 to detect input
+x Why does the pirate collision mask need to be 10 to detect input
 # Instead of init setting up all tiles and such right away, a reset event should be used to trigger setup.  This will just put the setup code all in one spot.
 # Add color to bank pieces
 
@@ -47,3 +47,5 @@
 # View:  Wheat and sheep in bank are in the wrong order
 
 # Smell: model.has_resources should accept a wallet, and need to be centralized
+
+# Smell: Add / Remove resourc event should be just updateresources

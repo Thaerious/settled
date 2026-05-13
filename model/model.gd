@@ -226,12 +226,12 @@ func do_remove_resources(id: int, resources:Wallet) -> void:
 
 func do_add_action_card(id: int, card: ActionCardTypes) -> void:
 	self._action_cards[id].add_card(card)
-	EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
+	EventBus.action_cards_updated.emit(id, self._action_cards[id].duplicate())
 
 
 func do_remove_action_card(id: int, card) -> void:
 	self._action_cards[id].remove_card(card)
-	EventBus.update_action_card.emit(id, self._action_cards[id].duplicate())
+	EventBus.action_cards_updated.emit(id, self._action_cards[id].duplicate())
 
 
 func do_update_phase(phase: GamePhase) -> void:

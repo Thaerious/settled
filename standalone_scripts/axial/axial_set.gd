@@ -39,19 +39,22 @@ func _iter_get(_arg) -> Axial:
 # Returns true if the set contains the given Axial.
 # A in {A, B, C} → true
 func has_item(ax: Axial) -> bool:
+	if ax == null: return false
 	return self._data.has(ax.key())
 
 
 ## Adds [param ax] to the set. Has no effect if already present.
 # {A, B} + C → {A, B, C}
-func add_item(ax: Axial) -> AxialSet:
+func add_item(ax: Axial) -> bool:
+	if ax == null: return false
 	self._data[ax.key()] = ax
-	return self
+	return true
 
 
 ## Removes [param ax] from the set. Has no effect if not present.
 # {A, B, C} - B → {A, C}
 func remove_item(ax: Axial) -> AxialSet:
+	if not self.has_item(ax): return
 	self._data.erase(ax.key())
 	return self
 
