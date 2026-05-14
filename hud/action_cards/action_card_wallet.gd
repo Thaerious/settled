@@ -38,7 +38,7 @@ func remove_card(c: Model.ActionCardTypes, amount: int = 1) -> void:
 	self.trigger_linked_view(c)	
 
 
-func count_cards() -> int:
+func size() -> int:
 	var total: int = 0
 	for c in self._data.keys():
 		total += self._data[c]

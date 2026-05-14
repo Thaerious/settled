@@ -215,6 +215,7 @@ func do_set_house(id: int, ax: Axial) -> void:
 	self._houses_mirror[id].append(ax)
 	self.do_add_victory_point(id)
 	EventBus.house_added.emit(id, ax)
+	self._calc_longest_road()
 
 
 func do_set_city(id: int, ax: Axial) -> void:
@@ -229,16 +230,29 @@ func do_set_road(id: int, edge: AxialEdge) -> void:
 	self._roads[edge.key()] = id
 	self._roads_mirror[id].append(edge)
 	EventBus.road_added.emit(id, edge)
+	self._calc_longest_road()
 
-	var longest_road_length = 4	
-	if self._longest_road != -1:
-		longest_road_length = self._roads_mirror[self._longest_road].size()
 
-	for p in range(Game.player_count):
-		var player_road_length = self._roads_mirror[p].size()
-		if player_road_length > longest_road_length:
-			longest_road_length = player_road_length
-			self._set_longest_road(p)
+func _calc_longest_road() -> void:
+	# calculate all road lengths
+	for pid in range(Game.player_count):
+		var length := RoadCalculator.calculate_longest_road(pid, self)
+		self._player_records[pid].roads = length
+
+	# find longest >= 5, favouring current holder on tie
+	var best_length := 0
+	var best_id := -1
+
+	for pid in range(Game.player_count):
+		var length: int = self._player_records[pid].roads
+		if length < 5:
+			continue
+		if length > best_length or (length == best_length and pid == self._longest_road):
+			best_length = length
+			best_id = pid
+
+	if best_id != self._longest_road:
+		self._set_longest_road(best_id)
 
 
 func _set_longest_road(id: int) -> void:
@@ -252,11 +266,13 @@ func _set_longest_road(id: int) -> void:
 
 func do_add_resources(id: int, resources: Wallet) -> void:
 	self._bank[id].add_resources(resources)
+	self._player_records[id].resources = self._bank[id].count_resources()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 
 func do_remove_resources(id: int, resources:Wallet) -> void:
 	self._bank[id].remove_resources(resources)
+	self._player_records[id].resources = self._bank[id].count_resources()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 

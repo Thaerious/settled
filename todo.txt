@@ -23,7 +23,7 @@
 
 ✓ Count victory points when buying house/city
 
-# Placing roads doens't up date road count
+✓ Placing roads doens't update road count
 # Longest road needs to actually measure the road, not just count
 # Board needs to listen for pirate set
 

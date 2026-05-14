@@ -38,7 +38,7 @@ func _iter_get(_arg) -> Axial:
 
 # Returns true if the set contains the given Axial.
 # A in {A, B, C} → true
-func has_item(ax: Axial) -> bool:
+func has_axial(ax: Axial) -> bool:
 	if ax == null: return false
 	return self._data.has(ax.key())
 
@@ -54,7 +54,7 @@ func add_item(ax: Axial) -> bool:
 ## Removes [param ax] from the set. Has no effect if not present.
 # {A, B, C} - B → {A, C}
 func remove_item(ax: Axial) -> AxialSet:
-	if not self.has_item(ax): return
+	if not self.has_axial(ax): return
 	self._data.erase(ax.key())
 	return self
 
@@ -87,6 +87,10 @@ func size() -> int:
 	return self._data.size()
 
 
+func is_empty() -> bool:
+	return self.size() == 0
+
+
 # Returns a string representation of the internal key array.
 # {A, B, C} → "[(1,0,-1), (0,1,-1), (1,-1,0)]"
 func _to_string() -> String:
@@ -115,7 +119,7 @@ func for_each(cb: Callable) -> AxialSet:
 func intersect(that: AxialSet) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
-		if that.has_item(ax):
+		if that.has_axial(ax):
 			aset.add_item(ax)
 	return aset
 
@@ -125,7 +129,7 @@ func intersect(that: AxialSet) -> AxialSet:
 func difference(that: AxialSet) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
-		if not that.has_item(ax):
+		if not that.has_axial(ax):
 			aset.add_item(ax)
 	return aset
 

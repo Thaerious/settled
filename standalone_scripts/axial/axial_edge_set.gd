@@ -171,3 +171,21 @@ func map(cb: Callable) -> AxialEdgeSet:
 		else:
 			push_warning("Unhandled map result of type '%s' ignored." % result.get_class())			
 	return aset
+
+
+func is_empty() -> bool:
+	return self.size() == 0
+
+
+## Returns all items as an [Array] of [Axial].
+# {A, B, C} → [A, B, C]
+func to_array() -> Array[AxialEdge]:
+	var result: Array[AxialEdge] = []
+	for axe in self._data.values():
+		result.append(axe)
+	return result	
+
+
+func any() -> AxialEdge:
+	if self.is_empty(): return null
+	return self.to_array()[0]
