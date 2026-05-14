@@ -302,6 +302,16 @@ func do_add_soldier(id: int) -> void:
 	self._army[id] += 1
 	EventBus.soldier_added.emit(id)
 
+	if (self._army[id] < 3): return
+
+	if self._largest_army != -1:
+		self._victory_points[self._largest_army] -= 2
+		self.do_remove_victory_point(self._largest_army, 2)
+
+	self._largest_army = id
+	self._victory_points[id] += 2
+	EventBus.update_largest_army.emit(id)
+	self.do_add_victory_point(self._longest_road, 2)
 
 func do_discard(id: int, wallet: Wallet) -> void:
 	self.do_remove_resources(id, wallet)

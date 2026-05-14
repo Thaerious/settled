@@ -33,7 +33,6 @@ signal play_road_building_card(id: int)
 
 signal discard_resources(id:int, discard: Wallet)
 
-
 # Model/Service to view events
 signal update_longest_road(id: int)
 signal update_largest_army(id: int)

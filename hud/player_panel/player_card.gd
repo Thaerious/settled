@@ -118,3 +118,6 @@ func _model_loaded() -> void:
 
 	if Game.model.get_longest_road() == self.player_id:
 		self.roads_view.modulate = Color.YELLOW	
+
+	if Game.model.get_largest_army() == self.player_id:
+		self.soldiers_view.modulate = Color.YELLOW			

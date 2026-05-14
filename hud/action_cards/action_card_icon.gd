@@ -9,8 +9,6 @@ func _gui_input(event) -> void:
 	if not Game.model.get_current_phase() == Model.GamePhase.MAIN: return
 	if not event is InputEventMouseButton: return
 
-	print("Action Card GUI Input")
-
 	var mouse_event = event as InputEventMouseButton
 	if mouse_event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 	if not mouse_event.pressed: return

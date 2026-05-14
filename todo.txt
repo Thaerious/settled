@@ -6,7 +6,7 @@
 ✓ Victory Point
 
 ✓ Bank trading should only happen during the player's turn
-# Implement longest road
+✓ Implement longest road
 # Implement largest army
 
 ✓ Implement bank-trade drag-drop
