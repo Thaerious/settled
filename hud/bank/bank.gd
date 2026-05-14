@@ -6,8 +6,8 @@ extends PanelContainer
 var RESOURCE_QTY_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
 var RESOURCE_EX_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
 
-@onready var monopoly_dialig = %MonopolyDialog
-@onready var plenty_dialig = %PlentyDialog
+@onready var monopoly_dialog = %MonopolyDialog
+@onready var plenty_dialog = %PlentyDialog
 
 
 func _ready() -> void:
@@ -27,20 +27,9 @@ func _ready() -> void:
 		Model.ResourceTypes.WOOL:  %ExWool,
 	}
 
-	EventBus.add_resources.connect(func(id: int, resources: Wallet) -> void:
+	EventBus.resources_updated.connect(func(id: int, resources: Wallet) -> void:
 		if id != Game.self_id: return
-
-		for resource: Model.ResourceTypes in resources:
-			var label: Label = self.RESOURCE_QTY_LABEL_MAP.get(resource)
-			if label: label.text = str(label.text.to_int() + 1)
-	)
-
-	EventBus.remove_resources.connect(func(id: int, resources: Wallet) -> void:
-		if id != Game.self_id: return
-
-		for resource: Model.ResourceTypes in resources:
-			var label: Label = self.RESOURCE_QTY_LABEL_MAP.get(resource)
-			if label: label.text = str(label.text.to_int() - 1)
+		resources.link_view(self.RESOURCE_QTY_LABEL_MAP)
 	)
 
 	EventBus.exchange_rate_set.connect(func(id: int, r: Model.ResourceTypes, value: int) -> void:
@@ -48,7 +37,7 @@ func _ready() -> void:
 		RESOURCE_EX_LABEL_MAP[r].text = "%s:1" % value		
 	)
 
-	EventBus.phase_updated.connect(func(phase: Model.GamePhase) -> void:
+	EventBus.current_phase_updated.connect(func(phase: Model.GamePhase) -> void:
 		match phase:
 			Model.GamePhase.DURING_DISCARD: 
 				self.visible = false

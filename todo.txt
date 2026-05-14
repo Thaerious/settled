@@ -23,6 +23,10 @@
 
 ✓ Count victory points when buying house/city
 
+# Placing roads doens't up date road count
+# Longest road needs to actually measure the road, not just count
+# Board needs to listen for pirate set
+
 # Design and Implement roll protocol
 # Add road count indicator to bank
 # Implement game over splash screen
@@ -51,3 +55,5 @@ x Why does the pirate collision mask need to be 10 to detect input
 # Smell: model.has_resources should accept a wallet, and need to be centralized
 
 # Smell: Add / Remove resourc event should be just updateresources
+
+# Need to ensure that 6/8 numbers are not next to each other

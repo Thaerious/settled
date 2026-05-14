@@ -42,6 +42,7 @@ theme_override_constants/separation = 20
 
 [node name="PlayerCard1" parent="PlayerInfoMargin/VBoxContainer" instance=ExtResource("7_0ivg5")]
 layout_mode = 2
+player_id = null
 
 [node name="PlayerCard2" parent="PlayerInfoMargin/VBoxContainer" instance=ExtResource("7_0ivg5")]
 layout_mode = 2
@@ -353,6 +354,7 @@ offset_right = 1017.0
 offset_bottom = 516.0
 
 [node name="MonopolyDialog" parent="." instance=ExtResource("12_hwufu")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 7
@@ -368,6 +370,7 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="PlentyDialog" parent="." instance=ExtResource("13_mq7b8")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 0
 offset_left = 833.0499

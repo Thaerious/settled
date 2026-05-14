@@ -11,7 +11,7 @@ func _ready() -> void:
 
 	%OkButton.pressed.connect(self._on_accept)
 
-	EventBus.phase_updated.connect(self._update_phase)
+	EventBus.current_phase_updated.connect(self._update_phase)
 	EventBus.model_loaded.connect(func(): 
 		self._update_phase(Game.model.get_current_phase())
 	)

@@ -30,10 +30,9 @@ func _ready() -> void:
 	self._disable_all()
 
 	self._card_container.gui_input.connect(self._on_click_card_container)
-	EventBus.phase_updated.connect(self._update_from_model)
-	EventBus.player_updated.connect(self._update_from_model)
-	EventBus.add_resources.connect(func(_id, _res): self._update_for_main())
-	EventBus.remove_resources.connect(func(_id, _res): self._update_for_main())
+	EventBus.current_phase_updated.connect(self._update_from_model)
+	EventBus.current_player_updated.connect(self._update_from_model)
+	EventBus.resources_updated.connect(func(_id, _res): self._update_for_main())
 	
 	EventBus.model_loaded.connect(func():
 		self._update_from_model(Game.model.get_current_phase())
@@ -80,25 +79,25 @@ func _update_from_model(__: int) -> void:
 			self._house_cost.visible = false	
 			self._inital_house_hnd.enabled = true
 			self._house_container.enabled = true
-		# Model.GamePhase.SETUP_REVERSE_HOUSE:
-		# 	self._house_free.visible = true
-		# 	self._house_cost.visible = false
-		# 	self._inital_house_hnd.enabled = true
-		# 	self._house_container.enabled = true
-		# Model.GamePhase.SETUP_FORWARD_ROAD:
-		# 	self._road_free.visible = true
-		# 	self._road_cost.visible = false
-		# 	self._road_container.enabled = true	
-		# Model.GamePhase.SETUP_REVERSE_ROAD:
-		# 	self._road_free.visible = true
-		# 	self._road_cost.visible = false
-		# 	self._road_container.enabled = true	
-		# Model.GamePhase.ROAD_BUILDING:
-		# 	self._road_free.visible = true
-		# 	self._road_cost.visible = false
-		# 	self._road_container.enabled = true	
-		# 	self._road_hnd.enabled = false
-		# 	self._free_road_hnd.enabled = true
+		Model.GamePhase.SETUP_REVERSE_HOUSE:
+			self._house_free.visible = true
+			self._house_cost.visible = false
+			self._inital_house_hnd.enabled = true
+			self._house_container.enabled = true
+		Model.GamePhase.SETUP_FORWARD_ROAD:
+			self._road_free.visible = true
+			self._road_cost.visible = false
+			self._road_container.enabled = true	
+		Model.GamePhase.SETUP_REVERSE_ROAD:
+			self._road_free.visible = true
+			self._road_cost.visible = false
+			self._road_container.enabled = true	
+		Model.GamePhase.ROAD_BUILDING:
+			self._road_free.visible = true
+			self._road_cost.visible = false
+			self._road_container.enabled = true	
+			self._road_hnd.enabled = false
+			self._free_road_hnd.enabled = true
 
 
 func _update_for_main():

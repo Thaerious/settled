@@ -5,7 +5,7 @@ extends Button
 func _pressed():
 	var filename = self._file_name_tb.text
 
-	Game.model.save("user://%s.json" % filename)
+	ModelLoader.save(Game.model, "user://%s.json" % filename)
 
 	var config := ConfigFile.new()
 	config.set_value("settings", "last_save_name", filename)

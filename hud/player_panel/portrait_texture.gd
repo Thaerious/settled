@@ -1,3 +1,4 @@
+class_name PortraitTexture
 extends TextureRect
 
 func _on_clicked():

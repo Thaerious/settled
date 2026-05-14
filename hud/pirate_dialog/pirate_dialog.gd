@@ -11,7 +11,7 @@ extends PanelContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	EventBus.phase_updated.connect(self._update_phase)
+	EventBus.current_phase_updated.connect(self._update_phase)
 
 	EventBus.model_loaded.connect(func(): 
 		self._update_phase(Game.model.get_current_phase())
@@ -26,7 +26,7 @@ func _ready() -> void:
 func _label_buttons() -> void:
 	for id in range(Game.player_count):
 		var count = Game.model.count_resources(id)
-		var player_name = Game.model.player_names[id]
+		var player_name = Game.model.get_player_record(id).name
 		buttons[id].text = "Steal from %s with %s resourses" % [player_name, count]
 		buttons[id].visible = false
 

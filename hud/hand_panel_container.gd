@@ -3,7 +3,7 @@ extends PanelContainer
 
 
 func _ready():
-	EventBus.phase_updated.connect(self._update)
+	EventBus.current_phase_updated.connect(self._update)
 
 	EventBus.model_loaded.connect(func():
 		self._update(Game.model.get_current_phase())

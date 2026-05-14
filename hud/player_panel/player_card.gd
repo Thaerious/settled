@@ -1,9 +1,10 @@
 ## player_card.gd
-@tool
 class_name PlayerCard
 extends PanelContainer
 
-@onready var name_label: Label = %NameLabel
+@export var player_id: int = 0
+
+@onready var name_view: Label = %NameLabel
 @onready var portrait: TextureRect = %PortraitTexture
 @onready var vic_points_view: AnnotatedTexture = %VictoryPoints
 @onready var resources_view: AnnotatedTexture = %Resources
@@ -11,113 +12,48 @@ extends PanelContainer
 @onready var roads_view: AnnotatedTexture = %Roads
 @onready var soldiers_view: AnnotatedTexture = %Soldiers
 
-@export var player_id: int = 0
-
-var player_name: String = "Name Not Set":
-	set(value):
-		name = value
-		if self.is_node_ready():
-			self.name_label.text = value
-
-var victory_points: int = 0:
-	set(value):
-		victory_points = value
-		if self.is_node_ready():
-			self.vic_points_view.text = str(value)
-
-var resources: int = 0:
-	set(value):
-		resources = value
-		if self.is_node_ready():
-			self.resources_view.text = str(value)
-
-var action_cards: int = 0:
-	set(value):
-		action_cards = value
-		if self.is_node_ready():
-			self.action_cards_view.text = str(value)
-
-var roads: int = 0:
-	set(value):
-		roads = value
-		if self.is_node_ready():
-			self.roads_view.text = str(value)
-
-var soldiers: int = 0:
-	set(value):
-		soldiers = value
-		if self.is_node_ready():
-			self.soldiers_view.text = str(value)
-
-
 func _ready() -> void:
-
 	self.portrait.modulate = GameBoard.tint[self.player_id]
 
-	# Attach event listeners
-	EventBus.add_resources.connect(func(id: int, resources: Wallet) -> void:
+	EventBus.player_record_updated.connect(func(id: int, record: PlayerRecord) -> void:
 		if id != self.player_id: return
-		self.resources += resources.count_resources()
-	)
-
-	EventBus.remove_resources.connect(func(id: int, resources: Wallet) -> void:
-		if id != self.player_id: return
-		self.resources -= resources.count_resources()
-	)
-
-	EventBus.action_cards_updated.connect(func(id: int, cards: ActionCardWallet) -> void:
-		if id != self.player_id: return
-		self.action_cards = cards.count_cards()
-	)	
-
-	EventBus.victory_points_updated.connect(func(id: int, value: int) -> void:
-		if id != self.player_id: return
-		self.victory_points = value
-	)	
-
-	EventBus.road_added.connect(func(id: int, _ax: AxialEdge) -> void:
-		if id != self.player_id: return
-		self.roads += 1
-	)	
-
-	EventBus.request_play_action_card.connect(func(id: int, card: Model.ActionCardTypes) -> void:
-		if id != self.player_id: return
-		if card == Model.ActionCardTypes.SOLDIER: self.soldiers += 1
-		self.action_cards -= 1
+		self.name_view.text           = record.name
+		self.vic_points_view.text     = str(record.victory_points)
+		self.resources_view.text      = str(record.resources)
+		self.action_cards_view.text   = str(record.action_cards)
+		self.roads_view.text          = str(record.roads)
+		self.soldiers_view.text       = str(record.soldiers)
 	)
 
 	EventBus.update_longest_road.connect(func(id: int) -> void:
-		self.roads_view.modulate = Color.WHITE	
-		if id == self.player_id: self.roads_view.modulate = Color.YELLOW	
+		self.roads_view.modulate = Color.WHITE
+		if id == self.player_id: self.roads_view.modulate = Color.YELLOW
 	)
 
 	EventBus.update_largest_army.connect(func(id: int) -> void:
-		self.soldiers_view.modulate = Color.WHITE	
-		if id == Game.self_id: self.soldiers_view.modulate = Color.YELLOW	
+		self.soldiers_view.modulate = Color.WHITE
+		if id == self.player_id: self.soldiers_view.modulate = Color.YELLOW
 	)
 
 	EventBus.model_loaded.connect(self._model_loaded)
 
 
 func _model_loaded() -> void:
-	if (Game.self_id == self.player_id):
-		self.name_label.add_theme_color_override("font_color", Color.RED)
+	var record = Game.model.get_player_record(self.player_id)
+	self.name_view.text           = record.name
+	self.vic_points_view.text     = str(record.victory_points)
+	self.resources_view.text      = str(record.resources)
+	self.action_cards_view.text   = str(record.action_cards)
+	self.roads_view.text          = str(record.roads)
+	self.soldiers_view.text       = str(record.soldiers)
+
+	if Game.self_id == self.player_id:
+		self.name_view.add_theme_color_override("font_color", Color.RED)
 	else:
-		self.name_label.add_theme_color_override("font_color", Color.WHITE)
-
-	var cards := Game.model.get_action_cards(self.player_id)
-	var bank := Game.model.get_bank(self.player_id)
-	var total_cards := cards.count_cards()
-
-	self.player_name = Game.model.player_names[self.player_id]
-	self.action_cards = total_cards
-	self.soldiers = Game.model.get_army(self.player_id)
-	self.roads = Game.model.get_roads(self.player_id).size()
-	self.victory_points = Game.model.get_victory_points(self.player_id)
-	self.resources = bank.count_resources()
+		self.name_view.add_theme_color_override("font_color", Color.WHITE)
 
 	if Game.model.get_longest_road() == self.player_id:
-		self.roads_view.modulate = Color.YELLOW	
+		self.roads_view.modulate = Color.YELLOW
 
 	if Game.model.get_largest_army() == self.player_id:
-		self.soldiers_view.modulate = Color.YELLOW			
+		self.soldiers_view.modulate = Color.YELLOW

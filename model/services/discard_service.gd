@@ -2,8 +2,8 @@ class_name DiscardService
 extends Node
 
 func _init() -> void:
-	EventBus.phase_updated.connect(self._update_phase_hnd)
-	EventBus.discard_resources.connect(self._discard_resources_hnd)
+	EventBus.current_phase_updated.connect(self._update_phase_hnd)
+	EventBus.request_discard.connect(self._request_discard_hnd)
 	EventBus.model_loaded.connect(func(): self._update_phase_hnd(Game.model.get_current_phase()))
 
 
@@ -31,7 +31,7 @@ func _update_phase_hnd(phase: Model.GamePhase) -> void:
 		Game.model.do_update_phase.bind(Model.GamePhase.DURING_DISCARD).call_deferred()
 
 
-func _discard_resources_hnd(id:int, discard: Wallet) -> void:
+func _request_discard_hnd(id:int, discard: Wallet) -> void:
 	var bank := Game.model.get_bank(id)
 	var must_discard:int = ceili((bank.count_resources() - 7.0) / 2.0)
 

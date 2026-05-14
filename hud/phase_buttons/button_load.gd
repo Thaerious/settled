@@ -4,7 +4,7 @@ extends Button
 
 func _pressed():
 	var filename = self._file_name_tb.text
-	Game.model.load("user://%s.json" % filename)
+	ModelLoader.load(Game.model, "user://%s.json" % filename)
 	EventBus.model_loaded.emit()
 
 	var config := ConfigFile.new()

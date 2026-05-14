@@ -82,8 +82,12 @@ static var COSTS = {
 }
 
 
+# var _victory_points: Dictionary[int, int] = {}
+# var _army: Dictionary[int, int] = {}
+
+var _player_records: Dictionary[int, PlayerRecord] = {}
+
 var _current_player: int = 0
-var player_names: Array = []
 var _game_phase: GamePhase = GamePhase.NOT_STARTED
 var _pirate: Axial
 var _hexes: AxialSet = AxialSet.new()
@@ -104,10 +108,8 @@ var _roads_mirror: Dictionary[int, Array] = {}
 var _bank: Dictionary[int, Wallet] = {}
 var _exchange_rate: Dictionary[int, Wallet] = {}
 var _action_cards: Dictionary[int, ActionCardWallet] = {}
-var _victory_points: Dictionary[int, int] = {}
-var _army: Dictionary[int, int] = {}
-var _ports: Dictionary[String, ResourceTypes] = {}
 
+var _ports: Dictionary[String, ResourceTypes] = {}
 var _longest_road:int = -1
 var _largest_army:int = -1
 
@@ -121,8 +123,8 @@ func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
 func get_current_phase() -> GamePhase:      return self._game_phase
 func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), ResourceTypes.NONE)
-func get_army(id: int) -> int:              return self._army[id]
-func get_victory_points(id: int) -> int:    return self._victory_points[id]
+func get_army(id: int) -> int:              return self._player_records[id].soldiers
+func get_victory_points(id: int) -> int:    return self._player_records[id].victory_points
 func get_dice() -> Array[int]:              return self._dice.duplicate()
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id].get_resource(r)
 func get_bank(id: int) -> Wallet: return self._bank[id].duplicate()
@@ -131,6 +133,7 @@ func count_resources(id: int) -> int: return self._bank[id].count_resources()
 func get_discarded() -> Dictionary[int, bool]: return self._players_discarded.duplicate()
 func get_longest_road() -> int: return self._longest_road 
 func get_largest_army() -> int: return self._largest_army
+func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
 
 func has_resources(id: int, wallet: Wallet) -> bool: 
 	return self._bank[id].has_resources(wallet)
@@ -240,22 +243,21 @@ func do_set_road(id: int, edge: AxialEdge) -> void:
 
 func _set_longest_road(id: int) -> void:
 	if self._longest_road != -1:
-		self._victory_points[self._longest_road] -= 2
-		self.do_remove_victory_point(self._longest_road, 2)
+		self._player_records[self._longest_road].victory_points -= 2
 
 	self._longest_road = id
-	self._victory_points[id] += 2
+	self._player_records[id].victory_points += 2
 	EventBus.update_longest_road.emit(id)
-	self.do_add_victory_point(self._longest_road, 2)
+
 
 func do_add_resources(id: int, resources: Wallet) -> void:
 	self._bank[id].add_resources(resources)
-	EventBus.add_resources.emit(id, resources)
+	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 
 func do_remove_resources(id: int, resources:Wallet) -> void:
 	self._bank[id].remove_resources(resources)
-	EventBus.remove_resources.emit(id, resources)
+	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 
 func do_add_action_card(id: int, card: ActionCardTypes) -> void:
@@ -270,12 +272,12 @@ func do_remove_action_card(id: int, card) -> void:
 
 func do_update_phase(phase: GamePhase) -> void:
 	self._game_phase = phase
-	EventBus.phase_updated.emit(phase)
+	EventBus.current_phase_updated.emit(phase)
 
 
 func do_update_player(id: int) -> void:
 	self._current_player = id
-	EventBus.player_updated.emit(id)
+	EventBus.current_player_updated.emit(id)
 
 
 func do_set_exchange_rate(id: int, resource, value: int) -> void:
@@ -289,29 +291,25 @@ func do_set_pirate(ax: Axial) -> void:
 
 
 func do_add_victory_point(id: int, amt: int = 1) -> void:
-	self._victory_points[id] += amt
-	EventBus.victory_points_updated.emit(id, self._victory_points[id])
+	self._player_records[id].victory_points += amt
 
 
 func do_remove_victory_point(id: int, amt: int = 1) -> void:
-	self._victory_points[id] -= amt
-	EventBus.victory_points_updated.emit(id, self._victory_points[id])
+	self._player_records[id].victory_points -= amt
 
 
 func do_add_soldier(id: int) -> void:
-	self._army[id] += 1
-	EventBus.soldier_added.emit(id)
+	self._player_records[id].soldiers += 1
 
-	if (self._army[id] < 3): return
+	if self._player_records[id].soldiers < 3: return
 
 	if self._largest_army != -1:
-		self._victory_points[self._largest_army] -= 2
-		self.do_remove_victory_point(self._largest_army, 2)
+		self._player_records[self._largest_army].victory_points -= 2
 
 	self._largest_army = id
-	self._victory_points[id] += 2
+	self._player_records[id].victory_points += 2
 	EventBus.update_largest_army.emit(id)
-	self.do_add_victory_point(self._longest_road, 2)
+
 
 func do_discard(id: int, wallet: Wallet) -> void:
 	self.do_remove_resources(id, wallet)
@@ -327,25 +325,21 @@ func set_discard(id: int, value: bool) -> void:
 	self._players_discarded[id] = value
 
 
-func _init() -> void:
+func _init(names: Array[String]) -> void:
 	self._place_tiles()
 	self._place_water()
 	self._place_ports()
 	self.reset_discard()
 
-	self.player_names.resize(4)
-
-	for i in range(4):
+	for i in range(Game.player_count):
 		self._bank[i] = Wallet.new()
 		self._exchange_rate[i] = Wallet.new()
 		self._exchange_rate[i].set_all(4)
 		self._action_cards[i] = ActionCardWallet.new()
-		self._army[i] = 0
-		self._victory_points[i] = 0
 		self._houses_mirror[i] = [] as Array[Axial]
 		self._cities_mirror[i] = [] as Array[Axial]
-		self._roads_mirror[i] = [] as Array[AxialEdge]
-
+		self._roads_mirror[i] = [] as Array[AxialEdge]	
+		self._player_records[i] = PlayerRecord.new(i, names[i])
 
 # populates (non-wate) hexes, corners, edges
 # populate hexdata with hex, terrain, resource
@@ -439,194 +433,3 @@ func _fill_terrain_bag() -> Array[Terrain]:
 	terrain_bag.shuffle()
 
 	return terrain_bag
-
-
-func save(path: String) -> void:
-	var data := {
-		"player_names": _serialize_player_names(),
-		"discarded": _players_discarded,
-		"current_player": _current_player,
-		"game_phase": _game_phase,
-		"pirate": _pirate.key(),
-		"hex_data": _serialize_hex_data(),
-		"houses": _houses,
-		"cities": _cities,
-		"roads": _serialize_roads(),
-		"houses_mirror": _serialize_axial_mirror(_houses_mirror),
-		"cities_mirror": _serialize_axial_mirror(_cities_mirror),
-		"roads_mirror": _serialize_edge_mirror(_roads_mirror),
-		"bank": _serialize_wallet_collection(_bank),
-		"exchange_rate": _serialize_wallet_collection(_exchange_rate),
-		"action_cards": _serialize_action_card_collection(_action_cards),
-		"victory_points": _victory_points,
-		"army": _army,
-		"ports": _serialize_ports(),
-		"longest_road": self._longest_road,
-		"largest_army": self._largest_army
-	}
-	var f := FileAccess.open(path, FileAccess.WRITE)
-	f.store_string(JSON.stringify(data))
-
-
-func load(path: String) -> void:
-	var f := FileAccess.open(path, FileAccess.READ)
-	var data: Dictionary = JSON.parse_string(f.get_as_text())
-
-	_players_discarded = {}
-	for key in data["discarded"]:
-		_players_discarded[int(key)] = data["discarded"][key] as bool
-
-	_longest_road = int(data["longest_road"])
-	_largest_army = int(data["largest_army"])
-	_current_player = int(data["current_player"])
-	_game_phase = int(data["game_phase"]) as GamePhase
-	_pirate = Axial.from_key(data["pirate"])
-
-	_deserialize_hex_data(data["hex_data"])
-
-	_houses.clear()
-	for k in data["houses"]: _houses[k] = int(data["houses"][k])
-
-	_cities.clear()
-	for k in data["cities"]: _cities[k] = int(data["cities"][k])
-
-	_deserialize_roads(data["roads"])
-	_deserialize_axial_mirror(_houses_mirror, data["houses_mirror"])
-	_deserialize_axial_mirror(_cities_mirror, data["cities_mirror"])
-	_deserialize_edge_mirror(_roads_mirror, data["roads_mirror"])
-	_deserialize_wallet_collection(data["bank"], _bank)
-	_deserialize_wallet_collection(data["exchange_rate"], _exchange_rate)
-	_deserialize_action_card_collection(data["action_cards"], _action_cards)
-	_deserialize_player_names(data["player_names"])
-
-	_victory_points.clear()
-	for k in data["victory_points"]: _victory_points[int(k)] = int(data["victory_points"][k])
-
-	_army.clear()
-	for k in data["army"]: _army[int(k)] = int(data["army"][k])
-
-	_deserialize_ports(data["ports"])
-
-
-func _serialize_hex_data() -> Dictionary:
-	var out := {}
-	for k in _hex_data: # k is axial.key()
-		out[k] = _hex_data[k].serialize()
-	return out
-
-
-func _deserialize_hex_data(data: Dictionary) -> void:
-	_hex_data.clear()
-	for k in data: # k is axial.key()
-		var hd = HexData.deserialize(data[k])		
-		_hex_data[k] = hd
-
-
-func _serialize_player_names() -> Dictionary:
-	var out := {}
-	for i in self.player_names.size():
-		out[i] = self.player_names[i]
-	return out
-
-
-func _deserialize_player_names(data: Dictionary) -> void:
-	self.player_names = []
-	self.player_names.resize(data.size())
-	for k in data:
-		self.player_names[int(k)] = data[k]
-
-
-func _serialize_roads() -> Dictionary:
-	var out := {}
-	for k in _roads:
-		out[k] = _roads[k]
-	return out
-
-
-func _deserialize_roads(data: Dictionary) -> void:
-	_roads.clear()
-	for k in data: _roads[k] = int(data[k])
-
-
-func _serialize_axial_mirror(mirror: Dictionary) -> Dictionary:
-	var out := {}
-	for id in mirror:
-		out[str(id)] = (mirror[id] as Array).map(Axial.to_key)
-	return out
-
-
-func _deserialize_axial_mirror(mirror: Dictionary, data: Dictionary) -> void:
-	for id in mirror:
-		mirror[id].clear()
-	for k in data:
-		var id := int(k)
-		for ak in data[k]:
-			mirror[id].append(Axial.from_key(ak))
-
-
-func _serialize_edge_mirror(mirror: Dictionary) -> Dictionary:
-	var out := {}
-	for id in mirror:
-		out[str(id)] = (mirror[id] as Array).map(func(e: AxialEdge): return {
-			"key": e.key(),
-			"rot": e.rotation
-		})
-	return out
-
-
-func _deserialize_edge_mirror(mirror: Dictionary, data: Dictionary) -> void:
-	for id in mirror:
-		mirror[id].clear()
-	for k in data:
-		var id := int(k)
-		for ed in data[k]:
-			var edge := AxialEdge.from_key(ed["key"])
-			edge.rotation = float(ed["rot"])
-			mirror[id].append(edge)
-
-
-func _serialize_wallet_collection(input: Dictionary) -> Dictionary:
-	var out := {}
-	for id in input:
-		var w: Wallet = input[id]
-		var inner := {}
-		for r in w.keys():
-			inner[str(r)] = w.get_resource(r)
-		out[str(id)] = inner
-	return out
-
-
-func _deserialize_wallet_collection(data: Dictionary, target: Dictionary) -> void:
-	for k in data:
-		var w: Wallet = target[int(k)]
-		for r in data[k]:
-			w.set_resource(int(r) as Model.ResourceTypes, int(data[k][r]))
-
-
-func _serialize_action_card_collection(input: Dictionary) -> Dictionary:
-	var out := {}
-	for id in input:
-		var w: ActionCardWallet = input[id]
-		var inner := {}
-		for c in w.keys():
-			inner[str(c)] = w.get_card(c)
-		out[str(id)] = inner
-	return out
-
-
-func _deserialize_action_card_collection(data: Dictionary, target: Dictionary) -> void:
-	for k in data:
-		var w: ActionCardWallet = target[int(k)]
-		for c in data[k]:
-			w.set_card(int(c) as Model.ActionCardTypes, int(data[k][c]))
-
-
-func _serialize_ports() -> Dictionary:
-	var out := {}
-	for k in _ports: out[k] = _ports[k]
-	return out
-
-
-func _deserialize_ports(data: Dictionary) -> void:
-	_ports.clear()
-	for k in data: _ports[k] = int(data[k]) as Model.ResourceTypes

@@ -5,7 +5,7 @@ extends Button
 
 
 func _ready() -> void:
-	EventBus.player_updated.connect(self._update)
+	EventBus.current_player_updated.connect(self._update)
 	EventBus.model_loaded.connect(self._reset)
 
 

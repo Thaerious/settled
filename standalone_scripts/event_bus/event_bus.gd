@@ -24,37 +24,29 @@ signal request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTy
 signal request_set_pirate(id: int, hex: Axial)
 signal request_steal_from(id: int)
 signal request_update_phase(phase: Model.GamePhase)
-
+signal request_add_action_card(id: int, c: Model.ActionCardTypes)
+signal request_discard(id:int, discard: Wallet)
 signal play_monopoly_card(id: int, resource: Model.ResourceTypes)
 signal play_plenty_card(id: int, resources: Wallet)
-signal play_victory_card(id: int)
-signal play_soldier_card(id: int)
-signal play_road_building_card(id: int)
-
-signal discard_resources(id:int, discard: Wallet)
+signal play_road_building_card(id: int, roads: AxialEdgeSet) 
 
 # Model/Service to view events
 signal update_longest_road(id: int)
 signal update_largest_army(id: int)
 
 # Model outgoing events (only the model should emit these)
+signal model_loaded()
 signal pirate_set(hex: Axial)
-signal victory_points_updated(id: int, amt: int)
-signal soldier_added(id: int)
 signal exchange_rate_set(id: int, r: Model.ResourceTypes, value: int)
-signal player_updated(current_player: int)
-signal phase_updated(phase: Model.GamePhase)
+signal current_player_updated(current_player: int)
+signal current_phase_updated(phase: Model.GamePhase)
 signal action_cards_updated(id: int, cards: ActionCardWallet)
 signal house_added(id: int, corner: Axial)
 signal city_added(id: int, corner: Axial)
 signal road_added(id: int, edge: AxialEdge)
 signal dice_set(d1: int, d2:int)
-
-signal request_add_action_card(id: int, c: Model.ActionCardTypes)
-signal set_action_cards(id: int, ac_wallet: ActionCardWallet)
-
-signal add_resources(id: int, wallet: Wallet)
-signal remove_resources(id: int, wallet: Wallet)
+signal player_record_updated(id: int, record: PlayerRecord)
+signal resources_updated(id: int, wallet:Wallet)
 
 # Debug and development signals
 signal set_player_view(id: int)
@@ -65,4 +57,3 @@ signal development_roll(d1: int, d2: int)
 # Terminal Events
 signal service_error(id: int, msg: String)
 
-signal model_loaded()

@@ -36,7 +36,7 @@ var _must_discard: int
 func _ready() -> void:
 	self._button_ok.pressed.connect(self._ok_pressed)
 
-	EventBus.phase_updated.connect(self._update_phase_hnd)
+	EventBus.current_phase_updated.connect(self._update_phase_hnd)
 	EventBus.model_loaded.connect(self._model_loaded_hnd)
 
 	for r in RESOURCE_TEXTURE_MAP.keys():
@@ -48,7 +48,7 @@ func _ready() -> void:
 
 
 func _ok_pressed() -> void:	
-	EventBus.discard_resources.emit(Game.self_id, discard)
+	EventBus.request_discard.emit(Game.self_id, discard)
 	self._main_container.visible = false
 	self._pending_label.visible = true
 
