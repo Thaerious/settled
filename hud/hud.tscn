@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=19 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="9_put16"]
 [ext_resource type="PackedScene" uid="uid://keoxfbt80qfy" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="12_hwufu"]
 [ext_resource type="PackedScene" uid="uid://cpyo2scica4vg" path="res://hud/year_of_plenty_dialog/plenty_dialog.tscn" id="13_mq7b8"]
+[ext_resource type="Script" uid="uid://d66e5b2s5mrl" path="res://hud/end_turn_button.gd" id="18_put16"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -86,6 +87,7 @@ theme_type_variation = &"DefaultMargin"
 layout_mode = 2
 
 [node name="Dice" parent="MarginContainer/HBoxContainer" instance=ExtResource("6_fjv1a")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="PhaseButtons" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
@@ -377,3 +379,20 @@ offset_left = 833.0499
 offset_top = 903.0
 offset_right = 833.0499
 offset_bottom = 903.0
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -117.97113
+offset_top = -297.0
+offset_right = 131.32959
+offset_bottom = -234.12549
+grow_horizontal = 2
+grow_vertical = 0
+disabled = true
+text = "End Turn"
+script = ExtResource("18_put16")

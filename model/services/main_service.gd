@@ -35,7 +35,11 @@ func _ready() -> void:
 	EventBus.request_city.connect(self._request_city)
 	EventBus.request_road.connect(self._request_road)
 	EventBus.request_update_phase.connect(self._request_update_phase)
+	EventBus.request_end_turn.connect(self._request_end_turn)	
 
+
+func _request_end_turn() -> void:
+	Game.model.do_end_turn()
 
 func _request_update_phase(phase: Model.GamePhase):
 	Game.model.do_update_phase(phase)

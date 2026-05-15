@@ -85,3 +85,16 @@ func _to_string() -> String:
 		self._data[Model.ActionCardTypes.MONOPOLY],
 		self._data[Model.ActionCardTypes.VICTORY_POINTS],
 	]
+
+
+func serialize():
+	return self._data
+
+
+static func deserialize(data: Dictionary) -> ActionCardWallet:
+	var wallet = ActionCardWallet.new()
+
+	for key in data:
+		wallet._data[key] = data[key]
+
+	return wallet

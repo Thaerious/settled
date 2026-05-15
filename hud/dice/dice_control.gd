@@ -17,7 +17,7 @@ func _ready() -> void:
 	_button_group1.get_buttons()[6].button_pressed = true
 	_button_group2.get_buttons()[6].button_pressed = true	
 
-	self._button_roll.button_up.connect(self._do_roll)
+	self._button_roll.button_up.connect(self.do_roll)
 
 	EventBus.dice_set.connect(func(d1:int, d2:int):
 		self._label1.text = str(d1)
@@ -25,7 +25,7 @@ func _ready() -> void:
 	);
 
 
-func _do_roll() -> void:
+func do_roll() -> void:
 	var button1 := _button_group1.get_pressed_button()
 	var button2 := _button_group2.get_pressed_button()
 

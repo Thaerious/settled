@@ -32,21 +32,21 @@ static func _dfs(id: int, start: Axial) -> int:
 
 	while not queue.is_empty():
 		var next = queue.pop_front()
-		var visited: Dictionary = next[0] # edges already traversed
-		var current: Axial = next[1]      # the next corner to visit
+		var traversed: Dictionary = next[0] # edges already traversed
+		var current: Axial = next[1]        # the next corner to visit
 
 		# path length = number of edges traversed so far
-		best = maxi(best, visited.size())
+		best = maxi(best, traversed.size())
 
 		# for each neighboring corner we can reach from the current corner
 		for neighbor: Axial in adj[current.key()]:
 			var edge_key := _edge_key(current, neighbor)
 
 			# don't reuse an edge already in this path
-			if visited.has(edge_key):
+			if traversed.has(edge_key):
 				continue
 
-			var new_visited := visited.duplicate()
+			var new_visited := traversed.duplicate()
 			new_visited[edge_key] = true
 
 			if _is_blocked(neighbor, id):

@@ -43,13 +43,6 @@ static func save(model: Model, path: String) -> void:
 		for r in w.keys(): inner[str(r)] = w.get_resource(r)
 		exchange_rate[str(id)] = inner
 
-	var action_cards := {}
-	for id in model._action_cards:
-		var w: ActionCardWallet = model._action_cards[id]
-		var inner := {}
-		for c in w.keys(): inner[str(c)] = w.get_card(c)
-		action_cards[str(id)] = inner
-
 	var ports := {}
 	for k in model._ports:
 		ports[k] = model._ports[k]
@@ -69,13 +62,21 @@ static func save(model: Model, path: String) -> void:
 		"roads_mirror":    roads_mirror,
 		"bank":            bank,
 		"exchange_rate":   exchange_rate,
-		"action_cards":    action_cards,
+		"owned_action_cards": serialize_dictionary(model._owned_action_cards),
+		"playable_action_cards": serialize_dictionary(model._playable_action_cards),
 		"ports":           ports,
 		"longest_road":    model._longest_road,
 		"largest_army":    model._largest_army
 	}
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data, "\t"))
+
+
+static func serialize_dictionary(dict: Dictionary):
+	var json = {}
+	for key in dict.keys():
+		json[key] = dict[key].serialize()
+	return json
 
 
 static func load(model: Model, path: String) -> void:
@@ -139,10 +140,16 @@ static func load(model: Model, path: String) -> void:
 		for r in data["exchange_rate"][k]:
 			w.set_resource(int(r) as Model.ResourceTypes, int(data["exchange_rate"][k][r]))
 
-	for k in data["action_cards"]:
-		var w: ActionCardWallet = model._action_cards[int(k)]
-		for c in data["action_cards"][k]:
-			w.set_card(int(c) as Model.ActionCardTypes, int(data["action_cards"][k][c]))
+	for k in data["owned_action_cards"]:
+		var w: ActionCardWallet = model._owned_action_cards[int(k)]
+		for c in data["owned_action_cards"][k]:
+			w.set_card(int(c) as Model.ActionCardTypes, int(data["owned_action_cards"][k][c]))
+
+	for k in data["playable_action_cards"]:
+		var w: ActionCardWallet = model._playable_action_cards[int(k)]
+		for c in data["playable_action_cards"][k]:
+			w.set_card(int(c) as Model.ActionCardTypes, int(data["playable_action_cards"][k][c]))
+
 
 	model._ports.clear()
 	for k in data["ports"]:
