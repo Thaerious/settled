@@ -136,10 +136,17 @@ func show_city_targets_hnd():
 func show_road_targets_hnd():
 	var roads = Game.model.get_roads(Game.self_id)
 	roads.add_item(self._untracked_road)
+
 	var candidates = roads.map(AxialEdge.neighbors_of)
 	candidates = candidates.difference(roads)
 	candidates = candidates.intersect(Game.model.all_edges())
+
+	# todo - remove the next two lines
+	var buildings = Game.model.get_all_buildings(Game.self_id)
+	candidates = candidates.union(buildings.edge_map(Axial.edges_of))
+
 	candidates.remove_item(self._untracked_road)
+
 	self.show_targets(candidates)
 
 

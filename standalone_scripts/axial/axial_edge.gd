@@ -5,8 +5,7 @@ var ax1: Axial = null
 var ax2: Axial = null
 var rotation: float = 0.0
 
-
-func _init(a: Axial, b:Axial, rotation: float):
+func _init(a: Axial, b:Axial, rotation: float = 0.0):
 	self.rotation = rotation
 
 	# normalize so A→B == B→A
