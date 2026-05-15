@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=20 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
 [ext_resource type="PackedScene" uid="uid://jf1afc3rc62v" path="res://hud/store/store.tscn" id="4_w8tcp"]
+[ext_resource type="Script" uid="uid://2ichsd5ic0jx" path="res://hud/auto_update_player.gd" id="6_0bw3r"]
 [ext_resource type="PackedScene" uid="uid://c3xnds1ojmmjj" path="res://hud/action_cards/action_cards.tscn" id="6_0ivg5"]
 [ext_resource type="PackedScene" uid="uid://b21qcmnle7jxn" path="res://hud/dice/dice_control.tscn" id="6_fjv1a"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_panel/PlayerPanel.tscn" id="7_0ivg5"]
@@ -227,6 +228,12 @@ text = "Game Over
 script = ExtResource("9_gms7k")
 phase = 14
 metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer/PhaseButtons"]
+layout_mode = 2
+button_pressed = true
+text = "Auto Update Player"
+script = ExtResource("6_0bw3r")
 
 [node name="Panel1" type="Panel" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 custom_minimum_size = Vector2(0, 50)
