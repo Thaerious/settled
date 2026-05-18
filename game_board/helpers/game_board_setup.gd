@@ -41,8 +41,8 @@ func _init(board: GameBoard) -> void:
 
 
 func place_tiles() -> GameBoardSetup:
-	for ax: Axial in Game.model.all_hexes():
-		var hex_data = Game.model.get_hex_data(ax)
+	for hex_data: HexData in Game.model.all_hex_data():
+		var ax = hex_data.axial
 		var terrain: Model.Terrain = hex_data.terrain
 		var vector := Axial.axial_to_offset(ax)
 		self._board.tiles.set_cell(vector, TERRAIN_SOURCE_ID, TERRAIN_TILE[terrain], 0)

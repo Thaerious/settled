@@ -172,3 +172,14 @@ func _to_string() -> String:
 		self._data[Model.ResourceTypes.WHEAT],
 		self._data[Model.ResourceTypes.WOOL],
 	]
+
+
+func serialize() -> Array:
+	return self._data.keys()
+
+
+# static func deserialize(data: Array) -> AxialSet:
+# 	var aset := AxialSet.new()
+# 	for key in data:
+# 		aset.add_item(Axial.from_key(key))
+# 	return aset	

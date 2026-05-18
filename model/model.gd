@@ -81,42 +81,30 @@ static var COSTS = {
 	"card" :  Wallet.new([ResourceTypes.WOOL, ResourceTypes.WHEAT, ResourceTypes.ROCK])
 }
 
-
-var _player_records: Dictionary[int, PlayerRecord] = {}
-
 var _current_player: int = 0
 var _game_phase: GamePhase = GamePhase.NOT_STARTED
+var _longest_road:int = -1
+var _largest_army:int = -1
 var _pirate: Axial
-var _hexes: AxialSet = AxialSet.new()
-var _corners: AxialSet = AxialSet.new()
-var _edges: AxialEdgeSet = AxialEdgeSet.new()
-var _discard_targets: Dictionary[int, int] # player_id -> needs to discard
 
+var _player_records: Dictionary[int, PlayerRecord] = {}
 var _hex_data: Dictionary[String, HexData] = {}
-
-var _houses: Dictionary[String, int] = {}
-var _cities: Dictionary[String, int] = {}
-var _roads: Dictionary[String, int] = {}
-
 var _houses_mirror: Dictionary[int, AxialSet] = {}
 var _cities_mirror: Dictionary[int, AxialSet] = {}
 var _roads_mirror: Dictionary[int, AxialEdgeSet] = {}
-
 var _bank: Dictionary[int, Wallet] = {}
 var _exchange_rate: Dictionary[int, Wallet] = {}
 var _owned_action_cards: Dictionary[int, ActionCardWallet] = {}
 var _playable_action_cards: Dictionary[int, ActionCardWallet] = {}
 
+var _discard_targets: Dictionary[int, int] # player_id -> needs to discard
+var _houses: Dictionary[String, int] = {}
+var _cities: Dictionary[String, int] = {}
+var _roads: Dictionary[String, int] = {}
 var _ports: Dictionary[String, ResourceTypes] = {}
-var _longest_road:int = -1
-var _largest_army:int = -1
 
-var _dice: Array[int] = [1, 1]
+var _dice: Array[int] = [1, 1] # this is used for dev & debug - is not saved
 
-
-func all_hexes() -> AxialSet:               return self._hexes.duplicate(true)
-func all_corners() -> AxialSet:             return self._corners.duplicate(true)
-func all_edges() -> AxialEdgeSet:           return self._edges.duplicate(true)
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
 func get_current_phase() -> GamePhase:      return self._game_phase
@@ -194,6 +182,10 @@ func get_all_buildings(id: int = -1) -> AxialSet:
 		result.add_all(self.get_houses(id))
 		result.add_all(self.get_cities(id))
 	return result
+
+
+func all_hex_data() -> Array[HexData]:
+	return self._hex_data.values()
 
 
 func get_hex_data(hex: Axial) -> HexData:
@@ -358,8 +350,8 @@ func set_discard(id: int, value: int) -> void:
 
 
 func _init(names: Array[String]) -> void:
-	self._place_tiles()
-	self._place_water()
+	var hexes := self._place_tiles()
+	self._place_water(hexes)
 	self._place_ports()
 	self.clear_discard()
 
@@ -377,7 +369,7 @@ func _init(names: Array[String]) -> void:
 # populates (non-wate) hexes, corners, edges
 # populate hexdata with hex, terrain, resource
 # set pirate
-func _place_tiles() -> void:
+func _place_tiles() -> AxialSet:
 	var terrain_bag := self._fill_terrain_bag()
 	var number_bag: Array[int] = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
 	number_bag.shuffle()
@@ -385,13 +377,13 @@ func _place_tiles() -> void:
 	var neighbors := Axial.zero().neighbors()
 	var distant_neighbors := neighbors.map(Axial.neighbors_of)
 
-	self._hexes.add_item(Axial.zero())
-	self._hexes.add_all(neighbors)
-	self._hexes.add_all(distant_neighbors)
-	self._corners = self._hexes.map(Axial.corners_of)
-	self._edges = self._hexes.edge_map(Axial.edges_of)
+	var hexes: AxialSet = AxialSet.new()
 
-	for hex in self._hexes:
+	hexes.add_item(Axial.zero())
+	hexes.add_all(neighbors)
+	hexes.add_all(distant_neighbors)
+
+	for hex in hexes:
 		var hex_data = HexData.new()
 		self._hex_data[hex.key()] = hex_data
 
@@ -405,6 +397,7 @@ func _place_tiles() -> void:
 		else: 
 			hex_data.number = number_bag.pop_front()
 
+	return hexes
 
 func _place_ports() -> void:
 	self._place_port(Axial.new(0, -3, 3), 2, Model.ResourceTypes.ANY)
@@ -445,16 +438,16 @@ func _place_port(hex: Axial, corner: int, value: ResourceTypes) -> void:
 
 
 # populates water hexes and hexdata
-func _place_water() -> void:
-	var water := self._hexes.map(Axial.neighbors_of)
-	water = water.difference(self._hexes)
+func _place_water(hexes: AxialSet) -> void:
+	var water := hexes.map(Axial.neighbors_of)
+	water = water.difference(hexes)
 
 	for hex in water:
 		self._hex_data[hex.key()] = HexData.new()
 		self._hex_data[hex.key()].axial = hex
 		self._hex_data[hex.key()].terrain = Terrain.WATER
 
-	self._hexes.add_all(water)
+	hexes.add_all(water)	
 
 
 func _fill_terrain_bag() -> Array[Terrain]:

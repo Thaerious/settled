@@ -11,6 +11,7 @@ const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")
 const CITY_PIECE: PackedScene = preload("res://game_board/city_piece.tscn")
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
+var buildable_corners := AxialSet.new()
 
 ## player tint for game pieces
 static var tint: Array = [
@@ -80,6 +81,13 @@ func _input(event: InputEvent) -> void:
 
 
 func _model_loaded() -> void:
+	# track corners on non-water hexes
+	self.buildable_corners.clear()
+
+	for hex_data: HexData in Game.model.all_hex_data():
+		if hex_data.terrain == Model.Terrain.WATER: continue
+		self.buildable_corners.add_all(hex_data.axial.corners())
+
 	# clear targets
 	clear_targets_hnd()
 
@@ -104,7 +112,7 @@ func _model_loaded() -> void:
 func show_house_targets_hnd():
 	var black_list = Game.model.get_all_buildings()
 	black_list = black_list.union(black_list.map(Axial.neighbors_of))
-	var white_list = Game.model.all_corners().difference(black_list)
+	var white_list = self.buildable_corners.difference(black_list)
 	print(white_list)
 
 	var roads := Game.model.get_roads(Game.self_id)
@@ -115,7 +123,7 @@ func show_house_targets_hnd():
 
 
 func show_initial_house_targets_hnd():
-	var corners = Game.model.all_corners()
+	var corners = self.buildable_corners
 	var houses = Game.model.get_all_buildings()
 	var neighbors := houses.map(Axial.neighbors_of)
 	houses = houses.add_all(neighbors)

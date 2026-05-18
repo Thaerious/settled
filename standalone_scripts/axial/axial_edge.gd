@@ -11,6 +11,7 @@ func _init(a: Axial, b:Axial, rotation: float = 0.0):
 	# normalize so A→B == B→A
 	var ka := a.q + a.r * 10 + a.s * 100
 	var kb := b.q + b.r * 10 + b.s * 100
+	
 	if ka > kb:
 		var tmp = a
 		a = b
