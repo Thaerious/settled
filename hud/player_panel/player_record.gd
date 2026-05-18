@@ -30,13 +30,13 @@ var soldiers: int:
 	set(v): _soldiers = v; EventBus.player_record_updated.emit(self.id, self)
 
 
-func _init(id: int, name: String) -> void:
+func _init(id: int) -> void:
 	self.id = id
-	self.name = name
 
 
 func duplicate() -> PlayerRecord:
-	var r := PlayerRecord.new(self.id, self.name)
+	var r := PlayerRecord.new(self.id)
+	r.name            = self.name
 	r._victory_points = self.victory_points
 	r._resources      = self.resources
 	r._action_cards   = self.action_cards
@@ -57,7 +57,8 @@ func serialize() -> Dictionary:
 
 
 static func deserialize(id: int, data: Dictionary) -> PlayerRecord:
-	var r := PlayerRecord.new(id, data["name"])
+	var r := PlayerRecord.new(id)
+	r.name            = data["name"]
 	r._victory_points = int(data["victory_points"])
 	r._resources      = int(data["resources"])
 	r._action_cards   = int(data["action_cards"])

@@ -10,14 +10,18 @@ var _iter_array: Array = []
 var _data: Dictionary[Model.ResourceTypes, int] = {
 	Model.ResourceTypes.BRICK: 0,
 	Model.ResourceTypes.WOOD:  0,
-	Model.ResourceTypes.ROCK:  0,
-	Model.ResourceTypes.WHEAT: 0,
+	Model.ResourceTypes.WHEAT: 0,	
 	Model.ResourceTypes.WOOL:  0,
+	Model.ResourceTypes.ROCK:  0,	
 }
 
 
-func _init(initial: Array = []) -> void:
-	for r in initial: self.add_resource(r)
+func _init(initial: Variant = null) -> void:
+	if initial is int:
+		self.set_all(initial)
+	elif initial != null:
+		for r in initial: 
+			self.add_resource(r)
 
 
 func _iter_init(_arg) -> bool:
@@ -175,11 +179,12 @@ func _to_string() -> String:
 
 
 func serialize() -> Array:
-	return self._data.keys()
+	return self._data.values()
 
 
-# static func deserialize(data: Array) -> AxialSet:
-# 	var aset := AxialSet.new()
-# 	for key in data:
-# 		aset.add_item(Axial.from_key(key))
-# 	return aset	
+static func deserialize(array: Array) -> Wallet:
+	var wallet := Wallet.new()
+	for i in array.size():
+		wallet.set_resource(i, array[i])
+
+	return wallet	

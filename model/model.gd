@@ -81,29 +81,29 @@ static var COSTS = {
 	"card" :  Wallet.new([ResourceTypes.WOOL, ResourceTypes.WHEAT, ResourceTypes.ROCK])
 }
 
-var _current_player: int = 0
-var _game_phase: GamePhase = GamePhase.NOT_STARTED
-var _longest_road:int = -1
-var _largest_army:int = -1
-var _pirate: Axial
+var _current_player: int = 0  						# the current active player
+var _game_phase: GamePhase = GamePhase.NOT_STARTED  # the currnet phase
+var _longest_road:int = -1                          # player who owns longest road (-1 is none)
+var _largest_army:int = -1                          # player with the largest army (-1 is none)
+var _pirate: Axial                                  # the axial the pirate is one (starts on desert)
 
-var _player_records: Dictionary[int, PlayerRecord] = {}
-var _hex_data: Dictionary[String, HexData] = {}
-var _houses_mirror: Dictionary[int, AxialSet] = {}
-var _cities_mirror: Dictionary[int, AxialSet] = {}
-var _roads_mirror: Dictionary[int, AxialEdgeSet] = {}
-var _bank: Dictionary[int, Wallet] = {}
-var _exchange_rate: Dictionary[int, Wallet] = {}
-var _owned_action_cards: Dictionary[int, ActionCardWallet] = {}
-var _playable_action_cards: Dictionary[int, ActionCardWallet] = {}
+var _player_records: Dictionary[int, PlayerRecord] = {}  # player information map
+var _hex_data: Dictionary[String, HexData] = {}          # hex (tile) data map for all tiles (incl water)
+var _houses_mirror: Dictionary[int, AxialSet] = {}       # map of player id -> owned houses
+var _cities_mirror: Dictionary[int, AxialSet] = {}       # map of player id -> owned cities
+var _roads_mirror: Dictionary[int, AxialEdgeSet] = {}    # map of player id -> owned roads
+var _bank: Dictionary[int, Wallet] = {}                  # map of player id -> owned resources
+var _exchange_rate: Dictionary[int, Wallet] = {}         # map of player id -> exchange rate
+var _owned_action_cards: Dictionary[int, ActionCardWallet] = {}    # map of player id -> all actions cards
+var _playable_action_cards: Dictionary[int, ActionCardWallet] = {} # map of player id -> actions cards that can be played this turn
 
-var _discard_targets: Dictionary[int, int] # player_id -> needs to discard
-var _houses: Dictionary[String, int] = {}
-var _cities: Dictionary[String, int] = {}
-var _roads: Dictionary[String, int] = {}
-var _ports: Dictionary[String, ResourceTypes] = {}
+var _discard_quantity: Dictionary[int, int]           # player_id -> count of cards that this player must discard
+var _houses: Dictionary[String, int] = {}             # map of house axial -> player who owns it
+var _cities: Dictionary[String, int] = {}             # map of city axial -> player who owns it
+var _roads: Dictionary[String, int] = {}              # map of road axial -> player who owns it
+var _ports: Dictionary[String, ResourceTypes] = {}    # map of port axial -> resource the port trades
 
-var _dice: Array[int] = [1, 1] # this is used for dev & debug - is not saved
+var _dice: Array[int] = [1, 1]                        # this is used for dev & debug - is not saved
 
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
@@ -117,7 +117,7 @@ func get_bank(id: int) -> Wallet: return self._bank[id].duplicate()
 func get_owned_action_cards(id: int) -> ActionCardWallet: return self._owned_action_cards[id]
 func get_playable_action_cards(id: int) -> ActionCardWallet: return self._playable_action_cards[id]
 func count_resources(id: int) -> int: return self._bank[id].count_resources()
-func get_discard_target(id: int) -> int: return self._discard_targets[id]
+func get_discard_target(id: int) -> int: return self._discard_quantity[id]
 func get_longest_road() -> int: return self._longest_road 
 func get_largest_army() -> int: return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
@@ -337,34 +337,33 @@ func do_add_soldier(id: int) -> void:
 
 func do_discard(id: int, wallet: Wallet) -> void:
 	self.do_remove_resources(id, wallet)
-	self._discard_targets[id] = -1
-
-
-func clear_discard() -> void:
-	for id in Game.player_count:
-		self._discard_targets[id] = -1
+	self._discard_quantity[id] = 0
 
 
 func set_discard(id: int, value: int) -> void:	
-	self._discard_targets[id] = value
+	self._discard_quantity[id] = value
 
 
-func _init(names: Array[String]) -> void:
+func _init() -> void:
+	for id in range(Game.player_count):
+		self._bank[id] = Wallet.new()
+		self._exchange_rate[id] = Wallet.new(4)
+		self._owned_action_cards[id] = ActionCardWallet.new()
+		self._playable_action_cards[id] = ActionCardWallet.new()
+		self._houses_mirror[id] = AxialSet.new()
+		self._cities_mirror[id] = AxialSet.new()
+		self._roads_mirror[id] = AxialEdgeSet.new()	
+		self._player_records[id] = PlayerRecord.new(id)
+		self._discard_quantity[id] = 0
+
+
+func build(names: Array[String]) -> void:
+	for id in range(Game.player_count):
+		self._player_records[id].name = names[id]
+
 	var hexes := self._place_tiles()
 	self._place_water(hexes)
 	self._place_ports()
-	self.clear_discard()
-
-	for i in range(Game.player_count):
-		self._bank[i] = Wallet.new()
-		self._exchange_rate[i] = Wallet.new()
-		self._exchange_rate[i].set_all(4)
-		self._owned_action_cards[i] = ActionCardWallet.new()
-		self._playable_action_cards[i] = ActionCardWallet.new()
-		self._houses_mirror[i] = AxialSet.new()
-		self._cities_mirror[i] = AxialSet.new()
-		self._roads_mirror[i] = AxialEdgeSet.new()	
-		self._player_records[i] = PlayerRecord.new(i, names[i])
 
 # populates (non-wate) hexes, corners, edges
 # populate hexdata with hex, terrain, resource

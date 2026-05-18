@@ -19,29 +19,21 @@ func _ready() -> void:
 
 	self._button_roll.button_up.connect(self.do_roll)
 
-	EventBus.dice_set.connect(func(d1:int, d2:int):
+	EventBus.dice_set.connect(func(d1, d2):
 		self._label1.text = str(d1)
-		self._label2.text = str(d2)		
-	);
+		self._label2.text = str(d2)
+	)
 
-	self._button_group1.pressed.connect(self._set_dice)
-	self._button_group2.pressed.connect(self._set_dice)
-
-
-func _set_dice():
+func get_dice() -> Array:
 	var button1 := _button_group1.get_pressed_button()
 	var button2 := _button_group2.get_pressed_button()
-
-	var d1 = -1
-	var d2 = -1
-
-	if button1.text != "R":		
-		d1 = int(button1.text)
-
-	if button2.text != "R":		
-		d2 = int(button2.text)
-
-	EventBus.set_dice.emit(d1, d2)
+	var txt1 = button1.text
+	var txt2 = button2.text
+	var die1 = -1
+	var die2 = -1
+	if txt1 != "R": die1 = int(txt1)
+	if txt2 != "R": die2 = int(txt2)
+	return [die1, die2]
 
 
 func do_roll() -> void:

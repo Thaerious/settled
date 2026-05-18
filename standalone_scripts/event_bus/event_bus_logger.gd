@@ -51,4 +51,4 @@ func _ready() -> void:
 	EventBus.load_model_state.connect(func(): print("EventBus.load_model_state"))
 
 	EventBus.service_error.connect(func(id: int, msg: String): print("EventBus.service_error | id: %s | msg: %s" % [id, msg]))
-	EventBus.set_dice.connect(func(d1: int, d2: int): print("EventBus.set_dice | d1: %s | d2: %s" % [d1, d2]))	
+	

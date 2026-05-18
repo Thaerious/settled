@@ -11,10 +11,6 @@ const EXCHANGABLE = [
 	Model.ResourceTypes.ROCK
 ]
 
-# used for game in development
-var die1 = -1
-var die2 = -1
-
 func _ready() -> void:
 	# Sub-Services
 	Game.model = Game.model
@@ -136,14 +132,18 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 	Game.model.do_remove_resources(id, Wallet.new(from_array))
 	Game.model.do_add_resources(id, Wallet.new([to]))
 
-
 # called by the game in production
 func _on_request_roll() -> void:
+	var dice_control: DiceControl = get_tree().get_first_node_in_group("DiceControl")
+	var dev_dice = dice_control.get_dice()
+
 	var d1: int = randi_range(1, 6)
 	var d2: int = randi_range(1, 6)
 
-	if self.die1 != -1: d1 = self.die1
-	if self.die2 != -1: d2 = self.die2
+	# debug/dev override
+
+	if dev_dice[0] != -1: d1 = dev_dice[0]
+	if dev_dice[1] != -1: d2 = dev_dice[1]
 
 	Game.model.do_set_dice(d1, d2)
 	if d1 + d2 == 7:

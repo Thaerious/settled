@@ -91,14 +91,13 @@ func _to_string() -> String:
 	]
 
 
-func serialize():
-	return self._data
+func serialize() -> Array:
+	return self._data.values()
 
 
-static func deserialize(data: Dictionary) -> ActionCardWallet:
-	var wallet = ActionCardWallet.new()
+static func deserialize(array: Array) -> ActionCardWallet:
+	var wallet := ActionCardWallet.new()
+	for i in array.size():
+		wallet.set_card(i, array[i])
 
-	for key in data:
-		wallet._data[key] = data[key]
-
-	return wallet
+	return wallet	

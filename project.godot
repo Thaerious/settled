@@ -37,6 +37,10 @@ window/size/viewport_height=1080
 
 project/assembly_name="Settled"
 
+[global_group]
+
+DiceControl=""
+
 [layer_names]
 
 2d_physics/layer_10="Mouse"

@@ -15,7 +15,7 @@ static func save(model: Model, path: String) -> void:
 		"exchange_rate":         serialize_dictionary(model._exchange_rate),
 		"owned_action_cards":    serialize_dictionary(model._owned_action_cards),
 		"playable_action_cards": serialize_dictionary(model._playable_action_cards),			
-		"discarded":             model._discard_targets,
+		"discarded":             model._discard_quantity,
 		"houses":                model._houses,
 		"cities":                model._cities,
 		"roads":                 model._roads,
@@ -32,7 +32,8 @@ static func serialize_dictionary(dict: Dictionary):
 	return json
 
 
-static func load(model: Model, path: String) -> void:
+static func load(path: String) -> Model:
+	var model = Model.new()
 	var f := FileAccess.open(path, FileAccess.READ)
 	var data: Dictionary = JSON.parse_string(f.get_as_text())
 
@@ -42,66 +43,48 @@ static func load(model: Model, path: String) -> void:
 	model._longest_road   = int(data["longest_road"])
 	model._pirate         = Axial.from_key(data["pirate"])	
 
-	model._discard_targets = {}
 	for key in data["discarded"]:
-		model._discard_targets[int(key)] = data["discarded"][key] as bool
+		model._discard_quantity[int(key)] = int(data["discarded"][key])
 
-	model._player_records.clear()
 	for k in data["player_records"]:
 		model._player_records[int(k)] = PlayerRecord.deserialize(int(k), data["player_records"][k])
 
-	model._hex_data.clear()
 	for k in data["hex_data"]:
 		model._hex_data[k] = HexData.deserialize(data["hex_data"][k])
 
-	model._houses.clear()
-	model._houses_mirror.clear()
 	for k in data["houses"]: 
 		model._houses[k] = int(data["houses"][k])
 		model._houses_mirror[model._houses[k]].add_item(Axial.from_key(k))
 
-	model._cities.clear()
-	model._cities_mirror.clear()
 	for k in data["cities"]: 
 		model._cities[k] = int(data["cities"][k])
 		model._cities_mirror[model._cities[k]].add_item(Axial.from_key(k))
 
-	model._roads.clear()
-	model._roads_mirror.clear()
 	for k in data["roads"]: 
 		model._roads[k] = int(data["roads"][k])
 		model._roads_mirror[model._roads[k]].add_item(AxialEdge.from_key(k))
 
-
-	for id in model._roads_mirror: model._roads_mirror[id].clear()
-	for k in data["roads_mirror"]:
-		var id := int(k)
-		for ed in data["roads_mirror"][k]:
-			var edge := AxialEdge.from_key(ed["key"])
-			edge.rotation = float(ed["rot"])
-			model._roads_mirror[id].append(edge)
-
+	# check
 	for k in data["bank"]:
-		var w: Wallet = model._bank[int(k)]
-		for r in data["bank"][k]:
-			w.set_resource(int(r) as Model.ResourceTypes, int(data["bank"][k][r]))
+		var wallet := Wallet.deserialize(data["bank"][k])
+		model._bank[int(k)] = wallet
 
+	# check
 	for k in data["exchange_rate"]:
-		var w: Wallet = model._exchange_rate[int(k)]
-		for r in data["exchange_rate"][k]:
-			w.set_resource(int(r) as Model.ResourceTypes, int(data["exchange_rate"][k][r]))
+		var wallet := Wallet.deserialize(data["exchange_rate"][k])
+		model._exchange_rate[int(k)] = wallet
 
+	# check
 	for k in data["owned_action_cards"]:
-		var w: ActionCardWallet = model._owned_action_cards[int(k)]
-		for c in data["owned_action_cards"][k]:
-			w.set_card(int(c) as Model.ActionCardTypes, int(data["owned_action_cards"][k][c]))
+		var wallet := ActionCardWallet.deserialize(data["owned_action_cards"][k])
+		model._owned_action_cards[int(k)] = wallet
 
+	# check
 	for k in data["playable_action_cards"]:
-		var w: ActionCardWallet = model._playable_action_cards[int(k)]
-		for c in data["playable_action_cards"][k]:
-			w.set_card(int(c) as Model.ActionCardTypes, int(data["playable_action_cards"][k][c]))
+		var wallet := ActionCardWallet.deserialize(data["playable_action_cards"][k])
+		model._playable_action_cards[int(k)] = wallet
 
-
-	model._ports.clear()
 	for k in data["ports"]:
 		model._ports[k] = int(data["ports"][k]) as Model.ResourceTypes
+
+	return model		

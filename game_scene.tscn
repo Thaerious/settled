@@ -31,7 +31,7 @@ custom_data_layer_0/name = "terrain_type"
 custom_data_layer_0/type = 4
 sources/0 = SubResource("TileSetAtlasSource_mixcd")
 
-[node name="Node2D" type="Node2D"]
+[node name="GameScene" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
