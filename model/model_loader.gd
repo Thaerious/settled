@@ -2,13 +2,6 @@ class_name ModelLoader
 extends Object
 
 static func save(model: Model, path: String) -> void:
-	var records := {}
-	for i in model._player_records:
-		records[str(i)] = model._player_records[i].serialize()
-
-	var hex_data := {}
-	for k in model._hex_data:
-		hex_data[k] = model._hex_data[k].serialize()
 
 	var houses_mirror := {}
 	for id in model._houses_mirror:
@@ -48,12 +41,12 @@ static func save(model: Model, path: String) -> void:
 		ports[k] = model._ports[k]
 
 	var data := {
-		"player_records":  records,
-		"discarded":       model._players_discarded,
+		"player_records":  serialize_dictionary(model._player_records),
+		"discarded":       model._discard_targets,
 		"current_player":  model._current_player,
 		"game_phase":      model._game_phase,
 		"pirate":          model._pirate.key(),
-		"hex_data":        hex_data,
+		"hex_data":        serialize_dictionary(model._hex_data),
 		"houses":          model._houses,
 		"cities":          model._cities,
 		"roads":           roads,
@@ -83,9 +76,9 @@ static func load(model: Model, path: String) -> void:
 	var f := FileAccess.open(path, FileAccess.READ)
 	var data: Dictionary = JSON.parse_string(f.get_as_text())
 
-	model._players_discarded = {}
+	model._discard_targets = {}
 	for key in data["discarded"]:
-		model._players_discarded[int(key)] = data["discarded"][key] as bool
+		model._discard_targets[int(key)] = data["discarded"][key] as bool
 
 	model._longest_road   = int(data["longest_road"])
 	model._largest_army   = int(data["largest_army"])

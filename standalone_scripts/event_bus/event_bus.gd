@@ -53,7 +53,7 @@ signal resources_updated(id: int, wallet:Wallet)
 signal set_player_view(id: int)
 signal save_model_state()
 signal load_model_state()
-signal development_roll(d1: int, d2: int)
+signal set_dice(d1: int, d2: int)
 
 # Terminal Events
 signal service_error(id: int, msg: String)

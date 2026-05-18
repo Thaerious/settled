@@ -90,7 +90,7 @@ var _pirate: Axial
 var _hexes: AxialSet = AxialSet.new()
 var _corners: AxialSet = AxialSet.new()
 var _edges: AxialEdgeSet = AxialEdgeSet.new()
-var _players_discarded: Dictionary[int, bool] # player_id -> needs to discard
+var _discard_targets: Dictionary[int, int] # player_id -> needs to discard
 
 var _hex_data: Dictionary[String, HexData] = {}
 
@@ -98,9 +98,9 @@ var _houses: Dictionary[String, int] = {}
 var _cities: Dictionary[String, int] = {}
 var _roads: Dictionary[String, int] = {}
 
-var _houses_mirror: Dictionary[int, Array] = {}
-var _cities_mirror: Dictionary[int, Array] = {}
-var _roads_mirror: Dictionary[int, Array] = {}
+var _houses_mirror: Dictionary[int, AxialSet] = {}
+var _cities_mirror: Dictionary[int, AxialSet] = {}
+var _roads_mirror: Dictionary[int, AxialEdgeSet] = {}
 
 var _bank: Dictionary[int, Wallet] = {}
 var _exchange_rate: Dictionary[int, Wallet] = {}
@@ -129,7 +129,7 @@ func get_bank(id: int) -> Wallet: return self._bank[id].duplicate()
 func get_owned_action_cards(id: int) -> ActionCardWallet: return self._owned_action_cards[id]
 func get_playable_action_cards(id: int) -> ActionCardWallet: return self._playable_action_cards[id]
 func count_resources(id: int) -> int: return self._bank[id].count_resources()
-func get_discarded() -> Dictionary[int, bool]: return self._players_discarded.duplicate()
+func get_discard_target(id: int) -> int: return self._discard_targets[id]
 func get_longest_road() -> int: return self._longest_road 
 func get_largest_army() -> int: return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
@@ -211,7 +211,7 @@ func do_end_turn() -> void:
 
 	var owned = self._owned_action_cards[self._current_player]
 	var playable = self._playable_action_cards[self._current_player]
-	owned.copy_from(playable)
+	owned.copy_to(playable)
 	EventBus.action_cards_updated.emit(self._current_player, owned, playable)
 
 
@@ -223,7 +223,7 @@ func do_set_dice(d1: int, d2:int) -> void:
 
 func do_set_house(id: int, ax: Axial) -> void:	
 	self._houses[ax.key()] = id
-	self._houses_mirror[id].append(ax)
+	self._houses_mirror[id].add_item(ax)
 	self.do_add_victory_point(id)
 	EventBus.house_added.emit(id, ax)
 	self._calc_longest_road()
@@ -231,15 +231,15 @@ func do_set_house(id: int, ax: Axial) -> void:
 
 func do_set_city(id: int, ax: Axial) -> void:
 	self._cities[ax.key()] = id
-	self._cities_mirror[id].append(ax)
-	self._houses_mirror[id].erase(ax)
+	self._cities_mirror[id].add_item(ax)
+	self._houses_mirror[id].remove_item(ax)
 	self.do_add_victory_point(id)
 	EventBus.city_added.emit(id, ax)
 
 
 func do_set_road(id: int, edge: AxialEdge) -> void:
 	self._roads[edge.key()] = id
-	self._roads_mirror[id].append(edge)
+	self._roads_mirror[id].add_item(edge)
 	EventBus.road_added.emit(id, edge)
 	self._calc_longest_road()
 
@@ -296,6 +296,7 @@ func do_add_action_card(id: int, card: ActionCardTypes) -> void:
 
 func do_remove_action_card(id: int, card) -> void:
 	self._owned_action_cards[id].remove_card(card)
+	self._playable_action_cards[id].remove_card(card)
 	var owned := self._owned_action_cards[id].duplicate()
 	var playable := self._playable_action_cards[id].duplicate()
 	EventBus.action_cards_updated.emit(id, owned, playable)
@@ -344,23 +345,23 @@ func do_add_soldier(id: int) -> void:
 
 func do_discard(id: int, wallet: Wallet) -> void:
 	self.do_remove_resources(id, wallet)
-	self._players_discarded[id] = false
+	self._discard_targets[id] = -1
 
 
-func reset_discard() -> void:
+func clear_discard() -> void:
 	for id in Game.player_count:
-		self._players_discarded[id] = false
+		self._discard_targets[id] = -1
 
 
-func set_discard(id: int, value: bool) -> void:	
-	self._players_discarded[id] = value
+func set_discard(id: int, value: int) -> void:	
+	self._discard_targets[id] = value
 
 
 func _init(names: Array[String]) -> void:
 	self._place_tiles()
 	self._place_water()
 	self._place_ports()
-	self.reset_discard()
+	self.clear_discard()
 
 	for i in range(Game.player_count):
 		self._bank[i] = Wallet.new()
@@ -368,9 +369,9 @@ func _init(names: Array[String]) -> void:
 		self._exchange_rate[i].set_all(4)
 		self._owned_action_cards[i] = ActionCardWallet.new()
 		self._playable_action_cards[i] = ActionCardWallet.new()
-		self._houses_mirror[i] = [] as Array[Axial]
-		self._cities_mirror[i] = [] as Array[Axial]
-		self._roads_mirror[i] = [] as Array[AxialEdge]	
+		self._houses_mirror[i] = AxialSet.new()
+		self._cities_mirror[i] = AxialSet.new()
+		self._roads_mirror[i] = AxialEdgeSet.new()	
 		self._player_records[i] = PlayerRecord.new(i, names[i])
 
 # populates (non-wate) hexes, corners, edges

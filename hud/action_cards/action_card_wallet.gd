@@ -77,6 +77,10 @@ func copy_from(that: ActionCardWallet) -> void:
 		self.set_card(c, that.get_card(c))
 
 
+func copy_to(that: ActionCardWallet) -> void:
+	that.copy_from(self)
+
+
 func _to_string() -> String:
 	return "ActionCardWallet[Soldier:%s Road:%s Plenty:%s Monopoly:%s VP:%s]" % [
 		self._data[Model.ActionCardTypes.SOLDIER],

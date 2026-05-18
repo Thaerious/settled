@@ -11,6 +11,10 @@ const EXCHANGABLE = [
 	Model.ResourceTypes.ROCK
 ]
 
+# used for game in development
+var die1 = -1
+var die2 = -1
+
 func _ready() -> void:
 	# Sub-Services
 	Game.model = Game.model
@@ -20,7 +24,6 @@ func _ready() -> void:
 	# Listeners
 	EventBus.service_error.connect(self._on_service_error)
 	EventBus.request_roll.connect(self._on_request_roll)
-	EventBus.development_roll.connect(self._development_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 	EventBus.request_initial_house.connect(self.place_initial_house)
 	EventBus.request_initial_road.connect(self.place_initial_road)
@@ -138,11 +141,10 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 func _on_request_roll() -> void:
 	var d1: int = randi_range(1, 6)
 	var d2: int = randi_range(1, 6)
-	self._development_roll(d1, d2)
 
+	if self.die1 != -1: d1 = self.die1
+	if self.die2 != -1: d2 = self.die2
 
-# called by the game in development
-func _development_roll(d1: int, d2: int) -> void:
 	Game.model.do_set_dice(d1, d2)
 	if d1 + d2 == 7:
 		Game.model.do_update_phase(Model.GamePhase.INIT_DISCARD)
@@ -199,6 +201,7 @@ static func weighted_random(weights: Dictionary) -> Variant:
 
 func _next_player() -> void:
 	var next = Game.model.get_current_player()
+
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP_FORWARD_ROAD:
 		next = next + 1
 		if next > 3:
@@ -213,6 +216,7 @@ func _next_player() -> void:
 		if next < 0:
 			Game.model.do_update_player(0)
 			Game.model.do_update_phase(Model.GamePhase.MAIN)
+			self._on_request_roll()
 		else:
 			Game.model.do_update_player(next)
 			Game.model.do_update_phase(Model.GamePhase.SETUP_REVERSE_HOUSE)

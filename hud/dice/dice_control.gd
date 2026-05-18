@@ -24,18 +24,25 @@ func _ready() -> void:
 		self._label2.text = str(d2)		
 	);
 
+	self._button_group1.pressed.connect(self._set_dice)
+	self._button_group2.pressed.connect(self._set_dice)
 
-func do_roll() -> void:
+
+func _set_dice():
 	var button1 := _button_group1.get_pressed_button()
 	var button2 := _button_group2.get_pressed_button()
 
-	var d1: int = randi_range(1, 6)
-	var d2: int = randi_range(1, 6)		
+	var d1 = -1
+	var d2 = -1
 
 	if button1.text != "R":		
 		d1 = int(button1.text)
 
 	if button2.text != "R":		
 		d2 = int(button2.text)
-	
-	EventBus.development_roll.emit(d1, d2)
+
+	EventBus.set_dice.emit(d1, d2)
+
+
+func do_roll() -> void:
+	EventBus.request_roll.emit()
