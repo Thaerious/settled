@@ -2,7 +2,6 @@ class_name InitialRoadDragHnd
 extends RoadDragHnd
 
 var house_axial: Axial
-var road_axial: AxialEdge
 var _road_container: StoreItemContainer
 
 func _init(road_trigger: StoreItemContainer) -> void:
@@ -20,6 +19,7 @@ func _on_success(_rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
 
 	if self._last_target != null: 
+		EventBus.request_initial_house.emit(Game.self_id, self.house_axial)
 		EventBus.request_initial_road.emit(Game.self_id, self._last_target.axial_edge)
 		self._last_target = null
 		self.enabled = false

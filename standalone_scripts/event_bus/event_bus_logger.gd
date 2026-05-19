@@ -11,6 +11,7 @@ func _ready() -> void:
 	EventBus.show_road_targets.connect(func(): print("EventBus.show_road_targets"))
 	EventBus.clear_targets.connect(func(): print("EventBus.clear_targets"))
 	EventBus.set_road_view_only.connect(func(id: int, edge: AxialEdge): print("EventBus.set_road_view_only | id: %s | edge: %s" % [id, edge]))
+	EventBus.set_house_view_only.connect(func(id: int, corner: Axial): print("EventBus.set_house_view_only | id: %s | corner: %s" % [id, corner]))
 
 	EventBus.request_roll.connect(func(): print("EventBus.request_roll"))
 	EventBus.request_purchase_action_card.connect(func(): print("EventBus.request_purchase_action_card"))

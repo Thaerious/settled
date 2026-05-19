@@ -53,6 +53,7 @@ func _ready() -> void:
 	EventBus.city_added.connect(self.set_city_hnd)
 	EventBus.road_added.connect(self.set_road_hnd)
 	EventBus.set_road_view_only.connect(self.set_road_view_only_hnd)
+	EventBus.set_house_view_only.connect(self.set_house_view_only_hnd)
 
 	EventBus.model_loaded.connect(self._model_loaded)
 
@@ -133,7 +134,6 @@ func show_initial_house_targets_hnd():
 
 func show_initial_road_targets_hnd(house_axial: Axial):
 	var edges = house_axial.edges()
-	print("show_initial_road_targets")
 	self.show_targets(edges)
 	
 
@@ -206,6 +206,11 @@ func set_road_hnd(id: int, edge: AxialEdge) -> void:
 func set_road_view_only_hnd(id: int, edge: AxialEdge) -> void:
 	self.set_road_hnd(id, edge)
 	self._untracked_road = edge
+
+
+
+func set_house_view_only_hnd(id: int, corner: Axial) -> void:
+	self.set_house_hnd(id, corner)
 
 
 func show_targets(ax: Variant):
