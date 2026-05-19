@@ -68,9 +68,10 @@ func _disable_all():
 
 func _update_from_model(__: int) -> void:
 	self._disable_all()
-
-	if not Game.model.get_current_player() == Game.self_id: return
 	
+	if not Game.model.get_current_player() == Game.self_id: return
+
+	print("Player %s %s %s" % [Game.model.get_current_player(), Game.self_id, Game.model.get_current_phase()])
 	match Game.model.get_current_phase():
 		Model.GamePhase.MAIN:
 			self._update_for_main()
@@ -89,6 +90,7 @@ func _update_from_model(__: int) -> void:
 			self._road_cost.visible = false
 			self._road_container.enabled = true	
 		Model.GamePhase.SETUP_REVERSE_ROAD:
+			print("HERE!!!")
 			self._road_free.visible = true
 			self._road_cost.visible = false
 			self._road_container.enabled = true	

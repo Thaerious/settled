@@ -310,7 +310,9 @@ func do_set_exchange_rate(id: int, resource, value: int) -> void:
 
 
 func do_set_pirate(ax: Axial) -> void:
+	self._hex_data[self._pirate.key()].pirate = false
 	self._pirate = ax.duplicate()
+	self._hex_data[self._pirate.key()].pirate = true
 	EventBus.pirate_set.emit(ax.duplicate())
 
 

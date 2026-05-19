@@ -61,7 +61,7 @@ func _setup() -> void:
 	setup.place_tiles()
 
 
-# debug function
+# debug function - Alt LMB
 var last: Array = []
 func _input(event: InputEvent) -> void:
 	
