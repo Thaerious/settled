@@ -312,8 +312,7 @@ func do_remove_action_card(id: int, card) -> void:
 	self._has_played_card = true
 	self._player_records[id].action_cards = owned.size()
 
-	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card, self._has_played_card)	
-	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card, self._has_played_card)
+	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card)	
 
 
 func do_update_phase(phase: GamePhase) -> void:
@@ -369,9 +368,7 @@ func reset_road_building() -> void:
 
 
 func decrement_road_building() -> void:
-	print("before %s" % self._road_building)
 	self._road_building = self._road_building - 1
-	print("after %s" % self._road_building)
 
 
 # players need to discard to this amount
