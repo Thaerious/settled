@@ -13,11 +13,12 @@ func _model_loaded():
 	self._action_cards_updated(
 		Game.self_id, 
 		Game.model.get_owned_action_cards(Game.self_id),
-		Game.model.get_playable_action_cards(Game.self_id)
+		Game.model.get_playable_action_cards(Game.self_id),
+		Game.model.get_has_played_card()
 	)
 
 
-func _action_cards_updated(id: int, _owned: ActionCardWallet, playable: ActionCardWallet) -> void:
+func _action_cards_updated(id: int, _owned: ActionCardWallet, playable: ActionCardWallet, _has_played: bool) -> void:
 	if not id == Game.self_id: return
 	if playable.has_card(self.action_card):
 		self.modulate = Color.WHITE

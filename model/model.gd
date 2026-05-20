@@ -102,6 +102,7 @@ var _houses: Dictionary[String, int] = {}             # map of house axial -> pl
 var _cities: Dictionary[String, int] = {}             # map of city axial -> player who owns it
 var _roads: Dictionary[String, int] = {}              # map of road axial -> player who owns it
 var _ports: Dictionary[String, ResourceTypes] = {}    # map of port axial -> resource the port trades
+var _road_building: int = 0                           # during road building phase, number of roads left to build
 
 var _dice: Array[int] = [1, 1]                        # this is used for dev & debug - is not saved
 
@@ -113,16 +114,17 @@ func get_army(id: int) -> int:              return self._player_records[id].sold
 func get_victory_points(id: int) -> int:    return self._player_records[id].victory_points
 func get_dice() -> Array[int]:              return self._dice.duplicate()
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id].get_resource(r)
-func get_bank(id: int) -> Wallet: return self._bank[id].duplicate()
+func get_bank(id: int) -> Wallet:           return self._bank[id].duplicate()
 func get_owned_action_cards(id: int) -> ActionCardWallet: return self._owned_cards[id]
 func get_playable_action_cards(id: int) -> ActionCardWallet: return self._playable_cards[id]
-func count_resources(id: int) -> int: return self._bank[id].size()
-func get_discard_target(id: int) -> int: return self._discard_target[id]
-func get_longest_road() -> int: return self._longest_road 
-func get_largest_army() -> int: return self._largest_army
+func count_resources(id: int) -> int:       return self._bank[id].size()
+func get_discard_target(id: int) -> int:    return self._discard_target[id]
+func get_longest_road() -> int:             return self._longest_road 
+func get_largest_army() -> int:             return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
-func player_count() -> int: return self._player_records.size() # todo move all player counts to this
-
+func player_count() -> int:                 return self._player_records.size() # todo move all player counts to this
+func get_road_building() -> int:            return self._road_building
+func get_has_played_card() -> bool:         return self._has_played_card
 
 # return all edges that can accept a road
 func all_road_edges() -> AxialEdgeSet:
@@ -360,6 +362,16 @@ func do_add_soldier(id: int) -> void:
 func do_discard(id: int, wallet: Wallet) -> void:
 	self.do_remove_resources(id, wallet)
 	self._discard_target[id] = INT_MAX
+
+
+func reset_road_building() -> void:
+	self._road_building = 2
+
+
+func decrement_road_building() -> void:
+	print("before %s" % self._road_building)
+	self._road_building = self._road_building - 1
+	print("after %s" % self._road_building)
 
 
 # players need to discard to this amount

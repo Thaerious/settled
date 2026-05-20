@@ -2,6 +2,7 @@ class_name MainService
 extends Node
 
 const RES = Model.ResourceTypes
+const GamePhase = Model.GamePhase
 
 const EXCHANGABLE = [
 	Model.ResourceTypes.BRICK,
@@ -39,7 +40,7 @@ func _ready() -> void:
 func _request_end_turn() -> void:
 	Game.model.do_end_turn()
 
-func _request_update_phase(phase: Model.GamePhase):
+func _request_update_phase(phase: GamePhase):
 	Game.model.do_update_phase(phase)
 
 
@@ -53,8 +54,13 @@ func _request_city(id: int, corner: Axial) -> void:
 	Game.model.do_set_city(id, corner)
 
 
-func _request_road(id: int, edge: AxialEdge) -> void:
-	Game.model.do_remove_resources(id, Model.COSTS["road"])
+func _request_road(id: int, edge: AxialEdge) -> void:	
+	if Game.model.get_current_phase() == GamePhase.ROAD_BUILDING:
+		Game.model.decrement_road_building()
+		if Game.model.get_road_building() == 0: Game.model.do_update_phase(GamePhase.MAIN)
+	else:
+		Game.model.do_remove_resources(id, Model.COSTS["road"])
+		
 	Game.model.do_set_road(id, edge)
 
 
@@ -72,10 +78,10 @@ func _request_set_pirate(_id: int, hex: Axial):
 		var corner_owner = Game.model.get_owner(ax)
 		if corner_owner == -1: continue
 		if corner_owner == Game.self_id: continue
-		Game.model.do_update_phase(Model.GamePhase.STEAL_RESOURCES)
+		Game.model.do_update_phase(GamePhase.STEAL_RESOURCES)
 		return
 
-	Game.model.do_update_phase(Model.GamePhase.MAIN)
+	Game.model.do_update_phase(GamePhase.MAIN)
 
 
 func _request_play_action_card(id: int, card: Model.ActionCardTypes) -> void:
@@ -83,13 +89,14 @@ func _request_play_action_card(id: int, card: Model.ActionCardTypes) -> void:
 
 	match card:
 		Model.ActionCardTypes.SOLDIER:			
-			Game.model.do_update_phase(Model.GamePhase.MOVE_PIRATE)
+			Game.model.do_update_phase(GamePhase.MOVE_PIRATE)
 		Model.ActionCardTypes.BUILD_ROAD:
-			Game.model.do_update_phase(Model.GamePhase.ROAD_BUILDING)
+			Game.model.reset_road_building()
+			Game.model.do_update_phase(GamePhase.ROAD_BUILDING)
 		Model.ActionCardTypes.PLENTY:
-			Game.model.do_update_phase(Model.GamePhase.YEAR_OF_PLENTY)
+			Game.model.do_update_phase(GamePhase.YEAR_OF_PLENTY)
 		Model.ActionCardTypes.MONOPOLY:
-			Game.model.do_update_phase(Model.GamePhase.MONOPOLY)
+			Game.model.do_update_phase(GamePhase.MONOPOLY)
 		Model.ActionCardTypes.VICTORY_POINTS:
 			Game.model.do_add_victory_point(id)
 
@@ -102,12 +109,12 @@ func _play_monopoly_card(id: int, resource: Model.ResourceTypes):
 		Game.model.do_add_resources(id, bank)
 		Game.model.do_remove_resources(p, bank)
 	
-	Game.model.do_update_phase(Model.GamePhase.MAIN)
+	Game.model.do_update_phase(GamePhase.MAIN)
 
 
 func _play_plenty_card(id: int, wallet: Wallet):
 	Game.model.do_add_resources(id, wallet)
-	Game.model.do_update_phase(Model.GamePhase.MAIN)
+	Game.model.do_update_phase(GamePhase.MAIN)
 
 
 func _play_road_building_card(id: int, roads: AxialEdgeSet) -> void:
@@ -145,7 +152,7 @@ func _on_request_roll() -> void:
 
 	Game.model.do_set_dice(d1, d2)
 	if d1 + d2 == 7:
-		Game.model.do_update_phase(Model.GamePhase.INIT_DISCARD)
+		Game.model.do_update_phase(GamePhase.INIT_DISCARD)
 		return
 
 	for id in range(Game.player_count):	
@@ -200,23 +207,23 @@ static func weighted_random(weights: Dictionary) -> Variant:
 func _next_player() -> void:
 	var next = Game.model.get_current_player()
 
-	if Game.model.get_current_phase() == Model.GamePhase.SETUP_FORWARD:
+	if Game.model.get_current_phase() == GamePhase.SETUP_FORWARD:
 		next = next + 1
 		if next > 3:
 			Game.model.do_update_player(3)
-			Game.model.do_update_phase(Model.GamePhase.SETUP_REVERSE)
+			Game.model.do_update_phase(GamePhase.SETUP_REVERSE)
 		else:
 			Game.model.do_update_player(next)
-			Game.model.do_update_phase(Model.GamePhase.SETUP_FORWARD)
-	elif Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE:
+			Game.model.do_update_phase(GamePhase.SETUP_FORWARD)
+	elif Game.model.get_current_phase() == GamePhase.SETUP_REVERSE:
 		next = next - 1
 		if next < 0:
 			Game.model.do_update_player(0)
-			Game.model.do_update_phase(Model.GamePhase.MAIN)
+			Game.model.do_update_phase(GamePhase.MAIN)
 			self._on_request_roll()
 		else:
 			Game.model.do_update_player(next)
-			Game.model.do_update_phase(Model.GamePhase.SETUP_REVERSE)
+			Game.model.do_update_phase(GamePhase.SETUP_REVERSE)
 
 
 func place_house(id: int, corner: Axial) -> void:
@@ -238,7 +245,7 @@ func place_initial(id: int, corner: Axial, edge: AxialEdge) -> void:
 
 	self.place_house(id, corner)
 	Game.model.do_set_road(id, edge)
-	if Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE:
+	if Game.model.get_current_phase() == GamePhase.SETUP_REVERSE:
 		self._award_resources(id, corner)
 	self._next_player()
 

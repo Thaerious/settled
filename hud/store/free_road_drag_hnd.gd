@@ -6,7 +6,6 @@ const texture_size = Vector2(32,32)
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
 var _road_piece = ROAD_PIECE.instantiate()
-var _marked_edges: AxialEdgeSet = AxialEdgeSet.new()
 var _last_target: EdgeTarget = null
 
 
@@ -22,17 +21,7 @@ func _start_drag() -> void:
 
 func _on_success(_rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
-	self._marked_edges.add_item(self._last_target.axial_edge)	
-
-	if self._marked_edges.size() == 2:
-		for edge in self._marked_edges:
-			EventBus.request_road.emit(Game.self_id, edge)
-			EventBus.request_update_phase.emit(Model.GamePhase.MAIN)
-	else:
-		EventBus.set_road_view_only.emit(Game.self_id, self._last_target.axial_edge)			
-		self._marked_edges.add_item(self._last_target.axial_edge)
-		
-	self._last_target = null
+	EventBus.request_road.emit(Game.self_id, self._last_target.axial_edge)
 
 
 func _on_failure(_rec: DragRecord) -> void:

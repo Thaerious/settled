@@ -18,11 +18,12 @@ func _model_loaded() -> void:
 	self._action_cards_updated(
 		Game.self_id,
 		Game.model.get_owned_action_cards(Game.self_id),
-		Game.model.get_playable_action_cards(Game.self_id)
+		Game.model.get_playable_action_cards(Game.self_id),
+		Game.model.get_has_played_card()
 	)
 
 
-func _action_cards_updated(id: int, owned: ActionCardWallet, playable: ActionCardWallet) -> void:
+func _action_cards_updated(id: int, owned: ActionCardWallet, playable: ActionCardWallet, _has_played: bool) -> void:
 	if not id == Game.self_id: return
 	owned.update_view(self.view_dict)
 

@@ -30,6 +30,7 @@
 ✓ Action card count not updating
 
 # Road building targets are not accounting for first road
+# Remove setRoadBuildOnly event
 # Design and Implement roll protocol
 # Limit action cards to 1 per turn
 

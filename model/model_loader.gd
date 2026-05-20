@@ -16,7 +16,8 @@ static func save(model: Model, path: String) -> void:
 		"owned_action_cards":    serialize_dictionary(model._owned_cards),
 		"playable_action_cards": serialize_dictionary(model._playable_cards),			
 		"has_played_card":       model._has_played_card,
-		"discard_target":             model._discard_target,
+		"discard_target":        model._discard_target,
+		"road_building":         model._road_building,
 		"houses":                model._houses,
 		"cities":                model._cities,
 		"roads":                 model._roads,
@@ -38,6 +39,7 @@ static func load(path: String) -> Model:
 	var f := FileAccess.open(path, FileAccess.READ)
 	var data: Dictionary = JSON.parse_string(f.get_as_text())
 
+	model._road_building   = int(data["road_building"])
 	model._current_player  = int(data["current_player"])
 	model._game_phase      = int(data["game_phase"]) as Model.GamePhase
 	model._largest_army    = int(data["largest_army"])	
