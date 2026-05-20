@@ -24,6 +24,7 @@ func _model_loaded() -> void:
 
 func _action_cards_updated(id: int, owned: ActionCardWallet, playable: ActionCardWallet) -> void:
 	if not id == Game.self_id: return
+	owned.update_view(self.view_dict)
 
 	for action_card_type: Model.ActionCardTypes in Model.ActionCardTypes.values():
 		var o = owned.get_card(action_card_type)

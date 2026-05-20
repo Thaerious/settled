@@ -58,18 +58,20 @@ func _model_loaded_hnd() -> void:
 
 
 func _update_phase_hnd(phase: Model.GamePhase) -> void:
-	if phase != Model.GamePhase.DURING_DISCARD:
-		self.visible = false
-	else:
+	if phase == Model.GamePhase.DURING_DISCARD:
 		self.visible = true
-		self._setup_view()
+		self._setup_view()		
+	else:
+		self.visible = false		
 
 
 func _setup_view() -> void:
-	var discarded := Game.model.get_discard_target(Game.self_id)
-	
-	# false means I don't need to discard
-	if discarded != -1:
+	var target := Game.model.get_discard_target(Game.self_id)
+	var count := Game.model.get_bank(Game.self_id).size()
+
+	# true means I don't need to discard
+	print("id %s | target %s | count %s" % [Game.self_id, target, count])
+	if target >= count:
 		self._main_container.visible = false
 		self._pending_label.visible = true
 		return		
@@ -83,7 +85,7 @@ func _setup_view() -> void:
 
 	self.discard = Wallet.new()
 	self.discard.link_view(self.RESOURCE_DIS_LABEL_MAP)	
-	self._must_discard = floori((self.bank.count_resources()) / 2.0)		
+	self._must_discard = floori((self.bank.size()) / 2.0)		
 
 
 func _on_input(resource: Model.ResourceTypes, event: InputEventMouseButton):
@@ -99,7 +101,16 @@ func _on_input(resource: Model.ResourceTypes, event: InputEventMouseButton):
 			bank.add_resource(resource, -1)
 			discard.add_resource(resource, 1)
 	
-	if self.discard.count_resources() == self._must_discard:
+	var target := Game.model.get_discard_target(Game.self_id)
+	var count := bank.size()
+
+	# true means I don't need to discard
+	if target >= count:
+		self._main_container.visible = false
+		self._pending_label.visible = true
+		return	
+
+	if self.discard.size() == self._must_discard:
 		self._button_ok.disabled = false
 	else:
 		self._button_ok.disabled = true

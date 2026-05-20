@@ -36,7 +36,9 @@ var vertex_offsets: Vec2iSet = (
 )
 
 
-var _untracked_road: AxialEdge = null # prevent targets from first free road
+# prevent targets from first free road
+# because show_initial_house_targets
+var _untracked_road: AxialEdge = null 
 
 
 func _ready() -> void:
@@ -143,17 +145,13 @@ func show_city_targets_hnd():
 
 func show_road_targets_hnd():
 	var roads = Game.model.get_roads(Game.self_id)
-	roads.add_item(self._untracked_road)
+	var houses = Game.model.get_houses(Game.self_id)
 
 	var candidates = roads.map(AxialEdge.neighbors_of)
+	candidates = candidates.union(houses.edge_map(Axial.edges_of))
+
 	candidates = candidates.difference(roads)
-	candidates = candidates.intersect(Game.model.all_edges())
-
-	# todo - remove the next two lines
-	var buildings = Game.model.get_all_buildings(Game.self_id)
-	candidates = candidates.union(buildings.edge_map(Axial.edges_of))
-
-	candidates.remove_item(self._untracked_road)
+	candidates = candidates.intersect(Game.model.all_road_edges())
 
 	self.show_targets(candidates)
 

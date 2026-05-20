@@ -21,8 +21,7 @@ func _ready() -> void:
 	EventBus.service_error.connect(self._on_service_error)
 	EventBus.request_roll.connect(self._on_request_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
-	EventBus.request_initial_house.connect(self.place_initial_house)
-	EventBus.request_initial_road.connect(self.place_initial_road)
+	EventBus.request_initial_placement.connect(self.place_initial)
 	EventBus.request_exchange.connect(self.request_exchange)
 	EventBus.request_play_action_card.connect(self._request_play_action_card)
 	EventBus.play_monopoly_card.connect(self._play_monopoly_card)
@@ -81,7 +80,7 @@ func _request_set_pirate(_id: int, hex: Axial):
 
 func _request_play_action_card(id: int, card: Model.ActionCardTypes) -> void:
 	Game.model.do_remove_action_card(id, card)
-	
+
 	match card:
 		Model.ActionCardTypes.SOLDIER:			
 			Game.model.do_update_phase(Model.GamePhase.MOVE_PIRATE)
@@ -141,7 +140,6 @@ func _on_request_roll() -> void:
 	var d2: int = randi_range(1, 6)
 
 	# debug/dev override
-
 	if dev_dice[0] != -1: d1 = dev_dice[0]
 	if dev_dice[1] != -1: d2 = dev_dice[1]
 
@@ -202,16 +200,15 @@ static func weighted_random(weights: Dictionary) -> Variant:
 func _next_player() -> void:
 	var next = Game.model.get_current_player()
 
-	if Game.model.get_current_phase() == Model.GamePhase.SETUP_FORWARD_ROAD:
+	if Game.model.get_current_phase() == Model.GamePhase.SETUP_FORWARD:
 		next = next + 1
 		if next > 3:
 			Game.model.do_update_player(3)
-			Game.model.do_update_phase(Model.GamePhase.SETUP_REVERSE_HOUSE)
+			Game.model.do_update_phase(Model.GamePhase.SETUP_REVERSE)
 		else:
 			Game.model.do_update_player(next)
-			Game.model.do_update_phase(Model.GamePhase.SETUP_FORWARD_HOUSE)
-
-	elif Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE_ROAD:
+			Game.model.do_update_phase(Model.GamePhase.SETUP_FORWARD)
+	elif Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE:
 		next = next - 1
 		if next < 0:
 			Game.model.do_update_player(0)
@@ -219,7 +216,7 @@ func _next_player() -> void:
 			self._on_request_roll()
 		else:
 			Game.model.do_update_player(next)
-			Game.model.do_update_phase(Model.GamePhase.SETUP_REVERSE_HOUSE)
+			Game.model.do_update_phase(Model.GamePhase.SETUP_REVERSE)
 
 
 func place_house(id: int, corner: Axial) -> void:
@@ -235,29 +232,26 @@ func place_house(id: int, corner: Axial) -> void:
 			Game.model.do_set_exchange_rate(id, port_resource, 2)
 
 
-func place_initial_house(id: int, corner: Axial) -> void:
+func place_initial(id: int, corner: Axial, edge: AxialEdge) -> void:
 	assert(id >= 0 and id <= 3, "Player id out of range: %s" % id)
 	assert(not corner.is_hex(), "Axial is not a corner: %s" % corner)
 
 	self.place_house(id, corner)
-
-	if Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE_HOUSE:
-		var payout := Wallet.new()
-
-		for hex: Axial in corner.hexes():
-			var hexdata = Game.model.get_hex_data(hex)
-			if hexdata.resource == Model.ResourceTypes.NONE: continue
-			payout.add_resource(hexdata.resource)
-
-		Game.model.do_add_resources(id, payout)
-		Game.model.do_update_phase(Model.GamePhase.SETUP_REVERSE_ROAD)
-	else:
-		Game.model.do_update_phase(Model.GamePhase.SETUP_FORWARD_ROAD)
-
-
-func place_initial_road(id: int, edge: AxialEdge) -> void:
 	Game.model.do_set_road(id, edge)
+	if Game.model.get_current_phase() == Model.GamePhase.SETUP_REVERSE:
+		self._award_resources(id, corner)
 	self._next_player()
+
+
+func _award_resources(id:int, corner: Axial) -> void:
+	var payout := Wallet.new()
+
+	for hex: Axial in corner.hexes():
+		var hexdata = Game.model.get_hex_data(hex)
+		if hexdata.resource == Model.ResourceTypes.NONE: continue
+		payout.add_resource(hexdata.resource)
+
+	Game.model.do_add_resources(id, payout)
 
 
 func get_resource(ax: Axial) -> Model.ResourceTypes:

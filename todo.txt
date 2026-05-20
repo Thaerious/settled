@@ -25,20 +25,21 @@
 
 ✓ Placing roads doens't update road count
 ✓ Longest road needs to actually measure the road, not just count
-# Board needs to listen for pirate set
+✓ Board needs to listen for pirate set
 
-# Add a dice roller
+✓ Action card count not updating
+
+# Road building targets are not accounting for first road
+# Design and Implement roll protocol
 # Limit action cards to 1 per turn
 
-# Design and Implement roll protocol
-# Add road count indicator to bank
+# Add road count indicator to bank (and limit roads)
 # Implement game over splash screen
 # Implement multi-player
 # Implement not started splash screen
 ## Wait for players to connect and click ready
 # all view to service events need an id because they may get passed to a central service module
-# hover pirate to see what's underneith
-x Why does the pirate collision mask need to be 10 to detect input
+# hover pirate to see what's underneath
 # Instead of init setting up all tiles and such right away, a reset event should be used to trigger setup.  This will just put the setup code all in one spot.
 # Add color to bank pieces
 

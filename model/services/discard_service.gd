@@ -19,28 +19,26 @@ func count_pending() -> int:
 
 func _update_phase_hnd(phase: Model.GamePhase) -> void:
 	if phase != Model.GamePhase.INIT_DISCARD: return
+	var next_phase = Model.GamePhase.MOVE_PIRATE
 
 	for id in Game.player_count: 
 		var bank := Game.model.get_bank(id)
-		if bank.count_resources() < 8: continue
-		var half:int = floori(bank.count_resources() / 2.0)
+		Game.model.set_discard_target(id, Model.INT_MAX)
+		print("id %s | bank %s" % [id, bank.size()])
+		if bank.size() < 8: continue
 
-		if bank.count_resources() <= 7:
-			Game.model.set_discard(id, -1)
-		else:
-			Game.model.set_discard(id, half)
+		next_phase = Model.GamePhase.DURING_DISCARD
+		var half:int = floori(bank.size() / 2.0)
+		Game.model.set_discard_target(id, half)
 
-	if self.count_pending() == Game.player_count:
-		Game.model.do_update_phase.bind(Model.GamePhase.MOVE_PIRATE).call_deferred()
-	else:
-		Game.model.do_update_phase.bind(Model.GamePhase.DURING_DISCARD).call_deferred()
+	Game.model.do_update_phase.bind(next_phase).call_deferred()
 
 
 func _request_discard_hnd(id:int, discard: Wallet) -> void:
 	var bank := Game.model.get_bank(id)
-	var must_discard:int = floori(bank.count_resources() / 2.0)
+	var must_discard:int = floori(bank.size() / 2.0)
 
-	if discard.count_resources() != must_discard:
+	if discard.size() != must_discard:
 		EventBus.service_error.emit(id, "Discard resources mis-alligned.")
 		return
 

@@ -136,7 +136,7 @@ func to_array() -> Array[Model.ResourceTypes]:
 	return result
 
 
-func count_resources() -> int:
+func size() -> int:
 	var total: int = 0
 	for r in self._data.keys():
 		total += self._data[r]

@@ -112,31 +112,13 @@ script = ExtResource("9_gms7k")
 phase = 1
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSetupForwardRoad" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Setup Forward Road
-"
-script = ExtResource("9_gms7k")
-phase = 2
-metadata/_custom_type_script = "uid://bsec75ti05trd"
-
 [node name="ButtonSetupReverseHouse" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup Reverse House
 "
 script = ExtResource("9_gms7k")
-phase = 3
-metadata/_custom_type_script = "uid://bsec75ti05trd"
-
-[node name="ButtonSetupReverseRoad" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Setup Reverse Road
-"
-script = ExtResource("9_gms7k")
-phase = 4
+phase = 2
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMovePirate" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -145,7 +127,7 @@ layout_mode = 2
 text = "Move Pirate
 "
 script = ExtResource("9_gms7k")
-phase = 5
+phase = 3
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonDiscard" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -154,7 +136,7 @@ layout_mode = 2
 text = "Init Discard
 "
 script = ExtResource("9_gms7k")
-phase = 6
+phase = 4
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonDiscard2" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -163,7 +145,7 @@ layout_mode = 2
 text = "During Discard
 "
 script = ExtResource("9_gms7k")
-phase = 7
+phase = 5
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonSteal" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -172,7 +154,7 @@ layout_mode = 2
 text = "Steal Resources
 "
 script = ExtResource("9_gms7k")
-phase = 8
+phase = 6
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMain" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -181,7 +163,7 @@ layout_mode = 2
 text = "Main
 "
 script = ExtResource("9_gms7k")
-phase = 9
+phase = 7
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonPlenty" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -190,7 +172,7 @@ layout_mode = 2
 text = "Plenty
 "
 script = ExtResource("9_gms7k")
-phase = 10
+phase = 8
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMonopoly" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -199,7 +181,7 @@ layout_mode = 2
 text = "Monopoly
 "
 script = ExtResource("9_gms7k")
-phase = 11
+phase = 9
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonRoadBuilding" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -208,7 +190,7 @@ layout_mode = 2
 text = "Road Building
 "
 script = ExtResource("9_gms7k")
-phase = 12
+phase = 10
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonSoldier" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -217,7 +199,7 @@ layout_mode = 2
 text = "Soldier
 "
 script = ExtResource("9_gms7k")
-phase = 13
+phase = 11
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonGameOver" type="Button" parent="MarginContainer/HBoxContainer/PhaseButtons"]
@@ -226,7 +208,7 @@ layout_mode = 2
 text = "Game Over
 "
 script = ExtResource("9_gms7k")
-phase = 14
+phase = 12
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer/PhaseButtons"]

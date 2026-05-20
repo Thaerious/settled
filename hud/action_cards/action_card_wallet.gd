@@ -1,9 +1,6 @@
 class_name ActionCardWallet
 extends RefCounted
 
-
-var _linked_view: Dictionary = {}
-
 var _data: Dictionary[Model.ActionCardTypes, int] = {
 	Model.ActionCardTypes.SOLDIER: 0,
 	Model.ActionCardTypes.BUILD_ROAD: 0,
@@ -23,19 +20,16 @@ func get_card(c: Model.ActionCardTypes) -> int:
 func set_card(c: Model.ActionCardTypes, value: int) -> void:
 	assert(self._data.has(c), "ActionCardWallet: invalid card type: %s" % c)
 	self._data[c] = value
-	self.trigger_linked_view(c)
 
 
 func add_card(c: Model.ActionCardTypes, amount: int = 1) -> void:
 	assert(self._data.has(c), "ActionCardWallet: invalid card type: %s" % c)
 	self._data[c] += amount
-	self.trigger_linked_view(c)
 
 
 func remove_card(c: Model.ActionCardTypes, amount: int = 1) -> void:
 	assert(self._data.has(c), "ActionCardWallet: invalid card type: %s" % c)
 	self._data[c] -= amount
-	self.trigger_linked_view(c)	
 
 
 func size() -> int:
@@ -60,16 +54,12 @@ func to_dict() -> Dictionary[Model.ActionCardTypes, int]:
 	return self._data.duplicate()
 
 
-func link_view(views: Dictionary):
-	self._linked_view = views
-	for r in self.keys(): self.trigger_linked_view(r)
-
-
-func trigger_linked_view(r: Model.ActionCardTypes) -> void:
-	if not self._linked_view.has(r): return
-	var control = self._linked_view[r]
-	if control.get("text") == null: return
-	self._linked_view[r].text = str(self.get_card(r))
+func update_view(views: Dictionary) -> void:
+	for r in self.keys(): 
+		if not views.has(r): continue
+		var control = views[r]
+		if control.get("text") == null: continue
+		views[r].text = str(self.get_card(r))
 
 
 func copy_from(that: ActionCardWallet) -> void:

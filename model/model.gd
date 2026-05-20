@@ -58,10 +58,8 @@ const CARD_DISTRIBUTION : Dictionary[Model.ActionCardTypes, int] = {
 
 enum GamePhase {
 	NOT_STARTED,
-	SETUP_FORWARD_HOUSE,
-	SETUP_FORWARD_ROAD,
-	SETUP_REVERSE_HOUSE,
-	SETUP_REVERSE_ROAD,
+	SETUP_FORWARD,
+	SETUP_REVERSE,
 	MOVE_PIRATE,
 	INIT_DISCARD,
 	DURING_DISCARD,
@@ -81,6 +79,8 @@ static var COSTS = {
 	"card" :  Wallet.new([ResourceTypes.WOOL, ResourceTypes.WHEAT, ResourceTypes.ROCK])
 }
 
+const INT_MAX = 9223372036854775807 
+
 var _current_player: int = 0  						# the current active player
 var _game_phase: GamePhase = GamePhase.NOT_STARTED  # the currnet phase
 var _longest_road:int = -1                          # player who owns longest road (-1 is none)
@@ -94,10 +94,10 @@ var _cities_mirror: Dictionary[int, AxialSet] = {}       # map of player id -> o
 var _roads_mirror: Dictionary[int, AxialEdgeSet] = {}    # map of player id -> owned roads
 var _bank: Dictionary[int, Wallet] = {}                  # map of player id -> owned resources
 var _exchange_rate: Dictionary[int, Wallet] = {}         # map of player id -> exchange rate
-var _owned_action_cards: Dictionary[int, ActionCardWallet] = {}    # map of player id -> all actions cards
-var _playable_action_cards: Dictionary[int, ActionCardWallet] = {} # map of player id -> actions cards that can be played this turn
-
-var _discard_quantity: Dictionary[int, int]           # player_id -> count of cards that this player must discard
+var _owned_cards: Dictionary[int, ActionCardWallet] = {}    # map of player id -> all actions cards
+var _playable_cards: Dictionary[int, ActionCardWallet] = {} # map of player id -> actions cards that can be played this turn
+var _has_played_card: bool = false					  # whether the current player has played an action card this turn
+var _discard_target: Dictionary[int, int]           # player_id -> count of cards that this player must discard
 var _houses: Dictionary[String, int] = {}             # map of house axial -> player who owns it
 var _cities: Dictionary[String, int] = {}             # map of city axial -> player who owns it
 var _roads: Dictionary[String, int] = {}              # map of road axial -> player who owns it
@@ -114,14 +114,24 @@ func get_victory_points(id: int) -> int:    return self._player_records[id].vict
 func get_dice() -> Array[int]:              return self._dice.duplicate()
 func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id].get_resource(r)
 func get_bank(id: int) -> Wallet: return self._bank[id].duplicate()
-func get_owned_action_cards(id: int) -> ActionCardWallet: return self._owned_action_cards[id]
-func get_playable_action_cards(id: int) -> ActionCardWallet: return self._playable_action_cards[id]
-func count_resources(id: int) -> int: return self._bank[id].count_resources()
-func get_discard_target(id: int) -> int: return self._discard_quantity[id]
+func get_owned_action_cards(id: int) -> ActionCardWallet: return self._owned_cards[id]
+func get_playable_action_cards(id: int) -> ActionCardWallet: return self._playable_cards[id]
+func count_resources(id: int) -> int: return self._bank[id].size()
+func get_discard_target(id: int) -> int: return self._discard_target[id]
 func get_longest_road() -> int: return self._longest_road 
 func get_largest_army() -> int: return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
 func player_count() -> int: return self._player_records.size() # todo move all player counts to this
+
+
+# return all edges that can accept a road
+func all_road_edges() -> AxialEdgeSet:
+	var edge_set := AxialEdgeSet.new()
+	for hex_data in self._hex_data.values():
+		if hex_data.terrain == Terrain.WATER: continue
+		edge_set.add_all(hex_data.axial.edges())
+	return edge_set
+
 
 func has_resources(id: int, wallet: Wallet) -> bool: 
 	return self._bank[id].has_resources(wallet)
@@ -201,10 +211,12 @@ func do_end_turn() -> void:
 	self._current_player = (self._current_player + 1) % self.player_count()		
 	EventBus.current_player_updated.emit(self._current_player)
 
-	var owned = self._owned_action_cards[self._current_player]
-	var playable = self._playable_action_cards[self._current_player]
+	var owned = self._owned_cards[self._current_player]
+	var playable = self._playable_cards[self._current_player]
 	owned.copy_to(playable)
-	EventBus.action_cards_updated.emit(self._current_player, owned, playable)
+	self._has_played_card = false
+
+	EventBus.action_cards_updated.emit(self._current_player, owned, playable, self._has_played_card)
 
 
 func do_set_dice(d1: int, d2:int) -> void:
@@ -269,29 +281,37 @@ func _set_longest_road(id: int) -> void:
 
 func do_add_resources(id: int, resources: Wallet) -> void:
 	self._bank[id].add_resources(resources)
-	self._player_records[id].resources = self._bank[id].count_resources()
+	self._player_records[id].resources = self._bank[id].size()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 
 func do_remove_resources(id: int, resources:Wallet) -> void:
 	self._bank[id].remove_resources(resources)
-	self._player_records[id].resources = self._bank[id].count_resources()
+	self._player_records[id].resources = self._bank[id].size()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 
 func do_add_action_card(id: int, card: ActionCardTypes) -> void:
-	self._owned_action_cards[id].add_card(card)
-	var owned := self._owned_action_cards[id].duplicate()
-	var playable := self._playable_action_cards[id].duplicate()
-	EventBus.action_cards_updated.emit(id, owned, playable)
+	self._owned_cards[id].add_card(card)
+	var owned := self._owned_cards[id].duplicate()
+	var playable := self._playable_cards[id].duplicate()
+
+	self._player_records[id].action_cards = owned.size()
+
+	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card)
+	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card)
 
 
 func do_remove_action_card(id: int, card) -> void:
-	self._owned_action_cards[id].remove_card(card)
-	self._playable_action_cards[id].remove_card(card)
-	var owned := self._owned_action_cards[id].duplicate()
-	var playable := self._playable_action_cards[id].duplicate()
-	EventBus.action_cards_updated.emit(id, owned, playable)
+	self._owned_cards[id].remove_card(card)
+	self._playable_cards[id].remove_card(card)
+	var owned := self._owned_cards[id].duplicate()
+	var playable := self._playable_cards[id].duplicate()
+	self._has_played_card = true
+	self._player_records[id].action_cards = owned.size()
+
+	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card, self._has_played_card)	
+	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card, self._has_played_card)
 
 
 func do_update_phase(phase: GamePhase) -> void:
@@ -339,24 +359,25 @@ func do_add_soldier(id: int) -> void:
 
 func do_discard(id: int, wallet: Wallet) -> void:
 	self.do_remove_resources(id, wallet)
-	self._discard_quantity[id] = 0
+	self._discard_target[id] = INT_MAX
 
 
-func set_discard(id: int, value: int) -> void:	
-	self._discard_quantity[id] = value
+# players need to discard to this amount
+func set_discard_target(id: int, value: int) -> void:	
+	self._discard_target[id] = value
 
 
 func _init() -> void:
 	for id in range(Game.player_count):
 		self._bank[id] = Wallet.new()
 		self._exchange_rate[id] = Wallet.new(4)
-		self._owned_action_cards[id] = ActionCardWallet.new()
-		self._playable_action_cards[id] = ActionCardWallet.new()
+		self._owned_cards[id] = ActionCardWallet.new()
+		self._playable_cards[id] = ActionCardWallet.new()
 		self._houses_mirror[id] = AxialSet.new()
 		self._cities_mirror[id] = AxialSet.new()
 		self._roads_mirror[id] = AxialEdgeSet.new()	
 		self._player_records[id] = PlayerRecord.new(id)
-		self._discard_quantity[id] = 0
+		self._discard_target[id] = INT_MAX		
 
 
 func build(names: Array[String]) -> void:

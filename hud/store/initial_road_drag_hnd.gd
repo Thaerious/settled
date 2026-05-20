@@ -19,8 +19,7 @@ func _on_success(_rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
 
 	if self._last_target != null: 
-		EventBus.request_initial_house.emit(Game.self_id, self.house_axial)
-		EventBus.request_initial_road.emit(Game.self_id, self._last_target.axial_edge)
+		EventBus.request_initial_placement.emit(Game.self_id, self.house_axial, self._last_target.axial_edge)
 		self._last_target = null
 		self.enabled = false
 		self._road_container.enabled = false

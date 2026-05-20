@@ -5,17 +5,18 @@ static func save(model: Model, path: String) -> void:
 
 	var data := {
 		"current_player":        model._current_player,
-		"game_phase":            model._game_phase,	
+		"game_phase":            model._game_phase,
 		"longest_road":          model._longest_road,
-		"largest_army":          model._largest_army,	
-		"pirate":                model._pirate.key(),						
+		"largest_army":          model._largest_army,
+		"pirate":                model._pirate.key(),
 		"player_records":        serialize_dictionary(model._player_records),
 		"hex_data":              serialize_dictionary(model._hex_data),			
 		"bank":                  serialize_dictionary(model._bank),
 		"exchange_rate":         serialize_dictionary(model._exchange_rate),
-		"owned_action_cards":    serialize_dictionary(model._owned_action_cards),
-		"playable_action_cards": serialize_dictionary(model._playable_action_cards),			
-		"discarded":             model._discard_quantity,
+		"owned_action_cards":    serialize_dictionary(model._owned_cards),
+		"playable_action_cards": serialize_dictionary(model._playable_cards),			
+		"has_played_card":       model._has_played_card,
+		"discard_target":             model._discard_target,
 		"houses":                model._houses,
 		"cities":                model._cities,
 		"roads":                 model._roads,
@@ -37,14 +38,15 @@ static func load(path: String) -> Model:
 	var f := FileAccess.open(path, FileAccess.READ)
 	var data: Dictionary = JSON.parse_string(f.get_as_text())
 
-	model._current_player = int(data["current_player"])
-	model._game_phase     = int(data["game_phase"]) as Model.GamePhase
-	model._largest_army   = int(data["largest_army"])	
-	model._longest_road   = int(data["longest_road"])
-	model._pirate         = Axial.from_key(data["pirate"])	
+	model._current_player  = int(data["current_player"])
+	model._game_phase      = int(data["game_phase"]) as Model.GamePhase
+	model._largest_army    = int(data["largest_army"])	
+	model._longest_road    = int(data["longest_road"])
+	model._pirate          = Axial.from_key(data["pirate"])	
+	model._has_played_card = bool(data["has_played_card"])
 
-	for key in data["discarded"]:
-		model._discard_quantity[int(key)] = int(data["discarded"][key])
+	for key in data["discard_target"]:
+		model._discard_target[int(key)] = int(data["discard_target"][key])
 
 	for k in data["player_records"]:
 		model._player_records[int(k)] = PlayerRecord.deserialize(int(k), data["player_records"][k])
@@ -77,12 +79,12 @@ static func load(path: String) -> Model:
 	# check
 	for k in data["owned_action_cards"]:
 		var wallet := ActionCardWallet.deserialize(data["owned_action_cards"][k])
-		model._owned_action_cards[int(k)] = wallet
+		model._owned_cards[int(k)] = wallet
 
 	# check
 	for k in data["playable_action_cards"]:
 		var wallet := ActionCardWallet.deserialize(data["playable_action_cards"][k])
-		model._playable_action_cards[int(k)] = wallet
+		model._playable_cards[int(k)] = wallet
 
 	for k in data["ports"]:
 		model._ports[k] = int(data["ports"][k]) as Model.ResourceTypes
