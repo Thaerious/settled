@@ -1,69 +1,280 @@
 [gd_scene load_steps=12 format=3 uid="uid://4ustx1deyfr6"]
 
-[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_m75cr"]
-[ext_resource type="Script" uid="uid://d2bffrxmbuewh" path="res://hud/player_panel/player_card.gd" id="2_ky2rh"]
-[ext_resource type="Texture2D" uid="uid://bndgc4abt4y1b" path="res://assets/portrait.png" id="3_7h5hl"]
-[ext_resource type="Script" uid="uid://2l75bw8yr4k3" path="res://hud/player_panel/portrait_texture.gd" id="4_hbbdm"]
-[ext_resource type="PackedScene" uid="uid://cuxvpopbo7l5k" path="res://hud/AnnotatedTexture.tscn" id="4_kj8gt"]
-[ext_resource type="Script" uid="uid://c0e8mqxsqorsr" path="res://standalone_scripts/click_handler.gd" id="5_hbbdm"]
-[ext_resource type="Texture2D" uid="uid://co4vl7gwwxney" path="res://assets/star.png" id="5_tkyku"]
-[ext_resource type="Texture2D" uid="uid://baife5oamxio6" path="res://assets/chest.png" id="6_impgr"]
-[ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/cards.png" id="7_n7w4d"]
-[ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/road.png" id="8_5kbhu"]
-[ext_resource type="Texture2D" uid="uid://hd6kllb78sqh" path="res://assets/shield.png" id="9_2xyif"]
+[ext_resource type="Script" uid="uid://bsmfcuhgmvqdu" path="res://hud/player_panel/player_panel.gd" id="1_01eko"]
+[ext_resource type="Texture2D" uid="uid://cs8sksfum1leu" path="res://assets/player_pennant.png" id="1_562uj"]
+[ext_resource type="Texture2D" uid="uid://7mrq6g7fmrfm" path="res://assets/portraits/Icon1.png" id="1_v0po2"]
+[ext_resource type="Texture2D" uid="uid://cjust6wg6yh64" path="res://assets/action_cards/victory.png" id="3_6xf5i"]
+[ext_resource type="Texture2D" uid="uid://baife5oamxio6" path="res://assets/chest.png" id="3_cf68c"]
+[ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/cards.png" id="4_v0po2"]
+[ext_resource type="Texture2D" uid="uid://hd6kllb78sqh" path="res://assets/shield.png" id="5_01eko"]
+[ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/road.png" id="6_jf1le"]
 
-[node name="PlayerCard" type="PanelContainer"]
-theme = ExtResource("1_m75cr")
-script = ExtResource("2_ky2rh")
+[sub_resource type="Theme" id="Theme_pq8q7"]
+PortraitBox/base_type = &"ColorRect"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01eko"]
+bg_color = Color(0.8666667, 0.8666667, 0.26666668, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8666667, 0.6666667, 0.13333334, 1)
+corner_radius_top_left = 25
+corner_radius_bottom_right = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6xf5i"]
+bg_color = Color(0.8666667, 0.8666667, 0.26666668, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8666667, 0.6666667, 0.13333334, 1)
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+
+[node name="Root" type="AspectRatioContainer"]
+anchors_preset = -1
+anchor_left = 0.00052083336
+anchor_right = 0.97552085
+anchor_bottom = 0.93333334
+offset_right = -1660.0
+offset_bottom = -920.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_pq8q7")
+ratio = 2.5
+script = ExtResource("1_01eko")
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+script = ExtResource("1_01eko")
+metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Panel" type="Panel" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_01eko")
 
-[node name="PortraitTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(75, 75)
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.028846152
+anchor_top = 0.084337346
+anchor_right = 0.9534883
+anchor_bottom = 0.8701046
+texture = ExtResource("1_v0po2")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
-mouse_default_cursor_shape = 2
-texture = ExtResource("3_7h5hl")
-expand_mode = 5
-script = ExtResource("4_hbbdm")
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
 
-[node name="Clickable" type="Node" parent="VBoxContainer/HBoxContainer/PortraitTexture"]
-script = ExtResource("5_hbbdm")
-use_signal = false
-metadata/_custom_type_script = "uid://c0e8mqxsqorsr"
-
-[node name="VictoryPoints" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_kj8gt")]
-unique_name_in_owner = true
+[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
-texture = ExtResource("5_tkyku")
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.8
+theme_override_styles/panel = SubResource("StyleBoxFlat_6xf5i")
 
-[node name="Resources" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_kj8gt")]
-unique_name_in_owner = true
-layout_mode = 2
-texture = ExtResource("6_impgr")
-
-[node name="ActionCards" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_kj8gt")]
-unique_name_in_owner = true
-layout_mode = 2
-texture = ExtResource("7_n7w4d")
-
-[node name="Roads" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_kj8gt")]
-unique_name_in_owner = true
-layout_mode = 2
-texture = ExtResource("8_5kbhu")
-
-[node name="Soldiers" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_kj8gt")]
-unique_name_in_owner = true
-layout_mode = 2
-texture = ExtResource("9_2xyif")
-
-[node name="NameLabel" type="Label" parent="VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Name Not Set"
-horizontal_alignment = 1
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/Panel"]
+custom_minimum_size = Vector2(100, 15)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_right = 0.8
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "I am Label"
 vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="VictoryPoints" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_562uj")
+expand_mode = 1
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.4
+texture = ExtResource("3_6xf5i")
+expand_mode = 4
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.45
+anchor_right = 1.0
+anchor_bottom = 0.78333336
+text = "0"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Resources" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/Resources"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_562uj")
+expand_mode = 1
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/Resources"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.37931034
+texture = ExtResource("3_cf68c")
+expand_mode = 4
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/Resources"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.45
+anchor_right = 1.0
+anchor_bottom = 0.78333336
+text = "0"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="ActionCards" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/ActionCards"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_562uj")
+expand_mode = 1
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/ActionCards"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.37931034
+texture = ExtResource("4_v0po2")
+expand_mode = 4
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/ActionCards"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.45
+anchor_right = 1.0
+anchor_bottom = 0.78333336
+text = "0"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="VictoryPoints4" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_562uj")
+expand_mode = 1
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints4"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.37931034
+texture = ExtResource("5_01eko")
+expand_mode = 4
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints4"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.45
+anchor_right = 1.0
+anchor_bottom = 0.78333336
+text = "0"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="VictoryPoints5" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_562uj")
+expand_mode = 1
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints5"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.37931034
+texture = ExtResource("6_jf1le")
+expand_mode = 4
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints5"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.45
+anchor_right = 1.0
+anchor_bottom = 0.78333336
+text = "0"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Spacer" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+expand_mode = 1
