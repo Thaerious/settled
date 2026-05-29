@@ -48,14 +48,17 @@ size_flags_vertical = 3
 [node name="PlayerCard2" parent="VBoxContainer" instance=ExtResource("7_0ivg5")]
 layout_mode = 2
 size_flags_vertical = 3
+player_id = 1
 
 [node name="PlayerCard3" parent="VBoxContainer" instance=ExtResource("7_0ivg5")]
 layout_mode = 2
 size_flags_vertical = 3
+player_id = 2
 
 [node name="PlayerCard4" parent="VBoxContainer" instance=ExtResource("7_0ivg5")]
 layout_mode = 2
 size_flags_vertical = 3
+player_id = 3
 
 [node name="StoreMargin" type="MarginContainer" parent="."]
 layout_mode = 1

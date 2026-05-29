@@ -3,34 +3,16 @@
 [ext_resource type="Script" uid="uid://bsmfcuhgmvqdu" path="res://hud/player_panel/player_panel.gd" id="1_01eko"]
 [ext_resource type="Texture2D" uid="uid://cs8sksfum1leu" path="res://assets/player_pennant.png" id="1_562uj"]
 [ext_resource type="Texture2D" uid="uid://7mrq6g7fmrfm" path="res://assets/portraits/Icon1.png" id="1_v0po2"]
+[ext_resource type="StyleBox" uid="uid://braeb725n6ggd" path="res://hud/player_panel/player_2_portrait_style.tres" id="2_e4ysj"]
 [ext_resource type="Texture2D" uid="uid://cjust6wg6yh64" path="res://assets/action_cards/victory.png" id="3_6xf5i"]
 [ext_resource type="Texture2D" uid="uid://baife5oamxio6" path="res://assets/chest.png" id="3_cf68c"]
+[ext_resource type="StyleBox" uid="uid://dw00g47cbamnu" path="res://hud/player_panel/player_0_name_style.tres" id="4_hbbdm"]
 [ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/cards.png" id="4_v0po2"]
 [ext_resource type="Texture2D" uid="uid://hd6kllb78sqh" path="res://assets/shield.png" id="5_01eko"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/road.png" id="6_jf1le"]
 
 [sub_resource type="Theme" id="Theme_pq8q7"]
 PortraitBox/base_type = &"ColorRect"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01eko"]
-bg_color = Color(0.8666667, 0.8666667, 0.26666668, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.8666667, 0.6666667, 0.13333334, 1)
-corner_radius_top_left = 25
-corner_radius_bottom_right = 25
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6xf5i"]
-bg_color = Color(0.8666667, 0.8666667, 0.26666668, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.8666667, 0.6666667, 0.13333334, 1)
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
 
 [node name="Root" type="AspectRatioContainer"]
 anchors_preset = -1
@@ -51,14 +33,16 @@ layout_mode = 2
 script = ExtResource("1_01eko")
 metadata/_edit_use_anchors_ = true
 
-[node name="Panel" type="Panel" parent="HBoxContainer"]
+[node name="PortraitPanel" type="Panel" parent="HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_01eko")
+theme_override_styles/panel = ExtResource("2_e4ysj")
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Panel"]
+[node name="PortraitTexture" type="TextureRect" parent="HBoxContainer/PortraitPanel"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.028846152
@@ -75,13 +59,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 
-[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer"]
+[node name="NamePanel" type="Panel" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.8
-theme_override_styles/panel = SubResource("StyleBoxFlat_6xf5i")
+theme_override_styles/panel = ExtResource("4_hbbdm")
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/Panel"]
+[node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer/NamePanel"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 15)
 layout_mode = 1
 anchors_preset = -1
