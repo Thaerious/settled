@@ -51,6 +51,7 @@ signal resources_updated(id: int, wallet:Wallet)
 
 # Debug and development signals
 signal set_player_view(id: int)
+signal player_view_set(id: int)
 signal save_model_state()
 signal load_model_state()
 

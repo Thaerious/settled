@@ -10,7 +10,13 @@ var names: Array[String] = ["Adam", "Barney", "Charles III", "Diana"]
 func _ready() -> void:
 	self.model = Model.new()
 	self.model.build(names)
-	EventBus.set_player_view.connect(func(id: int): self.self_id = id)
+
+	EventBus.set_player_view.connect(func(id: int): 
+		self.self_id = id
+		EventBus.player_view_set.emit(id)
+		EventBus.model_loaded.emit()
+	)
+
 	self.call_deferred("_emit_initial_state")
 
 

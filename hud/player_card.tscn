@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ian5dyj31ooq"]
 
 [ext_resource type="Texture2D" uid="uid://bndgc4abt4y1b" path="res://assets/portrait.png" id="1_afuff"]
-[ext_resource type="Script" uid="uid://2l75bw8yr4k3" path="res://hud/player_panel/portrait_texture.gd" id="2_ludre"]
+[ext_resource type="Script" uid="uid://2l75bw8yr4k3" path="res://hud/player_card/portrait_texture.gd" id="2_ludre"]
 [ext_resource type="Texture2D" uid="uid://fqnpeblq6nnq" path="res://assets/player_border.png" id="3_f5244"]
 [ext_resource type="Texture2D" uid="uid://cs8sksfum1leu" path="res://assets/player_pennant.png" id="4_ludre"]
 

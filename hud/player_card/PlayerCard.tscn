@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://4ustx1deyfr6"]
+[gd_scene load_steps=13 format=3 uid="uid://4ustx1deyfr6"]
 
-[ext_resource type="Script" uid="uid://bsmfcuhgmvqdu" path="res://hud/player_panel/player_panel.gd" id="1_01eko"]
+[ext_resource type="Script" uid="uid://dijjmakswtb36" path="res://hud/player_card/player_card.gd" id="1_0smve"]
+[ext_resource type="Script" path="res://hud/player_card/player_card.gd" id="1_01eko"]
 [ext_resource type="Texture2D" uid="uid://cs8sksfum1leu" path="res://assets/player_pennant.png" id="1_562uj"]
 [ext_resource type="Texture2D" uid="uid://7mrq6g7fmrfm" path="res://assets/portraits/Icon1.png" id="1_v0po2"]
-[ext_resource type="StyleBox" uid="uid://braeb725n6ggd" path="res://hud/player_panel/player_2_portrait_style.tres" id="2_e4ysj"]
+[ext_resource type="StyleBox" uid="uid://braeb725n6ggd" path="res://hud/player_card/player_2_portrait_style.tres" id="2_e4ysj"]
 [ext_resource type="Texture2D" uid="uid://cjust6wg6yh64" path="res://assets/action_cards/victory.png" id="3_6xf5i"]
 [ext_resource type="Texture2D" uid="uid://baife5oamxio6" path="res://assets/chest.png" id="3_cf68c"]
-[ext_resource type="StyleBox" uid="uid://dw00g47cbamnu" path="res://hud/player_panel/player_0_name_style.tres" id="4_hbbdm"]
+[ext_resource type="StyleBox" uid="uid://dw00g47cbamnu" path="res://hud/player_card/player_0_name_style.tres" id="4_hbbdm"]
 [ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/cards.png" id="4_v0po2"]
 [ext_resource type="Texture2D" uid="uid://hd6kllb78sqh" path="res://assets/shield.png" id="5_01eko"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/road.png" id="6_jf1le"]
@@ -25,15 +26,16 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_pq8q7")
 ratio = 2.5
-script = ExtResource("1_01eko")
+script = ExtResource("1_0smve")
 metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="OuterHBox" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("1_01eko")
 metadata/_edit_use_anchors_ = true
 
-[node name="PortraitPanel" type="Panel" parent="HBoxContainer"]
+[node name="PortraitPanel" type="Panel" parent="OuterHBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -41,7 +43,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
 theme_override_styles/panel = ExtResource("2_e4ysj")
 
-[node name="PortraitTexture" type="TextureRect" parent="HBoxContainer/PortraitPanel"]
+[node name="PortraitTexture" type="TextureRect" parent="OuterHBox/PortraitPanel"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
@@ -54,19 +56,19 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="OuterHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 
-[node name="NamePanel" type="Panel" parent="HBoxContainer/VBoxContainer"]
+[node name="NamePanel" type="Panel" parent="OuterHBox/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.8
 theme_override_styles/panel = ExtResource("4_hbbdm")
 
-[node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer/NamePanel"]
+[node name="NameLabel" type="Label" parent="OuterHBox/VBoxContainer/NamePanel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 15)
 layout_mode = 1
@@ -79,16 +81,16 @@ text = "I am Label"
 vertical_alignment = 1
 autowrap_mode = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="OuterHBox/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 
-[node name="VictoryPoints" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="VictoryPoints" type="Control" parent="OuterHBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints"]
+[node name="Pennant" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -99,7 +101,8 @@ size_flags_horizontal = 3
 texture = ExtResource("1_562uj")
 expand_mode = 1
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints"]
+[node name="VictoryIcon" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -109,7 +112,8 @@ expand_mode = 4
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints"]
+[node name="VictoryLabel" type="Label" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.45
@@ -119,11 +123,11 @@ text = "0"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Resources" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Resources" type="Control" parent="OuterHBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/Resources"]
+[node name="Pennant" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/Resources"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -134,7 +138,8 @@ size_flags_horizontal = 3
 texture = ExtResource("1_562uj")
 expand_mode = 1
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/Resources"]
+[node name="ResourcesIcon" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/Resources"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -144,7 +149,8 @@ expand_mode = 4
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/Resources"]
+[node name="ResourcesLabel" type="Label" parent="OuterHBox/VBoxContainer/HBoxContainer/Resources"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.45
@@ -154,11 +160,11 @@ text = "0"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="ActionCards" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="ActionCards" type="Control" parent="OuterHBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/ActionCards"]
+[node name="Pennant" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/ActionCards"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -169,7 +175,8 @@ size_flags_horizontal = 3
 texture = ExtResource("1_562uj")
 expand_mode = 1
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/ActionCards"]
+[node name="ActionIcon" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/ActionCards"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -179,7 +186,8 @@ expand_mode = 4
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/ActionCards"]
+[node name="ActionLabel" type="Label" parent="OuterHBox/VBoxContainer/HBoxContainer/ActionCards"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.45
@@ -189,11 +197,11 @@ text = "0"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="VictoryPoints4" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="VictoryPoints4" type="Control" parent="OuterHBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints4"]
+[node name="Pennant" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints4"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -204,7 +212,8 @@ size_flags_horizontal = 3
 texture = ExtResource("1_562uj")
 expand_mode = 1
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints4"]
+[node name="SoldierIcon" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints4"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -214,7 +223,8 @@ expand_mode = 4
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints4"]
+[node name="SoldierLabel" type="Label" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints4"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.45
@@ -224,11 +234,11 @@ text = "0"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="VictoryPoints5" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="VictoryPoints5" type="Control" parent="OuterHBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Pennant" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints5"]
+[node name="Pennant" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints5"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -239,7 +249,8 @@ size_flags_horizontal = 3
 texture = ExtResource("1_562uj")
 expand_mode = 1
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints5"]
+[node name="RoadsIcon" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints5"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -249,7 +260,8 @@ expand_mode = 4
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VictoryPoints5"]
+[node name="RoadsLabel" type="Label" parent="OuterHBox/VBoxContainer/HBoxContainer/VictoryPoints5"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.45
@@ -259,7 +271,7 @@ text = "0"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Spacer" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Spacer" type="TextureRect" parent="OuterHBox/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
