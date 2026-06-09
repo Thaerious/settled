@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://4ustx1deyfr6"]
+[gd_scene load_steps=12 format=3 uid="uid://4ustx1deyfr6"]
 
-[ext_resource type="Script" uid="uid://dijjmakswtb36" path="res://hud/player_card/player_card.gd" id="1_0smve"]
-[ext_resource type="Script" path="res://hud/player_card/player_card.gd" id="1_01eko"]
+[ext_resource type="Script" uid="uid://dijjmakswtb36" path="res://hud/player_card/player_card.gd" id="1_01eko"]
 [ext_resource type="Texture2D" uid="uid://cs8sksfum1leu" path="res://assets/player_pennant.png" id="1_562uj"]
 [ext_resource type="Texture2D" uid="uid://7mrq6g7fmrfm" path="res://assets/portraits/Icon1.png" id="1_v0po2"]
 [ext_resource type="StyleBox" uid="uid://braeb725n6ggd" path="res://hud/player_card/player_2_portrait_style.tres" id="2_e4ysj"]
@@ -26,13 +25,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_pq8q7")
 ratio = 2.5
-script = ExtResource("1_0smve")
+script = ExtResource("1_01eko")
 metadata/_edit_use_anchors_ = true
 
 [node name="OuterHBox" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("1_01eko")
 metadata/_edit_use_anchors_ = true
 
 [node name="PortraitPanel" type="Panel" parent="OuterHBox"]

@@ -16,13 +16,13 @@ extends Control
 @onready var soldiers_label: Label = %SoldierLabel
 
 @onready var player_0_portrait_style = preload("res://hud/player_card/player_0_portrait_style.tres")
-@onready var player_0_name_style = preload("res://hud/player_card/player_0_name_style.tres")
+@onready var player_0_name_style     = preload("res://hud/player_card/player_0_name_style.tres")
 @onready var player_1_portrait_style = preload("res://hud/player_card/player_1_portrait_style.tres")
-@onready var player_1_name_style = preload("res://hud/player_card/player_1_name_style.tres")
+@onready var player_1_name_style     = preload("res://hud/player_card/player_1_name_style.tres")
 @onready var player_2_portrait_style = preload("res://hud/player_card/player_2_portrait_style.tres")
-@onready var player_2_name_style = preload("res://hud/player_card/player_2_name_style.tres")
+@onready var player_2_name_style     = preload("res://hud/player_card/player_2_name_style.tres")
 @onready var player_3_portrait_style = preload("res://hud/player_card/player_3_portrait_style.tres")
-@onready var player_3_name_style = preload("res://hud/player_card/player_3_name_style.tres")
+@onready var player_3_name_style     = preload("res://hud/player_card/player_3_name_style.tres")
 
 @export var player_id: int = 0
 
@@ -43,6 +43,8 @@ func _ready() -> void:
 	)
 
 	EventBus.player_record_updated.connect(func(id: int, rec: PlayerRecord):
+		print("record updated | self.player_id %s | record id %s" % [self.player_id, id])
+		print(self)
 		if self.player_id == id:
 			self.player_record = rec
 	)
@@ -78,6 +80,7 @@ func _update_values() -> void:
 	self.soldiers_label.text       = str(self.player_record.soldiers)
 
 
+# shift the player card right when it's this players turn
 func _update_position(current_player_id: int) -> void:
 	if self.player_id == current_player_id:
 		self.outer_box.position.x = self.x_pos_shift
@@ -85,6 +88,7 @@ func _update_position(current_player_id: int) -> void:
 		self.outer_box.position.x = 0
 
 
+# deveolopment - get a random player portrait
 func get_random_texture(dir_path: String) -> Texture2D:
 	var files = DirAccess.get_files_at(dir_path)
 	var textures = PackedStringArray()
