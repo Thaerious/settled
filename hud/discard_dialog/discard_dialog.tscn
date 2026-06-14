@@ -1,82 +1,517 @@
-[gd_scene load_steps=6 format=3 uid="uid://cbl0eprhn3k2g"]
+[gd_scene load_steps=11 format=3 uid="uid://cbl0eprhn3k2g"]
 
 [ext_resource type="StyleBox" uid="uid://b26k03ketuprm" path="res://hud/discard_dialog/panel_outer_style.tres" id="1_emb3f"]
 [ext_resource type="Texture2D" uid="uid://cyshc4gljssbs" path="res://assets/buttons/discard_dialog_up.png" id="1_nl7lm"]
-[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="2_8bei6"]
 [ext_resource type="StyleBox" uid="uid://bgcofcnn7u3ro" path="res://hud/discard_dialog/panel_inner_style.tres" id="2_x3apl"]
+[ext_resource type="Texture2D" uid="uid://gijtnuwil067" path="res://assets/resources/brick_color.png" id="4_dbxmx"]
 [ext_resource type="Texture2D" uid="uid://gqxql4ekq17g" path="res://assets/buttons/discard_dialog_down.png" id="4_x3apl"]
+[ext_resource type="Texture2D" uid="uid://d3ywknxm0qvs1" path="res://assets/resources/wood_color.png" id="6_201yn"]
+[ext_resource type="Texture2D" uid="uid://c6udkvuswa3f6" path="res://assets/resources/wheat_color.png" id="7_5s2c0"]
+[ext_resource type="Texture2D" uid="uid://c5c2pro106apa" path="res://assets/resources/rock_color.png" id="8_ygxl0"]
+[ext_resource type="Texture2D" uid="uid://p25t67qnqa1i" path="res://assets/resources/wool_color.png" id="9_6o1w5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_201yn"]
+bg_color = Color(0.26666668, 0.73333335, 0.4, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
 
 [node name="DiscardDialog" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.79322916
+anchor_bottom = 0.3361111
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 420.0
-offset_right = 1500.0
-offset_bottom = 386.0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="PanelContainerOuter" type="PanelContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PanelContainerOuter" type="PanelContainer" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("1_emb3f")
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/PanelContainerOuter"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainerInner" type="PanelContainer" parent="HBoxContainer/PanelContainerOuter/MarginContainer"]
+[node name="PanelContainerInner" type="PanelContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("2_x3apl")
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="Control" type="VBoxContainer" parent="HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer"]
+[node name="Control" type="Control" parent="PanelContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer"]
+custom_minimum_size = Vector2(100, 250)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="DiscardButton" type="TextureButton" parent="HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+[node name="DiscardButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 42.0
+grow_horizontal = 2
 texture_normal = ExtResource("1_nl7lm")
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
-layout_mode = 2
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 0.4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
-layout_mode = 2
-texture = ExtResource("2_8bei6")
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4
+anchor_right = 1.0
+anchor_bottom = 0.6
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_dbxmx")
 expand_mode = 5
 stretch_mode = 5
 
-[node name="Label2" type="Label" parent="HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
-layout_mode = 2
+[node name="Label2" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.6
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="KeepButton" type="TextureButton" parent="HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+[node name="KeepButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/Control"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+grow_horizontal = 2
+grow_vertical = 0
 texture_normal = ExtResource("4_x3apl")
 stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainerOuter2" type="PanelContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("1_emb3f")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter2"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainerInner" type="PanelContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter2/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("2_x3apl")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Control" type="Control" parent="PanelContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer"]
+custom_minimum_size = Vector2(100, 250)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="DiscardButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 42.0
+grow_horizontal = 2
+texture_normal = ExtResource("1_nl7lm")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 0.4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.11
+anchor_top = 0.304
+anchor_right = 0.89
+anchor_bottom = 0.70000005
+offset_bottom = -1.5258789e-05
+texture = ExtResource("6_201yn")
+expand_mode = 4
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.6
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="KeepButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("4_x3apl")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainerOuter3" type="PanelContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("1_emb3f")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter3"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainerInner" type="PanelContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter3/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("2_x3apl")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Control" type="Control" parent="PanelContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer"]
+custom_minimum_size = Vector2(100, 250)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="DiscardButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 42.0
+grow_horizontal = 2
+texture_normal = ExtResource("1_nl7lm")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 0.4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.06
+anchor_top = 0.3
+anchor_right = 0.91
+anchor_bottom = 0.7
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_5s2c0")
+expand_mode = 5
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.6
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="KeepButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("4_x3apl")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainerOuter4" type="PanelContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("1_emb3f")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter4"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainerInner" type="PanelContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter4/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("2_x3apl")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Control" type="Control" parent="PanelContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer"]
+custom_minimum_size = Vector2(100, 250)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="DiscardButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 42.0
+grow_horizontal = 2
+texture_normal = ExtResource("1_nl7lm")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 0.4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4
+anchor_right = 1.0
+anchor_bottom = 0.6
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_ygxl0")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="Label2" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.6
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="KeepButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("4_x3apl")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainerOuter5" type="PanelContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("1_emb3f")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter5"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainerInner" type="PanelContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter5/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("2_x3apl")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Control" type="Control" parent="PanelContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer"]
+custom_minimum_size = Vector2(100, 250)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="DiscardButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 42.0
+grow_horizontal = 2
+texture_normal = ExtResource("1_nl7lm")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 0.4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4
+anchor_right = 1.0
+anchor_bottom = 0.6
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_6o1w5")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="Label2" type="Label" parent="PanelContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.6
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="KeepButton" type="TextureButton" parent="PanelContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("4_x3apl")
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.49080762
+anchor_top = 0.95167774
+anchor_right = 0.50361127
+anchor_bottom = 0.91735536
+offset_left = -128.5
+offset_top = -48.459015
+offset_right = 130.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_201yn")
+text = "Accept
+"
 metadata/_edit_use_anchors_ = true
