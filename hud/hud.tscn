@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://ccds24g8vhw1y" path="res://hud/bank/bank.tscn" id="8_1kkc0"]
 [ext_resource type="Script" uid="uid://bs88moiyiupa8" path="res://hud/phase_buttons/button_load.gd" id="8_pt78x"]
 [ext_resource type="PackedScene" uid="uid://baabjnmmu7oxg" path="res://hud/pirate_dialog/pirate_dialog.tscn" id="8_qv4qp"]
-[ext_resource type="PackedScene" uid="uid://duwsa3m666m7m" path="res://hud/pirate_discard_dialog/discard_dialog.tscn" id="8_sh35x"]
+[ext_resource type="PackedScene" uid="uid://duwsa3m666m7m" path="res://hud/pirate_discard_dialog/discard_dialog_old.tscn" id="8_sh35x"]
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="9_gms7k"]
 [ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/save_file_name.gd" id="9_pt78x"]
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="9_put16"]

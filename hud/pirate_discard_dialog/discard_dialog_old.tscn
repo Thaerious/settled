@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://duwsa3m666m7m"]
 
 [ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="1_7as5r"]
-[ext_resource type="Script" uid="uid://b03017rxir28u" path="res://hud/pirate_discard_dialog/discard_dialog.gd" id="1_seqkp"]
+[ext_resource type="Script" uid="uid://b03017rxir28u" path="res://hud/discard_dialog/discard_dialog.gd" id="1_seqkp"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="3_maxt8"]
 [ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="4_pi0ue"]
 [ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="5_weovp"]
