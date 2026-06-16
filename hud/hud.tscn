@@ -423,14 +423,22 @@ disabled = true
 text = "End Turn"
 script = ExtResource("18_put16")
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+[node name="Control" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.40335122
+anchor_top = 1.1527778
+anchor_right = 0.9033512
+anchor_bottom = 1.6527778
+offset_left = -270.61377
+offset_top = -754.0
+offset_right = -230.61377
+offset_bottom = -714.0
 grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
 
-[node name="DiscardDialog" parent="AspectRatioContainer" instance=ExtResource("20_lfqsj")]
-layout_mode = 2
+[node name="DiscardDialog" parent="Control" instance=ExtResource("20_lfqsj")]
+layout_mode = 1
+offset_left = 0.0
+offset_right = 0.0
+metadata/_edit_use_anchors_ = true

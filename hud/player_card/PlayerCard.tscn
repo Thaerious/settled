@@ -15,10 +15,9 @@
 PortraitBox/base_type = &"ColorRect"
 
 [node name="Root" type="AspectRatioContainer"]
-anchors_preset = -1
-anchor_left = 0.00052083336
-anchor_right = 0.97552085
-anchor_bottom = 0.93333334
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_right = -1660.0
 offset_bottom = -920.0
 grow_horizontal = 2
