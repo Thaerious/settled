@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://cj4mylgiub28g"]
+
+[ext_resource type="StyleBox" uid="uid://b26k03ketuprm" path="res://hud/discard_dialog/panel_outer_style.tres" id="2_hdhyk"]
+[ext_resource type="Script" uid="uid://jxkwq5yd57xa" path="res://hud/discard_dialog/waiting_dialog.gd" id="3_a8vc7"]
+[ext_resource type="StyleBox" uid="uid://bgcofcnn7u3ro" path="res://hud/discard_dialog/panel_inner_style.tres" id="3_wuh1k"]
+
+[node name="WaitingDialog" type="Control"]
+layout_mode = 3
+anchor_right = 0.37604168
+anchor_bottom = 0.38796297
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="DialogPanelContainerOuter" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 727.0
+offset_bottom = 417.0
+theme_override_styles/panel = ExtResource("2_hdhyk")
+
+[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="DialogPanelContainerInner" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_wuh1k")
+
+[node name="Label" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "Waiting on opponents to discard."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+script = ExtResource("3_a8vc7")

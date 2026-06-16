@@ -13,13 +13,13 @@
 [ext_resource type="PackedScene" uid="uid://ccds24g8vhw1y" path="res://hud/bank/bank.tscn" id="8_1kkc0"]
 [ext_resource type="Script" uid="uid://bs88moiyiupa8" path="res://hud/phase_buttons/button_load.gd" id="8_pt78x"]
 [ext_resource type="PackedScene" uid="uid://baabjnmmu7oxg" path="res://hud/pirate_dialog/pirate_dialog.tscn" id="8_qv4qp"]
-[ext_resource type="PackedScene" uid="uid://duwsa3m666m7m" path="res://hud/pirate_discard_dialog/discard_dialog_old.tscn" id="8_sh35x"]
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="9_gms7k"]
 [ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/save_file_name.gd" id="9_pt78x"]
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="9_put16"]
 [ext_resource type="PackedScene" uid="uid://keoxfbt80qfy" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="12_hwufu"]
 [ext_resource type="PackedScene" uid="uid://cpyo2scica4vg" path="res://hud/year_of_plenty_dialog/plenty_dialog.tscn" id="13_mq7b8"]
 [ext_resource type="Script" uid="uid://d66e5b2s5mrl" path="res://hud/end_turn_button.gd" id="18_put16"]
+[ext_resource type="PackedScene" uid="uid://cbl0eprhn3k2g" path="res://hud/discard_dialog/discard_dialog.tscn" id="20_lfqsj"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -345,6 +345,7 @@ text = "Reset"
 script = ExtResource("9_put16")
 
 [node name="HandPanelContainer" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -371,14 +372,6 @@ theme_type_variation = &""
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &""
-
-[node name="DiscardDialog" parent="." instance=ExtResource("8_sh35x")]
-visible = false
-layout_mode = 0
-offset_left = 825.0
-offset_top = 857.0
-offset_right = 1091.0
-offset_bottom = 1075.0
 
 [node name="PirateDialog" parent="." instance=ExtResource("8_qv4qp")]
 visible = false
@@ -429,3 +422,15 @@ grow_vertical = 0
 disabled = true
 text = "End Turn"
 script = ExtResource("18_put16")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DiscardDialog" parent="AspectRatioContainer" instance=ExtResource("20_lfqsj")]
+layout_mode = 2

@@ -1,32 +1,30 @@
 class_name DiscardDialog
-extends PanelContainer
+extends Control
 
-@onready var _main_container := %MainContainer
-@onready var _pending_label := %PendingLabel
-@onready var _button_ok := %ButtonOk
+@onready var _button_accept := %ButtonAccept
 
 @onready var RESOURCE_QTY_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {
 		Model.ResourceTypes.BRICK: %QtyBrick,
 		Model.ResourceTypes.WOOD:  %QtyWood,
-		Model.ResourceTypes.ROCK:  %QtyRock,
 		Model.ResourceTypes.WHEAT: %QtyWheat,
+		Model.ResourceTypes.ROCK:  %QtyRock,		
 		Model.ResourceTypes.WOOL:  %QtyWool,
 	}
 
 @onready var RESOURCE_DIS_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {
 		Model.ResourceTypes.BRICK: %DisBrick,
 		Model.ResourceTypes.WOOD:  %DisWood,
-		Model.ResourceTypes.ROCK:  %DisRock,
 		Model.ResourceTypes.WHEAT: %DisWheat,
+		Model.ResourceTypes.ROCK:  %DisRock,		
 		Model.ResourceTypes.WOOL:  %DisWool,
 	}
 
-@onready var RESOURCE_TEXTURE_MAP: Dictionary[Model.ResourceTypes, TextureRect] = {
-		Model.ResourceTypes.BRICK: %BrickTexture,
-		Model.ResourceTypes.WOOD:  %WoodTexture,
-		Model.ResourceTypes.ROCK:  %RockTexture,
-		Model.ResourceTypes.WHEAT: %WheatTexture,
-		Model.ResourceTypes.WOOL:  %WoolTexture,
+@onready var RESOURSE_CONTROL_MAP: Dictionary[Model.ResourceTypes, Control] = {
+		Model.ResourceTypes.BRICK: %BrickControl,
+		Model.ResourceTypes.WOOD:  %WoodControl,
+		Model.ResourceTypes.WHEAT: %WheatControl,
+		Model.ResourceTypes.ROCK:  %RockControl,		
+		Model.ResourceTypes.WOOL:  %WoolControl,
 	}
 
 var bank: Wallet
@@ -34,23 +32,14 @@ var discard: Wallet
 var _must_discard: int
 
 func _ready() -> void:
-	self._button_ok.pressed.connect(self._ok_pressed)
-
+	self._button_accept.pressed.connect(self._ok_pressed)
 	EventBus.current_phase_updated.connect(self._update_phase_hnd)
 	EventBus.model_loaded.connect(self._model_loaded_hnd)
-
-	for r in RESOURCE_TEXTURE_MAP.keys():
-		var texture_rect = self.RESOURCE_TEXTURE_MAP[r]
-		texture_rect.gui_input.connect(func(event: InputEvent) -> void:
-			if not event is InputEventMouseButton: return
-			self._on_input(r, event)
-		)	
 
 
 func _ok_pressed() -> void:	
 	EventBus.request_discard.emit(Game.self_id, discard)
-	self._main_container.visible = false
-	self._pending_label.visible = true
+	self.visible = false
 
 
 func _model_loaded_hnd() -> void:
@@ -59,8 +48,7 @@ func _model_loaded_hnd() -> void:
 
 func _update_phase_hnd(phase: Model.GamePhase) -> void:
 	if phase == Model.GamePhase.DURING_DISCARD:
-		self.visible = true
-		self._setup_view()		
+		self._setup_view()	
 	else:
 		self.visible = false		
 
@@ -70,15 +58,12 @@ func _setup_view() -> void:
 	var count := Game.model.get_bank(Game.self_id).size()
 
 	# true means I don't need to discard
-	print("id %s | target %s | count %s" % [Game.self_id, target, count])
 	if target >= count:
-		self._main_container.visible = false
-		self._pending_label.visible = true
+		self.visible = false
 		return		
 
-	self._main_container.visible = true
-	self._pending_label.visible = false		
-	self._button_ok.disabled = true
+	self.visible = true
+	self._button_accept.disabled = true
 
 	self.bank = Game.model.get_bank(Game.self_id)
 	self.bank.link_view(self.RESOURCE_QTY_LABEL_MAP)
@@ -87,31 +72,43 @@ func _setup_view() -> void:
 	self.discard.link_view(self.RESOURCE_DIS_LABEL_MAP)	
 	self._must_discard = floori((self.bank.size()) / 2.0)		
 
+	for resource in self.RESOURSE_CONTROL_MAP.keys():
+		self._update_resource_control(resource)			
 
-func _on_input(resource: Model.ResourceTypes, event: InputEventMouseButton):
-	if not event.button_index == MouseButton.MOUSE_BUTTON_LEFT: return
-	if not event.pressed: return
 
-	if event.shift_pressed:
-		if discard.has_resource(resource):
-			discard.add_resource(resource, -1)			
-			bank.add_resource(resource, 1)			
+func _update_resource_control(resource: Model.ResourceTypes):
+	var control: DiscardResourceControl = self.RESOURSE_CONTROL_MAP[resource]
+
+	if self.bank.has_resource(resource):
+		control.discard_button.disabled = false
 	else:
-		if bank.get_resource(resource) > 0:
-			bank.add_resource(resource, -1)
-			discard.add_resource(resource, 1)
-	
-	var target := Game.model.get_discard_target(Game.self_id)
-	var count := bank.size()
+		control.discard_button.disabled = true
 
-	# true means I don't need to discard
-	if target >= count:
-		self._main_container.visible = false
-		self._pending_label.visible = true
-		return	
+	if self.discard.has_resource(resource):
+		control.keep_button.disabled = false
+	else:
+		control.keep_button.disabled = true		
 
+
+func keep_resource(resource: Model.ResourceTypes) -> void:
+	if discard.has_resource(resource):
+		bank.add_resource(resource, 1)
+		discard.remove_resource(resource, 1)
+		self._on_input()	
+		self._update_resource_control(resource)		
+
+
+func discard_resource(resource: Model.ResourceTypes) -> void:
+	if bank.has_resource(resource):
+		bank.remove_resource(resource, 1)
+		discard.add_resource(resource, 1)
+		self._on_input()
+		self._update_resource_control(resource)	
+
+
+func _on_input():
 	if self.discard.size() == self._must_discard:
-		self._button_ok.disabled = false
+		self._button_accept.disabled = false
 	else:
-		self._button_ok.disabled = true
+		self._button_accept.disabled = true
 		
