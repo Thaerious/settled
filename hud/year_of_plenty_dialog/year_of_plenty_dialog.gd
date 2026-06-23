@@ -15,11 +15,21 @@ func _ready() -> void:
 		EventBus.play_plenty_card.emit(Game.self_id, self.wallet)
 	)
 
+	EventBus.current_phase_updated.connect(self._update_phase)
+	EventBus.model_loaded.connect(func(): 
+		self._update_phase(Game.model.get_current_phase())
+	)
 
-func _notification(what: int) -> void:
-	if what != NOTIFICATION_VISIBILITY_CHANGED: return
-	if not visible: return
+
+func _update_phase(phase: Model.GamePhase) -> void:
+	self.visible = false	
+
+	if phase != Model.GamePhase.YEAR_OF_PLENTY: return
+	if not Game.model.get_current_player() == Game.self_id: return
+
 	self.wallet.set_all(0)
+	self.update_view()
+	self.visible = true	
 
 
 func _on_ready(control: ResourceControl) -> void:	
@@ -52,6 +62,12 @@ func update_view() -> void:
 		%RockControl.get_node("ButtonUp").disabled = false
 		%WoolControl.get_node("ButtonUp").disabled = false
 		%ButtonAccept.disabled = true
+
+	%BrickControl.get_node("Qty").text = str(wallet.get_resource(Model.ResourceTypes.BRICK))
+	%WoodControl.get_node("Qty").text = str(wallet.get_resource(Model.ResourceTypes.WOOD))
+	%WheatControl.get_node("Qty").text = str(wallet.get_resource(Model.ResourceTypes.WHEAT))
+	%RockControl.get_node("Qty").text = str(wallet.get_resource(Model.ResourceTypes.ROCK))
+	%WoolControl.get_node("Qty").text = str(wallet.get_resource(Model.ResourceTypes.WOOL))
 
 	if self.wallet.has_resource(Model.ResourceTypes.BRICK):
 		%BrickControl.get_node("ButtonDn").disabled = false

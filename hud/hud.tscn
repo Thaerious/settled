@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=21 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://keoxfbt80qfy" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="12_hwufu"]
 [ext_resource type="Script" uid="uid://d66e5b2s5mrl" path="res://hud/end_turn_button.gd" id="18_put16"]
 [ext_resource type="PackedScene" uid="uid://cbl0eprhn3k2g" path="res://hud/discard_dialog/discard_dialog.tscn" id="20_lfqsj"]
+[ext_resource type="PackedScene" uid="uid://dqr0hpeu73nhq" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.tscn" id="20_lyvac"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -432,3 +433,10 @@ layout_mode = 1
 offset_left = 0.0
 offset_right = 0.0
 metadata/_edit_use_anchors_ = true
+
+[node name="YearOfPlentyDialog" parent="." instance=ExtResource("20_lyvac")]
+layout_mode = 0
+offset_left = 580.64075
+offset_top = 685.0
+offset_right = 1310.6407
+offset_bottom = 1060.0

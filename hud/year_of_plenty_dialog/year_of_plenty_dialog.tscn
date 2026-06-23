@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bch8ecx5g17ts" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.gd" id="2_fp45j"]
 [ext_resource type="StyleBox" uid="uid://bgcofcnn7u3ro" path="res://hud/shared/panel_inner_style.tres" id="2_lqffb"]
 [ext_resource type="Texture2D" uid="uid://cyshc4gljssbs" path="res://assets/buttons/discard_dialog_up.png" id="3_841ht"]
-[ext_resource type="Script" uid="uid://lkfjwctb0ulw" path="res://hud/year_of_plenty_dialog/resource_cotrol.gd" id="3_jcklt"]
+[ext_resource type="Script" uid="uid://lkfjwctb0ulw" path="res://hud/resource_cotrol.gd" id="3_jcklt"]
 [ext_resource type="Texture2D" uid="uid://d2rj0cc18t68g" path="res://assets/buttons/discard_dialog_button_up_inactive.png" id="4_7gre4"]
 [ext_resource type="Texture2D" uid="uid://gijtnuwil067" path="res://assets/resources/brick_color.png" id="5_0fxpq"]
 [ext_resource type="Texture2D" uid="uid://gqxql4ekq17g" path="res://assets/buttons/discard_dialog_down.png" id="6_8h46o"]
@@ -86,7 +86,6 @@ script = ExtResource("3_jcklt")
 resource_type = 0
 
 [node name="ButtonUp" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("3_841ht")
@@ -104,7 +103,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ButtonDn" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("6_8h46o")
@@ -114,10 +112,11 @@ script = ExtResource("7_uscm4")
 metadata/_custom_type_script = "uid://75vpnijir1pl"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("5_0fxpq")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
@@ -153,7 +152,6 @@ script = ExtResource("3_jcklt")
 resource_type = 1
 
 [node name="ButtonUp" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("3_841ht")
@@ -171,7 +169,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ButtonDn" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("6_8h46o")
@@ -181,10 +178,11 @@ script = ExtResource("7_uscm4")
 metadata/_custom_type_script = "uid://75vpnijir1pl"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("8_qsqui")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
@@ -220,7 +218,6 @@ script = ExtResource("3_jcklt")
 resource_type = 2
 
 [node name="ButtonUp" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("3_841ht")
@@ -238,7 +235,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ButtonDn" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("6_8h46o")
@@ -248,10 +244,11 @@ script = ExtResource("7_uscm4")
 metadata/_custom_type_script = "uid://75vpnijir1pl"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("9_jcklt")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
@@ -287,7 +284,6 @@ script = ExtResource("3_jcklt")
 resource_type = 4
 
 [node name="ButtonUp" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("3_841ht")
@@ -305,7 +301,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ButtonDn" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("6_8h46o")
@@ -315,10 +310,11 @@ script = ExtResource("7_uscm4")
 metadata/_custom_type_script = "uid://75vpnijir1pl"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("10_fp45j")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
@@ -354,7 +350,6 @@ script = ExtResource("3_jcklt")
 resource_type = 3
 
 [node name="ButtonUp" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("3_841ht")
@@ -372,7 +367,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ButtonDn" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("6_8h46o")
@@ -382,10 +376,11 @@ script = ExtResource("7_uscm4")
 metadata/_custom_type_script = "uid://75vpnijir1pl"
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("11_3ubng")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
@@ -396,7 +391,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("14_24ffe")
 theme_override_styles/pressed = ExtResource("14_24ffe")
 theme_override_styles/hover = ExtResource("15_uscm4")

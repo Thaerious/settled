@@ -6,10 +6,6 @@ extends PanelContainer
 var RESOURCE_QTY_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
 var RESOURCE_EX_LABEL_MAP: Dictionary[Model.ResourceTypes, Label] = {}
 
-@onready var monopoly_dialog = %MonopolyDialog
-@onready var plenty_dialog = %PlentyDialog
-
-
 func _ready() -> void:
 	self.RESOURCE_QTY_LABEL_MAP = {
 		Model.ResourceTypes.BRICK: %QtyBrick,
