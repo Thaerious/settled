@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cvd22dj1dxfs8"]
+[gd_scene load_steps=20 format=3 uid="uid://cvd22dj1dxfs8"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_6ca3a"]
 [ext_resource type="Script" uid="uid://bt5qh63d4hhd8" path="res://hud/hand_panel_container.gd" id="4_sh35x"]
@@ -17,7 +17,6 @@
 [ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/save_file_name.gd" id="9_pt78x"]
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="9_put16"]
 [ext_resource type="PackedScene" uid="uid://keoxfbt80qfy" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="12_hwufu"]
-[ext_resource type="PackedScene" uid="uid://cpyo2scica4vg" path="res://hud/year_of_plenty_dialog/plenty_dialog.tscn" id="13_mq7b8"]
 [ext_resource type="Script" uid="uid://d66e5b2s5mrl" path="res://hud/end_turn_button.gd" id="18_put16"]
 [ext_resource type="PackedScene" uid="uid://cbl0eprhn3k2g" path="res://hud/discard_dialog/discard_dialog.tscn" id="20_lfqsj"]
 
@@ -396,15 +395,6 @@ offset_right = 139.0
 offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 0
-
-[node name="PlentyDialog" parent="." instance=ExtResource("13_mq7b8")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 0
-offset_left = 833.0499
-offset_top = 903.0
-offset_right = 833.0499
-offset_bottom = 903.0
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1

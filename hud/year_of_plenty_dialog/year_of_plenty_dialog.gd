@@ -1,0 +1,79 @@
+class_name YearOfPlentyDialog
+extends Control
+
+var wallet := Wallet.new()
+
+func _ready() -> void:
+	self._on_ready(%BrickControl)
+	self._on_ready(%WoodControl)
+	self._on_ready(%WheatControl)
+	self._on_ready(%RockControl)
+	self._on_ready(%WoolControl)
+	self.update_view()
+
+	%ButtonAccept.pressed.connect(func():
+		EventBus.play_plenty_card.emit(Game.self_id, self.wallet)
+	)
+
+
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_VISIBILITY_CHANGED: return
+	if not visible: return
+	self.wallet.set_all(0)
+
+
+func _on_ready(control: ResourceControl) -> void:	
+	control.get_node("ButtonUp").pressed.connect(func():
+		if self.wallet.size() >= 2: return
+		self.wallet.add_resource(control.resource_type)
+		control.get_node("Qty").text = str(wallet.get_resource(control.resource_type))
+		self.update_view()
+	)
+
+	control.get_node("ButtonDn").pressed.connect(func():
+		if self.wallet.get_resource(control.resource_type) <= 0: return
+		self.wallet.remove_resource(control.resource_type)
+		control.get_node("Qty").text = str(wallet.get_resource(control.resource_type))
+		self.update_view()
+	)
+
+func update_view() -> void:
+	if self.wallet.size() >= 2:
+		%BrickControl.get_node("ButtonUp").disabled = true
+		%WoodControl.get_node("ButtonUp").disabled = true
+		%WheatControl.get_node("ButtonUp").disabled = true
+		%RockControl.get_node("ButtonUp").disabled = true
+		%WoolControl.get_node("ButtonUp").disabled = true
+		%ButtonAccept.disabled = false
+	else:
+		%BrickControl.get_node("ButtonUp").disabled = false
+		%WoodControl.get_node("ButtonUp").disabled = false
+		%WheatControl.get_node("ButtonUp").disabled = false
+		%RockControl.get_node("ButtonUp").disabled = false
+		%WoolControl.get_node("ButtonUp").disabled = false
+		%ButtonAccept.disabled = true
+
+	if self.wallet.has_resource(Model.ResourceTypes.BRICK):
+		%BrickControl.get_node("ButtonDn").disabled = false
+	else:
+		%BrickControl.get_node("ButtonDn").disabled = true
+
+	if self.wallet.has_resource(Model.ResourceTypes.WOOD):
+		%WoodControl.get_node("ButtonDn").disabled = false
+	else:
+		%WoodControl.get_node("ButtonDn").disabled = true
+
+	if self.wallet.has_resource(Model.ResourceTypes.WHEAT):
+		%WheatControl.get_node("ButtonDn").disabled = false
+	else:
+		%WheatControl.get_node("ButtonDn").disabled = true
+
+	if self.wallet.has_resource(Model.ResourceTypes.ROCK):
+		%RockControl.get_node("ButtonDn").disabled = false
+	else:
+		%RockControl.get_node("ButtonDn").disabled = true
+
+	if self.wallet.has_resource(Model.ResourceTypes.WOOL):
+		%WoolControl.get_node("ButtonDn").disabled = false
+	else:
+		%WoolControl.get_node("ButtonDn").disabled = true						
