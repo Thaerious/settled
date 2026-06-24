@@ -1,17 +1,60 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c1voxdoftfv08"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://c1voxdoftfv08"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrvmb"]
-bg_color = Color(0.10673415, 0.10673412, 0.10673412, 1)
+bg_color = Color(0.015686275, 0.46666667, 0.53333336, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kl5b"]
+bg_color = Color(0.018899981, 0.5485201, 0.63, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xnmyk"]
+bg_color = Color(0.101960786, 0.5568628, 0.7647059, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
 
 [resource]
-default_font_size = 20
-BGBox/base_type = &"PanelContainer"
-BGBox/styles/panel = SubResource("StyleBoxFlat_hrvmb")
-DefaultMargin/base_type = &"MarginContainer"
-DefaultMargin/constants/margin_bottom = 20
-DefaultMargin/constants/margin_left = 20
-DefaultMargin/constants/margin_right = 20
-DefaultMargin/constants/margin_top = 20
-OuterVBox/base_type = &"VBoxContainer"
-QtyAnnotation/base_type = &"Label"
-QtyAnnotation/font_sizes/font_size = 20
+HBoxContainer/constants/separation = 10
+InnerBorderLevel0/base_type = &"InnerBorderLevel1"
+InnerBorderLevel0/styles/panel = SubResource("StyleBoxFlat_hrvmb")
+InnerBorderLevel1/base_type = &"PanelContainer"
+InnerBorderLevel1/styles/panel = SubResource("StyleBoxFlat_0kl5b")
+LabelLarge/base_type = &"Label"
+LabelLarge/font_sizes/font_size = 16
+LabelSmall/base_type = &"Label"
+LabelSmall/font_sizes/font_size = 12
+MarginContainer/constants/margin_bottom = 10
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 10
+MarginContainer/constants/margin_top = 10
+MarginContainerBorder/base_type = &"MarginContainer"
+MarginContainerBorder/constants/margin_bottom = 6
+MarginContainerBorder/constants/margin_left = 6
+MarginContainerBorder/constants/margin_right = 6
+MarginContainerBorder/constants/margin_top = 6
+OuterBorderLevel0/base_type = &"PanelContainer"
+OuterBorderLevel0/styles/panel = SubResource("StyleBoxFlat_xnmyk")
+VBoxContainer/constants/separation = 10

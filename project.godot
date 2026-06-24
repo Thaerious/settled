@@ -42,10 +42,6 @@ project/assembly_name="Settled"
 
 DiceControl=""
 
-[gui]
-
-theme/custom="uid://cn4fs5yglgeas"
-
 [layer_names]
 
 2d_physics/layer_10="Mouse"
