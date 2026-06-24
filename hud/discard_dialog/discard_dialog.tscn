@@ -1,6 +1,5 @@
 [gd_scene load_steps=18 format=3 uid="uid://cbl0eprhn3k2g"]
 
-[ext_resource type="Script" uid="uid://b03017rxir28u" path="res://hud/discard_dialog/discard_dialog.gd" id="1_5s2c0"]
 [ext_resource type="StyleBox" uid="uid://b26k03ketuprm" path="res://hud/shared/panel_outer_style.tres" id="1_emb3f"]
 [ext_resource type="Texture2D" uid="uid://cyshc4gljssbs" path="res://assets/buttons/discard_dialog_up.png" id="1_nl7lm"]
 [ext_resource type="StyleBox" uid="uid://bgcofcnn7u3ro" path="res://hud/shared/panel_inner_style.tres" id="2_x3apl"]
@@ -16,547 +15,405 @@
 [ext_resource type="StyleBox" uid="uid://dgrh20upkqy2e" path="res://hud/discard_dialog/accept_button_enabled.tres" id="14_csxnt"]
 [ext_resource type="StyleBox" uid="uid://bkkd1w88bbalo" path="res://hud/discard_dialog/accept_button_hover.tres" id="15_3gcfi"]
 [ext_resource type="StyleBox" uid="uid://dj732xmlrqw0r" path="res://hud/discard_dialog/accept_button_disabled.tres" id="15_udvy5"]
+[ext_resource type="Script" uid="uid://c4c2bwbvgmnp4" path="res://hud/custom_button.gd" id="16_udvy5"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_udvy5"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3gcfi"]
 
-[node name="DiscardDialog" type="AspectRatioContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 7.0
-offset_right = -960.0
-offset_bottom = -523.0
-grow_horizontal = 2
-grow_vertical = 2
-ratio = 2.0
-script = ExtResource("1_5s2c0")
-
-[node name="DialogPanelContainerOuter" type="PanelContainer" parent="."]
-layout_mode = 2
+[node name="DialogPanelContainerOuter" type="PanelContainer"]
+offset_left = 267.0
+offset_top = 102.0
+offset_right = 953.0
+offset_bottom = 481.0
 theme_override_styles/panel = ExtResource("1_emb3f")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="DialogPanelContainerInner" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer"]
+[node name="InnerBorder" type="PanelContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_x3apl")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = 10
+theme_override_constants/separation = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 5
 
-[node name="PanelContainerOuter" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer"]
+[node name="PanelContainerOuter" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("1_emb3f")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainerInner" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer"]
+[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("2_x3apl")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="BrickControl" type="Control" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer"]
+[node name="BrickControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 250)
 layout_mode = 2
 size_flags_vertical = 4
 script = ExtResource("4_ygxl0")
-resource = 0
 
-[node name="DiscardButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 42.0
-grow_horizontal = 2
+[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+layout_mode = 2
 texture_normal = ExtResource("1_nl7lm")
 texture_disabled = ExtResource("6_6o1w5")
 stretch_mode = 5
 
-[node name="DisBrick" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+[node name="DisBrick" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.15
-anchor_right = 1.0
-anchor_bottom = 0.4
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.4
-anchor_right = 1.0
-anchor_bottom = 0.6
-offset_top = -25.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
 texture = ExtResource("4_dbxmx")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 
-[node name="QtyBrick" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+[node name="QtyBrick" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.6
-anchor_right = 1.0
-anchor_bottom = 0.85
-offset_top = -1.0
-offset_bottom = -1.0
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="KeepButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -42.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+layout_mode = 2
 texture_normal = ExtResource("4_x3apl")
 texture_disabled = ExtResource("9_fanup")
 stretch_mode = 5
 
-[node name="PanelContainerOuter2" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer"]
+[node name="PanelContainerOuter2" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("1_emb3f")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainerInner" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer"]
+[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("2_x3apl")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="WoodControl" type="Control" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer"]
+[node name="WoodControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 250)
 layout_mode = 2
 size_flags_vertical = 4
 script = ExtResource("4_ygxl0")
-resource = 1
-metadata/_custom_type_script = "uid://dx5pwcgaui1ld"
 
-[node name="DiscardButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 42.0
-grow_horizontal = 2
+[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
+layout_mode = 2
 texture_normal = ExtResource("1_nl7lm")
 texture_disabled = ExtResource("6_6o1w5")
 stretch_mode = 5
 
-[node name="DisWood" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
+[node name="DisWood" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.15
-anchor_right = 1.0
-anchor_bottom = 0.4
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.11
-anchor_top = 0.304
-anchor_right = 0.89
-anchor_bottom = 0.70000005
-offset_bottom = -1.5258789e-05
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
 texture = ExtResource("6_201yn")
-expand_mode = 4
+expand_mode = 1
 stretch_mode = 5
 
-[node name="QtyWood" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
+[node name="QtyWood" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.6
-anchor_right = 1.0
-anchor_bottom = 0.85
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="KeepButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -42.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
+layout_mode = 2
 texture_normal = ExtResource("4_x3apl")
 texture_disabled = ExtResource("9_fanup")
 stretch_mode = 5
 
-[node name="PanelContainerOuter3" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer"]
+[node name="PanelContainerOuter3" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("1_emb3f")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainerInner" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer"]
+[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("2_x3apl")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="WheatControl" type="Control" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer"]
+[node name="WheatControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 250)
 layout_mode = 2
 size_flags_vertical = 4
 script = ExtResource("4_ygxl0")
-resource = 2
 metadata/_custom_type_script = "uid://dx5pwcgaui1ld"
 
-[node name="DiscardButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 42.0
-grow_horizontal = 2
+[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
+layout_mode = 2
 texture_normal = ExtResource("1_nl7lm")
 texture_disabled = ExtResource("6_6o1w5")
 stretch_mode = 5
 
-[node name="DisWheat" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
+[node name="DisWheat" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.15
-anchor_right = 1.0
-anchor_bottom = 0.4
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.06
-anchor_top = 0.3
-anchor_right = 0.91
-anchor_bottom = 0.7
-grow_horizontal = 2
-grow_vertical = 2
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
 texture = ExtResource("7_5s2c0")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 
-[node name="QtyWheat" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
+[node name="QtyWheat" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.6
-anchor_right = 1.0
-anchor_bottom = 0.85
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="KeepButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -42.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
+layout_mode = 2
 texture_normal = ExtResource("4_x3apl")
 texture_disabled = ExtResource("9_fanup")
 stretch_mode = 5
 
-[node name="PanelContainerOuter4" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer"]
+[node name="PanelContainerOuter4" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("1_emb3f")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainerInner" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer"]
+[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("2_x3apl")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="RockControl" type="Control" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer"]
+[node name="RockControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 250)
 layout_mode = 2
 size_flags_vertical = 4
 script = ExtResource("4_ygxl0")
-resource = 4
 metadata/_custom_type_script = "uid://dx5pwcgaui1ld"
 
-[node name="DiscardButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 42.0
-grow_horizontal = 2
+[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
+layout_mode = 2
 texture_normal = ExtResource("1_nl7lm")
 texture_disabled = ExtResource("6_6o1w5")
 stretch_mode = 5
 
-[node name="DisRock" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
+[node name="DisRock" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.15
-anchor_right = 1.0
-anchor_bottom = 0.4
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.4
-anchor_right = 1.0
-anchor_bottom = 0.6
-grow_horizontal = 2
-grow_vertical = 2
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
 texture = ExtResource("8_ygxl0")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 
-[node name="QtyRock" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
+[node name="QtyRock" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.6
-anchor_right = 1.0
-anchor_bottom = 0.85
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="KeepButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -42.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
+layout_mode = 2
 texture_normal = ExtResource("4_x3apl")
 texture_disabled = ExtResource("9_fanup")
 stretch_mode = 5
 
-[node name="PanelContainerOuter5" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer"]
+[node name="PanelContainerOuter5" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("1_emb3f")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainerInner" type="PanelContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer"]
+[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("2_x3apl")
 
-[node name="MarginContainer" type="MarginContainer" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="WoolControl" type="Control" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer"]
+[node name="WoolControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 250)
 layout_mode = 2
 size_flags_vertical = 4
 script = ExtResource("4_ygxl0")
-resource = 3
 metadata/_custom_type_script = "uid://dx5pwcgaui1ld"
 
-[node name="DiscardButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = -1.0
-offset_bottom = 49.0
-grow_horizontal = 2
+[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
+layout_mode = 2
 texture_normal = ExtResource("1_nl7lm")
 texture_disabled = ExtResource("6_6o1w5")
 stretch_mode = 5
 
-[node name="DisWool" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
+[node name="DisWool" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.15
-anchor_right = 1.0
-anchor_bottom = 0.4
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.4
-anchor_right = 1.0
-anchor_bottom = 0.6
-grow_horizontal = 2
-grow_vertical = 2
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
 texture = ExtResource("9_6o1w5")
-expand_mode = 5
+expand_mode = 1
 stretch_mode = 5
 
-[node name="QtyWool" type="Label" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
+[node name="QtyWool" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.6
-anchor_right = 1.0
-anchor_bottom = 0.85
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="KeepButton" type="TextureButton" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -42.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
+layout_mode = 2
 texture_normal = ExtResource("4_x3apl")
 texture_disabled = ExtResource("9_fanup")
 stretch_mode = 5
 
-[node name="ButtonAccept" type="Button" parent="DialogPanelContainerOuter/MarginContainer/DialogPanelContainerInner/VBoxContainer"]
+[node name="ButtonAccept" type="Button" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("14_csxnt")
 theme_override_styles/pressed = ExtResource("14_csxnt")
 theme_override_styles/hover = ExtResource("15_3gcfi")
 theme_override_styles/hover_pressed = ExtResource("14_csxnt")
 theme_override_styles/disabled = ExtResource("15_udvy5")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_udvy5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3gcfi")
+disabled = true
 text = "Accept
 "
+script = ExtResource("16_udvy5")
 metadata/_edit_use_anchors_ = true

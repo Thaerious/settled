@@ -1,13 +1,20 @@
 class_name MonopolyDialog
 extends Control
 
-var _button_group: ButtonGroup
-	
+
+var _selected_panel: SelectablePanelContainer = null
+
 
 func _ready() -> void:
-	self._button_group = %CheckBrick.button_group
+	var panels := find_children("*", "SelectablePanelContainer", true, false)
 
-	%OkButton.pressed.connect(self._on_accept)
+	for panel in panels:
+		panel.panel_selected.connect(self._on_panel_selected)
+
+	%ButtonAccept.pressed.connect(func():
+		var resource_control: = self._selected_panel.find_children("*", "ResourceControl", true, false)[0]  as ResourceControl
+		EventBus.play_monopoly_card.emit(Game.self_id, resource_control.resource_type)
+	)
 
 	EventBus.current_phase_updated.connect(self._update_phase)
 	EventBus.model_loaded.connect(func(): 
@@ -24,6 +31,10 @@ func _update_phase(phase: Model.GamePhase) -> void:
 	self.visible = true	
 
 
-func _on_accept() -> void:
-	var button = self._button_group.get_pressed_button()
-	EventBus.play_monopoly_card.emit(Game.self_id, button.resource)	
+func _on_panel_selected(panel: SelectablePanelContainer) -> void:
+	if self._selected_panel:
+		self._selected_panel.selected = false
+			
+	panel.selected = true
+	self._selected_panel = panel
+	%ButtonAccept.disabled = false

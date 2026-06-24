@@ -1,7 +1,6 @@
 class_name DiscardResourceControl
-extends Control
+extends ResourceControl
 
-@export var resource:Model.ResourceTypes =  Model.ResourceTypes.NONE
 @onready var discard_dialog: DiscardDialog = self.owner as DiscardDialog
 @onready var discard_button: TextureButton = $DiscardButton
 @onready var keep_button: TextureButton = $KeepButton

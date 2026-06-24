@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b4rkbgo81jcc6"]
 
 [ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
-[ext_resource type="PackedScene" uid="uid://dqr0hpeu73nhq" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.tscn" id="2_akvua"]
+[ext_resource type="PackedScene" uid="uid://cucg1swo1x823" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="2_akvua"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_lnlp5")
@@ -9,12 +9,7 @@ script = ExtResource("1_lnlp5")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="YearOfPlentyDialog" parent="CanvasLayer" instance=ExtResource("2_akvua")]
-anchors_preset = -1
-anchor_left = 0.40800002
-anchor_top = 0.716
-anchor_right = 0.61700004
-offset_left = -171.35992
-offset_top = -33.28003
-offset_right = 177.35999
-offset_bottom = 0.0
-grow_vertical = 0
+offset_left = 637.0
+offset_top = 304.0
+offset_right = 1367.0
+offset_bottom = 553.0
