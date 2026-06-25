@@ -1,4 +1,4 @@
 class_name HasThemeStateMap
-extends Control
+extends PanelContainer
 
 @export var theme_state_map := ThemeStateMap.new()
