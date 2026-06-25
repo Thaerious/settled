@@ -1,11 +1,31 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8hobn7iwbkp4"]
+[gd_scene load_steps=11 format=3 uid="uid://c8hobn7iwbkp4"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_lgvhr"]
 [ext_resource type="Script" uid="uid://dxj52v15s11nf" path="res://hud/hover_panel_container.gd" id="2_dtuxt"]
 [ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="3_0blrl"]
+[ext_resource type="Script" uid="uid://bx0cdxyohm6ur" path="res://hud/theme_state_map.gd" id="3_64xnv"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="4_64xnv"]
+[ext_resource type="Script" uid="uid://cvsgxlkw51aar" path="res://hud/has_theme_state_map.gd" id="4_452du"]
 [ext_resource type="Texture2D" uid="uid://d2ok6fkl28mm1" path="res://assets/store/city.png" id="4_dtuxt"]
 [ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/store/cards.png" id="5_64xnv"]
+
+[sub_resource type="Resource" id="Resource_452du"]
+script = ExtResource("3_64xnv")
+state_variants = Dictionary[int, StringName]({
+0: &"OuterBorderLevel1",
+1: &"OuterBorderLevel1Hover",
+3: &"OuterBorderLevel1Disabled"
+})
+metadata/_custom_type_script = "uid://bx0cdxyohm6ur"
+
+[sub_resource type="Resource" id="Resource_50eab"]
+script = ExtResource("3_64xnv")
+state_variants = Dictionary[int, StringName]({
+0: &"InnerBorderLevel1",
+1: &"InnerBorderLevel1Hover",
+3: &"InnerBorderLevel1Disabled"
+})
+metadata/_custom_type_script = "uid://bx0cdxyohm6ur"
 
 [node name="StoreDialog" type="PanelContainer"]
 theme = ExtResource("1_lgvhr")
@@ -30,9 +50,8 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
 script = ExtResource("2_dtuxt")
-normal_variation = &"OuterBorderLevel1"
-focus_variation = &"OuterBorderLevel1Focus"
-disabled_variation = &"OuterBorderLevel1Disabled"
+theme_state_map = SubResource("Resource_452du")
+enabled = false
 
 [node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1"]
 layout_mode = 2
@@ -43,15 +62,13 @@ layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
 theme_type_variation = &"InnerBorderLevel1"
+script = ExtResource("4_452du")
+theme_state_map = SubResource("Resource_50eab")
 
 [node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -66,9 +83,7 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
 script = ExtResource("2_dtuxt")
-normal_variation = &"OuterBorderLevel1"
-focus_variation = &"OuterBorderLevel1Focus"
-disabled_variation = &"OuterBorderLevel1Disabled"
+theme_state_map = SubResource("Resource_452du")
 
 [node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2"]
 layout_mode = 2
@@ -83,11 +98,7 @@ theme_type_variation = &"InnerBorderLevel1"
 [node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2/BorderMargin1/InnerBorder"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -102,9 +113,7 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
 script = ExtResource("2_dtuxt")
-normal_variation = &"OuterBorderLevel1"
-focus_variation = &"OuterBorderLevel1Focus"
-disabled_variation = &"OuterBorderLevel1Disabled"
+theme_state_map = SubResource("Resource_452du")
 
 [node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3"]
 layout_mode = 2
@@ -119,11 +128,7 @@ theme_type_variation = &"InnerBorderLevel1"
 [node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3/BorderMargin1/InnerBorder"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -138,9 +143,7 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
 script = ExtResource("2_dtuxt")
-normal_variation = &"OuterBorderLevel1"
-focus_variation = &"OuterBorderLevel1Focus"
-disabled_variation = &"OuterBorderLevel1Disabled"
+theme_state_map = SubResource("Resource_452du")
 
 [node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4"]
 layout_mode = 2
@@ -155,11 +158,7 @@ theme_type_variation = &"InnerBorderLevel1"
 [node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4/BorderMargin1/InnerBorder"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
