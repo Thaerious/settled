@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ThemeStateMap" load_steps=2 format=3 uid="uid://bgvqbj8oxvbx0"]
+
+[ext_resource type="Script" uid="uid://bx0cdxyohm6ur" path="res://hud/theme_state_map.gd" id="1_fkxpm"]
+
+[resource]
+script = ExtResource("1_fkxpm")
+state_variants = Dictionary[int, StringName]({
+0: &"OuterBorderLevel1",
+1: &"OuterBorderLevel1Hover",
+3: &"OuterBorderLevel1Disabled"
+})
+metadata/_custom_type_script = "uid://bx0cdxyohm6ur"
