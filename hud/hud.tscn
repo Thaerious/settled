@@ -1,6 +1,5 @@
 [gd_scene load_steps=20 format=3 uid="uid://cvd22dj1dxfs8"]
 
-[ext_resource type="PackedScene" uid="uid://jf1afc3rc62v" path="res://hud/store/store.tscn" id="4_w8tcp"]
 [ext_resource type="Script" uid="uid://2ichsd5ic0jx" path="res://hud/auto_update_player.gd" id="6_0bw3r"]
 [ext_resource type="PackedScene" uid="uid://b21qcmnle7jxn" path="res://hud/dice/dice_control.tscn" id="6_fjv1a"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="7_0ivg5"]
@@ -14,6 +13,7 @@
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="9_put16"]
 [ext_resource type="PackedScene" uid="uid://cucg1swo1x823" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="12_hwufu"]
 [ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="17_pt78x"]
+[ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store/store_dialog.tscn" id="17_put16"]
 [ext_resource type="Script" uid="uid://d66e5b2s5mrl" path="res://hud/end_turn_button.gd" id="18_put16"]
 [ext_resource type="PackedScene" uid="uid://cbl0eprhn3k2g" path="res://hud/discard_dialog/discard_dialog.tscn" id="20_lfqsj"]
 [ext_resource type="PackedScene" uid="uid://dqr0hpeu73nhq" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.tscn" id="20_lyvac"]
@@ -73,22 +73,6 @@ player_id = 2
 layout_mode = 2
 size_flags_vertical = 3
 player_id = 3
-
-[node name="StoreMargin" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -389.0
-offset_top = -252.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_type_variation = &"DefaultMargin"
-
-[node name="Store" parent="StoreMargin" instance=ExtResource("4_w8tcp")]
-layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -414,3 +398,10 @@ offset_left = 695.3722
 offset_top = 797.0
 offset_right = 1205.3722
 offset_bottom = 1074.0
+
+[node name="StoreDialog" parent="." instance=ExtResource("17_put16")]
+layout_mode = 0
+offset_left = 1445.616
+offset_top = 656.0
+offset_right = 1907.616
+offset_bottom = 1070.0

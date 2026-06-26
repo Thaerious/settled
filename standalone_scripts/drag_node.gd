@@ -1,22 +1,22 @@
-class_name DragHandler
-extends Object
+class_name DragNode
+extends Node
+
+@export var sprite: Sprite2D
+
 
 ## Set texture & texture_size for the drag ghost. Assign in subclass.
 ## If not set, the ghost renders as an empty rect and the mouse isn't hidden.
 # var texture: Texture2D = null
 # var texture_size := Vector2(32,32)
 
-var _trigger: Control
-var _args: DragArgs
-
+var _args := DragArgs.new()
 var mask = 0x01
-var enabled = true
+@export var enabled = true
 
 # connect a press handler to trigger that is invoked on a LMB press
-func _init(trigger: Control) -> void:
-	self._trigger = trigger
-	self._trigger.gui_input.connect(self._on_press)
-	self._args = DragArgs.new()
+func _ready() -> void:
+	self.get_parent()
+	self.get_parent().gui_input.connect(self._on_press)
 
 	_args.on_success = func(rec):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

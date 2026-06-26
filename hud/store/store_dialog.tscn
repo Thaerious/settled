@@ -1,14 +1,22 @@
-[gd_scene load_steps=10 format=3 uid="uid://c8hobn7iwbkp4"]
+[gd_scene load_steps=18 format=3 uid="uid://c8hobn7iwbkp4"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_lgvhr"]
 [ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="3_0blrl"]
-[ext_resource type="Resource" uid="uid://bgvqbj8oxvbx0" path="res://hud/store/outer_theme_map.tres" id="3_50eab"]
-[ext_resource type="Script" uid="uid://cxtqb3lui5rvi" path="res://hud/store/has_theme_state_map.gd" id="4_50eab"]
+[ext_resource type="Resource" uid="uid://bgvqbj8oxvbx0" path="res://hud/store/resources/outer_theme_map.tres" id="3_50eab"]
+[ext_resource type="Script" uid="uid://cxtqb3lui5rvi" path="res://hud/store/scripts/has_theme_state_map.gd" id="4_50eab"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="4_64xnv"]
-[ext_resource type="Script" uid="uid://cvsgxlkw51aar" path="res://hud/store/store_icon.gd" id="4_452du"]
+[ext_resource type="Script" uid="uid://cvsgxlkw51aar" path="res://hud/store/scripts/store_icon.gd" id="4_452du"]
 [ext_resource type="Texture2D" uid="uid://d2ok6fkl28mm1" path="res://assets/store/city.png" id="4_dtuxt"]
 [ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/store/cards.png" id="5_64xnv"]
-[ext_resource type="Resource" uid="uid://cr0e452se3fa6" path="res://hud/store/inner_theme_map.tres" id="5_mg8wk"]
+[ext_resource type="Resource" uid="uid://cr0e452se3fa6" path="res://hud/store/resources/inner_theme_map.tres" id="5_mg8wk"]
+[ext_resource type="Script" uid="uid://dtyj3l3tpids" path="res://standalone_scripts/drag_node.gd" id="7_nbb4d"]
+[ext_resource type="Script" uid="uid://d336drfblu7mt" path="res://game_board/game_piece.gd" id="8_id65n"]
+[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="9_jocke"]
+[ext_resource type="Texture2D" uid="uid://d3ywknxm0qvs1" path="res://assets/resources/wood_color.png" id="10_k8u2y"]
+[ext_resource type="Texture2D" uid="uid://gijtnuwil067" path="res://assets/resources/brick_color.png" id="11_nbb4d"]
+[ext_resource type="Texture2D" uid="uid://c6udkvuswa3f6" path="res://assets/resources/wheat_color.png" id="12_q632t"]
+[ext_resource type="Texture2D" uid="uid://p25t67qnqa1i" path="res://assets/resources/wool_color.png" id="13_id65n"]
+[ext_resource type="Texture2D" uid="uid://c5c2pro106apa" path="res://assets/resources/rock_color.png" id="14_jocke"]
 
 [node name="StoreDialog" type="PanelContainer"]
 theme = ExtResource("1_lgvhr")
@@ -25,22 +33,24 @@ theme_type_variation = &"InnerBorderLevel0"
 [node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer"]
 layout_mode = 2
 
-[node name="OuterBorder1" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="OuterBorder1" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
 script = ExtResource("4_452du")
 theme_state_map = ExtResource("3_50eab")
-enabled = false
 
-[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1"]
+[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1"]
 layout_mode = 2
 theme_type_variation = &"MarginLevel1"
 
-[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1/BorderMargin1"]
+[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1/BorderMargin1"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
@@ -48,10 +58,10 @@ theme_type_variation = &"InnerBorderLevel1"
 script = ExtResource("4_50eab")
 theme_state_map = ExtResource("5_mg8wk")
 
-[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder"]
+[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder"]
 layout_mode = 2
 
-[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer"]
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -61,18 +71,27 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="OuterBorder2" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="DragNode" type="Node2D" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder"]
+script = ExtResource("7_nbb4d")
+
+[node name="Sprite" type="Node2D" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder/DragNode"]
+script = ExtResource("8_id65n")
+texture = ExtResource("9_jocke")
+sprite_size = Vector2(32, 32)
+metadata/_custom_type_script = "uid://d336drfblu7mt"
+
+[node name="OuterBorder2" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
 script = ExtResource("4_452du")
 theme_state_map = ExtResource("3_50eab")
 
-[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2"]
+[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder2"]
 layout_mode = 2
 theme_type_variation = &"MarginLevel1"
 
-[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2/BorderMargin1"]
+[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder2/BorderMargin1"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
@@ -80,10 +99,10 @@ theme_type_variation = &"InnerBorderLevel1"
 script = ExtResource("4_50eab")
 theme_state_map = ExtResource("5_mg8wk")
 
-[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2/BorderMargin1/InnerBorder"]
+[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder2/BorderMargin1/InnerBorder"]
 layout_mode = 2
 
-[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer"]
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -93,18 +112,18 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="OuterBorder3" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="OuterBorder3" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
 script = ExtResource("4_452du")
 theme_state_map = ExtResource("3_50eab")
 
-[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3"]
+[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder3"]
 layout_mode = 2
 theme_type_variation = &"MarginLevel1"
 
-[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3/BorderMargin1"]
+[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder3/BorderMargin1"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
@@ -112,10 +131,10 @@ theme_type_variation = &"InnerBorderLevel1"
 script = ExtResource("4_50eab")
 theme_state_map = ExtResource("5_mg8wk")
 
-[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3/BorderMargin1/InnerBorder"]
+[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder3/BorderMargin1/InnerBorder"]
 layout_mode = 2
 
-[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer"]
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -125,18 +144,18 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="OuterBorder4" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="OuterBorder4" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
 script = ExtResource("4_452du")
 theme_state_map = ExtResource("3_50eab")
 
-[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4"]
+[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder4"]
 layout_mode = 2
 theme_type_variation = &"MarginLevel1"
 
-[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4/BorderMargin1"]
+[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder4/BorderMargin1"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
@@ -144,15 +163,246 @@ theme_type_variation = &"InnerBorderLevel1"
 script = ExtResource("4_50eab")
 theme_state_map = ExtResource("5_mg8wk")
 
-[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4/BorderMargin1/InnerBorder"]
+[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder4/BorderMargin1/InnerBorder"]
 layout_mode = 2
 
-[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/VBoxContainer/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer"]
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("5_64xnv")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="OuterBorder1" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"OuterBorderLevel1"
+
+[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder1"]
+layout_mode = 2
+theme_type_variation = &"MarginLevel1"
+
+[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder1/BorderMargin1"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_type_variation = &"InnerBorderLevel1"
+
+[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder1/BorderMargin1/InnerBorder"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("10_k8u2y")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture2" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("11_nbb4d")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="OuterBorder2" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"OuterBorderLevel1"
+
+[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder2"]
+layout_mode = 2
+theme_type_variation = &"MarginLevel1"
+
+[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder2/BorderMargin1"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_type_variation = &"InnerBorderLevel1"
+
+[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder2/BorderMargin1/InnerBorder"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("10_k8u2y")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture2" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("11_nbb4d")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture3" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("12_q632t")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture4" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder2/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("13_id65n")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="OuterBorder3" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"OuterBorderLevel1"
+
+[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3"]
+layout_mode = 2
+theme_type_variation = &"MarginLevel1"
+
+[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3/BorderMargin1"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_type_variation = &"InnerBorderLevel1"
+
+[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3/BorderMargin1/InnerBorder"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("12_q632t")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture2" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("12_q632t")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture3" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("12_q632t")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture4" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("14_jocke")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture5" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder3/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("14_jocke")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="OuterBorder4" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"OuterBorderLevel1"
+
+[node name="BorderMargin1" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder4"]
+layout_mode = 2
+theme_type_variation = &"MarginLevel1"
+
+[node name="InnerBorder" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder4/BorderMargin1"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_type_variation = &"InnerBorderLevel1"
+
+[node name="MarginContainer" type="MarginContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder4/BorderMargin1/InnerBorder"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ItemTexture" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("12_q632t")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture2" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("14_jocke")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemTexture3" type="TextureRect" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer2/OuterBorder4/BorderMargin1/InnerBorder/MarginContainer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("13_id65n")
 expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
