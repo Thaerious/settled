@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://d2ok6fkl28mm1" path="res://assets/store/city.png" id="4_dtuxt"]
 [ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/store/cards.png" id="5_64xnv"]
 [ext_resource type="Resource" uid="uid://cr0e452se3fa6" path="res://hud/store/resources/inner_theme_map.tres" id="5_mg8wk"]
-[ext_resource type="Script" uid="uid://dtyj3l3tpids" path="res://standalone_scripts/drag_node.gd" id="7_nbb4d"]
+[ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone_scripts/mouse/drag_node.gd" id="7_id65n"]
 [ext_resource type="Script" uid="uid://d336drfblu7mt" path="res://game_board/game_piece.gd" id="8_id65n"]
 [ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="9_jocke"]
 [ext_resource type="Texture2D" uid="uid://d3ywknxm0qvs1" path="res://assets/resources/wood_color.png" id="10_k8u2y"]
@@ -72,11 +72,14 @@ stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
 [node name="DragNode" type="Node2D" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder"]
-script = ExtResource("7_nbb4d")
+script = ExtResource("7_id65n")
+drag_mask = 1
 
-[node name="Sprite" type="Node2D" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder/DragNode"]
-script = ExtResource("8_id65n")
+[node name="Sprite" type="Sprite2D" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer/OuterBorder1/BorderMargin1/InnerBorder/DragNode"]
+visible = false
+z_index = 1000
 texture = ExtResource("9_jocke")
+script = ExtResource("8_id65n")
 sprite_size = Vector2(32, 32)
 metadata/_custom_type_script = "uid://d336drfblu7mt"
 

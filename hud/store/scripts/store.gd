@@ -1,7 +1,7 @@
 extends PanelContainer
 
-const road_piece: Texture2D = preload("res://assets/road.png")
-const city_piece: Texture2D = preload("res://assets/city.png")
+const road_piece: Texture2D = preload("res://assets/store/road.png")
+const city_piece: Texture2D = preload("res://assets/store/city.png")
 
 @onready var _road_container: StoreItemContainer = %RoadContainer
 @onready var _house_container: StoreItemContainer = %HouseContainer

@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4rkbgo81jcc6"]
+[gd_scene load_steps=11 format=3 uid="uid://b4rkbgo81jcc6"]
 
 [ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
 [ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store/store_dialog.tscn" id="2_akvua"]
+[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="3_1tx2p"]
+[ext_resource type="Script" uid="uid://cvsgxlkw51aar" path="res://hud/store/scripts/store_icon.gd" id="4_3t6qa"]
+[ext_resource type="Resource" uid="uid://bgvqbj8oxvbx0" path="res://hud/store/resources/outer_theme_map.tres" id="5_rb1vg"]
+[ext_resource type="Script" uid="uid://cxtqb3lui5rvi" path="res://hud/store/scripts/has_theme_state_map.gd" id="6_tl212"]
+[ext_resource type="Resource" uid="uid://cr0e452se3fa6" path="res://hud/store/resources/inner_theme_map.tres" id="7_of7eg"]
+[ext_resource type="Texture2D" uid="uid://co4vl7gwwxney" path="res://assets/star.png" id="8_8y0th"]
+[ext_resource type="Script" uid="uid://b7hdt77n47aeq" path="res://standalone_scripts/mouse/drop_node.gd" id="9_3t6qa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rb1vg"]
+radius = 50.0
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_lnlp5")
@@ -9,7 +19,52 @@ script = ExtResource("1_lnlp5")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("2_akvua")]
-offset_left = 876.0
-offset_top = 304.0
-offset_right = 1002.0
-offset_bottom = 718.0
+offset_left = 884.0
+offset_top = 298.0
+offset_right = 1346.0
+offset_bottom = 712.0
+
+[node name="OuterBorder1" type="PanelContainer" parent="CanvasLayer"]
+offset_right = 86.0
+offset_bottom = 86.0
+size_flags_vertical = 4
+theme = ExtResource("3_1tx2p")
+theme_type_variation = &"OuterBorderLevel1"
+script = ExtResource("4_3t6qa")
+theme_state_map = ExtResource("5_rb1vg")
+
+[node name="DropNode" type="Area2D" parent="CanvasLayer/OuterBorder1"]
+position = Vector2(3, 0)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("9_3t6qa")
+drag_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/OuterBorder1/DropNode"]
+position = Vector2(43, 44)
+shape = SubResource("CircleShape2D_rb1vg")
+
+[node name="BorderMargin1" type="MarginContainer" parent="CanvasLayer/OuterBorder1"]
+layout_mode = 2
+theme_type_variation = &"MarginLevel1"
+
+[node name="InnerBorder" type="PanelContainer" parent="CanvasLayer/OuterBorder1/BorderMargin1"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_type_variation = &"InnerBorderLevel1"
+script = ExtResource("6_tl212")
+theme_state_map = ExtResource("7_of7eg")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/OuterBorder1/BorderMargin1/InnerBorder"]
+layout_mode = 2
+
+[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("8_8y0th")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true

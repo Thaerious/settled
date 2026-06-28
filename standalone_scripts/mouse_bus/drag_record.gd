@@ -3,9 +3,6 @@ class_name DragRecord
 
 ## A snapshot of a drag operation's state, passed to DragArgs callbacks.
 
-## The node that was picked up and dragged.
-var draggable:   Node
-
 ## The drop target the drag interacted with, or null if none.
 var destination: Variant
 
@@ -19,4 +16,4 @@ var world_pos:   Vector2
 var screen_pos:  Vector2
 
 func _to_string():
-	return "DragRecord | draggable: %s | destination: %s | local_pos: %s | world_pos: %s | screen_pos: %s" % [draggable, destination, local_pos, world_pos, screen_pos]
+	return "DragRecord | destination: %s | local_pos: %s | world_pos: %s | screen_pos: %s" % [destination, local_pos, world_pos, screen_pos]
