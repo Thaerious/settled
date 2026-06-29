@@ -35,7 +35,7 @@ func _ready() -> void:
 
 	EventBus.model_loaded.connect(func(): print("EventBus.model_loaded"))
 	EventBus.pirate_set.connect(func(hex: Axial): print("EventBus.pirate_set | hex: %s" % [hex]))
-	EventBus.exchange_rate_set.connect(func(id: int, r: Model.ResourceTypes, value: int): print("EventBus.exchange_rate_set | id: %s | r: %s | value: %s" % [id, Model.ResourceTypes.find_key(r), value]))
+	EventBus.exchange_rate_set.connect(func(id: int, wallet: Wallet): print("EventBus.exchange_rate_set | id: %s | wallet: %s " % [id, wallet]))
 	EventBus.current_player_updated.connect(func(current_player: int): print("EventBus.current_player_updated | current_player: %s" % [current_player]))
 	EventBus.current_phase_updated.connect(func(phase: Model.GamePhase): print("EventBus.current_phase_updated | phase: %s" % [Model.GamePhase.find_key(phase)]))
 	EventBus.action_cards_updated.connect(func(id: int, owned: ActionCardWallet, playable: ActionCardWallet, has_played: bool): print("EventBus.action_cards_updated | id: %s | owned: %s | playable: %s | has_played: %s" % [id, owned, playable, has_played]))

@@ -92,20 +92,20 @@ func resolve_target(src_mask: int) -> DragRecord:
 	return record
 
 
-func _generate_hover_record(src_mask: int) -> HoverRecord:
-	var record := HoverRecord.new()
-	record.screen_pos = get_viewport().get_mouse_position()
-	record.world_pos  = self.world_pos(record.screen_pos)
-	record.exited     = self._hover_target
-	record.entered    = self._get_drop_target(record.world_pos, src_mask)
-	return record
+# func _generate_hover_record(src_mask: int) -> HoverRecord:
+# 	var record := HoverRecord.new()
+# 	record.screen_pos = get_viewport().get_mouse_position()
+# 	record.world_pos  = self.world_pos(record.screen_pos)
+# 	record.exited     = self._hover_target
+# 	record.entered    = self._get_drop_target(record.world_pos, src_mask)
+# 	return record
 
-## Updates [member _hover_target] as the cursor moves during a drag.
-## Invokes [member DragArgs.on_exit] and [member DragArgs.on_enter] as the target changes.
-## [param control] The Control currently under the cursor, or [code]null[/code].
-func _update_hover(src_mask: int) -> void:
-	var record = self._generate_hover_record(src_mask)
-	if record.exited == record.entered: return
-	if record.entered: self._args.on_enter.call(record)
-	if record.exited: self._args.on_exit.call(record)
-	self._hover_target = record.entered
+# ## Updates [member _hover_target] as the cursor moves during a drag.
+# ## Invokes [member DragArgs.on_exit] and [member DragArgs.on_enter] as the target changes.
+# ## [param control] The Control currently under the cursor, or [code]null[/code].
+# func _update_hover(src_mask: int) -> void:
+# 	var record = self._generate_hover_record(src_mask)
+# 	if record.exited == record.entered: return
+# 	if record.entered: self._args.on_enter.call(record)
+# 	if record.exited: self._args.on_exit.call(record)
+# 	self._hover_target = record.entered

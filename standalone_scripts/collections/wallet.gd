@@ -2,7 +2,6 @@ class_name Wallet
 extends RefCounted
 
 
-var _linked_view: Dictionary = {}
 var _iter_index: int = 0
 var _iter_array: Array = []
 
@@ -17,11 +16,12 @@ var _data: Dictionary[Model.ResourceTypes, int] = {
 
 
 func _init(initial: Variant = null) -> void:
-	if initial is int:
+	if initial == null:
+		return
+	elif initial is int:
 		self.set_all(initial)
-	elif initial != null:
-		for r in initial: 
-			self.add_resource(r)
+	else:
+		self.copy_from(initial)
 
 
 func _iter_init(_arg) -> bool:
@@ -40,25 +40,28 @@ func _iter_get(_arg) -> Model.ResourceTypes:
 
 
 func duplicate() -> Wallet:
-	var new_wallet = Wallet.new()
-	new_wallet.add_resources(self)
-	return new_wallet
+	return  Wallet.new(self)
+
 
 var brick: int:
 	get: return self.get_resource(Model.ResourceTypes.BRICK)
 	set(v): self.set_resource(Model.ResourceTypes.BRICK, v)
 
+
 var wood: int:
 	get: return self.get_resource(Model.ResourceTypes.WOOD)
 	set(v): self.set_resource(Model.ResourceTypes.WOOD, v)
+
 
 var wool: int:
 	get: return self.get_resource(Model.ResourceTypes.WOOL)
 	set(v): self.set_resource(Model.ResourceTypes.WOOL, v)
 
+
 var wheat: int:
 	get: return self.get_resource(Model.ResourceTypes.WHEAT)
 	set(v): self.set_resource(Model.ResourceTypes.WHEAT, v)
+
 
 var rock: int:
 	get: return self.get_resource(Model.ResourceTypes.ROCK)
@@ -66,7 +69,7 @@ var rock: int:
 
 
 # retain only the specified
-func keep(resouce: Model.ResourceTypes) -> void:
+func keep_only(resouce: Model.ResourceTypes) -> void:
 	for r in self._data.keys():
 		if r != resouce: self.set_resource(r, 0)
 
@@ -86,42 +89,44 @@ func set_all(amount: int) -> void:
 func set_resource(r: Model.ResourceTypes, value: int) -> void:
 	assert(self._data.has(r), "Wallet: invalid resource type: %s" % r)
 	self._data[r] = value
-	self.trigger_linked_view(r)
 
 
 func add_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
 	assert(self._data.has(r), "Wallet: invalid resource type: %s" % r)
 	self._data[r] += amount
-	self.trigger_linked_view(r)
 
 
 func remove_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
 	assert(self._data.has(r), "Wallet: invalid resource type: %s" % r)
 	self._data[r] -= amount
-	self.trigger_linked_view(r)
 
 
-func copy_from(that: Wallet) -> void:
-	for r in self._data.keys():
-		self.set_resource(r, that.get_resource(r))
+func copy_from(that: Variant) -> void:
+	if that is Dictionary:
+		for r in self._data.keys(): self.set_resource(r, that[r])
+	elif that is Wallet:
+		for r in self._data.keys(): self.set_resource(r, that.get_resource(r))
+	else: # array
+		self.set_all(0)
+		for r in that: self.add_resource(r)
 
 
-func add_resources(that: Wallet) -> void:
-	for r in self._data.keys():
-		self.add_resource(r, that.get_resource(r))
+func add_resources(that: Variant) -> void:
+	if that is Dictionary:
+		for r in self._data.keys(): self.add_resource(r, that[r])
+	elif that is Wallet:
+		for r in self._data.keys(): self.add_resource(r, that.get_resource(r))
+	else: # array
+		for r in that: self.add_resource(r)
 
 
-func remove_resources(that: Wallet) -> void:
-	for r in self._data.keys():
-		self.remove_resource(r, that.get_resource(r))
-
-
-func add_resources_to(that: Wallet) -> void:
-	that.add_resources(self)
-
-
-func remove_resources_from(that: Wallet) -> void:
-	that.remove_resources(self)
+func remove_resources(that: Variant) -> void:
+	if that is Dictionary:
+		for r in self._data.keys(): self.remove_resource(r, that[r])
+	elif that is Wallet:
+		for r in self._data.keys(): self.remove_resource(r, that.get_resource(r))
+	else: # array 
+		for r in that: self.remove_resource(r)
 
 
 func to_dict() -> Dictionary[Model.ResourceTypes, int]:
@@ -156,16 +161,12 @@ func has_resources(that: Wallet) -> bool:
 	return true
 
 
-func link_view(views: Dictionary):
-	self._linked_view = views
-	for r in self.keys(): self.trigger_linked_view(r)
-
-
-func trigger_linked_view(r: Model.ResourceTypes) -> void:
-	if not self._linked_view.has(r): return
-	var control = self._linked_view[r]
-	if control.get("text") == null: return
-	self._linked_view[r].text = str(self.get_resource(r))
+func update_view(views: Dictionary, format: String = "%s", field: String = "text") -> void:
+	for r in self.keys(): 
+		if not views.has(r): continue
+		var control = views[r]
+		if control.get(field) == null: continue
+		views[r].set(field, format % self.get_resource(r))
 
 
 func _to_string() -> String:

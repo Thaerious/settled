@@ -1,4 +1,4 @@
 class_name HousePiece
-extends GamePiece
+extends DragSprite
 
 var axial:Axial

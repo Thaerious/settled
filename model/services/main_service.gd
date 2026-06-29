@@ -105,7 +105,7 @@ func _play_monopoly_card(id: int, resource: Model.ResourceTypes):
 	for p in Game.player_count:
 		if p == id: continue
 		var bank := Game.model.get_bank(p)
-		bank.keep(resource)
+		bank.keep_only(resource)
 		Game.model.do_add_resources(id, bank)
 		Game.model.do_remove_resources(p, bank)
 	
@@ -127,7 +127,7 @@ func _on_service_error(id: int, msg: String) -> void:
 
 
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:
-	var rate = Game.model.get_exchange_rate(Game.self_id, from)
+	var rate = Game.model.get_exchange_rate(Game.self_id).get_resource(from)
 	var count = Game.model.get_bank(Game.self_id).get_resource(from)
 	if count < rate: return
 
@@ -232,10 +232,10 @@ func place_house(id: int, corner: Axial) -> void:
 
 	if port_resource == Model.ResourceTypes.ANY:
 		for r in EXCHANGABLE:
-			if Game.model.get_exchange_rate(id, r) > 3:
+			if Game.model.get_exchange_rate(id).get_resource(r) > 3:
 				Game.model.do_set_exchange_rate(id, r, 3)
 	elif port_resource != Model.ResourceTypes.NONE:
-		if Game.model.get_exchange_rate(id, port_resource) > 2:
+		if Game.model.get_exchange_rate(id).get_resource(port_resource) > 2:
 			Game.model.do_set_exchange_rate(id, port_resource, 2)
 
 

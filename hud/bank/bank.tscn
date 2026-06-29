@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ccds24g8vhw1y"]
+[gd_scene load_steps=9 format=3 uid="uid://dq515cqwbfqyv"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_lwpt7"]
 [ext_resource type="Script" uid="uid://b42hn37oviq7n" path="res://hud/bank/bank.gd" id="2_an3xg"]
@@ -45,7 +45,6 @@ texture = ExtResource("3_10bef")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("4_n8js3")
-resource = 0
 
 [node name="QtyBrick" type="Label" parent="HBoxContainer/VBoxContainer1"]
 unique_name_in_owner = true
@@ -70,7 +69,6 @@ texture = ExtResource("4_v0h8t")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("4_n8js3")
-resource = 1
 
 [node name="QtyWood" type="Label" parent="HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
@@ -95,7 +93,6 @@ texture = ExtResource("6_wc7gn")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("4_n8js3")
-resource = 2
 
 [node name="QtyWheat" type="Label" parent="HBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
@@ -119,7 +116,6 @@ texture = ExtResource("5_ll756")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("4_n8js3")
-resource = 3
 
 [node name="QtyWool" type="Label" parent="HBoxContainer/VBoxContainer4"]
 unique_name_in_owner = true
@@ -144,7 +140,6 @@ texture = ExtResource("9_f67r3")
 expand_mode = 3
 stretch_mode = 4
 script = ExtResource("4_n8js3")
-resource = 4
 
 [node name="QtyRock" type="Label" parent="HBoxContainer/VBoxContainer5"]
 unique_name_in_owner = true

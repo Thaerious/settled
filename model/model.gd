@@ -113,7 +113,7 @@ func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), Re
 func get_army(id: int) -> int:              return self._player_records[id].soldiers
 func get_victory_points(id: int) -> int:    return self._player_records[id].victory_points
 func get_dice() -> Array[int]:              return self._dice.duplicate()
-func get_exchange_rate(id: int, r: ResourceTypes) -> int: return self._exchange_rate[id].get_resource(r)
+func get_exchange_rate(id: int) -> Wallet:  return self._exchange_rate[id].duplicate()
 func get_bank(id: int) -> Wallet:           return self._bank[id].duplicate()
 func get_owned_action_cards(id: int) -> ActionCardWallet: return self._owned_cards[id]
 func get_playable_action_cards(id: int) -> ActionCardWallet: return self._playable_cards[id]
@@ -327,7 +327,7 @@ func do_update_player(id: int) -> void:
 
 func do_set_exchange_rate(id: int, resource, value: int) -> void:
 	self._exchange_rate[id].set_resource(resource, value)
-	EventBus.exchange_rate_set.emit(id, resource, value)
+	EventBus.exchange_rate_set.emit(id, self._exchange_rate[id].duplicate())
 
 
 func do_set_pirate(ax: Axial) -> void:

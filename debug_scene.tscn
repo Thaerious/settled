@@ -1,70 +1,89 @@
-[gd_scene load_steps=11 format=3 uid="uid://b4rkbgo81jcc6"]
+[gd_scene load_steps=9 format=3 uid="uid://b4rkbgo81jcc6"]
 
 [ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
-[ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store/store_dialog.tscn" id="2_akvua"]
+[ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="2_akvua"]
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="3_1tx2p"]
-[ext_resource type="Script" uid="uid://cvsgxlkw51aar" path="res://hud/store/scripts/store_icon.gd" id="4_3t6qa"]
-[ext_resource type="Resource" uid="uid://bgvqbj8oxvbx0" path="res://hud/store/resources/outer_theme_map.tres" id="5_rb1vg"]
-[ext_resource type="Script" uid="uid://cxtqb3lui5rvi" path="res://hud/store/scripts/has_theme_state_map.gd" id="6_tl212"]
-[ext_resource type="Resource" uid="uid://cr0e452se3fa6" path="res://hud/store/resources/inner_theme_map.tres" id="7_of7eg"]
-[ext_resource type="Texture2D" uid="uid://co4vl7gwwxney" path="res://assets/star.png" id="8_8y0th"]
-[ext_resource type="Script" uid="uid://b7hdt77n47aeq" path="res://standalone_scripts/mouse/drop_node.gd" id="9_3t6qa"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_rb1vg"]
-radius = 50.0
+[ext_resource type="StyleBox" uid="uid://b26k03ketuprm" path="res://hud/shared/panel_outer_style.tres" id="4_3t6qa"]
+[ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone_scripts/mouse/drag_node.gd" id="6_tl212"]
+[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="7_of7eg"]
+[ext_resource type="Script" uid="uid://dlx1yhrpr6vdj" path="res://game_board/scaled_sprite.gd" id="8_8y0th"]
+[ext_resource type="Texture2D" uid="uid://gijtnuwil067" path="res://assets/resources/brick_color.png" id="9_qkyai"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_lnlp5")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("2_akvua")]
-offset_left = 884.0
-offset_top = 298.0
-offset_right = 1346.0
-offset_bottom = 712.0
+[node name="HandDialog" parent="CanvasLayer" instance=ExtResource("2_akvua")]
+offset_left = 748.0
+offset_top = 407.0
+offset_right = 1258.0
+offset_bottom = 684.0
 
-[node name="OuterBorder1" type="PanelContainer" parent="CanvasLayer"]
-offset_right = 86.0
-offset_bottom = 86.0
+[node name="OuterBorder2" type="PanelContainer" parent="CanvasLayer"]
+offset_left = 428.0
+offset_top = 473.0
+offset_right = 478.0
+offset_bottom = 569.0
 size_flags_vertical = 4
+mouse_filter = 1
 theme = ExtResource("3_1tx2p")
-theme_type_variation = &"OuterBorderLevel1"
-script = ExtResource("4_3t6qa")
-theme_state_map = ExtResource("5_rb1vg")
+theme_override_styles/panel = ExtResource("4_3t6qa")
 
-[node name="DropNode" type="Area2D" parent="CanvasLayer/OuterBorder1"]
-position = Vector2(3, 0)
-collision_layer = 0
-collision_mask = 0
-script = ExtResource("9_3t6qa")
-drag_mask = 1
+[node name="DragNode" type="Node" parent="CanvasLayer/OuterBorder2"]
+script = ExtResource("6_tl212")
+metadata/_custom_type_script = "uid://bwub0la08s7mr"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/OuterBorder1/DropNode"]
-position = Vector2(43, 44)
-shape = SubResource("CircleShape2D_rb1vg")
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/OuterBorder2/DragNode"]
+visible = false
+z_index = 1000
+y_sort_enabled = true
+texture = ExtResource("7_of7eg")
+script = ExtResource("8_8y0th")
+sprite_size = Vector2(50, 50)
 
-[node name="BorderMargin1" type="MarginContainer" parent="CanvasLayer/OuterBorder1"]
+[node name="MarginContainerBorder" type="MarginContainer" parent="CanvasLayer/OuterBorder2"]
 layout_mode = 2
 theme_type_variation = &"MarginLevel1"
 
-[node name="InnerBorder" type="PanelContainer" parent="CanvasLayer/OuterBorder1/BorderMargin1"]
+[node name="InnerBorder" type="PanelContainer" parent="CanvasLayer/OuterBorder2/MarginContainerBorder"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
 theme_type_variation = &"InnerBorderLevel1"
-script = ExtResource("6_tl212")
-theme_state_map = ExtResource("7_of7eg")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/OuterBorder1/BorderMargin1/InnerBorder"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/OuterBorder2/MarginContainerBorder/InnerBorder"]
 layout_mode = 2
 
-[node name="ItemTexture" type="TextureRect" parent="CanvasLayer/OuterBorder1/BorderMargin1/InnerBorder/MarginContainer"]
-modulate = Color(0, 0, 0, 1)
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="ResourceTexture" type="TextureRect" parent="CanvasLayer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("8_8y0th")
+texture = ExtResource("9_qkyai")
 expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
+
+[node name="QtyBrick" type="Label" parent="CanvasLayer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"LabelLarge"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExBrick" type="Label" parent="CanvasLayer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"LabelSmall"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "4:1"
+horizontal_alignment = 1
+vertical_alignment = 1
