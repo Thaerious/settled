@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b4rkbgo81jcc6"]
+[gd_scene load_steps=5 format=3 uid="uid://b4rkbgo81jcc6"]
 
 [ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
 [ext_resource type="PackedScene" uid="uid://cf2jhci0uarl7" path="res://hud/hand_dialog/hand_resource_control.tscn" id="2_akvua"]
 [ext_resource type="Texture2D" uid="uid://co4vl7gwwxney" path="res://assets/star.png" id="3_xre04"]
+[ext_resource type="PackedScene" uid="uid://bsr5gimclo5io" path="res://hud/hand_dialog/hand_action_control.tscn" id="4_32o2v"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_lnlp5")
@@ -17,3 +18,10 @@ offset_bottom = 621.0
 display_texture = ExtResource("3_xre04")
 sprite_texture = ExtResource("3_xre04")
 sprite_size = Vector2(0, 0)
+
+[node name="HandActionControl" parent="CanvasLayer" instance=ExtResource("4_32o2v")]
+offset_left = 1062.0
+offset_top = 518.0
+offset_right = 1136.0
+offset_bottom = 615.0
+action_type = 1
