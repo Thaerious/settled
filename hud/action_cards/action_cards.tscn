@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://c3xnds1ojmmjj"]
 
-[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_63nwv"]
+[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_63nwv"]
 [ext_resource type="Script" uid="uid://vxje4yjpo1kp" path="res://hud/action_cards/action_cards.gd" id="2_0atqr"]
 [ext_resource type="Texture2D" uid="uid://demi577aj2enu" path="res://assets/action_cards/knight.png" id="2_qotur"]
 [ext_resource type="Script" uid="uid://ct75lud6ny3bq" path="res://hud/action_cards/action_card_icon.gd" id="3_0atqr"]

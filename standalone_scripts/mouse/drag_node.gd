@@ -7,7 +7,7 @@ signal drag_end(rec: DragRecord)
 var _dragging := false
 var _sprite: Sprite2D = null
 
-@export var enabled = true
+@export var disabled = false
 @export_flags_2d_physics var drag_mask: int = 1
 
 # connect a press handler to trigger that is invoked on a LMB press
@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_press(event: InputEvent) -> void:
-	if not self.enabled: return
+	if self.disabled: return
 	elif event is InputEventMouseMotion: self._on_mouse_motion(event)	
 	elif event is InputEventMouse: self._on_mouse_input(event)		
 
@@ -52,7 +52,6 @@ func _do_start_drag() -> void:
 	self._dragging = true
 	self._sprite.visible = true
 	self._sprite.top_level = true
-	self.on_drag_start()
 	self.drag_start.emit()
 
 
@@ -63,24 +62,7 @@ func _do_stop_drag() -> void:
 	self._sprite.top_level = false
 	var rec := MouseHelper.resolve_target(self.drag_mask)
 	rec.draggable = self
-	self.on_drag_end(rec)
 	self.drag_end.emit(rec)
-
-
-func on_drag_start() -> void:
-	pass
-
-
-func on_drag_end(_rec: DragRecord) -> void:
-	pass
-
-
-# func _on_enter(_rec: HoverRecord) -> void:
-# 	pass
-
-
-# func _on_exit(_rec: HoverRecord) -> void:
-# 	pass
 
 
 static func is_left_press(event: InputEvent) -> bool:

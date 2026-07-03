@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cuxvpopbo7l5k"]
 
-[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_r61ud"]
+[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_r61ud"]
 [ext_resource type="Script" uid="uid://bisbcnl8orexr" path="res://hud/annotated_texture.gd" id="2_hrrx6"]
 [ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="3_5kmds"]
 

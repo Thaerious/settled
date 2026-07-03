@@ -1,17 +1,14 @@
-[gd_scene load_steps=22 format=3 uid="uid://cqkf4h28hkb1l"]
+[gd_scene load_steps=19 format=3 uid="uid://cqkf4h28hkb1l"]
 
-[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/hud_theme.tres" id="1_0eclp"]
-[ext_resource type="StyleBox" uid="uid://b26k03ketuprm" path="res://hud/shared/panel_outer_style.tres" id="2_0eclp"]
-[ext_resource type="Script" uid="uid://ec1brwq2k8rv" path="res://hud/hand_dialog/hand_dialog.gd" id="2_ruhtk"]
+[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_0eclp"]
 [ext_resource type="Texture2D" uid="uid://demi577aj2enu" path="res://assets/action_cards/knight.png" id="3_ais11"]
-[ext_resource type="Script" uid="uid://lkfjwctb0ulw" path="res://hud/resource_cotrol.gd" id="4_2edvl"]
-[ext_resource type="Texture2D" uid="uid://gijtnuwil067" path="res://assets/resources/brick_color.png" id="4_pwa7f"]
+[ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone_scripts/nodes/style_helper.gd" id="4_1igi8"]
+[ext_resource type="PackedScene" uid="uid://cf2jhci0uarl7" path="res://hud/hand_dialog/hand_resource_control.tscn" id="4_nvqpu"]
 [ext_resource type="Texture2D" uid="uid://v6ti4h2kyw2s" path="res://assets/action_cards/monopoly.png" id="5_706re"]
 [ext_resource type="Texture2D" uid="uid://d3ywknxm0qvs1" path="res://assets/resources/wood_color.png" id="6_2edvl"]
 [ext_resource type="Texture2D" uid="uid://sfwaxf30fwsr" path="res://assets/action_cards/plenty.png" id="7_ruhtk"]
 [ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone_scripts/mouse/drag_node.gd" id="7_vy8ti"]
 [ext_resource type="Texture2D" uid="uid://c6udkvuswa3f6" path="res://assets/resources/wheat_color.png" id="8_vy8ti"]
-[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="8_ymvef"]
 [ext_resource type="Texture2D" uid="uid://ccpkisxjwdal7" path="res://assets/action_cards/road_building.png" id="9_8jger"]
 [ext_resource type="Script" uid="uid://dlx1yhrpr6vdj" path="res://game_board/scaled_sprite.gd" id="9_ccy7u"]
 [ext_resource type="Texture2D" uid="uid://c5c2pro106apa" path="res://assets/resources/rock_color.png" id="10_ymvef"]
@@ -29,7 +26,6 @@ offset_bottom = 366.0
 mouse_filter = 1
 theme = ExtResource("1_0eclp")
 theme_type_variation = &"OuterBorderLevel0"
-script = ExtResource("2_ruhtk")
 
 [node name="MarginContainerBorder" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -87,70 +83,9 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OuterBorder2" type="PanelContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer"]
+[node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer" instance=ExtResource("4_nvqpu")]
 layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 1
-theme_type_variation = &"OuterBorderLevel1"
-script = ExtResource("4_2edvl")
-resource_type = 0
-
-[node name="MarginContainerBorder" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2"]
-layout_mode = 2
-theme_type_variation = &"MarginLevel1"
-
-[node name="InnerBorder" type="PanelContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2/MarginContainerBorder"]
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 1
-theme_type_variation = &"InnerBorderLevel1"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2/MarginContainerBorder/InnerBorder"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="ResourceTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("4_pwa7f")
-expand_mode = 1
-stretch_mode = 5
-metadata/_edit_use_anchors_ = true
-
-[node name="QtyBrick" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 1
-theme_type_variation = &"LabelLarge"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ExBrick" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 1
-theme_type_variation = &"LabelSmall"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "4:1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="DragNode" type="Node" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2"]
-script = ExtResource("7_vy8ti")
-metadata/_custom_type_script = "uid://bwub0la08s7mr"
-
-[node name="ScaledSprite" type="Sprite2D" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer/OuterBorder2/DragNode"]
-visible = false
-z_index = 4096
-texture = ExtResource("8_ymvef")
-script = ExtResource("9_ccy7u")
-sprite_size = Vector2(50, 50)
+sprite_size = Vector2(0, 0)
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer"]
 layout_mode = 2
@@ -194,30 +129,39 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OuterBorder2" type="PanelContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2"]
+[node name="StyleContainer" type="Control" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
+script = ExtResource("4_1igi8")
+style = "Default"
+
+[node name="OuterBorder2" type="PanelContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 126.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
-script = ExtResource("4_2edvl")
-resource_type = 1
 
-[node name="MarginContainerBorder" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2"]
+[node name="MarginContainerBorder" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2"]
 layout_mode = 2
 theme_type_variation = &"MarginLevel1"
 
-[node name="InnerBorder" type="PanelContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2/MarginContainerBorder"]
+[node name="InnerBorder" type="PanelContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2/MarginContainerBorder"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"InnerBorderLevel1"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2/MarginContainerBorder/InnerBorder"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2/MarginContainerBorder/InnerBorder"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="ResourceTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="ResourceTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 3
@@ -226,7 +170,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="QtyWood" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="QtyWood" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
@@ -235,7 +179,7 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ExWood" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="ExWood" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2/MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelSmall"
@@ -244,11 +188,11 @@ text = "4:1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DragNode" type="Node" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2"]
+[node name="DragNode" type="Node" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2"]
 script = ExtResource("7_vy8ti")
 metadata/_custom_type_script = "uid://bwub0la08s7mr"
 
-[node name="ScaledSprite" type="Sprite2D" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/OuterBorder2/DragNode"]
+[node name="ScaledSprite" type="Sprite2D" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2/StyleContainer/OuterBorder2/DragNode"]
 visible = false
 z_index = 4096
 texture = ExtResource("12_1igi8")
@@ -301,8 +245,6 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
-script = ExtResource("4_2edvl")
-resource_type = 2
 
 [node name="MarginContainerBorder" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer3/OuterBorder2"]
 layout_mode = 2
@@ -404,8 +346,6 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
-script = ExtResource("4_2edvl")
-resource_type = 4
 
 [node name="MarginContainerBorder" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer4/OuterBorder2"]
 layout_mode = 2
@@ -507,8 +447,6 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"OuterBorderLevel1"
-script = ExtResource("4_2edvl")
-resource_type = 3
 
 [node name="MarginContainerBorder" type="MarginContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer5/OuterBorder2"]
 layout_mode = 2
