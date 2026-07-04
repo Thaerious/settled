@@ -1,9 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=23 format=3 uid="uid://i8e1xl7e7oqx"]
 
-[ext_resource type="PackedScene" uid="uid://cvd22dj1dxfs8" path="res://hud/hud.tscn" id="1_mlf6e"]
+[ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
+[ext_resource type="PackedScene" uid="uid://b21qcmnle7jxn" path="res://hud/dice/dice_control.tscn" id="2_78j2m"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
+[ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="3_na8jj"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
+[ext_resource type="Script" uid="uid://c77hxmeldfwl7" path="res://hud/phase_buttons/player_button.gd" id="4_jv0we"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://camera_2d.gd" id="5_mj2jn"]
+[ext_resource type="Script" uid="uid://seinwaxkktt6" path="res://hud/phase_buttons/play_as_button.gd" id="5_nuflt"]
+[ext_resource type="Script" uid="uid://2ichsd5ic0jx" path="res://hud/dev_controllers/auto_update_player.gd" id="6_if5p2"]
+[ext_resource type="Script" uid="uid://b5v478atluche" path="res://hud/phase_buttons/button_save.gd" id="7_f54l4"]
+[ext_resource type="Script" uid="uid://bs88moiyiupa8" path="res://hud/phase_buttons/button_load.gd" id="8_5smy7"]
+[ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/dev_controllers/save_file_name.gd" id="9_glbr4"]
+[ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="10_t06ws"]
+[ext_resource type="PackedScene" uid="uid://baabjnmmu7oxg" path="res://hud/pirate_dialog/pirate_dialog.tscn" id="11_0pvt5"]
+[ext_resource type="Script" uid="uid://d66e5b2s5mrl" path="res://hud/components/end_turn_button.gd" id="12_kyyqo"]
+[ext_resource type="PackedScene" uid="uid://cbl0eprhn3k2g" path="res://hud/discard_dialog/discard_dialog.tscn" id="13_magc2"]
+[ext_resource type="PackedScene" uid="uid://dqr0hpeu73nhq" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.tscn" id="14_dtvpm"]
+[ext_resource type="PackedScene" uid="uid://cucg1swo1x823" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="15_7nf4l"]
+[ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="16_cxwtw"]
+[ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store/store_dialog.tscn" id="17_1hpar"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
@@ -35,9 +51,356 @@ sources/0 = SubResource("TileSetAtlasSource_mixcd")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HUD" parent="CanvasLayer" instance=ExtResource("1_mlf6e")]
-offset_left = 2.0
-offset_right = 2.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_right = 0.22
+anchor_bottom = 0.7
+offset_left = 40.0
+offset_top = 25.0
+theme_override_constants/separation = 20
+
+[node name="PlayerCard1" parent="CanvasLayer/VBoxContainer" instance=ExtResource("1_1wc4g")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerCard2" parent="CanvasLayer/VBoxContainer" instance=ExtResource("1_1wc4g")]
+layout_mode = 2
+size_flags_vertical = 3
+player_id = 1
+
+[node name="PlayerCard3" parent="CanvasLayer/VBoxContainer" instance=ExtResource("1_1wc4g")]
+layout_mode = 2
+size_flags_vertical = 3
+player_id = 2
+
+[node name="PlayerCard4" parent="CanvasLayer/VBoxContainer" instance=ExtResource("1_1wc4g")]
+layout_mode = 2
+size_flags_vertical = 3
+player_id = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -216.0
+offset_bottom = 504.0
+grow_horizontal = 0
+theme_type_variation = &"DefaultMargin"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="Dice" parent="CanvasLayer/MarginContainer/HBoxContainer" groups=["DiceControl"] instance=ExtResource("2_78j2m")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PhaseButtons" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ButtonNotStarted" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Not Started
+"
+script = ExtResource("3_na8jj")
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonSetupForwardHouse" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Setup Forward House
+"
+script = ExtResource("3_na8jj")
+phase = 1
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonSetupReverseHouse" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Setup Reverse House
+"
+script = ExtResource("3_na8jj")
+phase = 2
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonMovePirate" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Move Pirate
+"
+script = ExtResource("3_na8jj")
+phase = 3
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonDiscard" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Init Discard
+"
+script = ExtResource("3_na8jj")
+phase = 4
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonDiscard2" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "During Discard
+"
+script = ExtResource("3_na8jj")
+phase = 5
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonSteal" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Steal Resources
+"
+script = ExtResource("3_na8jj")
+phase = 6
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonMain" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Main
+"
+script = ExtResource("3_na8jj")
+phase = 7
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonPlenty" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Plenty
+"
+script = ExtResource("3_na8jj")
+phase = 8
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonMonopoly" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Monopoly
+"
+script = ExtResource("3_na8jj")
+phase = 9
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonRoadBuilding" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Road Building
+"
+script = ExtResource("3_na8jj")
+phase = 10
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonSoldier" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Soldier
+"
+script = ExtResource("3_na8jj")
+phase = 11
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="ButtonGameOver" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Game Over
+"
+script = ExtResource("3_na8jj")
+phase = 12
+metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer1"]
+layout_mode = 2
+text = "Current Player"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer1"]
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer1/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+script = ExtResource("4_jv0we")
+id = 0
+
+[node name="Button2" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer1/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2"
+script = ExtResource("4_jv0we")
+id = 1
+
+[node name="Button3" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer1/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3"
+script = ExtResource("4_jv0we")
+id = 2
+
+[node name="Button4" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer1/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "4"
+script = ExtResource("4_jv0we")
+id = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer2"]
+layout_mode = 2
+text = "Play As"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+script = ExtResource("5_nuflt")
+id = 0
+
+[node name="Button2" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2"
+script = ExtResource("5_nuflt")
+id = 1
+
+[node name="Button3" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3"
+script = ExtResource("5_nuflt")
+id = 2
+
+[node name="Button4" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "4"
+script = ExtResource("5_nuflt")
+id = 3
+
+[node name="AutoUpdate" type="CheckBox" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Auto Update Player"
+script = ExtResource("6_if5p2")
+
+[node name="Panel2" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ButtonSave" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/Panel2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save"
+script = ExtResource("7_f54l4")
+
+[node name="ButtonLoad" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons/Panel2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Load"
+script = ExtResource("8_5smy7")
+
+[node name="SaveFileName" type="LineEdit" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "savegame"
+placeholder_text = "savegame"
+script = ExtResource("9_glbr4")
+
+[node name="ButtonReset" type="Button" parent="CanvasLayer/MarginContainer/HBoxContainer/PhaseButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset"
+script = ExtResource("10_t06ws")
+
+[node name="PirateDialog" parent="CanvasLayer" instance=ExtResource("11_0pvt5")]
+visible = false
+offset_left = 905.0
+offset_top = 360.0
+offset_right = 1017.0
+offset_bottom = 516.0
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -117.97113
+offset_top = -297.0
+offset_right = 131.32959
+offset_bottom = -234.12549
+grow_horizontal = 2
+grow_vertical = 0
+disabled = true
+text = "End Turn"
+script = ExtResource("12_kyyqo")
+
+[node name="DiscardDialog" parent="CanvasLayer" instance=ExtResource("13_magc2")]
+visible = false
+anchors_preset = -1
+anchor_left = -0.130229
+anchor_top = 0.52685183
+anchor_right = -0.10939566
+anchor_bottom = 0.5638889
+metadata/_edit_use_anchors_ = true
+
+[node name="YearOfPlentyDialog" parent="CanvasLayer" instance=ExtResource("14_dtvpm")]
+visible = false
+offset_left = 389.08914
+offset_top = 565.0
+offset_right = 1119.0891
+offset_bottom = 940.0
+
+[node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("15_7nf4l")]
+visible = false
+offset_left = 577.6478
+offset_top = 808.0
+offset_right = 1307.6478
+offset_bottom = 1057.0
+
+[node name="HandDialog" parent="CanvasLayer" instance=ExtResource("16_cxwtw")]
+offset_left = 695.3722
+offset_top = 797.0
+offset_right = 1205.3722
+offset_bottom = 1074.0
+
+[node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("17_1hpar")]
+offset_left = 1445.616
+offset_top = 656.0
+offset_right = 1907.616
+offset_bottom = 1070.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")
