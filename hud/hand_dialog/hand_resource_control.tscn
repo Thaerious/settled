@@ -15,8 +15,8 @@ size_flags_vertical = 4
 theme = ExtResource("4_g8r32")
 theme_type_variation = &"OuterBorder"
 script = ExtResource("2_g8r32")
-display_texture = ExtResource("8_g8r32")
 sprite_texture = ExtResource("8_g8r32")
+display_texture = ExtResource("8_g8r32")
 
 [node name="StyleHelper" type="Node" parent="."]
 unique_name_in_owner = true

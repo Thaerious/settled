@@ -6,7 +6,7 @@ const NO_STYLE = "default"
 @export var style: String = NO_STYLE:
 	get: 
 		return style
-	set(v): 
+	set(v): 		
 		style = v
 		if v == "": self.clear()
 		else: self._apply(style)
@@ -30,5 +30,6 @@ func _apply(style_name: String) -> bool:
 
 
 func clear() -> void:
+	print("StyleHelper clear style:")	
 	if not style_map.has(NO_STYLE): self.target.theme = null
 	else: self.target.theme = self.style_map[NO_STYLE]

@@ -1,17 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://cbl0eprhn3k2g"]
+[gd_scene load_steps=15 format=3 uid="uid://cbl0eprhn3k2g"]
 
 [ext_resource type="StyleBox" uid="uid://b26k03ketuprm" path="res://hud/shared/panel_outer_style.tres" id="1_emb3f"]
-[ext_resource type="Texture2D" uid="uid://cyshc4gljssbs" path="res://assets/buttons/discard_dialog_up.png" id="1_nl7lm"]
+[ext_resource type="Script" uid="uid://b03017rxir28u" path="res://hud/discard_dialog/discard_dialog.gd" id="2_201yn"]
 [ext_resource type="StyleBox" uid="uid://bgcofcnn7u3ro" path="res://hud/shared/panel_inner_style.tres" id="2_x3apl"]
-[ext_resource type="Texture2D" uid="uid://gijtnuwil067" path="res://assets/resources/brick_color.png" id="4_dbxmx"]
-[ext_resource type="Texture2D" uid="uid://gqxql4ekq17g" path="res://assets/buttons/discard_dialog_down.png" id="4_x3apl"]
-[ext_resource type="Script" uid="uid://dx5pwcgaui1ld" path="res://hud/discard_dialog/discard_resource_control.gd" id="4_ygxl0"]
-[ext_resource type="Texture2D" uid="uid://d2rj0cc18t68g" path="res://assets/buttons/discard_dialog_button_up_inactive.png" id="6_6o1w5"]
-[ext_resource type="Texture2D" uid="uid://d3ywknxm0qvs1" path="res://assets/resources/wood_color.png" id="6_201yn"]
-[ext_resource type="Texture2D" uid="uid://c6udkvuswa3f6" path="res://assets/resources/wheat_color.png" id="7_5s2c0"]
-[ext_resource type="Texture2D" uid="uid://c5c2pro106apa" path="res://assets/resources/rock_color.png" id="8_ygxl0"]
-[ext_resource type="Texture2D" uid="uid://p25t67qnqa1i" path="res://assets/resources/wool_color.png" id="9_6o1w5"]
-[ext_resource type="Texture2D" uid="uid://dsnsccpkodl0p" path="res://assets/buttons/discard_dialog_button_down_inactive.png" id="9_fanup"]
+[ext_resource type="PackedScene" uid="uid://dileq1bpw3apt" path="res://hud/discard_dialog/DiscardResourceControl.tscn" id="3_njngg"]
+[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="4_201yn"]
+[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="5_201yn"]
+[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="7_fanup"]
+[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="8_xy4ks"]
+[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="9_csxnt"]
 [ext_resource type="StyleBox" uid="uid://dgrh20upkqy2e" path="res://hud/discard_dialog/accept_button_enabled.tres" id="14_csxnt"]
 [ext_resource type="StyleBox" uid="uid://bkkd1w88bbalo" path="res://hud/discard_dialog/accept_button_hover.tres" id="15_3gcfi"]
 [ext_resource type="StyleBox" uid="uid://dj732xmlrqw0r" path="res://hud/discard_dialog/accept_button_disabled.tres" id="15_udvy5"]
@@ -19,12 +16,13 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3gcfi"]
 
-[node name="DialogPanelContainerOuter" type="PanelContainer"]
+[node name="DiscardDialog" type="PanelContainer"]
 offset_left = 267.0
 offset_top = 102.0
-offset_right = 953.0
-offset_bottom = 481.0
+offset_right = 727.0
+offset_bottom = 401.0
 theme_override_styles/panel = ExtResource("1_emb3f")
+script = ExtResource("2_201yn")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -56,347 +54,35 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 5
 
-[node name="PanelContainerOuter" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("1_emb3f")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("2_x3apl")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="BrickControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer"]
+[node name="Wood" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_njngg")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
-script = ExtResource("4_ygxl0")
+resource = 1
+display_texture = ExtResource("5_201yn")
 
-[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
-layout_mode = 2
-texture_normal = ExtResource("1_nl7lm")
-texture_disabled = ExtResource("6_6o1w5")
-stretch_mode = 5
-
-[node name="DisBrick" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+[node name="Brick" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_njngg")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
+resource = 0
+display_texture = ExtResource("4_201yn")
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-texture = ExtResource("4_dbxmx")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="QtyBrick" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+[node name="Wheat" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_njngg")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
+resource = 2
+display_texture = ExtResource("7_fanup")
 
-[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
-layout_mode = 2
-texture_normal = ExtResource("4_x3apl")
-texture_disabled = ExtResource("9_fanup")
-stretch_mode = 5
-
-[node name="PanelContainerOuter2" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("1_emb3f")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("2_x3apl")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="WoodControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 250)
-layout_mode = 2
-size_flags_vertical = 4
-script = ExtResource("4_ygxl0")
-
-[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
-layout_mode = 2
-texture_normal = ExtResource("1_nl7lm")
-texture_disabled = ExtResource("6_6o1w5")
-stretch_mode = 5
-
-[node name="DisWood" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
+[node name="Rock" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_njngg")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
+resource = 4
+display_texture = ExtResource("8_xy4ks")
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-texture = ExtResource("6_201yn")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="QtyWood" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
+[node name="Wool" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_njngg")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer/PanelContainerInner/MarginContainer/WoodControl"]
-layout_mode = 2
-texture_normal = ExtResource("4_x3apl")
-texture_disabled = ExtResource("9_fanup")
-stretch_mode = 5
-
-[node name="PanelContainerOuter3" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("1_emb3f")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("2_x3apl")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="WheatControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 250)
-layout_mode = 2
-size_flags_vertical = 4
-script = ExtResource("4_ygxl0")
-metadata/_custom_type_script = "uid://dx5pwcgaui1ld"
-
-[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-layout_mode = 2
-texture_normal = ExtResource("1_nl7lm")
-texture_disabled = ExtResource("6_6o1w5")
-stretch_mode = 5
-
-[node name="DisWheat" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-texture = ExtResource("7_5s2c0")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="QtyWheat" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer/PanelContainerInner/MarginContainer/WheatControl"]
-layout_mode = 2
-texture_normal = ExtResource("4_x3apl")
-texture_disabled = ExtResource("9_fanup")
-stretch_mode = 5
-
-[node name="PanelContainerOuter4" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("1_emb3f")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("2_x3apl")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="RockControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 250)
-layout_mode = 2
-size_flags_vertical = 4
-script = ExtResource("4_ygxl0")
-metadata/_custom_type_script = "uid://dx5pwcgaui1ld"
-
-[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-layout_mode = 2
-texture_normal = ExtResource("1_nl7lm")
-texture_disabled = ExtResource("6_6o1w5")
-stretch_mode = 5
-
-[node name="DisRock" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-texture = ExtResource("8_ygxl0")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="QtyRock" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer/PanelContainerInner/MarginContainer/RockControl"]
-layout_mode = 2
-texture_normal = ExtResource("4_x3apl")
-texture_disabled = ExtResource("9_fanup")
-stretch_mode = 5
-
-[node name="PanelContainerOuter5" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("1_emb3f")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = ExtResource("2_x3apl")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="WoolControl" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 250)
-layout_mode = 2
-size_flags_vertical = 4
-script = ExtResource("4_ygxl0")
-metadata/_custom_type_script = "uid://dx5pwcgaui1ld"
-
-[node name="DiscardButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-layout_mode = 2
-texture_normal = ExtResource("1_nl7lm")
-texture_disabled = ExtResource("6_6o1w5")
-stretch_mode = 5
-
-[node name="DisWool" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-texture = ExtResource("9_6o1w5")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="QtyWool" type="Label" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="KeepButton" type="TextureButton" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer/PanelContainerInner/MarginContainer/WoolControl"]
-layout_mode = 2
-texture_normal = ExtResource("4_x3apl")
-texture_disabled = ExtResource("9_fanup")
-stretch_mode = 5
+resource = 3
+display_texture = ExtResource("9_csxnt")
 
 [node name="ButtonAccept" type="Button" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

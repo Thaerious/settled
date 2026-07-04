@@ -24,7 +24,6 @@ func _update_phase_hnd(phase: Model.GamePhase) -> void:
 	for id in Game.player_count: 
 		var bank := Game.model.get_bank(id)
 		Game.model.set_discard_target(id, Model.INT_MAX)
-		print("id %s | bank %s" % [id, bank.size()])
 		if bank.size() < 8: continue
 
 		next_phase = Model.GamePhase.DURING_DISCARD
