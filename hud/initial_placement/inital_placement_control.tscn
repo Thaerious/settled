@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://cjifmy1d1htyg"]
 
-[ext_resource type="Script" uid="uid://dru8s4x23w3xt" path="res://hud/inital_placement/inital_placement_control.gd" id="2_a7wy8"]
+[ext_resource type="Script" uid="uid://dru8s4x23w3xt" path="res://hud/initial_placement/inital_placement_control.gd" id="2_a7wy8"]
 [ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone_scripts/nodes/style_helper.gd" id="3_k6vi7"]
-[ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="4_g8r32"]
-[ext_resource type="Theme" uid="uid://dypl76lfa5loe" path="res://hud/themes/hover.tres" id="4_p3jqc"]
+[ext_resource type="Theme" path="res://hud/themes/default.tres" id="4_g8r32"]
+[ext_resource type="Theme" path="res://hud/themes/hover.tres" id="4_p3jqc"]
 [ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone_scripts/mouse/drag_node.gd" id="5_gswjl"]
-[ext_resource type="Theme" uid="uid://bjie0pv40kdif" path="res://hud/themes/disabled.tres" id="6_g8r32"]
+[ext_resource type="Theme" path="res://hud/themes/disabled.tres" id="6_g8r32"]
 [ext_resource type="Script" uid="uid://bevp5cowl65sy" path="res://hud/components/scaled_sprite.gd" id="7_fxjip"]
 [ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="8_g8r32"]
 
@@ -15,6 +15,8 @@ size_flags_vertical = 4
 theme = ExtResource("4_g8r32")
 theme_type_variation = &"OuterBorder"
 script = ExtResource("2_a7wy8")
+sprite_texture = ExtResource("8_g8r32")
+display_texture = ExtResource("8_g8r32")
 
 [node name="StyleHelper" type="Node" parent="."]
 unique_name_in_owner = true
