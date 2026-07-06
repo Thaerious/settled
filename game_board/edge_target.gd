@@ -2,11 +2,11 @@ class_name EdgeTarget
 extends Node2D
 
 
-var _current_piece: Node2D = null
+var _current_piece: GamePiece = null
 var axial_edge: AxialEdge = null
 
 
-func set_piece(game_piece: Node2D) -> void:    
+func set_piece(game_piece: GamePiece) -> void:    
     if self._current_piece == game_piece: return
     self.clear_piece()
     self._current_piece = game_piece

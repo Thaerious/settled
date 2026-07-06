@@ -15,7 +15,9 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 	if Game.model.get_current_phase() != Model.GamePhase.MOVE_PIRATE: return
 	if Game.model.get_current_player() != Game.self_id: return
 
-	# todo drag here
+	# TODO DRAG
+
+	self.visible = false
 
 
 func _on_drop(rec: DragRecord):

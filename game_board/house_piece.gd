@@ -1,4 +1,4 @@
 class_name HousePiece
-extends Node2D
+extends GamePiece
 
 var axial:Axial
