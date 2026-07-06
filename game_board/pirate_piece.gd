@@ -15,16 +15,7 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 	if Game.model.get_current_phase() != Model.GamePhase.MOVE_PIRATE: return
 	if Game.model.get_current_player() != Game.self_id: return
 
-	var drag_args = DragArgs.new()
-	drag_args.texture = self._sprite.texture
-	drag_args.size = Vector2(64, 64)
-	drag_args.offset = Vector2(-32, -32)
-	drag_args.on_success = self._on_drop
-	drag_args.on_failure = self._revert_drop
-
-	self.visible = false
-
-	MouseBus.start_drag(drag_args)
+	# todo drag here
 
 
 func _on_drop(rec: DragRecord):

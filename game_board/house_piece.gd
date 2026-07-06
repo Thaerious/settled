@@ -1,4 +1,4 @@
 class_name HousePiece
-extends DragSprite
+extends Node2D
 
 var axial:Axial
