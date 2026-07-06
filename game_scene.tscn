@@ -1,9 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=16 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://b21qcmnle7jxn" path="res://hud/dice/dice_control.tscn" id="2_78j2m"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="3_na8jj"]
-[ext_resource type="Script" path="res://game_board/game_board.gd" id="3_v1wow"]
+[ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
 [ext_resource type="Script" uid="uid://c77hxmeldfwl7" path="res://hud/phase_buttons/player_button.gd" id="4_jv0we"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://camera_2d.gd" id="5_mj2jn"]
 [ext_resource type="Script" uid="uid://seinwaxkktt6" path="res://hud/phase_buttons/play_as_button.gd" id="5_nuflt"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://bs88moiyiupa8" path="res://hud/phase_buttons/button_load.gd" id="8_5smy7"]
 [ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/dev_controllers/save_file_name.gd" id="9_glbr4"]
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="10_t06ws"]
+[ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store/store_dialog.tscn" id="17_1hpar"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
@@ -308,6 +309,12 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Reset"
 script = ExtResource("10_t06ws")
+
+[node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("17_1hpar")]
+offset_left = 1478.0
+offset_top = 712.0
+offset_right = 1900.0
+offset_bottom = 1062.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")
