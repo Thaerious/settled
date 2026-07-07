@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxeck62k7i4yd"]
+[gd_scene load_steps=10 format=3 uid="uid://dxeck62k7i4yd"]
 
 [ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="1_el2jj"]
-[ext_resource type="PackedScene" uid="uid://cjifmy1d1htyg" path="res://hud/inital_placement/inital_placement_control.tscn" id="2_gvdgc"]
+[ext_resource type="PackedScene" uid="uid://cjifmy1d1htyg" path="res://hud/initial_placement/inital_placement_control.tscn" id="2_gvdgc"]
+[ext_resource type="Script" uid="uid://ccwyiprr1q61w" path="res://hud/initial_placement/inital_placement_control_house_1.gd" id="3_01nxw"]
 [ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="3_rha3k"]
-[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/game_board/road_piece.png" id="4_78typ"]
+[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="4_78typ"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="5_i388k"]
+[ext_resource type="Script" uid="uid://b3hr1o2uffrh5" path="res://hud/initial_placement/inital_placement_control_road_1.gd" id="6_t6han"]
+[ext_resource type="Script" uid="uid://73kgdbtal85n" path="res://hud/initial_placement/inital_placement_control_house_2.gd" id="7_41feq"]
+[ext_resource type="Script" uid="uid://osnv21vgnc4w" path="res://hud/initial_placement/inital_placement_control_road_2.gd" id="8_nrg5k"]
 
 [node name="InitialPlacementDialog" type="PanelContainer"]
 theme = ExtResource("1_el2jj")
@@ -25,22 +29,28 @@ theme_type_variation = &"BorderMargin"
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="InitialPlacementControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_gvdgc")]
+[node name="InitialPlacementControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("road_controller") instance=ExtResource("2_gvdgc")]
 layout_mode = 2
+script = ExtResource("3_01nxw")
+road_controller = NodePath("../InitialPlacementControl2")
 sprite_texture = ExtResource("3_rha3k")
 display_texture = ExtResource("3_rha3k")
 
 [node name="InitialPlacementControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_gvdgc")]
 layout_mode = 2
+script = ExtResource("6_t6han")
 sprite_texture = ExtResource("4_78typ")
 display_texture = ExtResource("5_i388k")
 
-[node name="InitialPlacementControl3" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_gvdgc")]
+[node name="InitialPlacementControl3" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("road_controller") instance=ExtResource("2_gvdgc")]
 layout_mode = 2
+script = ExtResource("7_41feq")
+road_controller = NodePath("../InitialPlacementControl4")
 sprite_texture = ExtResource("3_rha3k")
 display_texture = ExtResource("3_rha3k")
 
 [node name="InitialPlacementControl4" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_gvdgc")]
 layout_mode = 2
+script = ExtResource("8_nrg5k")
 sprite_texture = ExtResource("4_78typ")
 display_texture = ExtResource("5_i388k")

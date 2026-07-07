@@ -1,8 +1,10 @@
 @tool
-class_name InitialPlacementControl
+class_name DraggableDialogControl
 extends DialogControl
 
+@onready var _drag_node := %DragNode
 @export var drag_mask := 1
+
 
 @export var sprite_texture : Texture2D:
 	set(value):
@@ -21,7 +23,16 @@ extends DialogControl
 
 
 func _ready() -> void:
-	print("Initial Placement Control Ready")
 	super._ready()
-	self.sprite_texture = self.sprite_texture
-	self.sprite_size = self.sprite_size
+	self.display_texture = self.display_texture
+	self.disabled = self.disabled
+
+
+func _enable() -> void: 
+	super._enable()
+	self._drag_node.disabled = false
+
+
+func _disable() -> void:	
+	super._disable()
+	self._drag_node.disabled = true

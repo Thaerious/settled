@@ -23,12 +23,8 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	self.display_texture = self.display_texture
-	self.disabled = self.disabled
-
-	if Engine.is_editor_hint(): return
-	self.mouse_entered.connect(self._on_mouse_entered)
-	self.mouse_exited.connect(self._on_mouse_exited)
+	self.sprite_texture = self.sprite_texture
+	self.sprite_size = self.sprite_size
 
 
 func _on_mouse_entered() -> void:	
