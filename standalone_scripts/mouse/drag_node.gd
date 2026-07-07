@@ -3,8 +3,18 @@ extends Node
 
 signal drag_start()
 signal drag_end(rec: DragRecord)
+signal hover_enter(rec: DragRecord)
+signal hover_exit(rec: DragRecord)
 
+## The node currently under the cursor during a drag.
+## [code]null[/code] when nothing is hovered.
+var _last_hover_target: Node = null
+
+## True when actively dragging
 var _dragging := false
+
+## The visual ghost node displayed under the cursor during a drag.
+## This is the first child attached to the drag node.
 var _sprite: Sprite2D = null
 
 @export var disabled = false
@@ -28,6 +38,26 @@ func _set_child_mouse_filters() -> void:
 func _process(_delta: float) -> void:
 	if not self._dragging: return
 	self._sprite.global_position = get_viewport().get_mouse_position()	
+	self._update_hover()
+
+
+func _update_hover() -> void:
+	var record := MouseHelper.resolve_drag_target(self.drag_mask)
+	
+	if record.destination == self._last_hover_target: 
+		return
+	
+	self._last_hover_target = record.destination
+	
+	if record.destination: 
+		self.hover_enter.emit(record)
+		self._on_hover_enter(record)
+
+	if self._last_hover_target: 
+		self.hover_exit.emit(record)
+		self._on_hover_exit(record)
+
+	self._last_hover_target = record.destination
 
 
 func _on_press(event: InputEvent) -> void:
@@ -61,8 +91,7 @@ func _do_stop_drag() -> void:
 	self._dragging = false
 	self._sprite.visible = false
 	self._sprite.top_level = false
-	var rec := MouseHelper.resolve_target(self.drag_mask)
-	rec.draggable = self
+	var rec := MouseHelper.resolve_drag_target(self.drag_mask)
 	self._on_drag_end(rec)
 	self.drag_end.emit(rec)
 
@@ -87,4 +116,12 @@ func _on_drag_end(_rec: DragRecord) -> void:
 
 
 func _on_drag_start() -> void:
+	pass		
+
+
+func _on_hover_enter(_rec: DragRecord) -> void:
+	pass
+
+
+func _on_hover_exit(_rec: DragRecord) -> void:
 	pass		
