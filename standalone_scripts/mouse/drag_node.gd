@@ -46,16 +46,14 @@ func _update_hover() -> void:
 	
 	if record.destination == self._last_hover_target: 
 		return
-	
-	self._last_hover_target = record.destination
-	
-	if record.destination: 
-		self.hover_enter.emit(record)
-		self._on_hover_enter(record)
 
 	if self._last_hover_target: 
 		self.hover_exit.emit(record)
 		self._on_hover_exit(record)
+
+	if record.destination: 
+		self.hover_enter.emit(record)
+		self._on_hover_enter(record)
 
 	self._last_hover_target = record.destination
 

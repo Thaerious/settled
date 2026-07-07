@@ -44,7 +44,6 @@ func _get_world_target(world: Vector2, drag_mask: int) -> Node:
 		targets.append(result.collider)
 
 	if targets.size() > 0: 
-		print("WORLD TARGET")
 		return targets[0]
 	
 	return null
@@ -59,7 +58,7 @@ func _get_ui_target(drag_mask: int) -> Control:
 	if ui_target == null: return null
 
 	# A drop target MUST have a drag_mask:int field
-	if not "drag_mask" in ui_target: return null
+	if not "drop_mask" in ui_target: return null
 	if not ui_target.drag_mask and drag_mask: return null
 	
 	# If the drop target has an on_drop:bool method only accept the drop

@@ -9,8 +9,8 @@ signal show_house_targets()
 signal show_city_targets()
 signal show_road_targets()
 signal clear_targets()
-signal set_house_view_only(id: int, corner: Axial)
-signal set_road_view_only(id: int, edge: AxialEdge)
+signal set_house_view_only(id: int, corner: Axial) # TODO REMOVE
+signal set_road_view_only(id: int, edge: AxialEdge) # TODO REMOVE
 
 # View to service events (request, play)
 signal request_roll()

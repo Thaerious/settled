@@ -44,4 +44,4 @@ DiceControl=""
 
 [layer_names]
 
-2d_physics/layer_10="Mouse"
+2d_physics/layer_2="Targets"
