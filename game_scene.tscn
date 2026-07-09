@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=18 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/dev_controllers/save_file_name.gd" id="9_glbr4"]
 [ext_resource type="PackedScene" uid="uid://dxeck62k7i4yd" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="9_ueiaa"]
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="10_t06ws"]
+[ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="12_opqoc"]
 [ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="16_cxwtw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
@@ -336,6 +337,12 @@ offset_left = 730.0
 offset_top = 802.0
 offset_right = 1180.0
 offset_bottom = 1063.0
+
+[node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("12_opqoc")]
+offset_left = 1474.0
+offset_top = 708.0
+offset_right = 1896.0
+offset_bottom = 1058.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")
