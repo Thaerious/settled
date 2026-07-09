@@ -54,8 +54,6 @@ func _ready() -> void:
 	EventBus.house_added.connect(self.set_house_hnd)
 	EventBus.city_added.connect(self.set_city_hnd)
 	EventBus.road_added.connect(self.set_road_hnd)
-	EventBus.set_road_view_only.connect(self.set_road_view_only_hnd)
-	EventBus.set_house_view_only.connect(self.set_house_view_only_hnd)
 
 	EventBus.model_loaded.connect(self._model_loaded)
 
@@ -199,16 +197,6 @@ func set_road_hnd(id: int, edge: AxialEdge) -> void:
 	road_piece.position = edge.map_to_local(self.tiles)
 	%Structures.add_child(road_piece)
 	road_piece.rotation = edge.rotation
-
-
-func set_road_view_only_hnd(id: int, edge: AxialEdge) -> void:
-	self.set_road_hnd(id, edge)
-	self._untracked_road = edge
-
-
-
-func set_house_view_only_hnd(id: int, corner: Axial) -> void:
-	self.set_house_hnd(id, corner)
 
 
 func show_targets(ax: Variant):

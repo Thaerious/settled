@@ -1,5 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=16 format=3 uid="uid://i8e1xl7e7oqx"]
 
+[ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="3_na8jj"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
@@ -82,7 +83,7 @@ layout_mode = 2
 text = "Move Pirate
 "
 script = ExtResource("3_na8jj")
-phase = 3
+phase = 2
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonDiscard" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -91,7 +92,7 @@ layout_mode = 2
 text = "Init Discard
 "
 script = ExtResource("3_na8jj")
-phase = 4
+phase = 3
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonDiscard2" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -100,7 +101,7 @@ layout_mode = 2
 text = "During Discard
 "
 script = ExtResource("3_na8jj")
-phase = 5
+phase = 4
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonSteal" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -109,7 +110,7 @@ layout_mode = 2
 text = "Steal Resources
 "
 script = ExtResource("3_na8jj")
-phase = 6
+phase = 5
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMain" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -118,7 +119,7 @@ layout_mode = 2
 text = "Main
 "
 script = ExtResource("3_na8jj")
-phase = 7
+phase = 6
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonPlenty" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -127,7 +128,7 @@ layout_mode = 2
 text = "Plenty
 "
 script = ExtResource("3_na8jj")
-phase = 8
+phase = 7
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMonopoly" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -136,7 +137,7 @@ layout_mode = 2
 text = "Monopoly
 "
 script = ExtResource("3_na8jj")
-phase = 9
+phase = 8
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonRoadBuilding" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -145,7 +146,7 @@ layout_mode = 2
 text = "Road Building
 "
 script = ExtResource("3_na8jj")
-phase = 10
+phase = 9
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonSoldier" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -154,7 +155,7 @@ layout_mode = 2
 text = "Soldier
 "
 script = ExtResource("3_na8jj")
-phase = 11
+phase = 10
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonGameOver" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -163,7 +164,7 @@ layout_mode = 2
 text = "Game Over
 "
 script = ExtResource("3_na8jj")
-phase = 12
+phase = 11
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="VBoxContainer1" type="VBoxContainer" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
@@ -301,6 +302,33 @@ offset_left = 798.0
 offset_top = 896.0
 offset_right = 1148.0
 offset_bottom = 994.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_right = 0.22
+anchor_bottom = 0.7
+offset_left = 40.0
+offset_top = 25.0
+theme_override_constants/separation = 20
+
+[node name="PlayerCard1" parent="CanvasLayer/VBoxContainer" instance=ExtResource("1_1wc4g")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerCard2" parent="CanvasLayer/VBoxContainer" instance=ExtResource("1_1wc4g")]
+layout_mode = 2
+size_flags_vertical = 3
+player_id = 1
+
+[node name="PlayerCard3" parent="CanvasLayer/VBoxContainer" instance=ExtResource("1_1wc4g")]
+layout_mode = 2
+size_flags_vertical = 3
+player_id = 2
+
+[node name="PlayerCard4" parent="CanvasLayer/VBoxContainer" instance=ExtResource("1_1wc4g")]
+layout_mode = 2
+size_flags_vertical = 3
+player_id = 3
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")
