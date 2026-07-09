@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=17 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/dev_controllers/save_file_name.gd" id="9_glbr4"]
 [ext_resource type="PackedScene" uid="uid://dxeck62k7i4yd" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="9_ueiaa"]
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="10_t06ws"]
+[ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="16_cxwtw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
@@ -298,10 +299,10 @@ text = "Reset"
 script = ExtResource("10_t06ws")
 
 [node name="InitialPlacementDialog" parent="CanvasLayer" instance=ExtResource("9_ueiaa")]
-offset_left = 798.0
-offset_top = 896.0
-offset_right = 1148.0
-offset_bottom = 994.0
+offset_left = 781.0
+offset_top = 685.0
+offset_right = 1131.0
+offset_bottom = 783.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = -1
@@ -329,6 +330,12 @@ player_id = 2
 layout_mode = 2
 size_flags_vertical = 3
 player_id = 3
+
+[node name="HandDialog" parent="CanvasLayer" instance=ExtResource("16_cxwtw")]
+offset_left = 730.0
+offset_top = 802.0
+offset_right = 1180.0
+offset_bottom = 1063.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")

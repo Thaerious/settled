@@ -1,0 +1,117 @@
+[gd_scene load_steps=14 format=3 uid="uid://cqkf4h28hkb1l"]
+
+[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_0eclp"]
+[ext_resource type="PackedScene" uid="uid://bsr5gimclo5io" path="res://hud/hand_dialog/hand_action_control.tscn" id="2_jhwv1"]
+[ext_resource type="Texture2D" uid="uid://demi577aj2enu" path="res://assets/action_cards/knight.png" id="3_ais11"]
+[ext_resource type="PackedScene" uid="uid://cf2jhci0uarl7" path="res://hud/hand_dialog/hand_resource_control.tscn" id="4_nvqpu"]
+[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="5_2edvl"]
+[ext_resource type="Texture2D" uid="uid://v6ti4h2kyw2s" path="res://assets/action_cards/monopoly.png" id="5_706re"]
+[ext_resource type="Texture2D" uid="uid://sfwaxf30fwsr" path="res://assets/action_cards/plenty.png" id="7_ruhtk"]
+[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="7_vy8ti"]
+[ext_resource type="Texture2D" uid="uid://ccpkisxjwdal7" path="res://assets/action_cards/road_building.png" id="9_8jger"]
+[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="9_ymvef"]
+[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="11_0h0qd"]
+[ext_resource type="Texture2D" uid="uid://cjust6wg6yh64" path="res://assets/action_cards/victory.png" id="11_ccy7u"]
+[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="13_nvqpu"]
+
+[node name="HandDialog" type="PanelContainer"]
+offset_top = 89.0
+offset_right = 450.0
+offset_bottom = 350.0
+mouse_filter = 1
+theme = ExtResource("1_0eclp")
+theme_type_variation = &"OuterBorderLevel0"
+
+[node name="MarginContainerBorder" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"MarginLevel0"
+
+[node name="InnerBorder" type="PanelContainer" parent="MarginContainerBorder"]
+layout_mode = 2
+theme_type_variation = &"InnerBorderLevel0"
+
+[node name="MarginContainerPanel" type="MarginContainer" parent="MarginContainerBorder/InnerBorder"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer" instance=ExtResource("2_jhwv1")]
+layout_mode = 2
+action_type = 1
+display_texture = ExtResource("9_8jger")
+
+[node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer" instance=ExtResource("4_nvqpu")]
+layout_mode = 2
+resource_type = 1
+sprite_texture = ExtResource("5_2edvl")
+sprite_size = Vector2(0, 0)
+display_texture = ExtResource("5_2edvl")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2" instance=ExtResource("2_jhwv1")]
+layout_mode = 2
+action_type = 1
+display_texture = ExtResource("5_706re")
+
+[node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2" instance=ExtResource("4_nvqpu")]
+layout_mode = 2
+resource_type = 0
+sprite_texture = ExtResource("7_vy8ti")
+sprite_size = Vector2(0, 0)
+display_texture = ExtResource("7_vy8ti")
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer3" instance=ExtResource("2_jhwv1")]
+layout_mode = 2
+action_type = 1
+display_texture = ExtResource("7_ruhtk")
+
+[node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer3" instance=ExtResource("4_nvqpu")]
+layout_mode = 2
+resource_type = 2
+sprite_texture = ExtResource("9_ymvef")
+sprite_size = Vector2(0, 0)
+display_texture = ExtResource("9_ymvef")
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer4" instance=ExtResource("2_jhwv1")]
+layout_mode = 2
+action_type = 1
+display_texture = ExtResource("3_ais11")
+
+[node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer4" instance=ExtResource("4_nvqpu")]
+layout_mode = 2
+resource_type = 4
+sprite_texture = ExtResource("11_0h0qd")
+sprite_size = Vector2(0, 0)
+display_texture = ExtResource("11_0h0qd")
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer5" instance=ExtResource("2_jhwv1")]
+layout_mode = 2
+action_type = 1
+display_texture = ExtResource("11_ccy7u")
+
+[node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer5" instance=ExtResource("4_nvqpu")]
+layout_mode = 2
+resource_type = 3
+sprite_texture = ExtResource("13_nvqpu")
+sprite_size = Vector2(0, 0)
+display_texture = ExtResource("13_nvqpu")
