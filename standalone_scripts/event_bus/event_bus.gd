@@ -16,7 +16,6 @@ signal set_road_view_only(id: int, edge: AxialEdge) # TODO REMOVE
 signal request_roll()
 signal request_purchase_action_card()
 signal request_play_action_card(id: int, card: Model.ActionCardTypes)
-signal request_initial_placement(id: int, house: Axial, road: AxialEdge)
 signal request_house(id: int, corner: Axial)
 signal request_city(id: int, corner: Axial)
 signal request_road(id: int, edge: AxialEdge)

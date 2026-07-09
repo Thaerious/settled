@@ -22,7 +22,6 @@ func _ready() -> void:
 	EventBus.service_error.connect(self._on_service_error)
 	EventBus.request_roll.connect(self._on_request_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
-	EventBus.request_initial_placement.connect(self.place_initial)
 	EventBus.request_exchange.connect(self.request_exchange)
 	EventBus.request_play_action_card.connect(self._request_play_action_card)
 	EventBus.play_monopoly_card.connect(self._play_monopoly_card)
@@ -45,7 +44,13 @@ func _request_update_phase(phase: GamePhase):
 
 
 func _request_house(id: int, corner: Axial) -> void:
-	Game.model.do_remove_resources(id, Model.COSTS["house"])
+	var count = Game.model.get_houses(id).size()	
+
+	if Game.model.get_current_phase() == Model.GamePhase.SETUP:
+		if count == 1: self._award_resources(id, corner)
+	else:
+		Game.model.do_remove_resources(id, Model.COSTS["house"])		
+
 	Game.model.do_set_house(id, corner)
 
 
@@ -54,11 +59,11 @@ func _request_city(id: int, corner: Axial) -> void:
 	Game.model.do_set_city(id, corner)
 
 
-func _request_road(id: int, edge: AxialEdge) -> void:	
+func _request_road(id: int, edge: AxialEdge) -> void:
 	if Game.model.get_current_phase() == GamePhase.ROAD_BUILDING:
 		Game.model.decrement_road_building()
 		if Game.model.get_road_building() == 0: Game.model.do_update_phase(GamePhase.MAIN)
-	else:
+	elif Game.model.get_current_phase() != Model.GamePhase.SETUP:
 		Game.model.do_remove_resources(id, Model.COSTS["road"])
 		
 	Game.model.do_set_road(id, edge)
@@ -207,24 +212,26 @@ static func weighted_random(weights: Dictionary) -> Variant:
 
 func _next_player() -> void:
 	var next = Game.model.get_current_player()
+	var count_houses = Game.model.get_houses(Game.model.get_current_player()).size()	
 
-	if Game.model.get_current_phase() == GamePhase.SETUP_FORWARD:
-		next = next + 1
-		if next > 3:
-			Game.model.do_update_player(3)
-			Game.model.do_update_phase(GamePhase.SETUP_REVERSE)
-		else:
-			Game.model.do_update_player(next)
-			Game.model.do_update_phase(GamePhase.SETUP_FORWARD)
-	elif Game.model.get_current_phase() == GamePhase.SETUP_REVERSE:
-		next = next - 1
-		if next < 0:
-			Game.model.do_update_player(0)
-			Game.model.do_update_phase(GamePhase.MAIN)
-			self._on_request_roll()
-		else:
-			Game.model.do_update_player(next)
-			Game.model.do_update_phase(GamePhase.SETUP_REVERSE)
+	if Game.model.get_current_phase() == GamePhase.SETUP:
+		if count_houses == 1: # forward
+			next = next + 1
+			if next > 3:
+				Game.model.do_update_player(3)
+				Game.model.do_update_phase(GamePhase.SETUP)
+			else:
+				Game.model.do_update_player(next)
+				Game.model.do_update_phase(GamePhase.SETUP)
+		else: # reverse
+			next = next - 1
+			if next < 0:
+				Game.model.do_update_player(0)
+				Game.model.do_update_phase(GamePhase.MAIN)
+				self._on_request_roll()
+			else:
+				Game.model.do_update_player(next)
+				Game.model.do_update_phase(GamePhase.SETUP)
 
 
 func place_house(id: int, corner: Axial) -> void:
@@ -238,17 +245,6 @@ func place_house(id: int, corner: Axial) -> void:
 	elif port_resource != Model.ResourceTypes.NONE:
 		if Game.model.get_exchange_rate(id).get_resource(port_resource) > 2:
 			Game.model.do_set_exchange_rate(id, port_resource, 2)
-
-
-func place_initial(id: int, corner: Axial, edge: AxialEdge) -> void:
-	assert(id >= 0 and id <= 3, "Player id out of range: %s" % id)
-	assert(not corner.is_hex(), "Axial is not a corner: %s" % corner)
-
-	self.place_house(id, corner)
-	Game.model.do_set_road(id, edge)
-	if Game.model.get_current_phase() == GamePhase.SETUP_REVERSE:
-		self._award_resources(id, corner)
-	self._next_player()
 
 
 func _award_resources(id:int, corner: Axial) -> void:

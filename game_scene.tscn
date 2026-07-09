@@ -67,22 +67,13 @@ text = "Not Started
 script = ExtResource("3_na8jj")
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSetupForwardHouse" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
+[node name="ButtonSetup" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Setup Forward House
+text = "Setup
 "
 script = ExtResource("3_na8jj")
 phase = 1
-metadata/_custom_type_script = "uid://bsec75ti05trd"
-
-[node name="ButtonSetupReverseHouse" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Setup Reverse House
-"
-script = ExtResource("3_na8jj")
-phase = 2
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMovePirate" type="Button" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons"]

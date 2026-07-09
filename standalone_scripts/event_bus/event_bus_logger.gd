@@ -16,7 +16,6 @@ func _ready() -> void:
 	EventBus.request_roll.connect(func(): print("EventBus.request_roll"))
 	EventBus.request_purchase_action_card.connect(func(): print("EventBus.request_purchase_action_card"))
 	EventBus.request_play_action_card.connect(func(id: int, card: Model.ActionCardTypes): print("EventBus.request_play_action_card | id: %s | card: %s" % [id, Model.ActionCardTypes.find_key(card)]))
-	EventBus.request_initial_placement.connect(func(id: int, house: Axial, road: AxialEdge): print("EventBus.request_initial_placement | id: %s | house: %s | road: %s" % [id, house, road]))
 	EventBus.request_house.connect(func(id: int, corner: Axial): print("EventBus.request_house | id: %s | corner: %s" % [id, corner]))
 	EventBus.request_city.connect(func(id: int, corner: Axial): print("EventBus.request_city | id: %s | corner: %s" % [id, corner]))
 	EventBus.request_road.connect(func(id: int, edge: AxialEdge): print("EventBus.request_road | id: %s | edge: %s" % [id, edge]))

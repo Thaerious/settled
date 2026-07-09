@@ -13,7 +13,6 @@ func set_piece(game_piece: GamePiece) -> void:
 
 
 func clear_piece() -> void:
-	print("Clear Piece %s" % self._current_piece)
 	if not self._current_piece: return
 	self.remove_child(self._current_piece)
 	self._current_piece = null

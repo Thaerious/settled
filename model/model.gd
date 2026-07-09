@@ -58,8 +58,7 @@ const CARD_DISTRIBUTION : Dictionary[Model.ActionCardTypes, int] = {
 
 enum GamePhase {
 	NOT_STARTED,
-	SETUP_FORWARD,
-	SETUP_REVERSE,
+	SETUP,
 	MOVE_PIRATE,
 	INIT_DISCARD,
 	DURING_DISCARD,
