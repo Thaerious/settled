@@ -38,6 +38,8 @@ func _ready() -> void:
 
 func _on_current_phase_updated(phase: Model.GamePhase) -> void:
 	match phase:
+		Model.GamePhase.SETUP: 
+			self.visible = false
 		Model.GamePhase.DURING_DISCARD: 
 			self.visible = false
 		Model.GamePhase.YEAR_OF_PLENTY:
@@ -49,9 +51,3 @@ func _on_current_phase_updated(phase: Model.GamePhase) -> void:
 
 func _on_model_loaded() -> void:	
 	self._on_current_phase_updated(Game.model.get_current_phase())
-
-	var qty_wallet = Game.model.get_bank(Game.self_id)
-	qty_wallet.update_view(RESOURCE_QTY_LABEL_MAP)
-
-	var ex_wallet = Game.model.get_exchange_rate(Game.self_id)	
-	ex_wallet.update_view(RESOURCE_EX_LABEL_MAP, "%s:1")

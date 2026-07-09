@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://cqkf4h28hkb1l"]
+[gd_scene load_steps=15 format=3 uid="uid://cqkf4h28hkb1l"]
 
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_0eclp"]
 [ext_resource type="PackedScene" uid="uid://bsr5gimclo5io" path="res://hud/hand_dialog/hand_action_control.tscn" id="2_jhwv1"]
+[ext_resource type="Script" uid="uid://ec1brwq2k8rv" path="res://hud/hand_dialog/hand_dialog.gd" id="2_ruhtk"]
 [ext_resource type="Texture2D" uid="uid://demi577aj2enu" path="res://assets/action_cards/knight.png" id="3_ais11"]
 [ext_resource type="PackedScene" uid="uid://cf2jhci0uarl7" path="res://hud/hand_dialog/hand_resource_control.tscn" id="4_nvqpu"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="5_2edvl"]
@@ -21,6 +22,7 @@ offset_bottom = 350.0
 mouse_filter = 1
 theme = ExtResource("1_0eclp")
 theme_type_variation = &"OuterBorderLevel0"
+script = ExtResource("2_ruhtk")
 
 [node name="MarginContainerBorder" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -42,7 +44,6 @@ theme_override_constants/separation = 2
 
 [node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
-action_type = 1
 display_texture = ExtResource("9_8jger")
 
 [node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer" instance=ExtResource("4_nvqpu")]
@@ -58,7 +59,6 @@ theme_override_constants/separation = 2
 
 [node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
-action_type = 1
 display_texture = ExtResource("5_706re")
 
 [node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer2" instance=ExtResource("4_nvqpu")]
@@ -74,7 +74,6 @@ theme_override_constants/separation = 2
 
 [node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer3" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
-action_type = 1
 display_texture = ExtResource("7_ruhtk")
 
 [node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer3" instance=ExtResource("4_nvqpu")]
@@ -90,7 +89,6 @@ theme_override_constants/separation = 2
 
 [node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer4" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
-action_type = 1
 display_texture = ExtResource("3_ais11")
 
 [node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer4" instance=ExtResource("4_nvqpu")]
@@ -106,7 +104,6 @@ theme_override_constants/separation = 2
 
 [node name="HandActionControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer5" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
-action_type = 1
 display_texture = ExtResource("11_ccy7u")
 
 [node name="HandResourceControl" parent="MarginContainerBorder/InnerBorder/MarginContainerPanel/HBoxContainer/VBoxContainer5" instance=ExtResource("4_nvqpu")]

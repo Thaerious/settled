@@ -14,9 +14,7 @@ size_flags_vertical = 4
 theme = ExtResource("1_rm0ov")
 theme_type_variation = &"OuterBorder"
 script = ExtResource("2_rm0ov")
-action_type = null
 display_texture = ExtResource("3_lejws")
-sprite_texture = ExtResource("3_lejws")
 
 [node name="StyleHelper" type="Node" parent="."]
 unique_name_in_owner = true
@@ -45,7 +43,7 @@ theme_type_variation = &"BorderMargin"
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="ResourceTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
+[node name="IconTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2

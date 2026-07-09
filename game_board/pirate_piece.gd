@@ -1,7 +1,7 @@
 class_name PiratePiece
 extends Node2D
 
-@onready var _sprite := %Sprite2DExact
+# @onready var _sprite := %Sprite2DExact
 @onready var _area2d := %Area2D
 
 func _ready() -> void:

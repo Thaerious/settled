@@ -4,8 +4,9 @@ extends PanelContainer
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	EventBus.model_loaded.connect(self._on_model_updated)
-	EventBus.current_phase_updated.connect(func(__): self._on_model_updated())
+	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
 	EventBus.current_player_updated.connect(func(__): self._on_model_updated())
+
 	%ControlHouse1.house_placed.connect(func(): 
 		%ControlHouse1.disabled = true
 		%ControlRoad1.disabled = false
@@ -15,8 +16,16 @@ func _ready():
 		%ControlRoad2.disabled = false
 	)
 
+func _on_current_phase_updated(phase: Model.GamePhase) -> void:
+	match phase:
+		Model.GamePhase.SETUP: 
+			self.visible = true
+		_: self.visible = false
+
 
 func _on_model_updated() -> void:
+	self._on_current_phase_updated(Game.model.get_current_phase())
+	
 	var count_houses = Game.model.get_houses(Game.self_id).size()	
 	var count_roads = Game.model.get_roads(Game.self_id).size()
 

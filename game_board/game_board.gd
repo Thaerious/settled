@@ -36,11 +36,6 @@ var vertex_offsets: Vec2iSet = (
 )
 
 
-# prevent targets from first free road
-# because show_initial_house_targets
-var _untracked_road: AxialEdge = null 
-
-
 func _ready() -> void:
 	self._setup()
 

@@ -23,8 +23,7 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	self.sprite_texture = self.sprite_texture
-	self.sprite_size = self.sprite_size
+	self.display_texture = self.display_texture
 
 
 func _on_mouse_entered() -> void:	
