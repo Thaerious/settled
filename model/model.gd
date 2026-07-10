@@ -95,7 +95,6 @@ var _bank: Dictionary[int, Wallet] = {}                  # map of player id -> o
 var _exchange_rate: Dictionary[int, Wallet] = {}         # map of player id -> exchange rate
 var _owned_cards: Dictionary[int, ActionCardWallet] = {}    # map of player id -> all actions cards
 var _playable_cards: Dictionary[int, ActionCardWallet] = {} # map of player id -> actions cards that can be played this turn
-var _has_played_card: bool = false					  # whether the current player has played an action card this turn
 var _discard_target: Dictionary[int, int]           # player_id -> count of cards that this player must discard
 var _houses: Dictionary[String, int] = {}             # map of house axial -> player who owns it
 var _cities: Dictionary[String, int] = {}             # map of city axial -> player who owns it
@@ -123,7 +122,7 @@ func get_largest_army() -> int:             return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
 func player_count() -> int:                 return self._player_records.size() # todo move all player counts to this
 func get_road_building() -> int:            return self._road_building
-func get_has_played_card() -> bool:         return self._has_played_card
+
 
 # return all edges that can accept a road
 func all_road_edges() -> AxialEdgeSet:
@@ -215,9 +214,8 @@ func do_end_turn() -> void:
 	var owned = self._owned_cards[self._current_player]
 	var playable = self._playable_cards[self._current_player]
 	owned.copy_to(playable)
-	self._has_played_card = false
 
-	EventBus.action_cards_updated.emit(self._current_player, owned, playable, self._has_played_card)
+	EventBus.action_cards_updated.emit(self._current_player, owned, playable)
 
 
 func do_set_dice(d1: int, d2:int) -> void:
@@ -299,8 +297,7 @@ func do_add_action_card(id: int, card: ActionCardTypes) -> void:
 
 	self._player_records[id].action_cards = owned.size()
 
-	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card)
-	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card)
+	EventBus.action_cards_updated.emit(id, owned, playable)
 
 
 func do_remove_action_card(id: int, card) -> void:
@@ -308,10 +305,9 @@ func do_remove_action_card(id: int, card) -> void:
 	self._playable_cards[id].remove_card(card)
 	var owned := self._owned_cards[id].duplicate()
 	var playable := self._playable_cards[id].duplicate()
-	self._has_played_card = true
 	self._player_records[id].action_cards = owned.size()
 
-	EventBus.action_cards_updated.emit(id, owned, playable, self._has_played_card)	
+	EventBus.action_cards_updated.emit(id, owned, playable)	
 
 
 func do_update_phase(phase: GamePhase) -> void:

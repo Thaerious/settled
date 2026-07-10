@@ -43,8 +43,6 @@ func _ready() -> void:
 	)
 
 	EventBus.player_record_updated.connect(func(id: int, rec: PlayerRecord):
-		print("record updated | self.player_id %s | record id %s" % [self.player_id, id])
-		print(self)
 		if self.player_id == id:
 			self.player_record = rec
 	)

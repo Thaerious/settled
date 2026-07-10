@@ -15,7 +15,6 @@ static func save(model: Model, path: String) -> void:
 		"exchange_rate":         serialize_dictionary(model._exchange_rate),
 		"owned_action_cards":    serialize_dictionary(model._owned_cards),
 		"playable_action_cards": serialize_dictionary(model._playable_cards),			
-		"has_played_card":       model._has_played_card,
 		"discard_target":        model._discard_target,
 		"road_building":         model._road_building,
 		"houses":                model._houses,
@@ -45,7 +44,6 @@ static func load(path: String) -> Model:
 	model._largest_army    = int(data["largest_army"])	
 	model._longest_road    = int(data["longest_road"])
 	model._pirate          = Axial.from_key(data["pirate"])	
-	model._has_played_card = bool(data["has_played_card"])
 
 	for key in data["discard_target"]:
 		model._discard_target[int(key)] = int(data["discard_target"][key])
