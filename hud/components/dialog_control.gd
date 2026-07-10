@@ -30,7 +30,6 @@ func _ready() -> void:
 
 
 func _on_mouse_entered() -> void:	
-	print("on mouse entered")
 	if disabled: return
 	self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
 	self._style_helper.style = "hover"

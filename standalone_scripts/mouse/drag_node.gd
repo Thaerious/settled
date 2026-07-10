@@ -63,10 +63,10 @@ func _on_press(event: InputEvent) -> void:
 
 
 func _on_mouse_input(event: InputEventMouse) -> void:
-	if is_left_press(event): 
+	if MouseHelper.is_left_press(event): 
 		if not self._dragging: self._do_start_drag()
 
-	if is_left_release(event):		
+	if MouseHelper.is_left_release(event):		
 		if self._dragging: self._do_stop_drag()
 
 
@@ -90,16 +90,3 @@ func _do_stop_drag() -> void:
 	self.drag_end.emit(rec)
 
 
-static func is_left_press(event: InputEvent) -> bool:
-	return (
-		event is InputEventMouseButton
-		and event.button_index == MouseButton.MOUSE_BUTTON_LEFT
-		and event.pressed
-	)	
-
-static func is_left_release(event: InputEvent) -> bool:
-	return (
-		event is InputEventMouseButton
-		and event.button_index == MouseButton.MOUSE_BUTTON_LEFT
-		and not event.pressed
-	)		

@@ -98,3 +98,20 @@ func resolve_drag_target(drag_mask: int) -> DragRecord:
 		record.local_pos = self.get_local(record.destination, world)
 
 	return record
+
+
+static func is_left_press(event: InputEvent) -> bool:
+	return (
+		event is InputEventMouseButton
+		and event.button_index == MouseButton.MOUSE_BUTTON_LEFT
+		and event.pressed
+	)	
+
+
+static func is_left_release(event: InputEvent) -> bool:
+	return (
+		event is InputEventMouseButton
+		and event.button_index == MouseButton.MOUSE_BUTTON_LEFT
+		and not event.pressed
+	)		
+
