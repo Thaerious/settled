@@ -106,11 +106,11 @@ func _model_loaded() -> void:
 
 
 func show_house_targets_hnd():
-	var black_list = Game.model.get_all_buildings()
-	black_list = black_list.union(black_list.map(Axial.neighbors_of))
-	var white_list = self.buildable_corners.difference(black_list)
-	print(white_list)
+	var all_buildings = Game.model.get_all_buildings()
 
+	var black_list = all_buildings.union(all_buildings.map(Axial.neighbors_of))
+	var white_list = self.buildable_corners.difference(black_list)
+	
 	var roads := Game.model.get_roads(Game.self_id)
 	var road_corners := roads.corner_map(AxialEdge.corners_of)
 	var permitted = road_corners.intersect(white_list)

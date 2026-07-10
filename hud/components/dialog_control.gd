@@ -24,15 +24,21 @@ extends PanelContainer
 
 func _ready() -> void:
 	self.display_texture = self.display_texture
+	self.disabled = self.disabled
+	self.mouse_entered.connect(self._on_mouse_entered)
+	self.mouse_exited.connect(self._on_mouse_exited)
 
 
 func _on_mouse_entered() -> void:	
+	print("on mouse entered")
 	if disabled: return
+	self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
 	self._style_helper.style = "hover"
 
 
 func _on_mouse_exited() -> void:	
 	if disabled: return
+	self.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	self._style_helper.style = "default"
 
 

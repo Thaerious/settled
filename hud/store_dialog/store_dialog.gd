@@ -10,10 +10,10 @@ func _ready() -> void:
 
 
 func _disable_all() -> void:
-	%Road.disabled = true
-	%House.disabled = true
-	%City.disabled = true
-	%Cards.disabled = true
+	%RoadControl.disabled = true
+	%HouseControl.disabled = true
+	%CityControl.disabled = true
+	%CardsControl.disabled = true
 
 
 func _on_update() -> void:
@@ -27,21 +27,21 @@ func _update_controls() -> void:
 	var wallet = Game.model.get_bank(Game.self_id)
 
 	if wallet.has_resources(Model.COSTS["road"]):
-		%Road.disabled = false
+		%RoadControl.disabled = false
 	else:
-		%Road.disabled = true		
+		%RoadControl.disabled = true		
 
 	if wallet.has_resources(Model.COSTS["house"]):
-		%House.disabled = false
+		%HouseControl.disabled = false
 	else:
-		%House.disabled = true
+		%HouseControl.disabled = true
 
 	if wallet.has_resources(Model.COSTS["city"]):
-		%City.disabled = false
+		%CityControl.disabled = false
 	else:
-		%City.disabled = true
+		%CityControl.disabled = true
 
 	if wallet.has_resources(Model.COSTS["card"]):
-		%Cards.disabled = false
+		%CardsControl.disabled = false
 	else:
-		%Cards.disabled = true
+		%CardsControl.disabled = true

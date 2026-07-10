@@ -49,11 +49,9 @@ func _update_hover() -> void:
 
 	if self._last_hover_target: 
 		self.hover_exit.emit(record)
-		self._on_hover_exit(record)
 
 	if record.destination: 
 		self.hover_enter.emit(record)
-		self._on_hover_enter(record)
 
 	self._last_hover_target = record.destination
 
@@ -80,7 +78,6 @@ func _do_start_drag() -> void:
 	self._dragging = true
 	self._sprite.visible = true
 	self._sprite.top_level = true
-	self._on_drag_start()
 	self.drag_start.emit()
 
 
@@ -90,7 +87,6 @@ func _do_stop_drag() -> void:
 	self._sprite.visible = false
 	self._sprite.top_level = false
 	var rec := MouseHelper.resolve_drag_target(self.drag_mask)
-	self._on_drag_end(rec)
 	self.drag_end.emit(rec)
 
 
@@ -107,19 +103,3 @@ static func is_left_release(event: InputEvent) -> bool:
 		and event.button_index == MouseButton.MOUSE_BUTTON_LEFT
 		and not event.pressed
 	)		
-
-
-func _on_drag_end(_rec: DragRecord) -> void:
-	pass
-
-
-func _on_drag_start() -> void:
-	pass		
-
-
-func _on_hover_enter(_rec: DragRecord) -> void:
-	pass
-
-
-func _on_hover_exit(_rec: DragRecord) -> void:
-	pass		

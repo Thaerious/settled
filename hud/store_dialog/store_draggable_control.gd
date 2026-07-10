@@ -1,3 +1,0 @@
-@tool
-class_name StoreDraggableControl
-extends DraggableDialogControl

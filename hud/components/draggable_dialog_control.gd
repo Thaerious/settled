@@ -24,8 +24,8 @@ extends DialogControl
 
 func _ready() -> void:
 	super._ready()
-	self.display_texture = self.display_texture
-	self.disabled = self.disabled
+	self.sprite_texture = self.sprite_texture
+	self.sprite_size = self.sprite_size
 
 
 func _enable() -> void: 

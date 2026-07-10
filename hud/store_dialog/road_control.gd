@@ -1,7 +1,7 @@
 @tool
+class_name RoadControl
 extends DraggableDialogControl
 
-var house_axial:Axial = null
 var _last_target: EdgeTarget = null
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func _on_drag_start() -> void:
-	EventBus.show_initial_road_targets.emit(self.house_axial)	
+	EventBus.show_road_targets.emit()
 
 
 func _on_drag_end(rec: DragRecord) -> void:
@@ -32,7 +32,6 @@ func _on_hover_enter(rec: DragRecord) -> void:
 	road_piece.modulate = GameBoard.tint[Game.self_id]
 	self._last_target.set_piece(road_piece)
 	road_piece.rotation = self._last_target.axial_edge.rotation
-
 
 func _on_hover_exit(_rec: DragRecord) -> void:
 	if not self._last_target: return

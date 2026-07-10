@@ -1,17 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://dtx8c0xwi3hkf"]
+[gd_scene load_steps=9 format=3 uid="uid://dtx8c0xwi3hkf"]
 
 [ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone_scripts/nodes/style_helper.gd" id="1_nyukr"]
 [ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="2_j4a5t"]
-[ext_resource type="Script" uid="uid://cpdgibpw46tln" path="res://hud/store_dialog/store_draggable_control.gd" id="2_nyukr"]
+[ext_resource type="Script" uid="uid://cspay5h8i3atd" path="res://hud/components/draggable_dialog_control.gd" id="2_l1jq6"]
+[ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="3_jv2k6"]
 [ext_resource type="Theme" uid="uid://bjie0pv40kdif" path="res://hud/themes/disabled.tres" id="3_oxas2"]
 [ext_resource type="Theme" uid="uid://dypl76lfa5loe" path="res://hud/themes/hover.tres" id="4_jansk"]
 [ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone_scripts/mouse/drag_node.gd" id="6_jxq08"]
 [ext_resource type="Script" uid="uid://bevp5cowl65sy" path="res://hud/components/scaled_sprite.gd" id="7_qevc8"]
 
-[node name="StoreDraggableControl" type="PanelContainer"]
+[node name="DraggableDialogControl" type="PanelContainer"]
 theme = ExtResource("2_j4a5t")
 theme_type_variation = &"OuterBorder"
-script = ExtResource("2_nyukr")
+script = ExtResource("2_l1jq6")
+sprite_texture = ExtResource("3_jv2k6")
+display_texture = ExtResource("3_jv2k6")
 
 [node name="StyleHelper" type="Node" parent="."]
 unique_name_in_owner = true
@@ -25,10 +28,15 @@ style_map = Dictionary[String, Theme]({
 [node name="DragNode" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_jxq08")
+drag_mask = 2
 metadata/_custom_type_script = "uid://bwub0la08s7mr"
 
 [node name="ScaledSprite" type="Sprite2D" parent="DragNode"]
+unique_name_in_owner = true
+visible = false
+texture = ExtResource("3_jv2k6")
 script = ExtResource("7_qevc8")
+sprite_size = Vector2(50, 50)
 metadata/_custom_type_script = "uid://bevp5cowl65sy"
 
 [node name="MarginContainerBorder" type="MarginContainer" parent="."]
@@ -54,6 +62,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_vertical = 3
+texture = ExtResource("3_jv2k6")
 expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
