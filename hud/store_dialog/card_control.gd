@@ -10,11 +10,8 @@ func _ready() -> void:
 func _on_press(event: InputEvent) -> void:
 	if self.disabled: return
 	if not event is InputEventMouseButton: return
-	
-	if is_left_press(event): 
-		if not self._dragging: self._do_start_drag()
-
-	if is_left_release(event):		
-		if self._dragging: self._do_stop_drag()
+	if not MouseHelper.is_left_release(event): return
+	if not get_viewport().gui_get_hovered_control(): return
+	if not get_viewport().gui_get_hovered_control().owner == self: return
 
 	EventBus.request_purchase_action_card.emit()

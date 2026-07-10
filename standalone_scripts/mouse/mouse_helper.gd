@@ -53,7 +53,7 @@ func _get_world_target(world: Vector2, drag_mask: int) -> Node:
 ## Queries the ui space for any node with a drag_mask field.
 ## Matches with Nodes whose drag_mask matches the drag_mask 
 ## from the source drag node.
-func _get_ui_target(drag_mask: int) -> Control:
+func get_ui_target(drag_mask) -> Control:
 	var ui_target: Control = get_viewport().gui_get_hovered_control()
 	if ui_target == null: return null
 
@@ -78,7 +78,7 @@ func _get_drop_node(control: Control) -> DropNode2D:
 
 # Retrieve the first object under the mouse that is a valid target for drag-drop
 func _get_drop_target(world: Vector2, drag_mask: int) -> Variant:
-	var drop_target: Variant = self._get_ui_target(drag_mask)
+	var drop_target: Variant = self.get_ui_target(drag_mask)
 	if drop_target != null: return drop_target
 	return self._get_world_target(world, drag_mask)
 
@@ -100,7 +100,7 @@ func resolve_drag_target(drag_mask: int) -> DragRecord:
 	return record
 
 
-static func is_left_press(event: InputEvent) -> bool:
+func is_left_press(event: InputEvent) -> bool:
 	return (
 		event is InputEventMouseButton
 		and event.button_index == MouseButton.MOUSE_BUTTON_LEFT
@@ -108,7 +108,7 @@ static func is_left_press(event: InputEvent) -> bool:
 	)	
 
 
-static func is_left_release(event: InputEvent) -> bool:
+func is_left_release(event: InputEvent) -> bool:
 	return (
 		event is InputEventMouseButton
 		and event.button_index == MouseButton.MOUSE_BUTTON_LEFT
