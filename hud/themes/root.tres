@@ -1,19 +1,21 @@
 [gd_resource type="Theme" load_steps=5 format=3 uid="uid://c1voxdoftfv08"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrvmb"]
-bg_color = Color(0.015686275, 0.46666667, 0.53333336, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xn4x1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwgac"]
+bg_color = Color(0, 0.70610815, 0.52188826, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
+border_color = Color(0.99625546, 0.7387036, 0.5273885, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kl5b"]
-bg_color = Color(0.018899981, 0.5485201, 0.63, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrvmb"]
+bg_color = Color(0.015686275, 0.46666667, 0.53333336, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -36,24 +38,18 @@ corner_radius_top_right = 25
 corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_se2rm"]
-bg_color = Color(0.101960786, 0.5568628, 0.7647059, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-
 [resource]
+AcceptButton/base_type = &"Button"
+AcceptButton/styles/focus = SubResource("StyleBoxFlat_xn4x1")
+AcceptButton/styles/normal = SubResource("StyleBoxFlat_hwgac")
+BorderMargin/base_type = &"MarginContainer"
+BorderMargin/constants/margin_bottom = 6
+BorderMargin/constants/margin_left = 6
+BorderMargin/constants/margin_right = 6
+BorderMargin/constants/margin_top = 6
 HBoxContainer/constants/separation = 10
-InnerBorderLevel0/base_type = &"PanelContainer"
-InnerBorderLevel0/styles/panel = SubResource("StyleBoxFlat_hrvmb")
-InnerBorderLevel1/base_type = &"PanelContainer"
-InnerBorderLevel1/styles/panel = SubResource("StyleBoxFlat_0kl5b")
+InnerBorder/base_type = &"PanelContainer"
+InnerBorder/styles/panel = SubResource("StyleBoxFlat_hrvmb")
 LabelLarge/base_type = &"Label"
 LabelLarge/font_sizes/font_size = 16
 LabelSmall/base_type = &"Label"
@@ -62,18 +58,6 @@ MarginContainer/constants/margin_bottom = 10
 MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
-MarginLevel0/base_type = &"MarginContainer"
-MarginLevel0/constants/margin_bottom = 6
-MarginLevel0/constants/margin_left = 6
-MarginLevel0/constants/margin_right = 6
-MarginLevel0/constants/margin_top = 6
-MarginLevel1/base_type = &"MarginContainer"
-MarginLevel1/constants/margin_bottom = 4
-MarginLevel1/constants/margin_left = 4
-MarginLevel1/constants/margin_right = 4
-MarginLevel1/constants/margin_top = 4
-OuterBorderLevel0/base_type = &"PanelContainer"
-OuterBorderLevel0/styles/panel = SubResource("StyleBoxFlat_xnmyk")
-OuterBorderLevel1/base_type = &"PanelContainer"
-OuterBorderLevel1/styles/panel = SubResource("StyleBoxFlat_se2rm")
+OuterBorder/base_type = &"PanelContainer"
+OuterBorder/styles/panel = SubResource("StyleBoxFlat_xnmyk")
 VBoxContainer/constants/separation = 10

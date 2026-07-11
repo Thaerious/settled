@@ -1,4 +1,6 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://336r2sin2k6j"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://336r2sin2k6j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fax7v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kl5b"]
 bg_color = Color(0, 0.58333325, 0.7, 1)
@@ -25,6 +27,8 @@ corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
 
 [resource]
+AcceptButton/base_type = &"Button"
+AcceptButton/styles/disabled = SubResource("StyleBoxFlat_fax7v")
 BorderMargin/base_type = &"MarginContainer"
 BorderMargin/constants/margin_bottom = 4
 BorderMargin/constants/margin_left = 4

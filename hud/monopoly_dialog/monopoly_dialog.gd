@@ -6,17 +6,8 @@ var _selected_panel: SelectablePanelContainer = null
 
 
 func _ready() -> void:
-	var panels := find_children("*", "SelectablePanelContainer", true, false)
-
-	for panel in panels:
-		panel.panel_selected.connect(self._on_panel_selected)
-
-	%ButtonAccept.pressed.connect(func():
-		var resource_control: = self._selected_panel.find_children("*", "ResourceControl", true, false)[0]  as ResourceControl
-		EventBus.play_monopoly_card.emit(Game.self_id, resource_control.resource_type)
-	)
-
 	EventBus.current_phase_updated.connect(self._update_phase)
+
 	EventBus.model_loaded.connect(func(): 
 		self._update_phase(Game.model.get_current_phase())
 	)

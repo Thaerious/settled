@@ -26,7 +26,7 @@ corner_radius_bottom_left = 25
 
 [resource]
 BorderMargin/base_type = &"MarginContainer"
-BorderMargin/constants/margin_bottom = 4
+BorderMargin/constants/margin_bottom = 1
 BorderMargin/constants/margin_left = 4
 BorderMargin/constants/margin_right = 4
 BorderMargin/constants/margin_top = 4

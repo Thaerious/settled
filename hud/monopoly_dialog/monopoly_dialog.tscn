@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://cucg1swo1x823"]
+[gd_scene load_steps=22 format=3 uid="uid://cucg1swo1x823"]
 
 [ext_resource type="Script" uid="uid://c56j2iyw1x8fq" path="res://hud/monopoly_dialog/monopoly_dialog.gd" id="1_fgov0"]
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_sklcr"]
 [ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="3_sklcr"]
+[ext_resource type="Script" uid="uid://geegxpe578op" path="res://hud/components/dialog_control.gd" id="4_4dhii"]
 [ext_resource type="Script" uid="uid://boiik4ny4cgrg" path="res://hud/monopoly_dialog/selectable_panel.gd" id="4_yaour"]
 [ext_resource type="Texture2D" uid="uid://gijtnuwil067" path="res://assets/resources/brick_color.png" id="5_3s5q0"]
 [ext_resource type="Texture2D" uid="uid://d3ywknxm0qvs1" path="res://assets/resources/wood_color.png" id="6_ag2fw"]
@@ -47,16 +48,16 @@ offset_left = 150.0
 offset_right = 880.0
 offset_bottom = 249.0
 theme = ExtResource("1_sklcr")
-theme_type_variation = &"OuterBorderLevel0"
+theme_type_variation = &"OuterBorder"
 script = ExtResource("1_fgov0")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_type_variation = &"MarginLevel0"
+theme_type_variation = &"BorderMargin"
 
 [node name="InnerBorder" type="PanelContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_type_variation = &"InnerBorderLevel0"
+theme_type_variation = &"InnerBorder"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder"]
 layout_mode = 2
@@ -75,13 +76,12 @@ layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("3_sklcr")
 theme_type_variation = &"OuterBorder"
+script = ExtResource("4_4dhii")
+metadata/_custom_type_script = "uid://geegxpe578op"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter1"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_type_variation = &"BorderMargin"
 
 [node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter1/MarginContainer"]
 layout_mode = 2
@@ -104,7 +104,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter1/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
+[node name="IconTexture" type="TextureRect" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter1/MarginContainer/PanelContainerInner/MarginContainer/BrickControl"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_vertical = 3
@@ -116,18 +116,20 @@ metadata/_edit_use_anchors_ = true
 [node name="PanelContainerOuter2" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
+theme = ExtResource("3_sklcr")
+theme_type_variation = &"OuterBorder"
+script = ExtResource("4_4dhii")
+metadata/_custom_type_script = "uid://geegxpe578op"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_type_variation = &"BorderMargin"
 
 [node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter2/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
+theme_type_variation = &"InnerBorder"
 script = ExtResource("4_yaour")
 selected_style = SubResource("Resource_bb5c2")
 normal_style = SubResource("Resource_mpfal")
@@ -156,19 +158,20 @@ metadata/_edit_use_anchors_ = true
 [node name="PanelContainerOuter3" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
+theme = ExtResource("3_sklcr")
+theme_type_variation = &"OuterBorder"
+script = ExtResource("4_4dhii")
+metadata/_custom_type_script = "uid://geegxpe578op"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3"]
 layout_mode = 2
-theme_type_variation = &"MarginLevel1"
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_type_variation = &"BorderMargin"
 
 [node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter3/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
+theme_type_variation = &"InnerBorder"
 script = ExtResource("4_yaour")
 selected_style = SubResource("Resource_yaour")
 normal_style = SubResource("Resource_a3j8u")
@@ -197,19 +200,20 @@ metadata/_edit_use_anchors_ = true
 [node name="PanelContainerOuter4" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
+theme = ExtResource("3_sklcr")
+theme_type_variation = &"OuterBorder"
+script = ExtResource("4_4dhii")
+metadata/_custom_type_script = "uid://geegxpe578op"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4"]
 layout_mode = 2
-theme_type_variation = &"MarginLevel1"
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_type_variation = &"BorderMargin"
 
 [node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter4/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
+theme_type_variation = &"InnerBorder"
 script = ExtResource("4_yaour")
 selected_style = SubResource("Resource_wex6a")
 normal_style = SubResource("Resource_3s5q0")
@@ -238,19 +242,20 @@ metadata/_edit_use_anchors_ = true
 [node name="PanelContainerOuter5" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
+theme = ExtResource("3_sklcr")
+theme_type_variation = &"OuterBorder"
+script = ExtResource("4_4dhii")
+metadata/_custom_type_script = "uid://geegxpe578op"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5"]
 layout_mode = 2
-theme_type_variation = &"MarginLevel1"
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_type_variation = &"BorderMargin"
 
 [node name="PanelContainerInner" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer/PanelContainerOuter5/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
+theme_type_variation = &"InnerBorder"
 script = ExtResource("4_yaour")
 selected_style = SubResource("Resource_ag2fw")
 normal_style = SubResource("Resource_qq1gp")
@@ -283,9 +288,9 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 mouse_default_cursor_shape = 2
+theme_type_variation = &"AcceptButton"
 theme_override_font_sizes/font_size = 40
 theme_override_styles/focus = SubResource("StyleBoxEmpty_lh8hv")
-disabled = true
 text = "Accept
 "
 metadata/_edit_use_anchors_ = true

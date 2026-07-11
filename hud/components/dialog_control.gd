@@ -8,7 +8,7 @@ extends PanelContainer
 @export var display_texture : Texture2D:
 	set(value):
 		display_texture = value
-		if not is_node_ready(): return
+		if not is_node_ready(): return	
 		%IconTexture.texture = value
 
 

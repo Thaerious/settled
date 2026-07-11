@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=20 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://cbhbfxqg5xjty" path="res://hud/phase_buttons/button_end.gd" id="9_bpcsf"]
 [ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/dev_controllers/save_file_name.gd" id="9_glbr4"]
 [ext_resource type="PackedScene" uid="uid://dxeck62k7i4yd" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="9_ueiaa"]
+[ext_resource type="PackedScene" uid="uid://cucg1swo1x823" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="10_3d2pr"]
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="10_t06ws"]
 [ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="12_opqoc"]
 [ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="16_cxwtw"]
@@ -299,6 +300,13 @@ layout_mode = 2
 text = "End Turn
 "
 script = ExtResource("9_bpcsf")
+
+[node name="MonopolyDialog" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons/ButtonEnd" instance=ExtResource("10_3d2pr")]
+layout_mode = 0
+offset_left = -1107.0
+offset_top = 122.0
+offset_right = -377.0
+offset_bottom = 371.0
 
 [node name="InitialPlacementDialog" parent="CanvasLayer" instance=ExtResource("9_ueiaa")]
 offset_left = 783.0

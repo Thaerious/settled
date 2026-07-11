@@ -21,16 +21,16 @@ offset_right = 450.0
 offset_bottom = 350.0
 mouse_filter = 1
 theme = ExtResource("1_0eclp")
-theme_type_variation = &"OuterBorderLevel0"
+theme_type_variation = &"OuterBorder"
 script = ExtResource("2_ruhtk")
 
 [node name="MarginContainerBorder" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_type_variation = &"MarginLevel0"
+theme_type_variation = &"BorderMargin"
 
 [node name="InnerBorder" type="PanelContainer" parent="MarginContainerBorder"]
 layout_mode = 2
-theme_type_variation = &"InnerBorderLevel0"
+theme_type_variation = &"InnerBorder"
 
 [node name="MarginContainerPanel" type="MarginContainer" parent="MarginContainerBorder/InnerBorder"]
 layout_mode = 2
