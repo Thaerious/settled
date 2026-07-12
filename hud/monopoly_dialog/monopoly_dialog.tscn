@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://cucg1swo1x823"]
+[gd_scene load_steps=10 format=3 uid="uid://cucg1swo1x823"]
 
 [ext_resource type="Script" uid="uid://c56j2iyw1x8fq" path="res://hud/monopoly_dialog/monopoly_dialog.gd" id="1_fgov0"]
+[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_sklcr"]
 [ext_resource type="PackedScene" uid="uid://cc8nw2xyp4c24" path="res://hud/components/dialog_control.tscn" id="3_fgov0"]
 [ext_resource type="Script" uid="uid://rfgflm3tlhjp" path="res://hud/components/selectable_dialog_control.gd" id="4_e3q17"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="4_sklcr"]
@@ -9,97 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="7_bb5c2"]
 [ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="8_mpfal"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xn4x1"]
-bg_color = Color(0.25, 0.5, 0.43333334, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.99625546, 0.7387036, 0.5273885, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hwgac"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vi8q3"]
-bg_color = Color(0, 0.8, 0.5866667, 1)
-border_color = Color(0.85, 0.82025, 0.25500003, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwgac"]
-bg_color = Color(0, 0.70610815, 0.52188826, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.99625546, 0.7387036, 0.5273885, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrvmb"]
-bg_color = Color(0.015686275, 0.46666667, 0.53333336, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xnmyk"]
-bg_color = Color(0.101960786, 0.5568628, 0.7647059, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-
-[sub_resource type="Theme" id="Theme_fgov0"]
-AcceptButton/base_type = &"Button"
-AcceptButton/font_sizes/font_size = 40
-AcceptButton/styles/disabled = SubResource("StyleBoxFlat_xn4x1")
-AcceptButton/styles/focus = SubResource("StyleBoxEmpty_hwgac")
-AcceptButton/styles/hover = SubResource("StyleBoxFlat_vi8q3")
-AcceptButton/styles/normal = SubResource("StyleBoxFlat_hwgac")
-BorderMargin/base_type = &"MarginContainer"
-BorderMargin/constants/margin_bottom = 6
-BorderMargin/constants/margin_left = 6
-BorderMargin/constants/margin_right = 6
-BorderMargin/constants/margin_top = 6
-HBoxContainer/constants/separation = 10
-InnerBorder/base_type = &"PanelContainer"
-InnerBorder/styles/panel = SubResource("StyleBoxFlat_hrvmb")
-LabelLarge/base_type = &"Label"
-LabelLarge/font_sizes/font_size = 16
-LabelSmall/base_type = &"Label"
-LabelSmall/font_sizes/font_size = 12
-MarginContainer/constants/margin_bottom = 10
-MarginContainer/constants/margin_left = 10
-MarginContainer/constants/margin_right = 10
-MarginContainer/constants/margin_top = 10
-OuterBorder/base_type = &"PanelContainer"
-OuterBorder/styles/panel = SubResource("StyleBoxFlat_xnmyk")
-VBoxContainer/constants/separation = 10
-
 [node name="MonopolyDialog" type="PanelContainer"]
 offset_left = 227.0
 offset_top = 56.0
 offset_right = 880.0
 offset_bottom = 249.0
-theme = SubResource("Theme_fgov0")
+theme = ExtResource("1_sklcr")
 theme_type_variation = &"OuterBorder"
 script = ExtResource("1_fgov0")
 

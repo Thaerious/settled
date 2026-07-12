@@ -20,6 +20,8 @@ func _ready() -> void:
 		self._update_phase(Game.model.get_current_phase())
 	)
 
+	%ButtonAccept.pressed.connect(self._accept)
+
 	for _control in self._controls.keys():
 		var control := _control as SelectableDialogControl
 		control.on_selected.connect(func():
@@ -32,6 +34,11 @@ func _ready() -> void:
 	%WoodControl.selected = true
 
 	StyleHelper.print_theme_chain(%ButtonAccept)
+
+
+func _accept() -> void:
+	var resource := self._controls[self._selected_control]
+	EventBus.play_monopoly_card.emit(Game.self_id, resource)
 
 
 func _update_phase(phase: Model.GamePhase) -> void:
