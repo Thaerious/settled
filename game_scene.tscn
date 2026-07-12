@@ -301,13 +301,6 @@ text = "End Turn
 "
 script = ExtResource("9_bpcsf")
 
-[node name="MonopolyDialog" parent="CanvasLayer/DevContainer/HBoxContainer/PhaseButtons/ButtonEnd" instance=ExtResource("10_3d2pr")]
-layout_mode = 0
-offset_left = -1107.0
-offset_top = 122.0
-offset_right = -377.0
-offset_bottom = 371.0
-
 [node name="InitialPlacementDialog" parent="CanvasLayer" instance=ExtResource("9_ueiaa")]
 offset_left = 783.0
 offset_top = 896.0
@@ -352,6 +345,12 @@ offset_left = 1495.0
 offset_top = 726.0
 offset_right = 1917.0
 offset_bottom = 1076.0
+
+[node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("10_3d2pr")]
+offset_left = 597.0
+offset_top = 806.0
+offset_right = 1327.0
+offset_bottom = 1055.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")

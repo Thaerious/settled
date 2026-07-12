@@ -33,3 +33,10 @@ func clear() -> void:
 	print("StyleHelper clear style:")	
 	if not style_map.has(NO_STYLE): self.target.theme = null
 	else: self.target.theme = self.style_map[NO_STYLE]
+
+
+static func print_theme_chain(node: Control) -> void:
+	var current := node
+	while current:
+		print("%s -> theme: %s" % [current.name, current.theme])
+		current = current.get_parent() as Control

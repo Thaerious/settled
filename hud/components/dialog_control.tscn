@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cc8nw2xyp4c24"]
+[gd_scene load_steps=9 format=3 uid="uid://cc8nw2xyp4c24"]
 
 [ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone_scripts/nodes/style_helper.gd" id="1_nyukr"]
 [ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="2_j4a5t"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="3_jv2k6"]
 [ext_resource type="Theme" uid="uid://bjie0pv40kdif" path="res://hud/themes/disabled.tres" id="3_oxas2"]
 [ext_resource type="Theme" uid="uid://dypl76lfa5loe" path="res://hud/themes/hover.tres" id="4_jansk"]
+[ext_resource type="Theme" uid="uid://dli4hu1xslwmm" path="res://hud/themes/selected.tres" id="7_mjkme"]
+[ext_resource type="Theme" uid="uid://bbqx58a4un6hd" path="res://hud/themes/selected_hover.tres" id="8_4b15u"]
 
 [node name="DialogControl" type="PanelContainer"]
 theme = ExtResource("2_j4a5t")
@@ -19,7 +21,9 @@ script = ExtResource("1_nyukr")
 style_map = Dictionary[String, Theme]({
 "default": ExtResource("2_j4a5t"),
 "disabled": ExtResource("3_oxas2"),
-"hover": ExtResource("4_jansk")
+"hover": ExtResource("4_jansk"),
+"selected": ExtResource("7_mjkme"),
+"selected_hover": ExtResource("8_4b15u")
 })
 
 [node name="MarginContainerBorder" type="MarginContainer" parent="."]

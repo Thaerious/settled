@@ -2,7 +2,15 @@ class_name MonopolyDialog
 extends Control
 
 
-var _selected_panel: SelectablePanelContainer = null
+var _selected_control: SelectableDialogControl = null
+
+@onready var _controls: Dictionary[SelectableDialogControl, Model.ResourceTypes] = {
+	%WoodControl: Model.ResourceTypes.WOOD,
+	%BrickControl: Model.ResourceTypes.BRICK,
+	%WheatControl: Model.ResourceTypes.WHEAT,
+	%RockControl: Model.ResourceTypes.ROCK,
+	%WoolControl: Model.ResourceTypes.WOOL
+}
 
 
 func _ready() -> void:
@@ -11,6 +19,19 @@ func _ready() -> void:
 	EventBus.model_loaded.connect(func(): 
 		self._update_phase(Game.model.get_current_phase())
 	)
+
+	for _control in self._controls.keys():
+		var control := _control as SelectableDialogControl
+		control.on_selected.connect(func():
+			if self._selected_control:
+				self._selected_control.selected = false
+			
+			self._selected_control = control
+		)
+
+	%WoodControl.selected = true
+
+	StyleHelper.print_theme_chain(%ButtonAccept)
 
 
 func _update_phase(phase: Model.GamePhase) -> void:
