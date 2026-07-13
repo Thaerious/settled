@@ -1,0 +1,78 @@
+[gd_scene load_steps=9 format=3 uid="uid://dqr0hpeu73nhq"]
+
+[ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_qsqui"]
+[ext_resource type="Script" uid="uid://bch8ecx5g17ts" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.gd" id="2_fp45j"]
+[ext_resource type="PackedScene" uid="uid://bvbfj53357xwl" path="res://hud/year_of_plenty_dialog/plenty_dialog_control.tscn" id="3_lqffb"]
+[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="4_7gre4"]
+[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="5_0fxpq"]
+[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="6_8h46o"]
+[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="7_qsqui"]
+[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="8_jcklt"]
+
+[node name="YearOfPlentyDialog" type="PanelContainer"]
+offset_left = 150.0
+offset_top = 34.0
+offset_right = 600.0
+offset_bottom = 319.0
+theme = ExtResource("1_qsqui")
+theme_type_variation = &"OuterBorder"
+script = ExtResource("2_fp45j")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"BorderMargin"
+
+[node name="InnerBorder" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"InnerBorder"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/InnerBorder"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WoodControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_lqffb")]
+unique_name_in_owner = true
+layout_mode = 2
+resource = 1
+display_texture = ExtResource("4_7gre4")
+
+[node name="BrickControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_lqffb")]
+unique_name_in_owner = true
+layout_mode = 2
+resource = 0
+display_texture = ExtResource("5_0fxpq")
+
+[node name="WheatControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_lqffb")]
+unique_name_in_owner = true
+layout_mode = 2
+resource = 2
+display_texture = ExtResource("6_8h46o")
+
+[node name="RockControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_lqffb")]
+unique_name_in_owner = true
+layout_mode = 2
+resource = 4
+display_texture = ExtResource("7_qsqui")
+
+[node name="WoolControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_lqffb")]
+unique_name_in_owner = true
+layout_mode = 2
+resource = 3
+display_texture = ExtResource("8_jcklt")
+
+[node name="ButtonAccept" type="Button" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_default_cursor_shape = 2
+theme_type_variation = &"AcceptButton"
+text = "Accept"
+metadata/_edit_use_anchors_ = true

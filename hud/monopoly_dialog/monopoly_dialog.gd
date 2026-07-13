@@ -33,8 +33,6 @@ func _ready() -> void:
 
 	%WoodControl.selected = true
 
-	StyleHelper.print_theme_chain(%ButtonAccept)
-
 
 func _accept() -> void:
 	var resource := self._controls[self._selected_control]

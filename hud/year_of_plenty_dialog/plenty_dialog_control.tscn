@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://bvbfj53357xwl"]
+
+[ext_resource type="PackedScene" uid="uid://cc8nw2xyp4c24" path="res://hud/components/dialog_control.tscn" id="1_5yd8y"]
+[ext_resource type="Script" uid="uid://ceq3ow8sqds87" path="res://hud/year_of_plenty_dialog/plenty_dialog_control.gd" id="1_dvnis"]
+[ext_resource type="Texture2D" uid="uid://cyshc4gljssbs" path="res://assets/buttons/discard_dialog_up.png" id="2_7kt1d"]
+[ext_resource type="Texture2D" uid="uid://d2rj0cc18t68g" path="res://assets/buttons/discard_dialog_button_up_inactive.png" id="3_dvnis"]
+[ext_resource type="Texture2D" uid="uid://gqxql4ekq17g" path="res://assets/buttons/discard_dialog_down.png" id="4_kgeoj"]
+[ext_resource type="Texture2D" uid="uid://dsnsccpkodl0p" path="res://assets/buttons/discard_dialog_button_down_inactive.png" id="5_a484p"]
+
+[node name="DialogControl" instance=ExtResource("1_5yd8y")]
+script = ExtResource("1_dvnis")
+resource = 5
+
+[node name="ButtonUp" type="TextureButton" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("2_7kt1d")
+texture_disabled = ExtResource("3_dvnis")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Qty" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonDn" type="TextureButton" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer" index="2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("4_kgeoj")
+texture_disabled = ExtResource("5_a484p")
+ignore_texture_size = true
+stretch_mode = 0
