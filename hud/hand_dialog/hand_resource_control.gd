@@ -17,17 +17,6 @@ func _ready() -> void:
 
 	$DragNodeUI.drag_end.connect(self._on_drag_end)
 
-	# DEBUG EVENT LISTENER TODO REMOVE
-	self.gui_input.connect(func(event: InputEvent):
-		if not event is InputEventMouse: return
-		var mouse_event = event as InputEventMouse
-		if not mouse_event.ctrl_pressed: return
-		if not mouse_event.is_pressed(): return
-		
-		var wallet = Wallet.new([self.resource_type])
-		Game.model.do_add_resources(Game.self_id, wallet)
-	)
-
 
 func _on_drag_end(rec: DragRecord) -> void:
 	if not rec.destination is HandResourceControl: return

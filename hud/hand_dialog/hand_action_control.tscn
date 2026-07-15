@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="1_rm0ov"]
 [ext_resource type="Script" uid="uid://cwxbwakqjhxd4" path="res://hud/hand_dialog/hand_action_control.gd" id="2_rm0ov"]
 [ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="3_lejws"]
-[ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone_scripts/nodes/style_helper.gd" id="4_14wlg"]
+[ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone/nodes/style_helper.gd" id="4_14wlg"]
 [ext_resource type="Theme" uid="uid://bjie0pv40kdif" path="res://hud/themes/disabled.tres" id="5_6io7k"]
 [ext_resource type="Theme" uid="uid://dypl76lfa5loe" path="res://hud/themes/hover.tres" id="6_ssjkf"]
 
