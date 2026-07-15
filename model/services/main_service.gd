@@ -63,7 +63,7 @@ func _request_road(id: int, edge: AxialEdge) -> void:
 
 	if Game.model.get_current_phase() == GamePhase.ROAD_BUILDING:
 		Game.model.decrement_road_building()
-		if Game.model.get_road_building() == 0: Game.model.do_update_phase(GamePhase.MAIN)
+		if Game.model.free_road_count() == 0: Game.model.do_update_phase(GamePhase.MAIN)
 	elif Game.model.get_current_phase() == Model.GamePhase.SETUP:
 		self._next_initial_player(id)
 	else:

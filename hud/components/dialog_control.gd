@@ -1,3 +1,17 @@
+# %UniqueName lookup fails when this scene is used as a regular instance
+# with editable children exposed via [editable path=...], that reassigns
+# ownership of nested nodes to the outer scene root, breaking % lookups
+# scoped to the base scene.
+#
+# Implement scenes as a "New Inherited Scene" of the base component,
+# not a plain instance with editable children.
+#
+# Steps:
+# 1. FileSystem dock → right-click base_scene.tscn → New Inherited Scene
+#    (or Scene → New Inherited Scene... → pick base_scene.tscn)
+# 2. Add custom child nodes under the correct parent in the inherited tree
+# 3. Attach this script, or inherit it, to the inherited scene's root node
+
 @tool
 class_name DialogControl
 extends PanelContainer

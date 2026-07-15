@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://35ub1kmjadx6"]
+
+[ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="1_4ia6u"]
+[ext_resource type="Script" uid="uid://cmewxcja8k4vf" path="res://hud/components/dialog_container.gd" id="2_ajlf4"]
+
+[node name="DialogContainer" type="PanelContainer"]
+theme = ExtResource("1_4ia6u")
+theme_type_variation = &"OuterBorder"
+script = ExtResource("2_ajlf4")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"BorderMargin"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"InnerBorder"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_type_variation = &"BorderMargin"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2

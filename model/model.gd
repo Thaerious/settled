@@ -121,7 +121,7 @@ func get_longest_road() -> int:             return self._longest_road
 func get_largest_army() -> int:             return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
 func player_count() -> int:                 return self._player_records.size() # todo move all player counts to this
-func get_road_building() -> int:            return self._road_building
+func free_road_count() -> int:              return self._road_building
 
 
 # return all edges that can accept a road

@@ -12,15 +12,11 @@ func _ready() -> void:
 
 func _on_current_phase_updated(phase: Model.GamePhase) -> void:
 	match phase:
-		Model.GamePhase.SETUP: 
-			self.visible = false
-		Model.GamePhase.DURING_DISCARD: 
-			self.visible = false
-		Model.GamePhase.YEAR_OF_PLENTY:
-			self.visible = false
-		Model.GamePhase.MONOPOLY:
-			self.visible = false
-		_: self.visible = true
+		Model.GamePhase.NOT_STARTED: 
+			self.visible = true
+		Model.GamePhase.MAIN: 
+			self.visible = true
+		_: self.visible = false
 
 
 func _on_model_loaded() -> void:	

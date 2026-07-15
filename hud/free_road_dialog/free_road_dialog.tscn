@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://creskaqj2salj"]
+
+[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_87vyq"]
+[ext_resource type="PackedScene" uid="uid://cefrgrnyh4md4" path="res://hud/free_road_dialog/free_road_control.tscn" id="2_0a1fm"]
+[ext_resource type="Script" uid="uid://dq6iwikf45u1j" path="res://hud/free_road_dialog/free_road_dialog.gd" id="2_7sl3m"]
+
+[node name="FreeRoadDialog" instance=ExtResource("1_87vyq")]
+offset_right = 272.0
+offset_bottom = 160.0
+script = ExtResource("2_7sl3m")
+
+[node name="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" index="0"]
+size_flags_horizontal = 4
+
+[node name="FreeRoadControl1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="0" instance=ExtResource("2_0a1fm")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FreeRoadControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="1" instance=ExtResource("2_0a1fm")]
+unique_name_in_owner = true
+layout_mode = 2
