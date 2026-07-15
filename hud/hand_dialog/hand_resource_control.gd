@@ -15,7 +15,7 @@ func _ready() -> void:
 	EventBus.exchange_rate_set.connect(self.exchange_rate_set)
 	EventBus.model_loaded.connect(self.model_loaded)
 
-	$DragNode.drag_end.connect(self._on_drag_end)
+	$DragNodeUI.drag_end.connect(self._on_drag_end)
 
 	# DEBUG EVENT LISTENER TODO REMOVE
 	self.gui_input.connect(func(event: InputEvent):

@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone_scripts/nodes/style_helper.gd" id="2_hedot"]
 [ext_resource type="Theme" uid="uid://bjie0pv40kdif" path="res://hud/themes/disabled.tres" id="3_jbl4v"]
 [ext_resource type="Theme" uid="uid://dypl76lfa5loe" path="res://hud/themes/hover.tres" id="4_bmlmq"]
-[ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone_scripts/mouse/drag_node.gd" id="5_fphia"]
+[ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone_scripts/mouse/drag_node_ui.gd" id="5_fphia"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="6_01v37"]
 [ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="6_h4jmm"]
 [ext_resource type="Script" uid="uid://bevp5cowl65sy" path="res://hud/components/scaled_sprite.gd" id="7_dcw2i"]
@@ -28,13 +28,13 @@ style_map = Dictionary[String, Theme]({
 "hover": ExtResource("4_bmlmq")
 })
 
-[node name="DragNode" type="Node" parent="."]
+[node name="DragNodeUI" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("5_fphia")
 drag_mask = 2
 metadata/_custom_type_script = "uid://bwub0la08s7mr"
 
-[node name="ScaledSprite" type="Sprite2D" parent="DragNode"]
+[node name="ScaledSprite" type="Sprite2D" parent="DragNodeUI"]
 unique_name_in_owner = true
 visible = false
 z_index = 4096

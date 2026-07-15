@@ -2,7 +2,7 @@
 class_name DraggableDialogControl
 extends DialogControl
 
-@onready var _drag_node := %DragNode
+@onready var _drag_node := %DragNodeUI
 @export var drag_mask := 1
 
 
