@@ -53,7 +53,7 @@ func _get_world_target(world: Vector2, drag_mask: int) -> Node:
 ## Queries the ui space for any node with a drag_mask field.
 ## Matches with Nodes whose drag_mask matches the drag_mask 
 ## from the source drag node.
-func get_ui_target(drag_mask) -> Control:
+func get_ui_target(drag_mask: int) -> Control:
 	var ui_target: Control = get_viewport().gui_get_hovered_control()
 	if ui_target == null: return null
 
@@ -68,15 +68,10 @@ func get_ui_target(drag_mask) -> Control:
 	return ui_target
 
 
-func _get_drop_node(control: Control) -> DropNode2D:
-	while control != null:
-		var drop_node := control.find_child("DropNode2D")
-		if drop_node != null:
-			return drop_node
-		control = control.get_parent() as Control
-	return null
-
 # Retrieve the first object under the mouse that is a valid target for drag-drop
+# A valid target for drag-drop is either a ui control with a drag mask field that
+# intersects passed in drag_mask, or a world node with a collision area that has an
+# intersecting collision layer. 
 func _get_drop_target(world: Vector2, drag_mask: int) -> Variant:
 	var drop_target: Variant = self.get_ui_target(drag_mask)
 	if drop_target != null: return drop_target
