@@ -11,7 +11,7 @@ static func calculate_longest_road(id: int, model: Model) -> int:
 	if edges.is_empty(): return 0
 
 	# get all unique corners touched by this player's roads
-	var corners := edges.corner_map(AxialEdge.corners_of)
+	var corners := edges.corner_map()
 
 	# build adjacency for this player's road network
 	_build_adjacency(id)
@@ -64,7 +64,7 @@ static func _dfs(id: int, start: Axial) -> int:
 static func _build_adjacency(id: int) -> void:
 	adj.clear()
 	var edges := Game.model.get_roads(id)
-	var corners := edges.corner_map(AxialEdge.corners_of)
+	var corners := edges.corner_map()
 
 	# initialise empty lists for each corner
 	for corner in corners:

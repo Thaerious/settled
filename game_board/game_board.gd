@@ -112,7 +112,7 @@ func show_house_targets_hnd():
 	var white_list = self.buildable_corners.difference(black_list)
 	
 	var roads := Game.model.get_roads(Game.self_id)
-	var road_corners := roads.corner_map(AxialEdge.corners_of)
+	var road_corners := roads.corner_map()
 	var permitted = road_corners.intersect(white_list)
 
 	self.show_targets(permitted)		
@@ -137,14 +137,21 @@ func show_city_targets_hnd():
 
 
 func show_road_targets_hnd():
-	var roads = Game.model.get_roads(Game.self_id)
-	var houses = Game.model.get_houses(Game.self_id)
+	var my_roads = Game.model.get_roads(Game.self_id)
+	var my_houses = Game.model.get_houses(Game.self_id)
 
-	var candidates = roads.map(AxialEdge.neighbors_of)
-	candidates = candidates.union(houses.edge_map(Axial.edges_of))
+	var my_corners = my_roads.corner_map().union(my_houses)
 
-	candidates = candidates.difference(roads)
-	candidates = candidates.intersect(Game.model.all_road_edges())
+	# remove oppenents houses from my corners
+	var their_houses = Game.model.get_houses().difference(my_houses)
+	my_corners = my_corners.difference(their_houses)
+
+	var candidates = my_corners.edge_map()
+
+	# remove all occupied edges
+	var all_roads = Game.model.get_roads()
+	candidates = candidates.difference(all_roads)
+	candidates = candidates.intersect(Game.model.playable_edges())
 
 	self.show_targets(candidates)
 

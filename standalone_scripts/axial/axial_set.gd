@@ -186,10 +186,12 @@ func map_to_array(cb: Callable) -> Array:
 	return an_array	
 
 
-# Maps each element to a set via cb, then flattens all results into one set.
-# Maps corners to edges
-# {A, B}.edge_map(fn) → fn(A) | fn(B)
-func edge_map(cb: Callable) -> AxialEdgeSet:
+# Maps each Axial to a collection of AxialEdges.
+# Default behaviour is to return the edges directly adjacent to all corners
+# The callback function 'fn' must return a collection of corners.
+# fn is called on each member axial of this set, the union of which is returned.
+# ⋃_{a∈A} fn(a) - the union, over all c in C, of fn(c)
+func edge_map(cb: Callable = Axial.edges_of) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 	for ax in self:
 		aset.add_all(cb.call(ax))

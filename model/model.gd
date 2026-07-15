@@ -125,7 +125,8 @@ func free_road_count() -> int:              return self._road_building
 
 
 # return all edges that can accept a road
-func all_road_edges() -> AxialEdgeSet:
+# ie not edges that only border water
+func playable_edges() -> AxialEdgeSet:
 	var edge_set := AxialEdgeSet.new()
 	for hex_data in self._hex_data.values():
 		if hex_data.terrain == Terrain.WATER: continue

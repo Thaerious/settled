@@ -352,7 +352,6 @@ offset_right = 1180.0
 offset_bottom = 1063.0
 
 [node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("12_opqoc")]
-visible = false
 offset_left = 1495.0
 offset_top = 726.0
 offset_right = 1917.0

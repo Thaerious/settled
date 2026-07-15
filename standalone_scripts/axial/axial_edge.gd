@@ -96,7 +96,7 @@ func serialize() -> Dictionary:
 
 func neighbors() -> AxialEdgeSet:
 	var corners = self.corners()
-	var edges =  corners.edge_map(Axial.edges_of)	
+	var edges =  corners.edge_map()	
 	edges.remove_item(self)
 	return edges
 

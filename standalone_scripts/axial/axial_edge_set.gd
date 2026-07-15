@@ -102,12 +102,15 @@ func clone() -> AxialEdgeSet:
 	return aset
 
 
-# Maps each AxialEdge to a collection of Axial corners; returns their union as an AxialSet.
-# {E1, E2}.corner_map(fn) → AxialSet of all corners returned by fn
-func corner_map(cb: Callable) -> AxialSet:
+# Maps each AxialEdge to a collection of Axials. 
+# Default behaviour is to return the corners directly adjacent to all edges
+# The callback function 'fn' must return a collection of edges.
+# fn is called on each member edge of this set, the union of which is returned.
+# # ⋃_{e∈E} fn(e) - the union, over all e in E, of fn(e)
+func corner_map(fn: Callable = AxialEdge.corners_of) -> AxialSet:
 	var aset := AxialSet.new()
 	for edge in self._data.values():
-		aset.add_all(cb.call(edge))
+		aset.add_all(fn.call(edge))
 	return aset
 
 
