@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://ytcs6q88bnkx"]
+[gd_scene load_steps=6 format=3 uid="uid://ytcs6q88bnkx"]
 
 [ext_resource type="Script" uid="uid://fwyc80kb78qs" path="res://game_board/pirate_piece.gd" id="1_p5y87"]
 [ext_resource type="Texture2D" uid="uid://bwuu7tun4vv1r" path="res://assets/pirate.png" id="1_qcyo4"]
+[ext_resource type="Script" uid="uid://c65k22a7x3iey" path="res://standalone/mouse/drag_node_2d.gd" id="2_ln2ed"]
 [ext_resource type="Script" uid="uid://d4bof1yxe04s" path="res://game_board/sprite_2d_exact.gd" id="2_p5y87"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_p5y87"]
@@ -9,6 +10,10 @@ radius = 32.0
 
 [node name="PiratePiece" type="Node2D"]
 script = ExtResource("1_p5y87")
+
+[node name="DragNode2D" type="Node" parent="." node_paths=PackedStringArray("drag_target")]
+script = ExtResource("2_ln2ed")
+drag_target = NodePath("..")
 
 [node name="Sprite2DExact" type="Sprite2D" parent="."]
 unique_name_in_owner = true

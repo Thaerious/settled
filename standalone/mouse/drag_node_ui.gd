@@ -86,5 +86,5 @@ func _do_stop_drag() -> void:
 	self._dragging = false
 	self._sprite.visible = false
 	self._sprite.top_level = false
-	var rec := MouseHelper.resolve_drag_target(self.drag_mask)
+	var rec := MouseHelper.resolve_drag_target(self.drag_mask)	
 	self.drag_end.emit(rec)
