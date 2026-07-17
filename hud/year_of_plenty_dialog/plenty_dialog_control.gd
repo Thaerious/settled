@@ -7,7 +7,6 @@ signal count_changed(resource: Model.ResourceTypes, count: int)
 var count := 0
 
 func _ready() -> void:
-	NodeHelpers.print_tree_from(self)
 	super._ready()	
 
 	%ButtonUp.pressed.connect(func():

@@ -15,6 +15,8 @@ func _ready() -> void:
 		self.self_id = id
 		EventBus.player_view_set.emit(id)
 		EventBus.model_loaded.emit()
+		EventBus.current_phase_updated.emit(Game.model.get_current_phase())
+		EventBus.current_player_updated.emit(Game.model.get_current_player())		
 	)
 
 	self.call_deferred("_emit_initial_state")
@@ -28,3 +30,5 @@ func reset() -> void:
 
 func _emit_initial_state() -> void:
 	EventBus.model_loaded.emit()
+	EventBus.current_phase_updated.emit(Game.model.get_current_phase())
+	EventBus.current_player_updated.emit(Game.model.get_current_player())	

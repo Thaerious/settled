@@ -59,7 +59,7 @@ func place_tiles() -> GameBoardSetup:
 			number_piece.position = self._board.tiles.map_to_local(offset)
 	
 		if hex_data.pirate:
-			var pirate_piece: PiratePiece = PIRATE_PIECE.instantiate()
+			var pirate_piece: Node2D = PIRATE_PIECE.instantiate()
 			var offset := Axial.axial_to_offset(ax)			
 			self._board.structures.add_child(pirate_piece)
 			pirate_piece.position = self._board.tiles.map_to_local(offset)

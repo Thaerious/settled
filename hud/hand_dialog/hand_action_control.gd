@@ -20,8 +20,6 @@ func _on_model_loaded() -> void:
 
 
 func _on_action_cards_updated(id: int, owned: ActionCardWallet, playable: ActionCardWallet) -> void:
-	print("action_cards_updated | id: %s | owned: %s | playable: %s" % [id, owned, playable])
-	
 	if id != Game.self_id: return
 	%Quantity.text = str(owned.get_card(self.action_type))
 

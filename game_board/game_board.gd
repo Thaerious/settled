@@ -63,7 +63,6 @@ func _input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton and event.pressed and event.alt_pressed:				
 		var local_pos := self.tiles.get_local_mouse_position()
-		print(local_pos)
 		var hex := Axial.offset_to_axial(self.tiles.local_to_map(local_pos))
 		var corners := hex.corners()
 

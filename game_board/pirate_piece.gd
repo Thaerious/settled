@@ -1,23 +1,33 @@
 class_name PiratePiece
 extends Node2D
 
-# @onready var _sprite := %Sprite2DExact
-@onready var _area2d := %Area2D
+var _origin_axial = Axial.zero()
 
 func _ready() -> void:
-	self._area2d.input_event.connect(self._on_input_event)
+	%DragNode2D.drag_start.connect(self._on_drag_start)
+	%DragNode2D.drag_end.connect(self._on_drag_end)
+	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
+	EventBus.pirate_set.connect(self._on_pirate_set)
+
+func _on_drag_start() -> void:
+	self._origin_axial = Game.model.get_pirate()
 
 
-func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
-	if not event is InputEventMouseButton: return
-	if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
-	if not event.pressed: return
-	if Game.model.get_current_phase() != Model.GamePhase.MOVE_PIRATE: return
-	if Game.model.get_current_player() != Game.self_id: return
+func _on_drag_end(_rec: DragRecord) -> void:
+	EventBus.request_set_pirate.emit(Game.self_id, self._origin_axial)
 
-	# TODO DRAG
 
-	self.visible = false
+func _on_current_phase_updated(phase: Model.GamePhase) -> void:
+	match phase:
+		Model.GamePhase.MOVE_PIRATE: 
+			%DragNode2D.disabled = false
+		_: %DragNode2D.disabled = true
+
+
+func _on_pirate_set(hex: Axial):
+	print("on pirate set")
+	var offset := Axial.axial_to_offset(hex)			
+	self.position = self._board.tiles.map_to_local(offset)
 
 
 func _on_drop(rec: DragRecord):
