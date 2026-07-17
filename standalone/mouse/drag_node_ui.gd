@@ -18,7 +18,7 @@ var _dragging := false
 var _sprite: Sprite2D = null
 
 @export var disabled = false
-@export_flags_2d_physics var drag_mask: int = 1
+@export_flags_2d_physics var drop_layer: int = 0
 
 # connect a press handler to trigger that is invoked on a LMB press
 func _ready() -> void:
@@ -42,18 +42,18 @@ func _process(_delta: float) -> void:
 
 
 func _update_hover() -> void:
-	var record := MouseHelper.resolve_drag_target(self.drag_mask)
+	var record := MouseHelper.resolve_drag_target(self.drop_layer)
 	
-	if record.destination == self._last_hover_target: 
+	if record.drop_target == self._last_hover_target: 
 		return
 
 	if self._last_hover_target: 
 		self.hover_exit.emit(record)
 
-	if record.destination: 
+	if record.drop_target: 
 		self.hover_enter.emit(record)
 
-	self._last_hover_target = record.destination
+	self._last_hover_target = record.drop_target
 
 
 func _on_press(event: InputEvent) -> void:
@@ -86,5 +86,5 @@ func _do_stop_drag() -> void:
 	self._dragging = false
 	self._sprite.visible = false
 	self._sprite.top_level = false
-	var rec := MouseHelper.resolve_drag_target(self.drag_mask)	
+	var rec := MouseHelper.resolve_drag_target(self.drop_layer)	
 	self.drag_end.emit(rec)

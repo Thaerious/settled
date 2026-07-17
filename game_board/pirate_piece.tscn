@@ -13,8 +13,10 @@ script = ExtResource("1_p5y87")
 
 [node name="DragNode2D" type="Area2D" parent="." node_paths=PackedStringArray("drag_target")]
 unique_name_in_owner = true
+collision_mask = 0
 script = ExtResource("2_ln2ed")
 drag_target = NodePath("..")
+drop_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DragNode2D"]
 shape = SubResource("CircleShape2D_p5y87")

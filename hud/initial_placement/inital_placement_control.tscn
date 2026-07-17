@@ -26,7 +26,7 @@ style_map = Dictionary[String, Theme]({
 [node name="DragNodeUI" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("5_gswjl")
-drag_mask = 2
+drag_layer = 2
 metadata/_custom_type_script = "uid://bwub0la08s7mr"
 
 [node name="ScaledSprite" type="Sprite2D" parent="DragNodeUI"]

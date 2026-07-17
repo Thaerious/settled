@@ -19,15 +19,15 @@ func _on_drag_start() -> void:
 
 func _on_drag_end(rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
-	if not rec.destination: return
-	if not rec.destination.owner is CornerTarget: return
-	self._last_target = rec.destination.owner
+	if not rec.drop_target: return
+	if not rec.drop_target.owner is CornerTarget: return
+	self._last_target = rec.drop_target.owner
 	EventBus.request_house.emit(Game.self_id, self._last_target.axial)	
 
 
 func _on_hover_enter(rec: DragRecord) -> void:
-	if not rec.destination.owner is CornerTarget: return
-	self._last_target = rec.destination.owner	 as CornerTarget
+	if not rec.drop_target.owner is CornerTarget: return
+	self._last_target = rec.drop_target.owner	 as CornerTarget
 	var house_piece = HOUSE_PIECE.instantiate()
 	house_piece.modulate = GameBoard.tint[Game.self_id]
 	self._last_target.set_piece(house_piece)

@@ -28,9 +28,9 @@ func get_local(target: Variant, world_pos_in: Vector2) -> Vector2:
 
 
 ## Queries the game space for Area2D nodes whose collision LAYER
-## matches drag_mask (the query's collision_mask).
-## drag_mask is set on the drag node.
-func _get_world_target(world: Vector2, drag_mask: int) -> Node:
+## matches drag_layer (the query's collision_mask).
+## drag_layer is set on the drag node.
+func _get_world_target(world: Vector2, drag_layer: int) -> Node:
 	var targets: Array[Node] = []
 	var space := get_viewport().get_world_2d().direct_space_state
 	var query := PhysicsPointQueryParameters2D.new()
@@ -38,11 +38,12 @@ func _get_world_target(world: Vector2, drag_mask: int) -> Node:
 	query.position = world
 	query.collide_with_areas = true
 	query.collide_with_bodies = false
-	query.collision_mask = drag_mask
+	query.collision_mask = drag_layer
 
 	for result in space.intersect_point(query):
 		targets.append(result.collider)
 
+	print(drag_layer, targets)
 	if targets.size() > 0: 
 		return targets[0]
 	
@@ -50,16 +51,16 @@ func _get_world_target(world: Vector2, drag_mask: int) -> Node:
 
 
 
-## Queries the ui space for any node with a drag_mask field.
-## Matches with Nodes whose drag_mask matches the drag_mask 
+## Queries the ui space for any node with a drag_layer field.
+## Matches with Nodes whose drag_layer matches the drag_layer 
 ## from the source drag node.
-func get_ui_target(drag_mask: int) -> Control:
+func get_ui_target(drag_layer: int) -> Control:
 	var ui_target: Control = get_viewport().gui_get_hovered_control()
 	if ui_target == null: return null
 
-	# A drop target MUST have a drag_mask:int field
+	# A drop target MUST have a drag_layer:int field
 	if not "drop_mask" in ui_target: return null
-	if not ui_target.drag_mask and drag_mask: return null
+	if not ui_target.drag_layer and drag_layer: return null
 	
 	# If the drop target has an on_drop:bool method only accept the drop
 	# if the method returns true.
@@ -70,27 +71,27 @@ func get_ui_target(drag_mask: int) -> Control:
 
 # Retrieve the first object under the mouse that is a valid target for drag-drop
 # A valid target for drag-drop is either a ui control with a drag mask field that
-# intersects passed in drag_mask, or a world node with a collision area that has an
+# intersects passed in drag_layer, or a world node with a collision area that has an
 # intersecting collision layer. 
-func _get_drop_target(world: Vector2, drag_mask: int) -> Variant:
-	var drop_target: Variant = self.get_ui_target(drag_mask)
+func _get_drop_target(world: Vector2, drag_layer: int) -> Variant:
+	var drop_target: Variant = self.get_ui_target(drag_layer)
 	if drop_target != null: return drop_target
-	return self._get_world_target(world, drag_mask)
+	return self._get_world_target(world, drag_layer)
 
 
 ## Resolves the drop target under the cursor and returns a populated [DragRecord].
 ## Checks UI controls first, then falls back to physics-based Area2D targets.
-func resolve_drag_target(drag_mask: int) -> DragRecord:
+func resolve_drag_target(drag_layer: int) -> DragRecord:
 	var screen_pos := get_viewport().get_mouse_position()
 	var world      := self.world_pos(screen_pos)
 
 	var record := DragRecord.new()
 	record.screen_pos     = screen_pos
 	record.world_pos      = world
-	record.destination    = self._get_drop_target(world, drag_mask)
+	record.drop_target    = self._get_drop_target(world, drag_layer)
 
-	if record.destination != null:
-		record.local_pos = self.get_local(record.destination, world)
+	if record.drop_target != null:
+		record.local_pos = self.get_local(record.drop_target, world)
 
 	return record
 

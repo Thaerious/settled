@@ -46,7 +46,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("4_m8oqv")
-drag_mask = 2
+drag_layer = 2
 sprite_texture = ExtResource("5_7dvud")
 display_texture = ExtResource("6_d7flh")
 

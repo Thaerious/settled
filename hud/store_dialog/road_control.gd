@@ -19,15 +19,15 @@ func _on_drag_start() -> void:
 
 func _on_drag_end(rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
-	if not rec.destination: return
-	if not rec.destination.owner is EdgeTarget: return
-	self._last_target = rec.destination.owner
+	if not rec.drop_target: return
+	if not rec.drop_target.owner is EdgeTarget: return
+	self._last_target = rec.drop_target.owner
 	EventBus.request_road.emit(Game.self_id, self._last_target.axial_edge)	
 
 
 func _on_hover_enter(rec: DragRecord) -> void:
-	if not rec.destination.owner is EdgeTarget: return
-	self._last_target = rec.destination.owner as EdgeTarget
+	if not rec.drop_target.owner is EdgeTarget: return
+	self._last_target = rec.drop_target.owner as EdgeTarget
 	var road_piece = ROAD_PIECE.instantiate()
 	road_piece.modulate = GameBoard.tint[Game.self_id]
 	self._last_target.set_piece(road_piece)

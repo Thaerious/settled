@@ -3,7 +3,7 @@ class_name DraggableDialogControl
 extends DialogControl
 
 @onready var _drag_node := %DragNodeUI
-@export var drag_mask := 1
+@export var drag_layer := 1
 
 
 @export var sprite_texture : Texture2D:
