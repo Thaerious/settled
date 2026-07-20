@@ -2,9 +2,9 @@ class_name MonopolyDialog
 extends Control
 
 
-var _selected_control: SelectableDialogControl = null
+var _selected_control: SelectableDialogSpriteControl = null
 
-@onready var _controls: Dictionary[SelectableDialogControl, Model.ResourceTypes] = {
+@onready var _controls: Dictionary[SelectableDialogSpriteControl, Model.ResourceTypes] = {
 	%WoodControl: Model.ResourceTypes.WOOD,
 	%BrickControl: Model.ResourceTypes.BRICK,
 	%WheatControl: Model.ResourceTypes.WHEAT,
@@ -23,7 +23,7 @@ func _ready() -> void:
 	%ButtonAccept.pressed.connect(self._accept)
 
 	for _control in self._controls.keys():
-		var control := _control as SelectableDialogControl
+		var control := _control as SelectableDialogSpriteControl
 		control.on_selected.connect(func():
 			if self._selected_control:
 				self._selected_control.selected = false

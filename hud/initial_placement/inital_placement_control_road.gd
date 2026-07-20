@@ -1,5 +1,5 @@
 @tool
-extends DraggableDialogControl
+extends DraggableDialogSpriteControl
 
 var house_axial:Axial = null
 var _last_target: EdgeTarget = null

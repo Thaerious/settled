@@ -13,7 +13,7 @@
 # 3. Attach this script, or inherit it, to the inherited scene's root node
 
 @tool
-class_name DialogControl
+class_name DialogSpriteControl
 extends PanelContainer
 
 signal clicked()

@@ -1,6 +1,6 @@
 @tool
-class_name SelectableDialogControl
-extends DialogControl
+class_name SelectableDialogSpriteControl
+extends DialogSpriteControl
 
 signal on_selected()
 signal on_unselected()

@@ -27,6 +27,7 @@ func _ready() -> void:
 	self._sprite = get_child(0)
 
 
+# children of the drag node should be ignored when not in use
 func _set_child_mouse_filters() -> void:
 	for child in get_parent().find_children("*", "", true, false):
 		if child == self: continue
@@ -34,7 +35,7 @@ func _set_child_mouse_filters() -> void:
 		child.mouse_filter = Control.MOUSE_FILTER_PASS
 			
 
-## Moves the drag ghost to follow the cursor and updates the hover target each frame.
+# Moves the drag ghost to follow the cursor and updates the hover target each frame.
 func _process(_delta: float) -> void:
 	if not self._dragging: return
 	self._sprite.global_position = get_viewport().get_mouse_position()	

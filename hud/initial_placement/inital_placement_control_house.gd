@@ -1,5 +1,5 @@
 @tool
-extends DraggableDialogControl
+extends DraggableDialogSpriteControl
 
 @export var road_controller:Node
 var _last_target: CornerTarget = null

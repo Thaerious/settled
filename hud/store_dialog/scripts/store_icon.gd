@@ -1,6 +1,6 @@
 @tool
 class_name StoreIcon
-extends DialogControl
+extends DialogSpriteControl
 
 
 func _ready() -> void:

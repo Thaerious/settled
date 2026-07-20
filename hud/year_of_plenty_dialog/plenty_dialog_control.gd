@@ -1,6 +1,6 @@
 @tool
-class_name PlentyDialogControl
-extends DialogControl
+class_name PlentyDialogSpriteControl
+extends DialogSpriteControl
 
 signal count_changed(resource: Model.ResourceTypes, count: int)
 @export var resource := Model.ResourceTypes.NONE

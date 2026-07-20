@@ -1,6 +1,6 @@
 @tool
 class_name HandActionControl
-extends DialogControl
+extends DialogSpriteControl
 
 @export var action_type: Model.ActionCardTypes = Model.ActionCardTypes.BUILD_ROAD
 

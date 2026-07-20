@@ -1,6 +1,6 @@
 @tool
 class_name CardControl
-extends DialogControl
+extends DialogSpriteControl
 
 func _ready() -> void:
 	super._ready()

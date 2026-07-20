@@ -1,6 +1,6 @@
 @tool
-class_name DraggableDialogControl
-extends DialogControl
+class_name DraggableDialogSpriteControl
+extends DialogSpriteControl
 
 @onready var _drag_node := %DragNodeUI
 @export var drag_layer := 1
