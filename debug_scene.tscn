@@ -1,15 +1,24 @@
 [gd_scene load_steps=3 format=3 uid="uid://b4rkbgo81jcc6"]
 
 [ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
-[ext_resource type="PackedScene" uid="uid://cbl0eprhn3k2g" path="res://hud/discard_dialog/discard_dialog.tscn" id="2_akvua"]
+[ext_resource type="PackedScene" uid="uid://dxeck62k7i4yd" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="2_akvua"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_lnlp5")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="DiscardDialog" parent="CanvasLayer" instance=ExtResource("2_akvua")]
-offset_left = 616.0
-offset_top = 621.0
-offset_right = 1306.0
-offset_bottom = 1036.0
+[node name="InitialPlacementDialog" parent="CanvasLayer" instance=ExtResource("2_akvua")]
+offset_left = 815.0
+offset_top = 529.0
+offset_right = 1165.0
+offset_bottom = 627.0
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+offset_left = 945.0
+offset_top = 671.0
+offset_right = 1048.0
+offset_bottom = 702.0
+text = "Setup Phase"
+
+[connection signal="button_up" from="CanvasLayer/Button" to="." method="_on_button_button_up"]

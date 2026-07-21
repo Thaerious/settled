@@ -1,10 +1,11 @@
+@tool
 class_name MonopolyDialog
-extends Control
+extends DialogControl
 
 
-var _selected_control: SelectableDialogSpriteControl = null
+var _selected_control: SelectableSpriteControl = null
 
-@onready var _controls: Dictionary[SelectableDialogSpriteControl, Model.ResourceTypes] = {
+@onready var _controls: Dictionary[SelectableSpriteControl, Model.ResourceTypes] = {
 	%WoodControl: Model.ResourceTypes.WOOD,
 	%BrickControl: Model.ResourceTypes.BRICK,
 	%WheatControl: Model.ResourceTypes.WHEAT,
@@ -13,7 +14,8 @@ var _selected_control: SelectableDialogSpriteControl = null
 }
 
 
-func _ready() -> void:
+func _post_ready() -> void:
+	super._post_ready()
 	EventBus.current_phase_updated.connect(self._update_phase)
 
 	EventBus.model_loaded.connect(func(): 
@@ -23,7 +25,7 @@ func _ready() -> void:
 	%ButtonAccept.pressed.connect(self._accept)
 
 	for _control in self._controls.keys():
-		var control := _control as SelectableDialogSpriteControl
+		var control := _control as SelectableSpriteControl
 		control.on_selected.connect(func():
 			if self._selected_control:
 				self._selected_control.selected = false

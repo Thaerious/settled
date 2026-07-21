@@ -1,5 +1,5 @@
 @tool
-class_name SelectableDialogSpriteControl
+class_name SelectableSpriteControl
 extends DialogSpriteControl
 
 signal on_selected()
@@ -19,9 +19,13 @@ signal on_unselected()
 
 
 func _ready() -> void:
-	super._ready()
+	super._ready()	
+
+
+func _post_ready() -> void:
+	super._post_ready()
 	self.clicked.connect(self._on_clicked)
-	
+
 
 func _on_clicked() -> void:
 	if self.disabled: return
@@ -31,16 +35,16 @@ func _on_clicked() -> void:
 func _update_style() -> void:
 	if self.disabled: 
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		self._style_helper.style = "default"
+		%StyleHelper.style = "default"
 	elif self._hover and self.selected:
 		self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
-		self._style_helper.style = "selected_hover"		
+		%StyleHelper.style = "selected_hover"		
 	elif self._hover:
 		self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
-		self._style_helper.style = "hover"
+		%StyleHelper.style = "hover"
 	elif self.selected:
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW	
-		self._style_helper.style = "selected"		
+		%StyleHelper.style = "selected"		
 	else:
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		self._style_helper.style = "default"	
+		%StyleHelper.style = "default"	

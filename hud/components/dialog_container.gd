@@ -3,6 +3,10 @@ extends PanelContainer
 
 
 func _ready() -> void:
+	call_deferred("_post_ready")
+
+
+func _post_ready() -> void:
 	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
 	EventBus.model_loaded.connect(self._on_model_loaded)
 

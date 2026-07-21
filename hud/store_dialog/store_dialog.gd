@@ -1,5 +1,5 @@
 class_name StoreDialog
-extends PanelContainer
+extends DialogContainer
 
 
 func _ready() -> void:

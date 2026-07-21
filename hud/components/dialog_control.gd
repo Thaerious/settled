@@ -33,9 +33,13 @@ var _hover := false
 
 
 func _ready() -> void:
+	call_deferred("_post_ready")
+
+
+func _post_ready() -> void:
 	self.mouse_entered.connect(self._on_mouse_entered)
 	self.mouse_exited.connect(self._on_mouse_exited)
-	self.gui_input.connect(self._on_press)
+	self.gui_input.connect(self._on_press)	
 	self._update_style()
 
 

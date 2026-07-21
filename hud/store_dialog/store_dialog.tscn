@@ -1,11 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://c8hobn7iwbkp4"]
+[gd_scene load_steps=16 format=3 uid="uid://c8hobn7iwbkp4"]
 
-[ext_resource type="PackedScene" uid="uid://dtx8c0xwi3hkf" path="res://hud/components_old/draggable_dialog_sprite_control.tscn" id="2_4ef40"]
 [ext_resource type="Script" uid="uid://lt4niljffwm2" path="res://hud/store_dialog/store_dialog.gd" id="2_ejec6"]
 [ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="3_0blrl"]
 [ext_resource type="Texture2D" uid="uid://d2ok6fkl28mm1" path="res://assets/store/city.png" id="4_dtuxt"]
 [ext_resource type="Script" uid="uid://xj0bmy2s8qps" path="res://hud/store_dialog/road_control.gd" id="4_m8oqv"]
-[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="5_7dvud"]
 [ext_resource type="Texture2D" uid="uid://cbfx3yjbwv86j" path="res://assets/store/cards.png" id="5_64xnv"]
 [ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="5_tesxt"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="6_d7flh"]
@@ -13,7 +11,6 @@
 [ext_resource type="Script" uid="uid://dwxiahrq1mfy4" path="res://hud/store_dialog/city_control.gd" id="9_c6oqv"]
 [ext_resource type="Texture2D" uid="uid://d3ywknxm0qvs1" path="res://assets/resources/wood_color.png" id="10_k8u2y"]
 [ext_resource type="Script" uid="uid://nw8uiiuiwbmh" path="res://hud/store_dialog/card_control.gd" id="11_c6oqv"]
-[ext_resource type="PackedScene" uid="uid://cc8nw2xyp4c24" path="res://hud/components_old/dialog_sprite_control.tscn" id="11_d7flh"]
 [ext_resource type="Texture2D" uid="uid://gijtnuwil067" path="res://assets/resources/brick_color.png" id="11_nbb4d"]
 [ext_resource type="Texture2D" uid="uid://c6udkvuswa3f6" path="res://assets/resources/wheat_color.png" id="12_q632t"]
 [ext_resource type="Texture2D" uid="uid://p25t67qnqa1i" path="res://assets/resources/wool_color.png" id="13_id65n"]
@@ -42,33 +39,36 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="RoadControl" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("2_4ef40")]
+[node name="RoadControl" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("4_m8oqv")
-drag_layer = 2
-sprite_texture = ExtResource("5_7dvud")
+sprite_texture = ExtResource("6_d7flh")
 display_texture = ExtResource("6_d7flh")
+metadata/_custom_type_script = "uid://dw5he46fvlkx7"
 
-[node name="HouseControl" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("2_4ef40")]
+[node name="HouseControl" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("7_d7flh")
 sprite_texture = ExtResource("3_0blrl")
 display_texture = ExtResource("3_0blrl")
+metadata/_custom_type_script = "uid://dw5he46fvlkx7"
 
-[node name="CityControl" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("2_4ef40")]
+[node name="CityControl" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("9_c6oqv")
 sprite_texture = ExtResource("4_dtuxt")
 display_texture = ExtResource("4_dtuxt")
+metadata/_custom_type_script = "uid://dw5he46fvlkx7"
 
-[node name="CardsControl" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("11_d7flh")]
+[node name="CardsControl" type="PanelContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("11_c6oqv")
 display_texture = ExtResource("5_64xnv")
+metadata/_custom_type_script = "uid://dw5he46fvlkx7"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="BorderMargin0/InnerBorder/MarginContainer/HBoxContainer"]
 layout_mode = 2

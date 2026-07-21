@@ -43,7 +43,6 @@ func _get_world_target(world: Vector2, drag_layer: int) -> Node:
 	for result in space.intersect_point(query):
 		targets.append(result.collider)
 
-	print(drag_layer, targets)
 	if targets.size() > 0: 
 		return targets[0]
 	

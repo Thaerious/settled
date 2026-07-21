@@ -1,9 +1,5 @@
 extends Node2D
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
-
-
+func _on_button_button_up():
+	EventBus.current_phase_updated.emit(Model.GamePhase.SETUP)

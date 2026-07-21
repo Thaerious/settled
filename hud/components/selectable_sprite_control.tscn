@@ -7,3 +7,6 @@
 script = ExtResource("2_d0ma7")
 selected = false
 display_texture = null
+
+[node name="IconTexture" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer" index="0"]
+texture = null

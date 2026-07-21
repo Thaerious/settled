@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cucg1swo1x823"]
+[gd_scene load_steps=9 format=3 uid="uid://cucg1swo1x823"]
 
 [ext_resource type="Script" uid="uid://c56j2iyw1x8fq" path="res://hud/monopoly_dialog/monopoly_dialog.gd" id="1_fgov0"]
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_sklcr"]
-[ext_resource type="PackedScene" uid="uid://cc8nw2xyp4c24" path="res://hud/components_old/dialog_sprite_control.tscn" id="3_fgov0"]
-[ext_resource type="Script" uid="uid://rfgflm3tlhjp" path="res://hud/components_old/selectable_dialog_sprite_control.gd" id="4_e3q17"]
+[ext_resource type="Script" uid="uid://bfklulir1kxd" path="res://hud/components/selectable_sprite_control.gd" id="3_fgov0"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="4_sklcr"]
 [ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="5_4dhii"]
 [ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="6_aqyy2"]
@@ -39,40 +38,40 @@ layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="WoodControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_fgov0")]
+[node name="WoodControl" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("4_e3q17")
-selected = false
+script = ExtResource("3_fgov0")
 display_texture = ExtResource("4_sklcr")
+metadata/_custom_type_script = "uid://bfklulir1kxd"
 
-[node name="BrickControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_fgov0")]
+[node name="BrickControl" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("4_e3q17")
-selected = false
+script = ExtResource("3_fgov0")
 display_texture = ExtResource("5_4dhii")
+metadata/_custom_type_script = "uid://bfklulir1kxd"
 
-[node name="WheatControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_fgov0")]
+[node name="WheatControl" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("4_e3q17")
-selected = false
+script = ExtResource("3_fgov0")
 display_texture = ExtResource("6_aqyy2")
+metadata/_custom_type_script = "uid://bfklulir1kxd"
 
-[node name="RockControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_fgov0")]
+[node name="RockControl" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("4_e3q17")
-selected = false
+script = ExtResource("3_fgov0")
 display_texture = ExtResource("7_bb5c2")
+metadata/_custom_type_script = "uid://bfklulir1kxd"
 
-[node name="WoolControl" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_fgov0")]
+[node name="WoolControl" type="PanelContainer" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("4_e3q17")
-selected = false
+script = ExtResource("3_fgov0")
 display_texture = ExtResource("8_mpfal")
+metadata/_custom_type_script = "uid://bfklulir1kxd"
 
 [node name="ButtonAccept" type="Button" parent="MarginContainer/InnerBorder/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

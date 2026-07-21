@@ -3,9 +3,10 @@ extends PanelContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	EventBus.model_loaded.connect(self._on_model_updated)
-	EventBus.current_phase_updated.connect(func(_1): self._on_model_updated())
-	EventBus.current_player_updated.connect(func(_1): self._on_model_updated())
+	print("Initial Placement Dialog Ready")
+	EventBus.model_loaded.connect(self._on_model_loaded)
+	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
+	EventBus.current_player_updated.connect(func(_1): self._on_model_loaded())
 
 	%ControlHouse1.house_placed.connect(func(): 
 		%ControlHouse1.disabled = true
@@ -17,15 +18,15 @@ func _ready():
 	)
 
 func _on_current_phase_updated(phase: Model.GamePhase) -> void:
+	print("Initial Placement Phase Updated %s " % [Model.GamePhase.find_key(phase)])	
 	match phase:
 		Model.GamePhase.SETUP: 
 			self.visible = true
+			self._on_model_loaded()
 		_: self.visible = false	
 
 
-func _on_model_updated() -> void:
-	self._on_current_phase_updated(Game.model.get_current_phase())
-	
+func _on_model_loaded() -> void:
 	var count_houses = Game.model.get_houses(Game.self_id).size()	
 	var count_roads = Game.model.get_roads(Game.self_id).size()
 
