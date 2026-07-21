@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://c56j2iyw1x8fq" path="res://hud/monopoly_dialog/monopoly_dialog.gd" id="1_fgov0"]
 [ext_resource type="Theme" uid="uid://c1voxdoftfv08" path="res://hud/themes/root.tres" id="1_sklcr"]
-[ext_resource type="PackedScene" uid="uid://cc8nw2xyp4c24" path="res://hud/components/dialog_sprite_control.tscn" id="3_fgov0"]
-[ext_resource type="Script" uid="uid://rfgflm3tlhjp" path="res://hud/components/selectable_dialog_sprite_control.gd" id="4_e3q17"]
+[ext_resource type="PackedScene" uid="uid://cc8nw2xyp4c24" path="res://hud/components_old/dialog_sprite_control.tscn" id="3_fgov0"]
+[ext_resource type="Script" uid="uid://rfgflm3tlhjp" path="res://hud/components_old/selectable_dialog_sprite_control.gd" id="4_e3q17"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="4_sklcr"]
 [ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="5_4dhii"]
 [ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="6_aqyy2"]
