@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone/mouse/drag_node_ui.gd" id="5_fphia"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="6_01v37"]
 [ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="6_h4jmm"]
-[ext_resource type="Script" uid="uid://bevp5cowl65sy" path="res://hud/components_old/scaled_sprite.gd" id="7_dcw2i"]
+[ext_resource type="Script" uid="uid://bevp5cowl65sy" path="res://hud/components/scaled_sprite.gd" id="7_dcw2i"]
 
 [node name="FreeRoadControl" type="PanelContainer"]
 z_index = 5
