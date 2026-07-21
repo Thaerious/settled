@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4ngadwx8qdy7"]
+
+[ext_resource type="PackedScene" uid="uid://dgg24iv8r8tkv" path="res://hud/components/dialog_control.tscn" id="1_4kj6i"]
+[ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="2_jwc2h"]
+
+[node name="DialogSpriteControl2" instance=ExtResource("1_4kj6i")]
+
+[node name="IconTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_jwc2h")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
