@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4rkbgo81jcc6"]
+[gd_scene load_steps=5 format=3 uid="uid://b4rkbgo81jcc6"]
 
 [ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
 [ext_resource type="PackedScene" uid="uid://dxeck62k7i4yd" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="2_akvua"]
+[ext_resource type="PackedScene" uid="uid://t3lbmsckccj2" path="res://hud/components/dialog_sprite_control.tscn" id="3_xre04"]
+[ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="4_32o2v"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_lnlp5")
@@ -21,4 +23,21 @@ offset_right = 1048.0
 offset_bottom = 702.0
 text = "Setup Phase"
 
+[node name="Button2" type="Button" parent="CanvasLayer"]
+offset_left = 1053.0
+offset_top = 396.0
+offset_right = 1118.0
+offset_bottom = 427.0
+text = "Disable
+"
+
+[node name="DialogSpriteControl" parent="." instance=ExtResource("3_xre04")]
+unique_name_in_owner = true
+offset_left = 954.0
+offset_top = 373.0
+offset_right = 1028.0
+offset_bottom = 447.0
+display_texture = ExtResource("4_32o2v")
+
 [connection signal="button_up" from="CanvasLayer/Button" to="." method="_on_button_button_up"]
+[connection signal="button_up" from="CanvasLayer/Button2" to="." method="_on_button_2_button_up"]

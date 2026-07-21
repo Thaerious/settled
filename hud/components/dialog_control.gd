@@ -63,9 +63,14 @@ func _on_mouse_exited() -> void:
 
 
 func _update_style() -> void:
+	print("Update Style")
+	print(self._style_helper)
+	print(self.disabled)
+	print(self._hover)
+
 	if self.disabled: 
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		self._style_helper.style = "default"
+		self._style_helper.style = "disabled"
 	elif self._hover:
 		self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
 		self._style_helper.style = "hover"

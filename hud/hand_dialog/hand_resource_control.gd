@@ -1,6 +1,6 @@
 @tool
 class_name HandResourceControl
-extends DraggableDialogSpriteControl
+extends DraggableSpriteControl
 
 @onready var _quantity_label := %Quantity
 @onready var _exchange_label := %ExchangeRate

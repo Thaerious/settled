@@ -1,5 +1,5 @@
 @tool
-extends DraggableDialogSpriteControl
+extends DraggableSpriteControl
 
 var _last_target: CornerTarget = null
 const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")

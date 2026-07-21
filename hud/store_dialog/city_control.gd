@@ -1,6 +1,6 @@
 @tool
 class_name CityControl
-extends DraggableDialogSpriteControl
+extends DraggableSpriteControl
 
 const CITY_PIECE: PackedScene = preload("res://game_board/city_piece.tscn")
 var _last_target: CornerTarget = null

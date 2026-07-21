@@ -1,5 +1,5 @@
 @tool
-class_name DraggableDialogSpriteControl
+class_name DraggableSpriteControl
 extends DialogSpriteControl
 
 @onready var _drag_node := %DragNodeUI
@@ -24,8 +24,14 @@ extends DialogSpriteControl
 
 func _ready() -> void:
 	super._ready()
-	self.sprite_texture = self.sprite_texture
-	self.sprite_size = self.sprite_size
+
+
+func _post_ready() -> void:
+	super._post_ready()
+	print("draggable sprite control post ready")
+	print("%s %s" % [self.sprite_texture, self.sprite_size])
+	%ScaledSprite.texture = self.sprite_texture
+	%ScaledSprite.sprite_size = self.sprite_size
 
 
 func _enable() -> void: 

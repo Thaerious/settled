@@ -1,6 +1,6 @@
 @tool
 class_name FreeRoadControl
-extends DraggableDialogSpriteControl
+extends DraggableSpriteControl
 
 var _last_target: EdgeTarget = null
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
