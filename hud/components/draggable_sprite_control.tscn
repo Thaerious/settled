@@ -9,9 +9,9 @@
 [node name="DraggableSpriteControl" instance=ExtResource("1_8c46h")]
 script = ExtResource("2_f0606")
 drag_layer = 1
-sprite_texture = null
+sprite_texture = ExtResource("4_rflb4")
 sprite_size = Vector2(50, 50)
-display_texture = null
+display_texture = ExtResource("4_rflb4")
 
 [node name="DragNodeUI" type="Node" parent="." index="1"]
 unique_name_in_owner = true
@@ -25,6 +25,3 @@ texture = ExtResource("4_rflb4")
 script = ExtResource("5_6oatp")
 sprite_size = Vector2(50, 50)
 metadata/_custom_type_script = "uid://bevp5cowl65sy"
-
-[node name="IconTexture" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer" index="0"]
-texture = null

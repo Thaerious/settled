@@ -1,11 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://t3lbmsckccj2"]
+[gd_scene load_steps=4 format=3 uid="uid://t3lbmsckccj2"]
 
 [ext_resource type="PackedScene" uid="uid://dgg24iv8r8tkv" path="res://hud/components/dialog_control.tscn" id="1_uk76n"]
 [ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="2_8i2ys"]
+[ext_resource type="Script" uid="uid://dw5he46fvlkx7" path="res://hud/components/dialog_sprite_control.gd" id="2_57fj0"]
 
 [node name="DialogSpriteControl" instance=ExtResource("1_uk76n")]
+offset_right = 74.0
+offset_bottom = 32.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("2_57fj0")
+display_texture = ExtResource("2_8i2ys")
 
-[node name="IconTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer" index="0"]
+[node name="IconTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2

@@ -1,89 +1,23 @@
-[gd_scene load_steps=9 format=3 uid="uid://cf2jhci0uarl7"]
+[gd_scene load_steps=3 format=3 uid="uid://cwhth4ixc2a5c"]
 
+[ext_resource type="PackedScene" uid="uid://bf7wdu50td2ej" path="res://hud/components/draggable_sprite_control.tscn" id="1_mytik"]
 [ext_resource type="Script" uid="uid://cj6oexjd844id" path="res://hud/hand_dialog/hand_resource_control.gd" id="2_g8r32"]
-[ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone/nodes/style_helper.gd" id="3_k6vi7"]
-[ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="4_g8r32"]
-[ext_resource type="Theme" uid="uid://dypl76lfa5loe" path="res://hud/themes/hover.tres" id="4_p3jqc"]
-[ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone/mouse/drag_node_ui.gd" id="5_gswjl"]
-[ext_resource type="Theme" uid="uid://bjie0pv40kdif" path="res://hud/themes/disabled.tres" id="6_g8r32"]
-[ext_resource type="Script" uid="uid://bevp5cowl65sy" path="res://hud/components/scaled_sprite.gd" id="7_fxjip"]
-[ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="8_g8r32"]
 
-[node name="HandResourceControl" type="PanelContainer"]
-z_index = 5
-size_flags_vertical = 4
-theme = ExtResource("4_g8r32")
-theme_type_variation = &"OuterBorder"
+[node name="HandResourceControl" instance=ExtResource("1_mytik")]
 script = ExtResource("2_g8r32")
-sprite_texture = ExtResource("8_g8r32")
-display_texture = ExtResource("8_g8r32")
+resource_type = 5
 
-[node name="StyleHelper" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("3_k6vi7")
-style_map = Dictionary[String, Theme]({
-"default": ExtResource("4_g8r32"),
-"disabled": ExtResource("6_g8r32"),
-"hover": ExtResource("4_p3jqc")
-})
+[node name="BoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
+vertical = true
 
-[node name="DragNodeUI" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("5_gswjl")
-metadata/_custom_type_script = "uid://bwub0la08s7mr"
-
-[node name="ScaledSprite" type="Sprite2D" parent="DragNodeUI"]
-unique_name_in_owner = true
-visible = false
-z_index = 4096
-texture = ExtResource("8_g8r32")
-script = ExtResource("7_fxjip")
-sprite_size = Vector2(50, 50)
-
-[node name="MarginContainerBorder" type="MarginContainer" parent="."]
-layout_mode = 2
-mouse_filter = 2
-theme_type_variation = &"BorderMargin"
-
-[node name="InnerBorder" type="PanelContainer" parent="MarginContainerBorder"]
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_type_variation = &"InnerBorder"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainerBorder/InnerBorder"]
-layout_mode = 2
-mouse_filter = 2
-theme_type_variation = &"BorderMargin"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 0
-
-[node name="IconTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-texture = ExtResource("8_g8r32")
-expand_mode = 1
-stretch_mode = 5
-metadata/_edit_use_anchors_ = true
-
-[node name="Quantity" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="Label" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "0"
 horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="ExchangeRate" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="Label2" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="2"]
 layout_mode = 2
 theme_type_variation = &"LabelSmall"
 text = "4:1"
 horizontal_alignment = 1
-vertical_alignment = 1

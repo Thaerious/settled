@@ -7,6 +7,8 @@ func _ready() -> void:
 		self._update_controls()
 	)
 
+	self.visibility_changed.connect(self._update_controls)
+
 
 func _update_controls():
 	if Game.model.free_road_count() == 0:
@@ -18,12 +20,3 @@ func _update_controls():
 	else:
 		%FreeRoadControl1.disabled = false
 		%FreeRoadControl2.disabled = false
-
-
-func _on_current_phase_updated(phase: Model.GamePhase) -> void:
-	self._update_controls()
-
-	match phase:
-		Model.GamePhase.ROAD_BUILDING: 
-			self.visible = true
-		_: self.visible = false	

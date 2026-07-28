@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlwfrhwxsrfq2"]
+
+[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_4gpgw"]
+
+[node name="DialogFrame" instance=ExtResource("1_4gpgw")]
+offset_right = 396.0
+offset_bottom = 225.0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+layout_mode = 2
+theme_type_variation = &"InnerBorderTitle"
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
+layout_mode = 2
+theme_type_variation = &"LabelTitle"
+text = "Dialog Title"
+horizontal_alignment = 1
+
+[node name="ContentContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3

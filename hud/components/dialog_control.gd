@@ -17,6 +17,8 @@ class_name DialogControl
 extends PanelContainer
 
 signal clicked()
+signal on_selected()
+signal on_unselected()
 
 var _hover := false
 @onready var _style_helper := %StyleHelper
@@ -29,7 +31,24 @@ var _hover := false
 		if disabled == v: return
 		disabled = v		
 		if not is_node_ready(): return
+		if v: self._disable()
+		else: self._enable()
+
+
+@export var selected := false:
+	get: 
+		return selected
+	set(v): 
+		if selected == v: return
+		selected = v
+		if self.selected: self.on_selected.emit()
+		else:             self.on_unselected.emit()		
+		if not is_node_ready(): return
 		self._update_style()
+
+
+@export var selectable: bool = false
+@export var hoverable: bool = true
 
 
 func _ready() -> void:
@@ -39,52 +58,56 @@ func _ready() -> void:
 func _post_ready() -> void:
 	self.mouse_entered.connect(self._on_mouse_entered)
 	self.mouse_exited.connect(self._on_mouse_exited)
-	self.gui_input.connect(self._on_press)	
+	self.gui_input.connect(self._on_event_mouse_button)	
 	self._update_style()
 
 
-func _on_press(event: InputEvent) -> void:
+func _on_event_mouse_button(event: InputEvent) -> void:
 	if self.disabled: return
 	if not event is InputEventMouseButton: return
 	if not MouseHelper.is_left_release(event): return
 	if not get_viewport().gui_get_hovered_control(): return
 	if not get_viewport().gui_get_hovered_control().owner == self: return
-
+	if self.selectable: self.selected = !self.selected
 	self.clicked.emit()
 
+
 func _on_mouse_entered() -> void:	
+	if not self.hoverable: return
 	self._hover = true
 	self._update_style()
 
 
-func _on_mouse_exited() -> void:	
+func _on_mouse_exited() -> void:
+	if not self.hoverable: return	
 	self._hover = false
 	self._update_style()
 
 
 func _update_style() -> void:
-	print("Update Style")
-	print(self._style_helper)
-	print(self.disabled)
-	print(self._hover)
-
 	if self.disabled: 
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		self._style_helper.style = "disabled"
+		%StyleHelper.style = "disabled"
+	elif self._hover and self.selected:
+		self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
+		%StyleHelper.style = "selected_hover"		
 	elif self._hover:
 		self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
-		self._style_helper.style = "hover"
+		%StyleHelper.style = "hover"
+	elif self.selected:
+		self.mouse_default_cursor_shape = Control.CURSOR_ARROW	
+		%StyleHelper.style = "selected"		
 	else:
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		self._style_helper.style = "default"					
+		%StyleHelper.style = "default"						
 
 
 func _enable() -> void: 
-	self._style_helper.style = "default"
+	self._update_style()
 
 
 func _disable() -> void:	
-	self._style_helper.style = "disabled"
+	self._update_style()
 
 
 func _select() -> void: 

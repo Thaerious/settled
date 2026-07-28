@@ -1,30 +1,46 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxeck62k7i4yd"]
+[gd_scene load_steps=9 format=3 uid="uid://b2eyce4vakbj1"]
 
-[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_0qara"]
-[ext_resource type="Script" uid="uid://dskww1or2n4x7" path="res://hud/initial_placement/initial_placement_dialog.gd" id="2_01nxw"]
-[ext_resource type="PackedScene" uid="uid://bf7wdu50td2ej" path="res://hud/components/draggable_sprite_control.tscn" id="3_72fy6"]
-[ext_resource type="Script" uid="uid://dlqvt84bsa26l" path="res://hud/initial_placement/inital_placement_control_house.gd" id="3_koyv2"]
-[ext_resource type="Script" uid="uid://c6hptqk7i52eg" path="res://hud/initial_placement/inital_placement_control_road.gd" id="4_wkid4"]
+[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_wkid4"]
+[ext_resource type="PackedScene" uid="uid://bf7wdu50td2ej" path="res://hud/components/draggable_sprite_control.tscn" id="2_0qara"]
+[ext_resource type="Script" uid="uid://dskww1or2n4x7" path="res://hud/initial_placement/initial_placement_dialog.gd" id="2_72fy6"]
+[ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="3_72fy6"]
+[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="4_01nxw"]
+[ext_resource type="Script" uid="uid://dlqvt84bsa26l" path="res://hud/initial_placement/inital_placement_control_house.gd" id="4_wkid4"]
+[ext_resource type="Script" uid="uid://c6hptqk7i52eg" path="res://hud/initial_placement/inital_placement_control_road.gd" id="5_0qara"]
+[ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="5_t6han"]
 
-[node name="InitialPlacementDialog" instance=ExtResource("1_0qara")]
-script = ExtResource("2_01nxw")
+[node name="InitialPlacementDialog" instance=ExtResource("1_wkid4")]
+offset_right = 358.0
+offset_bottom = 106.0
+script = ExtResource("2_72fy6")
 
-[node name="ControlHouse1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="0" instance=ExtResource("3_72fy6")]
-unique_name_in_owner = true
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" index="0"]
 layout_mode = 2
-script = ExtResource("3_koyv2")
 
-[node name="ControlRoad1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="1" instance=ExtResource("3_72fy6")]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("4_wkid4")
-
-[node name="ControlHouse2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="2" instance=ExtResource("3_72fy6")]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("3_koyv2")
-
-[node name="ControlRoad2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="3" instance=ExtResource("3_72fy6")]
+[node name="HouseControl1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="0" instance=ExtResource("2_0qara")]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("4_wkid4")
+sprite_texture = ExtResource("3_72fy6")
+display_texture = ExtResource("3_72fy6")
+
+[node name="RoadControl1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="1" instance=ExtResource("2_0qara")]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("5_0qara")
+sprite_texture = ExtResource("4_01nxw")
+display_texture = ExtResource("5_t6han")
+
+[node name="HouseControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="2" instance=ExtResource("2_0qara")]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("4_wkid4")
+sprite_texture = ExtResource("3_72fy6")
+display_texture = ExtResource("3_72fy6")
+
+[node name="RoadControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="3" instance=ExtResource("2_0qara")]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("5_0qara")
+sprite_texture = ExtResource("4_01nxw")
+display_texture = ExtResource("5_t6han")

@@ -2,21 +2,26 @@ class_name DialogContainer
 extends PanelContainer
 
 
+@export var visible_phase: Model.GamePhase = Model.GamePhase.ALL
+@export var hide_when_not_my_turn := false
+
 func _ready() -> void:
-	call_deferred("_post_ready")
-
-
-func _post_ready() -> void:
-	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
+	EventBus.current_phase_updated.connect(self._hnd_current_phase_updated)
 	EventBus.model_loaded.connect(self._on_model_loaded)
 
 
-func _on_current_phase_updated(phase: Model.GamePhase) -> void:
-	match phase:
-		Model.GamePhase.NOT_STARTED: 
-			self.visible = false
-		_: self.visible = false	
+func _hnd_current_phase_updated(phase: Model.GamePhase) -> void:
+	if Game.model.get_current_player() != Game.self_id and self.hide_when_not_my_turn: 
+		self.visible = false
+	elif visible_phase == Model.GamePhase.ALL:
+		self.visible = true
+	elif visible_phase == Model.GamePhase.NONE:
+		self.visible = false
+	elif phase == self.visible_phase: 
+		self.visible = true
+	else: 
+		self.visible = false
 
 
 func _on_model_loaded() -> void:
-	self._on_current_phase_updated(Game.model.get_current_phase())		
+	self._hnd_current_phase_updated(Game.model.get_current_phase())		

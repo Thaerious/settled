@@ -69,6 +69,8 @@ enum GamePhase {
 	ROAD_BUILDING,
 	SOLDIER,
 	GAME_OVER,
+	ALL,
+	NONE,
 }
 
 static var COSTS = {

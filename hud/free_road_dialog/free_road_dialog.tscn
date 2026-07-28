@@ -1,21 +1,40 @@
-[gd_scene load_steps=4 format=3 uid="uid://creskaqj2salj"]
+[gd_scene load_steps=7 format=3 uid="uid://creskaqj2salj"]
 
-[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_87vyq"]
-[ext_resource type="PackedScene" uid="uid://cefrgrnyh4md4" path="res://hud/free_road_dialog/free_road_control.tscn" id="2_0a1fm"]
-[ext_resource type="Script" uid="uid://dq6iwikf45u1j" path="res://hud/free_road_dialog/free_road_dialog.gd" id="2_7sl3m"]
+[ext_resource type="PackedScene" uid="uid://dlwfrhwxsrfq2" path="res://hud/components/dialog_frame.tscn" id="1_gr3dg"]
+[ext_resource type="PackedScene" uid="uid://bf7wdu50td2ej" path="res://hud/components/draggable_sprite_control.tscn" id="2_0whds"]
+[ext_resource type="Script" uid="uid://dq6iwikf45u1j" path="res://hud/free_road_dialog/free_road_dialog.gd" id="2_r5lkv"]
+[ext_resource type="Script" uid="uid://7ntiigjywnls" path="res://hud/free_road_dialog/free_road_control.gd" id="3_7sl3m"]
+[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="3_r5lkv"]
+[ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="4_86gl5"]
 
-[node name="FreeRoadDialog" instance=ExtResource("1_87vyq")]
-offset_right = 272.0
-offset_bottom = 160.0
-script = ExtResource("2_7sl3m")
+[node name="FreeRoadDialog" instance=ExtResource("1_gr3dg")]
+script = ExtResource("2_r5lkv")
+visible_phase = 9
+hide_when_not_my_turn = true
 
-[node name="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" index="0"]
-size_flags_horizontal = 4
+[node name="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Free Road"
 
-[node name="FreeRoadControl1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="0" instance=ExtResource("2_0a1fm")]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]
+layout_mode = 2
+alignment = 1
+
+[node name="FreeRoadControl1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/HBoxContainer" index="0" instance=ExtResource("2_0whds")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 4
+script = ExtResource("3_7sl3m")
+sprite_texture = ExtResource("3_r5lkv")
+display_texture = ExtResource("4_86gl5")
 
-[node name="FreeRoadControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="1" instance=ExtResource("2_0a1fm")]
+[node name="Spacer" type="Control" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/HBoxContainer" index="1"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="FreeRoadControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/HBoxContainer" index="2" instance=ExtResource("2_0whds")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 4
+script = ExtResource("3_7sl3m")
+sprite_texture = ExtResource("3_r5lkv")
+display_texture = ExtResource("4_86gl5")

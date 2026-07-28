@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://d00jr2m8bmn28"]
+
+[ext_resource type="PackedScene" uid="uid://dlwfrhwxsrfq2" path="res://hud/components/dialog_frame.tscn" id="1_toy0t"]
+
+[node name="DialogPane" instance=ExtResource("1_toy0t")]
+
+[node name="ButtonAccept" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_default_cursor_shape = 2
+theme_type_variation = &"AcceptButton"
+text = "Accept
+"
+metadata/_edit_use_anchors_ = true

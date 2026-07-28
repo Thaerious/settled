@@ -1,5 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmd0ltmlfo4vg"]
+[gd_scene load_steps=3 format=3 uid="uid://dmd0ltmlfo4vg"]
 
 [ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_1soa3"]
+[ext_resource type="PackedScene" uid="uid://dgg24iv8r8tkv" path="res://hud/components/dialog_control.tscn" id="2_03s57"]
 
 [node name="StealDialog" instance=ExtResource("1_1soa3")]
+visible_phase = 5
+hide_when_not_my_turn = true
+
+[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer" index="0" instance=ExtResource("2_03s57")]
+layout_mode = 2
+
+[editable path="MarginContainer/PanelContainer/MarginContainer/DialogControl"]

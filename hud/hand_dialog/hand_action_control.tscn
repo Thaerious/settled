@@ -1,62 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://bsr5gimclo5io"]
+[gd_scene load_steps=3 format=3 uid="uid://bsr5gimclo5io"]
 
-[ext_resource type="Theme" uid="uid://336r2sin2k6j" path="res://hud/themes/default.tres" id="1_rm0ov"]
+[ext_resource type="PackedScene" uid="uid://t3lbmsckccj2" path="res://hud/components/dialog_sprite_control.tscn" id="1_scf54"]
 [ext_resource type="Script" uid="uid://cwxbwakqjhxd4" path="res://hud/hand_dialog/hand_action_control.gd" id="2_rm0ov"]
-[ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="3_lejws"]
-[ext_resource type="Script" uid="uid://bp3cjbwnpky62" path="res://standalone/nodes/style_helper.gd" id="4_14wlg"]
-[ext_resource type="Theme" uid="uid://bjie0pv40kdif" path="res://hud/themes/disabled.tres" id="5_6io7k"]
-[ext_resource type="Theme" uid="uid://dypl76lfa5loe" path="res://hud/themes/hover.tres" id="6_ssjkf"]
 
-[node name="HandActionControl" type="PanelContainer"]
-z_index = 5
-size_flags_vertical = 4
-theme = ExtResource("1_rm0ov")
-theme_type_variation = &"OuterBorder"
+[node name="HandActionControl" instance=ExtResource("1_scf54")]
 script = ExtResource("2_rm0ov")
-display_texture = ExtResource("3_lejws")
+action_type = 1
 
-[node name="StyleHelper" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("4_14wlg")
-style_map = Dictionary[String, Theme]({
-"default": ExtResource("1_rm0ov"),
-"disabled": ExtResource("5_6io7k"),
-"hover": ExtResource("6_ssjkf")
-})
+[node name="BoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
+vertical = true
 
-[node name="MarginContainerBorder" type="MarginContainer" parent="."]
+[node name="IconTexture" parent="MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+texture = null
+
+[node name="Label" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
 layout_mode = 2
-theme_type_variation = &"BorderMargin"
-
-[node name="InnerBorder" type="PanelContainer" parent="MarginContainerBorder"]
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 1
-theme_type_variation = &"InnerBorder"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainerBorder/InnerBorder"]
-layout_mode = 2
-theme_type_variation = &"BorderMargin"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="IconTexture" type="TextureRect" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("3_lejws")
-expand_mode = 1
-stretch_mode = 5
-metadata/_edit_use_anchors_ = true
-
-[node name="Quantity" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 1
 theme_type_variation = &"LabelLarge"
 text = "0"
 horizontal_alignment = 1
-vertical_alignment = 1
