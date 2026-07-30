@@ -1,15 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=8 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="1_miq82"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://camera_2d.gd" id="5_mj2jn"]
-[ext_resource type="PackedScene" uid="uid://b7hxt3o0jdil" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="10_3d2pr"]
-[ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="12_opqoc"]
-[ext_resource type="PackedScene" uid="uid://dqr0hpeu73nhq" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.tscn" id="15_h5hfs"]
-[ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="16_cxwtw"]
-[ext_resource type="PackedScene" uid="uid://creskaqj2salj" path="res://hud/free_road_dialog/free_road_dialog.tscn" id="19_snaye"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
@@ -41,34 +36,10 @@ sources/0 = SubResource("TileSetAtlasSource_mixcd")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="DevContainer" type="MarginContainer" parent="CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -216.0
-offset_bottom = 504.0
-grow_horizontal = 0
-theme_type_variation = &"DefaultMargin"
-
-[node name="DevController" parent="CanvasLayer/DevContainer" instance=ExtResource("1_miq82")]
-layout_mode = 2
-
-[node name="InitialPlacementDialog" parent="CanvasLayer"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-visible = false
-offset_left = 783.0
-offset_top = 896.0
-offset_right = 1133.0
-offset_bottom = 994.0
-script = null
+[node name="DevController" parent="CanvasLayer" instance=ExtResource("1_miq82")]
+offset_left = 1736.0
+offset_right = 1915.0
+offset_bottom = 750.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = -1
@@ -96,39 +67,6 @@ player_id = 2
 layout_mode = 2
 size_flags_vertical = 3
 player_id = 3
-
-[node name="YearOfPlentyDialog" parent="CanvasLayer" instance=ExtResource("15_h5hfs")]
-visible = false
-offset_left = 730.0
-offset_top = 785.0
-offset_right = 1180.0
-offset_bottom = 1070.0
-
-[node name="HandDialog" parent="CanvasLayer" instance=ExtResource("16_cxwtw")]
-visible = false
-offset_left = 730.0
-offset_top = 802.0
-offset_right = 1180.0
-offset_bottom = 1063.0
-
-[node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("12_opqoc")]
-offset_left = 1202.0
-offset_top = 560.0
-offset_right = 1624.0
-offset_bottom = 918.0
-
-[node name="FreeRoadDialog" parent="CanvasLayer" instance=ExtResource("19_snaye")]
-offset_left = 830.0
-offset_top = 907.0
-offset_right = 1102.0
-offset_bottom = 1067.0
-
-[node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("10_3d2pr")]
-visible = false
-offset_left = 697.0
-offset_top = 826.0
-offset_right = 1208.0
-offset_bottom = 1019.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")
