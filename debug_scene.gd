@@ -34,3 +34,7 @@ func _on_button_7_button_up():
 
 func _on_button_8_button_up():
 	EventBus.current_phase_updated.emit(Model.GamePhase.ROAD_BUILDING)
+
+
+func _on_button_9_button_up():
+	EventBus.current_phase_updated.emit(Model.GamePhase.STEAL_RESOURCES)

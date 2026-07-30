@@ -16,13 +16,11 @@
 class_name DialogControl
 extends PanelContainer
 
-signal clicked()
+enum Behaviour {SELECTABLE, CLICKABLE, NONE}
+
+signal on_clicked()
 signal on_selected()
 signal on_unselected()
-
-var _hover := false
-@onready var _style_helper := %StyleHelper
-
 
 @export var disabled := false:
 	get: 
@@ -46,9 +44,13 @@ var _hover := false
 		if not is_node_ready(): return
 		self._update_style()
 
-
-@export var selectable: bool = false
 @export var hoverable: bool = true
+@export var behaviour:= Behaviour.NONE
+
+var _hover := false
+var _pressed: bool = false
+
+@onready var _style_helper := %StyleHelper
 
 
 func _ready() -> void:
@@ -58,18 +60,34 @@ func _ready() -> void:
 func _post_ready() -> void:
 	self.mouse_entered.connect(self._on_mouse_entered)
 	self.mouse_exited.connect(self._on_mouse_exited)
-	self.gui_input.connect(self._on_event_mouse_button)	
+	self.gui_input.connect(self._on_gui_input)	
 	self._update_style()
 
 
-func _on_event_mouse_button(event: InputEvent) -> void:
-	if self.disabled: return
+func _is_click_event(event: InputEvent):
+	if MouseHelper.is_left_press(event):
+		self._pressed = true
+	elif MouseHelper.is_left_release(event):
+		self._pressed = false
+		self.on_clicked.emit()
+
+	self._update_style()		
+
+
+func _is_select_event(event: InputEvent):
+	if MouseHelper.is_left_press(event):		
+		self.selected = !self.selected
+		self._update_style()
+
+
+func _on_gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton: return
-	if not MouseHelper.is_left_release(event): return
-	if not get_viewport().gui_get_hovered_control(): return
-	if not get_viewport().gui_get_hovered_control().owner == self: return
-	if self.selectable: self.selected = !self.selected
-	self.clicked.emit()
+	if self.disabled: return
+
+	if self.behaviour == Behaviour.CLICKABLE:
+		self._is_click_event(event)
+	elif self.behaviour == Behaviour.SELECTABLE:
+		self._is_select_event(event)
 
 
 func _on_mouse_entered() -> void:	
@@ -85,16 +103,18 @@ func _on_mouse_exited() -> void:
 
 
 func _update_style() -> void:
+	var highlight_bg = self.selected or self._pressed
+
 	if self.disabled: 
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		%StyleHelper.style = "disabled"
-	elif self._hover and self.selected:
+	elif self._hover and highlight_bg:
 		self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
 		%StyleHelper.style = "selected_hover"		
 	elif self._hover:
 		self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND	
 		%StyleHelper.style = "hover"
-	elif self.selected:
+	elif highlight_bg:
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW	
 		%StyleHelper.style = "selected"		
 	else:

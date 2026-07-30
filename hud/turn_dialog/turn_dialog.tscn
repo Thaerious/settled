@@ -1,3 +1,38 @@
-[gd_scene format=3 uid="uid://bha1xek5chgda"]
+[gd_scene load_steps=5 format=3 uid="uid://bha1xek5chgda"]
 
-[node name="TurnDialog" type="Node2D"]
+[ext_resource type="PackedScene" uid="uid://d00jr2m8bmn28" path="res://hud/components/dialog_pane.tscn" id="1_1fy4e"]
+[ext_resource type="Texture2D" uid="uid://bkt6sdlu0w3tb" path="res://assets/dice/die1.png" id="2_1w65n"]
+[ext_resource type="Script" uid="uid://bubukkq766liu" path="res://hud/turn_dialog/turn_dialog.gd" id="2_h61qm"]
+[ext_resource type="Texture2D" uid="uid://oeu4ld743khe" path="res://assets/dice/die6.png" id="3_h61qm"]
+
+[node name="TurnDialog" instance=ExtResource("1_1fy4e")]
+offset_right = 438.0
+offset_bottom = 268.0
+script = ExtResource("2_h61qm")
+
+[node name="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Dice"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]
+layout_mode = 2
+alignment = 1
+
+[node name="Die1" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/HBoxContainer" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("2_1w65n")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Die2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/HBoxContainer" index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("3_h61qm")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonAccept" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="2"]
+text = "Roll
+"

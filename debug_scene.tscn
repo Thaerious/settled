@@ -1,8 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://b4rkbgo81jcc6"]
+[gd_scene load_steps=17 format=3 uid="uid://b4rkbgo81jcc6"]
 
 [ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
+[ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="2_dqb7s"]
 [ext_resource type="PackedScene" uid="uid://t3lbmsckccj2" path="res://hud/components/dialog_sprite_control.tscn" id="3_xre04"]
-[ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="4_32o2v"]
 [ext_resource type="PackedScene" uid="uid://dgg24iv8r8tkv" path="res://hud/components/dialog_control.tscn" id="5_rec6y"]
 [ext_resource type="PackedScene" uid="uid://bf7wdu50td2ej" path="res://hud/components/draggable_sprite_control.tscn" id="6_igtqi"]
 [ext_resource type="Texture2D" uid="uid://co4vl7gwwxney" path="res://assets/star.png" id="7_bstsi"]
@@ -14,11 +14,19 @@
 [ext_resource type="PackedScene" uid="uid://creskaqj2salj" path="res://hud/free_road_dialog/free_road_dialog.tscn" id="14_dqb7s"]
 [ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="14_qkyai"]
 [ext_resource type="PackedScene" uid="uid://bsr140pvnqoba" path="res://hud/components/dialog_label_control.tscn" id="15_dqb7s"]
+[ext_resource type="PackedScene" uid="uid://dmd0ltmlfo4vg" path="res://hud/steal_dialog/steal_dialog.tscn" id="15_uahfq"]
+[ext_resource type="PackedScene" uid="uid://bha1xek5chgda" path="res://hud/turn_dialog/turn_dialog.tscn" id="16_uahfq"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_lnlp5")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DevController" parent="CanvasLayer" instance=ExtResource("2_dqb7s")]
+offset_left = 1714.0
+offset_top = 12.0
+offset_right = 1893.0
+offset_bottom = 847.0
 
 [node name="Button1" type="Button" parent="CanvasLayer"]
 offset_left = 109.0
@@ -43,32 +51,40 @@ offset_bottom = 193.0
 text = "Disable"
 
 [node name="Button5" type="Button" parent="CanvasLayer"]
-offset_left = 1735.0
-offset_top = 505.0
-offset_right = 1867.0
-offset_bottom = 536.0
+offset_left = -3.0
+offset_top = 687.0
+offset_right = 129.0
+offset_bottom = 718.0
 text = "Set Phase Setup"
 
 [node name="Button6" type="Button" parent="CanvasLayer"]
-offset_left = 1730.0
-offset_top = 606.0
-offset_right = 1895.0
-offset_bottom = 637.0
+offset_left = -8.0
+offset_top = 788.0
+offset_right = 157.0
+offset_bottom = 819.0
 text = "Set Phase Monopoly"
 
 [node name="Button7" type="Button" parent="CanvasLayer"]
-offset_left = 1723.0
-offset_top = 549.0
-offset_right = 1888.0
-offset_bottom = 580.0
+offset_left = -15.0
+offset_top = 731.0
+offset_right = 150.0
+offset_bottom = 762.0
 text = "Set Phase Plenty"
 
 [node name="Button8" type="Button" parent="CanvasLayer"]
-offset_left = 1735.0
-offset_top = 657.0
-offset_right = 1900.0
-offset_bottom = 688.0
+offset_left = -3.0
+offset_top = 839.0
+offset_right = 162.0
+offset_bottom = 870.0
 text = "Set Phase Road"
+
+[node name="Button9" type="Button" parent="CanvasLayer"]
+offset_left = -4.0
+offset_top = 890.0
+offset_right = 161.0
+offset_bottom = 921.0
+text = "Set Phase Steal
+"
 
 [node name="Label" type="Label" parent="CanvasLayer"]
 offset_left = 285.0
@@ -108,10 +124,10 @@ offset_bottom = 47.0
 text = "Dialog Label Control"
 
 [node name="Label6" type="Label" parent="CanvasLayer"]
-offset_left = 1622.0
-offset_top = 7.0
-offset_right = 1752.0
-offset_bottom = 30.0
+offset_left = 1245.0
+offset_top = 715.0
+offset_right = 1375.0
+offset_bottom = 738.0
 text = "Dialog Pane"
 
 [node name="DialogSpriteControl" parent="." instance=ExtResource("3_xre04")]
@@ -120,9 +136,6 @@ offset_left = 317.0
 offset_top = 71.0
 offset_right = 391.0
 offset_bottom = 145.0
-display_texture = ExtResource("4_32o2v")
-selected = null
-selectable = null
 
 [node name="DialogControl" parent="." instance=ExtResource("5_rec6y")]
 unique_name_in_owner = true
@@ -130,6 +143,7 @@ offset_left = 100.0
 offset_top = 68.0
 offset_right = 182.1488
 offset_bottom = 147.5187
+behaviour = 1
 
 [node name="DraggableSpriteControl" parent="." instance=ExtResource("6_igtqi")]
 unique_name_in_owner = true
@@ -138,9 +152,6 @@ offset_top = 72.0
 offset_right = 625.0
 offset_bottom = 146.0
 sprite_texture = ExtResource("7_bstsi")
-display_texture = ExtResource("7_bstsi")
-selected = null
-selectable = null
 
 [node name="DialogContainer" parent="." instance=ExtResource("9_3t6qa")]
 offset_left = 914.0
@@ -149,24 +160,22 @@ offset_right = 1090.0
 offset_bottom = 136.0
 
 [node name="DialogPane" parent="." instance=ExtResource("10_rb1vg")]
-offset_left = 1504.0
-offset_top = 44.0
-offset_right = 1876.0
-offset_bottom = 238.0
+offset_left = 1127.0
+offset_top = 752.0
+offset_right = 1499.0
+offset_bottom = 946.0
 
 [node name="InitialPlacementDialog" parent="." instance=ExtResource("11_tl212")]
-offset_left = 1151.0
-offset_top = 281.0
-offset_right = 1509.0
-offset_bottom = 387.0
+offset_left = 1147.0
+offset_top = 192.0
+offset_right = 1505.0
+offset_bottom = 298.0
 
 [node name="DialogPane2" parent="." instance=ExtResource("12_of7eg")]
 offset_left = 95.0
 offset_top = 249.0
 offset_right = 602.0
 offset_bottom = 544.0
-visible_phase = 12
-hide_when_not_my_turn = false
 
 [node name="YearOfPlentyDialog" parent="." instance=ExtResource("13_8y0th")]
 offset_left = 622.0
@@ -181,10 +190,10 @@ offset_right = 549.0
 offset_bottom = 1014.0
 
 [node name="FreeRoadDialog" parent="." instance=ExtResource("14_dqb7s")]
-offset_left = 1314.2728
-offset_top = 485.94193
-offset_right = 1710.2728
-offset_bottom = 710.9419
+offset_left = 1126.0
+offset_top = 315.0
+offset_right = 1522.0
+offset_bottom = 540.0
 
 [node name="DialogLabelControl" parent="." instance=ExtResource("15_dqb7s")]
 offset_left = 1189.6154
@@ -193,7 +202,18 @@ offset_right = 1468.0
 offset_bottom = 161.81763
 display_text = "I am control"
 horizontal_alignment = 1
-selectable = true
+
+[node name="StealDialog" parent="." instance=ExtResource("15_uahfq")]
+offset_left = 663.0
+offset_top = 656.0
+offset_right = 1059.0
+offset_bottom = 1031.0
+
+[node name="TurnDialog" parent="." instance=ExtResource("16_uahfq")]
+offset_left = 1236.0
+offset_top = 410.0
+offset_right = 1568.0
+offset_bottom = 664.0
 
 [connection signal="button_up" from="CanvasLayer/Button1" to="." method="_on_button_button_up"]
 [connection signal="button_up" from="CanvasLayer/Button2" to="." method="_on_button_2_button_up"]
@@ -202,3 +222,4 @@ selectable = true
 [connection signal="button_up" from="CanvasLayer/Button6" to="." method="_on_button_6_button_up"]
 [connection signal="button_up" from="CanvasLayer/Button7" to="." method="_on_button_7_button_up"]
 [connection signal="button_up" from="CanvasLayer/Button8" to="." method="_on_button_8_button_up"]
+[connection signal="button_up" from="CanvasLayer/Button9" to="." method="_on_button_9_button_up"]

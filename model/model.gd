@@ -71,6 +71,7 @@ enum GamePhase {
 	GAME_OVER,
 	ALL,
 	NONE,
+	PRE_ROLL
 }
 
 static var COSTS = {

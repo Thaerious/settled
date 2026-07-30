@@ -1,13 +1,41 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmd0ltmlfo4vg"]
+[gd_scene load_steps=4 format=3 uid="uid://dmd0ltmlfo4vg"]
 
-[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_1soa3"]
-[ext_resource type="PackedScene" uid="uid://dgg24iv8r8tkv" path="res://hud/components/dialog_control.tscn" id="2_03s57"]
+[ext_resource type="PackedScene" uid="uid://dlwfrhwxsrfq2" path="res://hud/components/dialog_frame.tscn" id="1_ywag2"]
+[ext_resource type="Script" uid="uid://cqn876muhmbvn" path="res://hud/steal_dialog/steal_dialog.gd" id="2_elrgv"]
+[ext_resource type="PackedScene" uid="uid://bsr140pvnqoba" path="res://hud/components/dialog_label_control.tscn" id="3_elrgv"]
 
-[node name="StealDialog" instance=ExtResource("1_1soa3")]
+[node name="StealDialog" instance=ExtResource("1_ywag2")]
+script = ExtResource("2_elrgv")
 visible_phase = 5
 hide_when_not_my_turn = true
 
-[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer" index="0" instance=ExtResource("2_03s57")]
+[node name="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Steal Resources"
+
+[node name="PlayerGroup" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[editable path="MarginContainer/PanelContainer/MarginContainer/DialogControl"]
+[node name="Player1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/PlayerGroup" index="0" instance=ExtResource("3_elrgv")]
+layout_mode = 2
+display_text = "Not Set"
+horizontal_alignment = 1
+behaviour = 1
+
+[node name="Player2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/PlayerGroup" index="1" instance=ExtResource("3_elrgv")]
+layout_mode = 2
+display_text = "Not Set"
+horizontal_alignment = 1
+behaviour = 1
+
+[node name="Player3" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/PlayerGroup" index="2" instance=ExtResource("3_elrgv")]
+layout_mode = 2
+display_text = "Not Set"
+horizontal_alignment = 1
+behaviour = 1
+
+[node name="Player4" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/PlayerGroup" index="3" instance=ExtResource("3_elrgv")]
+layout_mode = 2
+display_text = "Not Set"
+horizontal_alignment = 1
+behaviour = 1
