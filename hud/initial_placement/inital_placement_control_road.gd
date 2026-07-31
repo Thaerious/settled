@@ -1,7 +1,6 @@
 @tool
 extends DraggableSpriteControl
 
-var house_axial:Axial = null
 var _last_target: EdgeTarget = null
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
@@ -14,7 +13,8 @@ func _ready() -> void:
 
 
 func _on_drag_start() -> void:
-	EventBus.show_initial_road_targets.emit(self.house_axial)	
+	var _house_axial:Axial = Game.model.get_initial_houses(Game.self_id)[-1]
+	EventBus.show_initial_road_targets.emit(_house_axial)	
 
 
 func _on_drag_end(rec: DragRecord) -> void:

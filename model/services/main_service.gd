@@ -49,6 +49,7 @@ func _request_house(id: int, corner: Axial) -> void:
 
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP:
 		if count == 1: self._award_resources(id, corner)
+		Game.model._initial_houses[id].append(corner)
 	else:
 		Game.model.do_remove_resources(id, Model.COSTS["house"])		
 

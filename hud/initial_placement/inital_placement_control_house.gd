@@ -1,7 +1,6 @@
 @tool
 extends DraggableSpriteControl
 
-@export var road_controller: Node
 var _last_target: CornerTarget = null
 const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")
 signal house_placed()
@@ -26,8 +25,6 @@ func _on_drag_end(rec: DragRecord) -> void:
 	print("_on_drag_end %s" % rec.drop_target.owner is CornerTarget)
 	self._last_target = rec.drop_target.owner
 	EventBus.request_house.emit(Game.self_id, self._last_target.axial)
-	self.road_controller.house_axial = self._last_target.axial
-	print(self.road_controller)
 	self.house_placed.emit()
 
 

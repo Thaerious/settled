@@ -104,8 +104,9 @@ var _cities: Dictionary[String, int] = {}             # map of city axial -> pla
 var _roads: Dictionary[String, int] = {}              # map of road axial -> player who owns it
 var _ports: Dictionary[String, ResourceTypes] = {}    # map of port axial -> resource the port trades
 var _road_building: int = 0                           # during road building phase, number of roads left to build
-
+var _initial_houses: Dictionary[int, Array]           # initial house placements for each player
 var _dice: Array[int] = [1, 1]                        # this is used for dev & debug - is not saved
+
 
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
@@ -125,7 +126,7 @@ func get_largest_army() -> int:             return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
 func player_count() -> int:                 return self._player_records.size() # todo move all player counts to this
 func free_road_count() -> int:              return self._road_building
-
+func get_initial_houses(id: int) -> Array:  return self._initial_houses[id].duplicate()
 
 # return all edges that can accept a road
 # ie not edges that only border water
@@ -385,7 +386,8 @@ func _init() -> void:
 		self._cities_mirror[id] = AxialSet.new()
 		self._roads_mirror[id] = AxialEdgeSet.new()	
 		self._player_records[id] = PlayerRecord.new(id)
-		self._discard_target[id] = INT_MAX		
+		self._discard_target[id] = INT_MAX	
+		self._initial_houses[id] = []
 
 
 func build(names: Array[String]) -> void:

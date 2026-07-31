@@ -20,7 +20,8 @@ static func save(model: Model, path: String) -> void:
 		"houses":                model._houses,
 		"cities":                model._cities,
 		"roads":                 model._roads,
-		"ports":                 model._ports
+		"ports":                 model._ports,
+		"initial_houses":        serialize_initial_houses(model._initial_houses),
 	}
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data, "\t"))
@@ -30,6 +31,18 @@ static func serialize_dictionary(dict: Dictionary):
 	var json = {}
 	for key in dict.keys():
 		json[key] = dict[key].serialize()
+	return json
+
+
+static func serialize_initial_houses(dict: Dictionary):
+	var json = []
+	
+	for p in dict:
+		var next = []
+		for item in dict[p]:
+			next.append(item.serialize())
+		json.append(next)
+	
 	return json
 
 
@@ -65,28 +78,30 @@ static func load(path: String) -> Model:
 	for k in data["roads"]: 
 		model._roads[k] = int(data["roads"][k])
 		model._roads_mirror[model._roads[k]].add_item(AxialEdge.from_key(k))
-
-	# check
+	
 	for k in data["bank"]:
 		var wallet := Wallet.deserialize(data["bank"][k])
 		model._bank[int(k)] = wallet
-
-	# check
+	
 	for k in data["exchange_rate"]:
 		var wallet := Wallet.deserialize(data["exchange_rate"][k])
 		model._exchange_rate[int(k)] = wallet
-
-	# check
+	
 	for k in data["owned_action_cards"]:
 		var wallet := ActionCardWallet.deserialize(data["owned_action_cards"][k])
 		model._owned_cards[int(k)] = wallet
-
-	# check
+	
 	for k in data["playable_action_cards"]:
 		var wallet := ActionCardWallet.deserialize(data["playable_action_cards"][k])
 		model._playable_cards[int(k)] = wallet
 
 	for k in data["ports"]:
 		model._ports[k] = int(data["ports"][k]) as Model.ResourceTypes
+
+	var p = 0
+	for k in data["initial_houses"]:
+		for j in k:
+			model._initial_houses[p].append(Axial.deserialize(j))
+		p += 1
 
 	return model		
