@@ -23,9 +23,11 @@ func _on_drag_end(rec: DragRecord) -> void:
 	EventBus.clear_targets.emit()
 	if not rec.drop_target: return
 	if not rec.drop_target.owner is CornerTarget: return
+	print("_on_drag_end %s" % rec.drop_target.owner is CornerTarget)
 	self._last_target = rec.drop_target.owner
 	EventBus.request_house.emit(Game.self_id, self._last_target.axial)
 	self.road_controller.house_axial = self._last_target.axial
+	print(self.road_controller)
 	self.house_placed.emit()
 
 
@@ -38,5 +40,6 @@ func _on_hover_enter(rec: DragRecord) -> void:
 
 
 func _on_hover_exit(_rec: DragRecord) -> void:
+	print("on hover exit")
 	self._last_target.clear_piece()
 	self._last_target = null

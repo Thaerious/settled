@@ -26,6 +26,7 @@ func _on_drag_end(rec: DragRecord) -> void:
 
 
 func _on_hover_enter(rec: DragRecord) -> void:
+	print("on_hover_enter")
 	if not rec.drop_target.owner is EdgeTarget: return
 	self._last_target = rec.drop_target.owner as EdgeTarget
 	var road_piece = ROAD_PIECE.instantiate()

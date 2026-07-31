@@ -30,7 +30,7 @@ func _process(_delta: float) -> void:
 
 
 func _update_hover() -> void:
-	var record := MouseHelper.resolve_drag_target(self.drop_layer)
+	var record := MouseHelper.resolve_drop_target(self.drop_layer)
 
 	if record.drop_target == self._last_hover_target:
 		return
@@ -66,5 +66,5 @@ func _do_stop_drag() -> void:
 	self._dragging = false
 	self.drag_target.top_level = false
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
-	var rec := MouseHelper.resolve_drag_target(self.drop_layer)
+	var rec := MouseHelper.resolve_drop_target(self.drop_layer)
 	self.drag_end.emit(rec)

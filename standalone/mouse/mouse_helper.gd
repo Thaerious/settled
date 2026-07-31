@@ -80,7 +80,7 @@ func _get_drop_target(world: Vector2, drag_layer: int) -> Variant:
 
 ## Resolves the drop target under the cursor and returns a populated [DragRecord].
 ## Checks UI controls first, then falls back to physics-based Area2D targets.
-func resolve_drag_target(drag_layer: int) -> DragRecord:
+func resolve_drop_target(drag_layer: int) -> DragRecord:
 	var screen_pos := get_viewport().get_mouse_position()
 	var world      := self.world_pos(screen_pos)
 

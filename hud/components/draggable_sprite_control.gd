@@ -2,10 +2,16 @@
 class_name DraggableSpriteControl
 extends DialogSpriteControl
 
-@export var drag_layer := 1
+@onready var drag_node = %DragNodeUI
+
+@export var drop_layer: int = 0:
+	set(value):
+		drop_layer = value		
+		if not is_node_ready(): return
+		%DragNodeUI.drop_layer = value
 
 
-@export var sprite_texture : Texture2D:
+@export var sprite_texture: Texture2D:
 	set(value):
 		sprite_texture = value		
 		if not is_node_ready(): return
@@ -21,8 +27,6 @@ extends DialogSpriteControl
 		%ScaledSprite.sprite_size = value
 
 
-@onready var drag_node = %DragNodeUI
-
 func _ready() -> void:
 	super._ready()
 
@@ -31,6 +35,7 @@ func _post_ready() -> void:
 	super._post_ready()
 	%ScaledSprite.texture = self.sprite_texture
 	%ScaledSprite.sprite_size = self.sprite_size
+	%DragNodeUI.drop_layer = self.drop_layer
 
 
 func _enable() -> void: 
