@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=11 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="1_miq82"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b2eyce4vakbj1" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="3_kdryc"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
 [ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="4_6e45b"]
+[ext_resource type="PackedScene" uid="uid://bha1xek5chgda" path="res://hud/turn_dialog/turn_dialog.tscn" id="5_e35lh"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://camera_2d.gd" id="5_mj2jn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
@@ -81,6 +82,12 @@ offset_left = 768.0
 offset_top = 818.0
 offset_right = 1210.0
 offset_bottom = 1071.0
+
+[node name="TurnDialog" parent="CanvasLayer" instance=ExtResource("5_e35lh")]
+offset_left = 1262.0
+offset_top = 790.0
+offset_right = 1700.0
+offset_bottom = 1058.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")

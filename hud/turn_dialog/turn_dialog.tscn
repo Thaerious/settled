@@ -1,14 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://bha1xek5chgda"]
+[gd_scene load_steps=9 format=3 uid="uid://bha1xek5chgda"]
 
 [ext_resource type="PackedScene" uid="uid://d00jr2m8bmn28" path="res://hud/components/dialog_pane.tscn" id="1_1fy4e"]
 [ext_resource type="Texture2D" uid="uid://bkt6sdlu0w3tb" path="res://assets/dice/die1.png" id="2_1w65n"]
 [ext_resource type="Script" uid="uid://bubukkq766liu" path="res://hud/turn_dialog/turn_dialog.gd" id="2_h61qm"]
 [ext_resource type="Texture2D" uid="uid://oeu4ld743khe" path="res://assets/dice/die6.png" id="3_h61qm"]
+[ext_resource type="Texture2D" uid="uid://dfwfv8hrq0noa" path="res://assets/dice/die2.png" id="4_wc7jj"]
+[ext_resource type="Texture2D" uid="uid://cebv053xu225u" path="res://assets/dice/die3.png" id="5_3n3l0"]
+[ext_resource type="Texture2D" uid="uid://dcnt8efju5c54" path="res://assets/dice/die4.png" id="6_5l0go"]
+[ext_resource type="Texture2D" uid="uid://bwcf2j2csptcx" path="res://assets/dice/die5.png" id="7_ik714"]
 
 [node name="TurnDialog" instance=ExtResource("1_1fy4e")]
 offset_right = 438.0
 offset_bottom = 268.0
 script = ExtResource("2_h61qm")
+dice_textures = Array[Texture2D]([ExtResource("2_1w65n"), ExtResource("4_wc7jj"), ExtResource("5_3n3l0"), ExtResource("6_5l0go"), ExtResource("7_ik714"), ExtResource("3_h61qm")])
 
 [node name="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
 text = "Dice"

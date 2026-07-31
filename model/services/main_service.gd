@@ -167,27 +167,23 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 
 # called by the game in production
 func _on_request_roll() -> void:
-	pass
-	# var dice_control: DiceControl = get_tree().get_first_node_in_group("DiceControl")
-	# var dev_dice = dice_control.get_dice()
-
-	# var d1: int = randi_range(1, 6)
-	# var d2: int = randi_range(1, 6)
+	var d1: int = randi_range(1, 6)
+	var d2: int = randi_range(1, 6)
 
 	# # debug/dev override
 	# if dev_dice[0] != -1: d1 = dev_dice[0]
 	# if dev_dice[1] != -1: d2 = dev_dice[1]
 
-	# Game.model.do_set_dice(d1, d2)
-	# if d1 + d2 == 7:
-	# 	Game.model.do_update_phase(GamePhase.INIT_DISCARD)
-	# 	return
+	Game.model.do_set_dice(d1, d2)
+	if d1 + d2 == 7:
+		Game.model.do_update_phase(GamePhase.INIT_DISCARD)
+		return
 
-	# for id in range(Game.player_count):	
-	# 	var resources := Wallet.new()
-	# 	self._scan_houses(id, d1 + d2, resources)
-	# 	self._scan_cities(id, d1 + d2, resources)
-	# 	Game.model.do_add_resources(id, resources)
+	for id in range(Game.player_count):	
+		var resources := Wallet.new()
+		self._scan_houses(id, d1 + d2, resources)
+		self._scan_cities(id, d1 + d2, resources)
+		Game.model.do_add_resources(id, resources)
 
 
 func _scan_houses(id:int, number:int, resources: Wallet):

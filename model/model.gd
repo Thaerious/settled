@@ -213,15 +213,22 @@ func get_hex_data(hex: Axial) -> HexData:
 
 
 func do_end_turn() -> void:
+	# increment the current player
 	self._current_player = (self._current_player + 1) % self.player_count()		
-	EventBus.current_player_updated.emit(self._current_player)
 
+	# update playable action cards for new current player
 	var owned = self._owned_cards[self._current_player]
 	var playable = self._playable_cards[self._current_player]
 	owned.copy_to(playable)
 
-	EventBus.action_cards_updated.emit(self._current_player, owned, playable)
+	# set turn
+	self._game_phase = Model.GamePhase.PRE_ROLL
 
+	# emit events
+	EventBus.current_phase_updated.emit(Game.model.get_current_phase())
+	EventBus.current_player_updated.emit(Game.model.get_current_player())	
+	EventBus.action_cards_updated.emit(self._current_player, owned, playable)
+	
 
 func do_set_dice(d1: int, d2:int) -> void:
 	self._dice[0] = d1
