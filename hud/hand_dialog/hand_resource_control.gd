@@ -2,9 +2,6 @@
 class_name HandResourceControl
 extends DraggableSpriteControl
 
-@onready var _quantity_label := %Quantity
-@onready var _exchange_label := %ExchangeRate
-
 @export var resource_type: Model.ResourceTypes = Model.ResourceTypes.NONE
 
 
@@ -27,25 +24,15 @@ func _on_drag_end(rec: DragRecord) -> void:
 func exchange_rate_set(id: int, wallet: Wallet):
 	if not id == Game.self_id: return
 	var qty = wallet.get_resource(self.resource_type)
-	self._exchange_label.text = "%s:1" % qty
+	%ExchangeRate.text = "%s:1" % qty
 	
 
 
 func model_loaded() -> void:
 	var wallet := Game.model.get_bank(Game.self_id)
-	self._quantity_label.text = str(wallet.get_resource(self.resource_type))
+	%Quantity.text = str(wallet.get_resource(self.resource_type))
 
 
 func resources_updated(id: int, wallet: Wallet) -> void:
 	if not id == Game.self_id: return
-	self._quantity_label.text = str(wallet.get_resource(self.resource_type))
-
-
-func _on_mouse_entered() -> void:	
-	if disabled: return
-	self._style_helper.style = "hover"
-
-
-func _on_mouse_exited() -> void:	
-	if disabled: return
-	self._style_helper.style = "default"
+	%Quantity.text = str(wallet.get_resource(self.resource_type))

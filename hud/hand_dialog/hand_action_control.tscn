@@ -10,10 +10,8 @@ action_type = 1
 [node name="BoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
 vertical = true
 
-[node name="IconTexture" parent="MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
-texture = null
-
-[node name="Label" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
+[node name="Quantity" type="Label" parent="MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "0"

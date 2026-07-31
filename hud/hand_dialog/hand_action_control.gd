@@ -15,7 +15,6 @@ func _on_model_loaded() -> void:
 	var current_player = Game.model.get_current_player()
 	var owned = Game.model.get_owned_action_cards(Game.self_id)
 	var playable = Game.model.get_playable_action_cards(Game.self_id)
-
 	self._on_action_cards_updated(current_player, owned, playable)
 
 
