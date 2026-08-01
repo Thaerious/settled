@@ -23,7 +23,9 @@ func _on_drag_start() -> void:
 
 
 func _on_drag_end(rec: DragRecord) -> void:
-	if not rec.drop_target.owner is NumberPiece:
+	if not rec.drop_target:
+		EventBus.request_set_pirate.emit(Game.self_id, self._origin_axial)
+	elif not rec.drop_target.owner is NumberPiece:
 		EventBus.request_set_pirate.emit(Game.self_id, self._origin_axial)
 	else:
 		var drop_axial = rec.drop_target.owner.axial

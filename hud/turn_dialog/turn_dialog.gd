@@ -8,11 +8,11 @@ func _ready() -> void:
 	EventBus.model_loaded.connect(self._on_model_loaded)
 	EventBus.dice_set.connect(self._on_dice_set)
 	%ButtonAccept.button_up.connect(self._on_button_up)
-
+	print(self.dice_textures)
 
 func _on_dice_set(d1: int, d2: int) -> void:
-	%Die1.texture = dice_textures[d1 - 1]
-	%Die2.texture = dice_textures[d2 - 1]
+	%Die1.texture = self.dice_textures[d1 - 1]
+	%Die2.texture = self.dice_textures[d2 - 1]
 
 
 func _on_button_up() -> void:

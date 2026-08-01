@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=13 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
+[ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="1_j5hk1"]
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="1_miq82"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
 [ext_resource type="PackedScene" uid="uid://b2eyce4vakbj1" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="3_kdryc"]
@@ -8,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="4_6e45b"]
 [ext_resource type="PackedScene" uid="uid://bha1xek5chgda" path="res://hud/turn_dialog/turn_dialog.tscn" id="5_e35lh"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://camera_2d.gd" id="5_mj2jn"]
+[ext_resource type="PackedScene" uid="uid://dmd0ltmlfo4vg" path="res://hud/steal_dialog/steal_dialog.tscn" id="6_udeyl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
@@ -38,6 +40,12 @@ sources/0 = SubResource("TileSetAtlasSource_mixcd")
 [node name="GameScene" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("1_j5hk1")]
+offset_left = 1526.0
+offset_top = 715.0
+offset_right = 1916.0
+offset_bottom = 1073.0
 
 [node name="DevController" parent="CanvasLayer" instance=ExtResource("1_miq82")]
 offset_left = 1736.0
@@ -84,10 +92,17 @@ offset_right = 1210.0
 offset_bottom = 1071.0
 
 [node name="TurnDialog" parent="CanvasLayer" instance=ExtResource("5_e35lh")]
-offset_left = 1262.0
-offset_top = 790.0
-offset_right = 1700.0
-offset_bottom = 1058.0
+offset_left = 29.0
+offset_top = 799.0
+offset_right = 467.0
+offset_bottom = 1067.0
+
+[node name="StealDialog" parent="CanvasLayer" instance=ExtResource("6_udeyl")]
+visible = false
+offset_left = 1282.0
+offset_top = 675.0
+offset_right = 1678.0
+offset_bottom = 1050.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")

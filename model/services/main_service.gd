@@ -95,7 +95,11 @@ func _request_add_action_card(id: int, c: Model.ActionCardTypes) -> void:
 	Game.model.do_add_action_card(id, c)
 
 
-func _request_set_pirate(_id: int, hex: Axial):
+func _request_set_pirate(_id: int, hex: Axial):	
+	if hex.equals(Game.model.get_pirate()):
+		Game.model.do_set_pirate(hex)
+		return
+
 	Game.model.do_set_pirate(hex)
 
 	var corners := hex.corners()
