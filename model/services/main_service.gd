@@ -59,9 +59,7 @@ func _request_city(id: int, corner: Axial) -> void:
 	Game.model.do_set_city(id, corner)
 
 
-func _request_road(id: int, edge: AxialEdge) -> void:
-	Game.model.do_set_road(id, edge)
-
+func _request_road(id: int, edge: AxialEdge) -> void:	
 	if Game.model.get_current_phase() == GamePhase.ROAD_BUILDING:
 		Game.model.decrement_road_building()
 		if Game.model.free_road_count() == 0: Game.model.do_update_phase(GamePhase.MAIN)
@@ -69,6 +67,8 @@ func _request_road(id: int, edge: AxialEdge) -> void:
 		self._next_initial_player(id)
 	else:
 		Game.model.do_remove_resources(id, Model.COSTS["road"])
+
+	Game.model.do_set_road(id, edge)		
 		
 
 func _next_initial_player(id: int):

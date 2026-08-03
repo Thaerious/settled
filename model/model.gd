@@ -103,7 +103,7 @@ var _houses: Dictionary[String, int] = {}             # map of house axial -> pl
 var _cities: Dictionary[String, int] = {}             # map of city axial -> player who owns it
 var _roads: Dictionary[String, int] = {}              # map of road axial -> player who owns it
 var _ports: Dictionary[String, ResourceTypes] = {}    # map of port axial -> resource the port trades
-var _road_building: int = 0                           # during road building phase, number of roads left to build
+var _road_building: int = 2                           # during road building phase, number of roads left to build
 var _initial_houses: Dictionary[int, Array]           # initial house placements for each player
 var _dice: Array[int] = [1, 1]                        # this is used for dev & debug - is not saved
 
@@ -324,6 +324,10 @@ func do_remove_action_card(id: int, card) -> void:
 
 func do_update_phase(phase: GamePhase) -> void:
 	self._game_phase = phase
+
+	if phase == Model.GamePhase.ROAD_BUILDING:
+		Game.model._road_building = 2
+
 	EventBus.current_phase_updated.emit(phase)
 
 

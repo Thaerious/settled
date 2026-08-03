@@ -7,10 +7,12 @@ func _ready() -> void:
 		self._update_controls()
 	)
 
-	self.visibility_changed.connect(self._update_controls)
+	self.visibility_changed.connect(self._update_controls)	
+	EventBus.current_phase_updated.connect(func(_1): self._update_controls())
 
 
 func _update_controls():
+	print("UPDATE CONTROLS %s" % Game.model.free_road_count())
 	if Game.model.free_road_count() == 0:
 		%FreeRoadControl1.disabled = true
 		%FreeRoadControl2.disabled = true

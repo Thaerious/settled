@@ -25,6 +25,7 @@ func _on_drag_end(rec: DragRecord) -> void:
 
 
 func _on_hover_enter(rec: DragRecord) -> void:
+	print("road control on hover enter %s" % rec)
 	if not rec.drop_target: return
 	assert(rec.drop_target.owner is EdgeTarget)
 
