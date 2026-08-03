@@ -3,6 +3,7 @@ extends DialogContainer
 
 
 func _ready() -> void:
+	super._ready()
 	EventBus.current_phase_updated.connect(func(_1): self._on_update())
 	EventBus.current_player_updated.connect(func(_1): self._on_update())
 	EventBus.model_loaded.connect(func(): self._on_update())

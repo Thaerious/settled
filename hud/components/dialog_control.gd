@@ -14,7 +14,7 @@
 
 @tool
 class_name DialogControl
-extends PanelContainer
+extends Container
 
 enum Behaviour {SELECTABLE, CLICKABLE, NONE}
 

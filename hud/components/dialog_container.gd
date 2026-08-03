@@ -1,7 +1,6 @@
 class_name DialogContainer
 extends PanelContainer
 
-
 @export var visible_phase: Model.GamePhase = Model.GamePhase.ALL
 @export var hide_when_not_my_turn := false
 
