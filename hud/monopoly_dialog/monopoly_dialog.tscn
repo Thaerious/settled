@@ -27,27 +27,27 @@ script = ExtResource("2_sklcr")
 [node name="DialogSpriteControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/SelectableHBox" index="0" instance=ExtResource("4_4dhii")]
 layout_mode = 2
 display_texture = ExtResource("4_sklcr")
-selectable = true
+behaviour = 0
 
 [node name="DialogSpriteControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/SelectableHBox" index="1" instance=ExtResource("4_4dhii")]
 layout_mode = 2
 display_texture = ExtResource("5_4dhii")
-selectable = true
+behaviour = 0
 
 [node name="DialogSpriteControl3" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/SelectableHBox" index="2" instance=ExtResource("4_4dhii")]
 layout_mode = 2
 display_texture = ExtResource("6_aqyy2")
-selectable = true
+behaviour = 0
 
 [node name="DialogSpriteControl4" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/SelectableHBox" index="3" instance=ExtResource("4_4dhii")]
 layout_mode = 2
 display_texture = ExtResource("7_bb5c2")
-selectable = true
+behaviour = 0
 
 [node name="DialogSpriteControl5" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/SelectableHBox" index="4" instance=ExtResource("4_4dhii")]
 layout_mode = 2
 display_texture = ExtResource("8_mpfal")
-selectable = true
+behaviour = 0
 
 [node name="ButtonAccept" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="2"]
 disabled = true

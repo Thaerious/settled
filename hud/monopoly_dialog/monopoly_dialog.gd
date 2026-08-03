@@ -3,6 +3,15 @@ class_name MonopolyDialog
 extends DialogContainer
 
 
+const BUTTON_TO_RESOURCE = {
+	0: Model.ResourceTypes.WOOD,
+	1: Model.ResourceTypes.BRICK,
+	2: Model.ResourceTypes.WHEAT,
+	3: Model.ResourceTypes.ROCK,
+	4: Model.ResourceTypes.WOOL
+}
+
+
 func _ready() -> void:
 	super._ready()
 	%SelectableHBox.on_selection_changed.connect(self._hnd_selection_changed)
@@ -21,7 +30,7 @@ func _hnd_current_phase_updated(phase: Model.GamePhase) -> void:
 
 
 func _accept() -> void:
-	var selected_node = %SelectableHBox.current_selection as MonoplyControl
-	if not selected_node: return
-	var resource = selected_node.resource
+	var idx = %SelectableHBox.current_selected_index
+	if idx == -1: return
+	var resource = BUTTON_TO_RESOURCE[idx]
 	EventBus.play_monopoly_card.emit(Game.self_id, resource)

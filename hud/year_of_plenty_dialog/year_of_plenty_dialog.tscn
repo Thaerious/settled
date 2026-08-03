@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://dqr0hpeu73nhq"]
+[gd_scene load_steps=9 format=3 uid="uid://dqr0hpeu73nhq"]
 
 [ext_resource type="PackedScene" uid="uid://d00jr2m8bmn28" path="res://hud/components/dialog_pane.tscn" id="1_841ht"]
 [ext_resource type="Script" uid="uid://bch8ecx5g17ts" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.gd" id="2_fp45j"]
-[ext_resource type="Script" uid="uid://dbyedw33w2gea" path="res://hud/year_of_plenty_dialog/plenty_control_group.gd" id="3_0fxpq"]
 [ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="3_7gre4"]
 [ext_resource type="PackedScene" uid="uid://bvbfj53357xwl" path="res://hud/year_of_plenty_dialog/plenty_dialog_control.tscn" id="3_lqffb"]
 [ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="4_0fxpq"]
@@ -19,7 +18,6 @@ text = "Year of Plenty"
 [node name="ControlGroup" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("3_0fxpq")
 
 [node name="WoodControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="0" instance=ExtResource("3_lqffb")]
 unique_name_in_owner = true

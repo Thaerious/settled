@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=16 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="1_j5hk1"]
@@ -7,9 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://b2eyce4vakbj1" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="3_kdryc"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
 [ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="4_6e45b"]
+[ext_resource type="PackedScene" uid="uid://dqr0hpeu73nhq" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.tscn" id="4_j5hk1"]
 [ext_resource type="PackedScene" uid="uid://bha1xek5chgda" path="res://hud/turn_dialog/turn_dialog.tscn" id="5_e35lh"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://camera_2d.gd" id="5_mj2jn"]
 [ext_resource type="PackedScene" uid="uid://dmd0ltmlfo4vg" path="res://hud/steal_dialog/steal_dialog.tscn" id="6_udeyl"]
+[ext_resource type="PackedScene" uid="uid://b7hxt3o0jdil" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="8_daj04"]
+[ext_resource type="PackedScene" uid="uid://creskaqj2salj" path="res://hud/free_road_dialog/free_road_dialog.tscn" id="10_mlphb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
@@ -103,6 +106,24 @@ offset_left = 1529.0
 offset_top = 722.0
 offset_right = 1919.0
 offset_bottom = 1080.0
+
+[node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("8_daj04")]
+offset_left = 753.0
+offset_top = 712.0
+offset_right = 1215.0
+offset_bottom = 1078.0
+
+[node name="YearOfPlentyDialog" parent="CanvasLayer" instance=ExtResource("4_j5hk1")]
+offset_left = 760.0
+offset_top = 702.0
+offset_right = 1222.0
+offset_bottom = 1072.0
+
+[node name="FreeRoadDialog" parent="CanvasLayer" instance=ExtResource("10_mlphb")]
+offset_left = 788.0
+offset_top = 704.0
+offset_right = 1184.0
+offset_bottom = 929.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")

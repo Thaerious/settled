@@ -20,12 +20,12 @@ func _ready():
 func hnd_selected(target: Node):
 	if target == self.current_selection: return
 	self.current_selection = target
-	self.current_selected_index = 0
+	self.current_selected_index = self.get_children().find(target)
 
-	for child in self.get_children():		
+	for child in self.get_children():	
 		if child == target: continue
 		child.selected = false
-		self.current_selected_index += 1
 
+	print("selected %s %s" % [self.current_selection, self.current_selected_index])
 	self.on_selection_changed.emit(target)
 		
