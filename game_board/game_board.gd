@@ -42,8 +42,6 @@ func _ready() -> void:
 	EventBus.show_house_targets.connect(self.show_house_targets_hnd)
 	EventBus.show_city_targets.connect(self.show_city_targets_hnd)
 	EventBus.show_road_targets.connect(self.show_road_targets_hnd)
-	EventBus.show_initial_house_targets.connect(self.show_initial_house_targets_hnd)
-	EventBus.show_initial_road_targets.connect(self.show_initial_road_targets_hnd)
 
 	EventBus.clear_targets.connect(self.clear_targets_hnd)
 	EventBus.house_added.connect(self.set_house_hnd)
@@ -105,6 +103,13 @@ func _model_loaded() -> void:
 
 
 func show_house_targets_hnd():
+	if Game.model.get_current_phase() == Model.GamePhase.SETUP:
+		self.show_initial_house_targets_hnd()
+	else:
+		self.show_main_house_targets_hnd()
+
+
+func show_main_house_targets_hnd():
 	var all_buildings = Game.model.get_all_buildings()
 
 	var black_list = all_buildings.union(all_buildings.map(Axial.neighbors_of))
@@ -126,7 +131,8 @@ func show_initial_house_targets_hnd():
 	self.show_targets(corners)
 
 
-func show_initial_road_targets_hnd(house_axial: Axial):
+func show_initial_road_targets_hnd():
+	var house_axial = Game.model.get_initial_houses(Game.self_id)[-1]
 	var edges = house_axial.edges()
 	self.show_targets(edges)
 	
@@ -136,6 +142,13 @@ func show_city_targets_hnd():
 
 
 func show_road_targets_hnd():
+	if Game.model.get_current_phase() == Model.GamePhase.SETUP:
+		self.show_initial_road_targets_hnd()
+	else:
+		self.show_main_road_targets_hnd()	
+
+
+func show_main_road_targets_hnd():
 	var my_roads = Game.model.get_roads(Game.self_id)
 	var my_houses = Game.model.get_houses(Game.self_id)
 

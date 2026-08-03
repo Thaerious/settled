@@ -4,8 +4,6 @@ extends Node
 
 
 func _ready() -> void:
-	EventBus.show_initial_house_targets.connect(func(): print("EventBus.show_initial_house_targets"))
-	EventBus.show_initial_road_targets.connect(func(house_axial: Axial): print("EventBus.show_initial_road_targets | house_axial: %s" % [house_axial]))
 	EventBus.show_house_targets.connect(func(): print("EventBus.show_house_targets"))
 	EventBus.show_city_targets.connect(func(): print("EventBus.show_city_targets"))
 	EventBus.show_road_targets.connect(func(): print("EventBus.show_road_targets"))

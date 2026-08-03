@@ -69,6 +69,7 @@ func _is_click_event(event: InputEvent):
 		self._pressed = true
 	elif MouseHelper.is_left_release(event):
 		self._pressed = false
+		if self.has_method("_on_clicked"): self.call("_on_clicked")
 		self.on_clicked.emit()
 
 	self._update_style()		

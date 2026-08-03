@@ -74,10 +74,10 @@ size_flags_vertical = 3
 player_id = 3
 
 [node name="InitialPlacementDialog" parent="CanvasLayer" instance=ExtResource("3_kdryc")]
-offset_left = 803.0
-offset_top = 937.0
-offset_right = 1161.0
-offset_bottom = 1043.0
+offset_left = 809.0
+offset_top = 696.0
+offset_right = 1167.0
+offset_bottom = 802.0
 
 [node name="HandDialog" parent="CanvasLayer" instance=ExtResource("4_6e45b")]
 offset_left = 768.0

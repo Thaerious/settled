@@ -7,14 +7,6 @@ func _ready():
 	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
 	EventBus.current_player_updated.connect(func(_1): self._on_model_loaded())
 
-	%HouseControl1.house_placed.connect(func():
-		%HouseControl1.disabled = true
-		%RoadControl1.disabled = false
-	)
-	%HouseControl2.house_placed.connect(func():
-		%HouseControl2.disabled = true
-		%RoadControl2.disabled = false
-	)
 
 func _on_current_phase_updated(phase: Model.GamePhase) -> void:
 	match phase:
