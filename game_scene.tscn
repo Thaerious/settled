@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=17 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="1_j5hk1"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dmd0ltmlfo4vg" path="res://hud/steal_dialog/steal_dialog.tscn" id="6_udeyl"]
 [ext_resource type="PackedScene" uid="uid://b7hxt3o0jdil" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="8_daj04"]
 [ext_resource type="PackedScene" uid="uid://creskaqj2salj" path="res://hud/free_road_dialog/free_road_dialog.tscn" id="10_mlphb"]
+[ext_resource type="PackedScene" uid="uid://cbl0eprhn3k2g" path="res://hud/discard_dialog/discard_dialog.tscn" id="11_mlphb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
@@ -124,6 +125,12 @@ offset_left = 788.0
 offset_top = 704.0
 offset_right = 1184.0
 offset_bottom = 929.0
+
+[node name="DiscardDialog" parent="CanvasLayer" instance=ExtResource("11_mlphb")]
+offset_left = 755.0
+offset_top = 705.0
+offset_right = 1217.0
+offset_bottom = 1075.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")

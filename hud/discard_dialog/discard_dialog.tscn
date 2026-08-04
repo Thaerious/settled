@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://cbl0eprhn3k2g"]
+
+[ext_resource type="PackedScene" uid="uid://d00jr2m8bmn28" path="res://hud/components/dialog_pane.tscn" id="1_nl7lm"]
+[ext_resource type="PackedScene" uid="uid://bvbfj53357xwl" path="res://hud/year_of_plenty_dialog/plenty_dialog_control.tscn" id="2_8bei6"]
+[ext_resource type="Script" uid="uid://dqic6eryvw233" path="res://hud/discard_dialog/discard_dialog.gd" id="2_njngg"]
+[ext_resource type="Texture2D" uid="uid://ih26pm0qvgf4" path="res://assets/resources/wood.png" id="3_gkyor"]
+[ext_resource type="Texture2D" uid="uid://bbm4bsdt1sptl" path="res://assets/resources/brick.png" id="4_njngg"]
+[ext_resource type="Texture2D" uid="uid://csmjrw6xu8fg0" path="res://assets/resources/wheat.png" id="5_201yn"]
+[ext_resource type="Texture2D" uid="uid://h18xyxqj7sxf" path="res://assets/resources/rock.png" id="6_5s2c0"]
+[ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="7_ygxl0"]
+
+[node name="DiscardDialog" instance=ExtResource("1_nl7lm")]
+offset_right = 462.0
+offset_bottom = 370.0
+script = ExtResource("2_njngg")
+
+[node name="Title" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Discard"
+
+[node name="ControlGroup" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PlentyDialogControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="0" instance=ExtResource("2_8bei6")]
+layout_mode = 2
+resource = 1
+display_texture = ExtResource("3_gkyor")
+
+[node name="PlentyDialogControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="1" instance=ExtResource("2_8bei6")]
+layout_mode = 2
+resource = 0
+display_texture = ExtResource("4_njngg")
+
+[node name="PlentyDialogControl3" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="2" instance=ExtResource("2_8bei6")]
+layout_mode = 2
+resource = 2
+display_texture = ExtResource("5_201yn")
+
+[node name="PlentyDialogControl4" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="3" instance=ExtResource("2_8bei6")]
+layout_mode = 2
+resource = 4
+display_texture = ExtResource("6_5s2c0")
+
+[node name="PlentyDialogControl5" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="4" instance=ExtResource("2_8bei6")]
+layout_mode = 2
+resource = 3
+display_texture = ExtResource("7_ygxl0")

@@ -13,6 +13,7 @@
 script = ExtResource("2_fp45j")
 
 [node name="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
+unique_name_in_owner = true
 text = "Year of Plenty"
 
 [node name="ControlGroup" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]

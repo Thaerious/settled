@@ -12,7 +12,6 @@ func _ready() -> void:
 
 
 func _update_controls():
-	print("UPDATE CONTROLS %s" % Game.model.free_road_count())
 	if Game.model.free_road_count() == 0:
 		%FreeRoadControl1.disabled = true
 		%FreeRoadControl2.disabled = true

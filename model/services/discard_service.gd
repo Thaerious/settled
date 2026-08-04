@@ -24,11 +24,12 @@ func _update_phase_hnd(phase: Model.GamePhase) -> void:
 	for id in Game.player_count: 
 		var bank := Game.model.get_bank(id)
 		Game.model.set_discard_target(id, Model.INT_MAX)
-		if bank.size() < 8: continue
-
-		next_phase = Model.GamePhase.DURING_DISCARD
-		var half:int = floori(bank.size() / 2.0)
-		Game.model.set_discard_target(id, half)
+		if bank.size() < 8: 
+			Game.model.set_discard_target(id, -1)
+		else:
+			next_phase = Model.GamePhase.DURING_DISCARD
+			var half:int = floori(bank.size() / 2.0)
+			Game.model.set_discard_target(id, half)
 
 	Game.model.do_update_phase.bind(next_phase).call_deferred()
 

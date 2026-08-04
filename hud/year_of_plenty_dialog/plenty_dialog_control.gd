@@ -5,12 +5,13 @@ extends DialogSpriteControl
 signal count_changed(resource: Model.ResourceTypes, count: int)
 @export var resource := Model.ResourceTypes.NONE
 var count := 0
+var max_value := 2
 
 func _ready() -> void:
 	super._ready()	
 
 	%ButtonUp.pressed.connect(func():
-		if self.count >= 2: return
+		# if self.count >= self.max_value: return
 		self.count = self.count + 1
 		%Qty.text = str(self.count)
 		self.count_changed.emit(self.resource, self.count)
