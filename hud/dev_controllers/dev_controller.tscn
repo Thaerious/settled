@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bvedcrp05i4w5"]
+[gd_scene load_steps=9 format=3 uid="uid://bvedcrp05i4w5"]
 
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="1_gdvxq"]
 [ext_resource type="Script" uid="uid://c77hxmeldfwl7" path="res://hud/phase_buttons/player_button.gd" id="2_srtjr"]
@@ -8,15 +8,140 @@
 [ext_resource type="Script" uid="uid://bs88moiyiupa8" path="res://hud/phase_buttons/button_load.gd" id="6_44eku"]
 [ext_resource type="Script" uid="uid://dgjve0fq7fkm5" path="res://hud/dev_controllers/save_file_name.gd" id="7_r8sxd"]
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="8_1rylp"]
-[ext_resource type="Script" uid="uid://cbhbfxqg5xjty" path="res://hud/phase_buttons/button_end.gd" id="9_1a2rd"]
 
 [node name="DevController" type="HBoxContainer"]
 
-[node name="PhaseButtons" type="VBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Current Player"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+script = ExtResource("2_srtjr")
+id = 0
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2"
+script = ExtResource("2_srtjr")
+id = 1
+
+[node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3"
+script = ExtResource("2_srtjr")
+id = 2
+
+[node name="Button4" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "4"
+script = ExtResource("2_srtjr")
+id = 3
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Play As"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+script = ExtResource("3_c1lov")
+id = 0
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2"
+script = ExtResource("3_c1lov")
+id = 1
+
+[node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3"
+script = ExtResource("3_c1lov")
+id = 2
+
+[node name="Button4" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "4"
+script = ExtResource("3_c1lov")
+id = 3
+
+[node name="AutoUpdate" type="CheckBox" parent="HBoxContainer/VBoxContainer1"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Auto Update Player"
+script = ExtResource("4_1qrw7")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="ButtonSave" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Save"
+script = ExtResource("5_1gw7x")
+
+[node name="ButtonLoad" type="Button" parent="HBoxContainer/VBoxContainer1/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Load"
+script = ExtResource("6_44eku")
+
+[node name="SaveFileName" type="LineEdit" parent="HBoxContainer/VBoxContainer1"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "savegame"
+placeholder_text = "savegame"
+script = ExtResource("7_r8sxd")
+
+[node name="ButtonReset" type="Button" parent="HBoxContainer/VBoxContainer1"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset"
+script = ExtResource("8_1rylp")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PhaseButtons" type="VBoxContainer" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ButtonNotStarted" type="Button" parent="PhaseButtons"]
+[node name="ButtonNotStarted" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Not Started
@@ -24,7 +149,7 @@ text = "Not Started
 script = ExtResource("1_gdvxq")
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSetup" type="Button" parent="PhaseButtons"]
+[node name="ButtonSetup" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Setup
@@ -33,7 +158,7 @@ script = ExtResource("1_gdvxq")
 phase = 1
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonPreRoll" type="Button" parent="PhaseButtons"]
+[node name="ButtonPreRoll" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Pre Roll
@@ -42,7 +167,7 @@ script = ExtResource("1_gdvxq")
 phase = 14
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonMovePirate" type="Button" parent="PhaseButtons"]
+[node name="ButtonMovePirate" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Move Pirate
@@ -51,7 +176,7 @@ script = ExtResource("1_gdvxq")
 phase = 2
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonDiscard" type="Button" parent="PhaseButtons"]
+[node name="ButtonDiscard" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Init Discard
@@ -60,7 +185,7 @@ script = ExtResource("1_gdvxq")
 phase = 3
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonDiscard2" type="Button" parent="PhaseButtons"]
+[node name="ButtonDiscard2" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "During Discard
@@ -69,7 +194,7 @@ script = ExtResource("1_gdvxq")
 phase = 4
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSteal" type="Button" parent="PhaseButtons"]
+[node name="ButtonSteal" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Steal Resources
@@ -78,7 +203,7 @@ script = ExtResource("1_gdvxq")
 phase = 5
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonMain" type="Button" parent="PhaseButtons"]
+[node name="ButtonMain" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Main
@@ -87,7 +212,7 @@ script = ExtResource("1_gdvxq")
 phase = 6
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonPlenty" type="Button" parent="PhaseButtons"]
+[node name="ButtonPlenty" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Plenty
@@ -96,7 +221,7 @@ script = ExtResource("1_gdvxq")
 phase = 7
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonMonopoly" type="Button" parent="PhaseButtons"]
+[node name="ButtonMonopoly" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Monopoly
@@ -105,7 +230,7 @@ script = ExtResource("1_gdvxq")
 phase = 8
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonRoadBuilding" type="Button" parent="PhaseButtons"]
+[node name="ButtonRoadBuilding" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Road Building
@@ -114,7 +239,7 @@ script = ExtResource("1_gdvxq")
 phase = 9
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonSoldier" type="Button" parent="PhaseButtons"]
+[node name="ButtonSoldier" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Soldier
@@ -123,7 +248,7 @@ script = ExtResource("1_gdvxq")
 phase = 10
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonGameOver" type="Button" parent="PhaseButtons"]
+[node name="ButtonGameOver" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Game Over
@@ -131,133 +256,3 @@ text = "Game Over
 script = ExtResource("1_gdvxq")
 phase = 11
 metadata/_custom_type_script = "uid://bsec75ti05trd"
-
-[node name="VBoxContainer1" type="VBoxContainer" parent="PhaseButtons"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PhaseButtons/VBoxContainer1"]
-layout_mode = 2
-text = "Current Player"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PhaseButtons/VBoxContainer1"]
-layout_mode = 2
-
-[node name="Button1" type="Button" parent="PhaseButtons/VBoxContainer1/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "1"
-script = ExtResource("2_srtjr")
-id = 0
-
-[node name="Button2" type="Button" parent="PhaseButtons/VBoxContainer1/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2"
-script = ExtResource("2_srtjr")
-id = 1
-
-[node name="Button3" type="Button" parent="PhaseButtons/VBoxContainer1/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "3"
-script = ExtResource("2_srtjr")
-id = 2
-
-[node name="Button4" type="Button" parent="PhaseButtons/VBoxContainer1/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "4"
-script = ExtResource("2_srtjr")
-id = 3
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="PhaseButtons"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PhaseButtons/VBoxContainer2"]
-layout_mode = 2
-text = "Play As"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PhaseButtons/VBoxContainer2"]
-layout_mode = 2
-
-[node name="Button1" type="Button" parent="PhaseButtons/VBoxContainer2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "1"
-script = ExtResource("3_c1lov")
-id = 0
-
-[node name="Button2" type="Button" parent="PhaseButtons/VBoxContainer2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2"
-script = ExtResource("3_c1lov")
-id = 1
-
-[node name="Button3" type="Button" parent="PhaseButtons/VBoxContainer2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "3"
-script = ExtResource("3_c1lov")
-id = 2
-
-[node name="Button4" type="Button" parent="PhaseButtons/VBoxContainer2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "4"
-script = ExtResource("3_c1lov")
-id = 3
-
-[node name="AutoUpdate" type="CheckBox" parent="PhaseButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-button_pressed = true
-text = "Auto Update Player"
-script = ExtResource("4_1qrw7")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PhaseButtons"]
-layout_mode = 2
-
-[node name="ButtonSave" type="Button" parent="PhaseButtons/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "Save"
-script = ExtResource("5_1gw7x")
-
-[node name="ButtonLoad" type="Button" parent="PhaseButtons/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "Load"
-script = ExtResource("6_44eku")
-
-[node name="SaveFileName" type="LineEdit" parent="PhaseButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "savegame"
-placeholder_text = "savegame"
-script = ExtResource("7_r8sxd")
-
-[node name="ButtonReset" type="Button" parent="PhaseButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Reset"
-script = ExtResource("8_1rylp")
-
-[node name="ButtonEnd" type="Button" parent="PhaseButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "End Turn
-"
-script = ExtResource("9_1a2rd")

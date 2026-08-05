@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://b83lcm8bjyixe"]
 
 [ext_resource type="Script" uid="uid://dxpkg0xl5q6ms" path="res://game_board/number_piece.gd" id="1_lqagd"]
-[ext_resource type="Texture2D" uid="uid://deo84so6disoo" path="res://assets/number_blank.png" id="2_p3n8i"]
+[ext_resource type="Texture2D" uid="uid://deo84so6disoo" path="res://assets/board/number_blank.png" id="2_p3n8i"]
 [ext_resource type="Script" uid="uid://d4bof1yxe04s" path="res://game_board/sprite_2d_exact.gd" id="3_iog5l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1eadh"]

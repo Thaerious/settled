@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsnsccpkodl0p"
-path="res://.godot/imported/discard_dialog_button_down_inactive.png-2e4252b20781ac36cd1efe1b785d714d.ctex"
+uid="uid://hd6kllb78sqh"
+path="res://.godot/imported/shield.png-dc46181106b01d9c5b9cf3dd1ba81451.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buttons/discard_dialog_button_down_inactive.png"
-dest_files=["res://.godot/imported/discard_dialog_button_down_inactive.png-2e4252b20781ac36cd1efe1b785d714d.ctex"]
+source_file="res://assets/icons/shield.png"
+dest_files=["res://.godot/imported/shield.png-dc46181106b01d9c5b9cf3dd1ba81451.ctex"]
 
 [params]
 

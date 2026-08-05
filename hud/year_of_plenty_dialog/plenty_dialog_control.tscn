@@ -1,19 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvbfj53357xwl"]
+[gd_scene load_steps=7 format=3 uid="uid://bvbfj53357xwl"]
 
 [ext_resource type="PackedScene" uid="uid://t3lbmsckccj2" path="res://hud/components/dialog_sprite_control.tscn" id="1_5yd8y"]
 [ext_resource type="Script" uid="uid://ceq3ow8sqds87" path="res://hud/year_of_plenty_dialog/plenty_dialog_control.gd" id="1_dvnis"]
-[ext_resource type="Texture2D" uid="uid://cyshc4gljssbs" path="res://assets/buttons/discard_dialog_up.png" id="2_7kt1d"]
-[ext_resource type="Texture2D" uid="uid://d2rj0cc18t68g" path="res://assets/buttons/discard_dialog_button_up_inactive.png" id="3_dvnis"]
-[ext_resource type="Texture2D" uid="uid://gqxql4ekq17g" path="res://assets/buttons/discard_dialog_down.png" id="4_kgeoj"]
-[ext_resource type="Texture2D" uid="uid://dsnsccpkodl0p" path="res://assets/buttons/discard_dialog_button_down_inactive.png" id="5_a484p"]
-[ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="7_kgeoj"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q6ftx"]
+load_path = "res://.godot/imported/discard_dialog_up.png-4f3b8e96e7c474faa6b6f545ba17ea6b.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_t3oyh"]
+load_path = "res://.godot/imported/discard_dialog_button_up_inactive.png-43821b8cceba23250d037df7feb230c3.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_01fgh"]
+load_path = "res://.godot/imported/discard_dialog_down.png-a3b59b3fc2c4d149d26827e4746e703c.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7kt1d"]
+load_path = "res://.godot/imported/discard_dialog_button_down_inactive.png-2e4252b20781ac36cd1efe1b785d714d.ctex"
 
 [node name="PlentyDialogControl" instance=ExtResource("1_5yd8y")]
-offset_right = 74.0
-offset_bottom = 32.0
 script = ExtResource("1_dvnis")
 resource = 5
-display_texture = ExtResource("7_kgeoj")
 
 [node name="BoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
 vertical = true
@@ -24,8 +28,8 @@ custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("2_7kt1d")
-texture_disabled = ExtResource("3_dvnis")
+texture_normal = SubResource("CompressedTexture2D_q6ftx")
+texture_disabled = SubResource("CompressedTexture2D_t3oyh")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -45,7 +49,7 @@ layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 disabled = true
-texture_normal = ExtResource("4_kgeoj")
-texture_disabled = ExtResource("5_a484p")
+texture_normal = SubResource("CompressedTexture2D_01fgh")
+texture_disabled = SubResource("CompressedTexture2D_7kt1d")
 ignore_texture_size = true
 stretch_mode = 0

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crrm8u8rd6e6o"
-path="res://.godot/imported/coins.png-b73e490d8e3c086f3b78380ba3206671.ctex"
+uid="uid://dh7lwv1rv56h2"
+path="res://.godot/imported/indicator.png-783f38373cd9fc5f42a975eaa4891be5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/coins.png"
-dest_files=["res://.godot/imported/coins.png-b73e490d8e3c086f3b78380ba3206671.ctex"]
+source_file="res://assets/board/indicator.png"
+dest_files=["res://.godot/imported/indicator.png-783f38373cd9fc5f42a975eaa4891be5.ctex"]
 
 [params]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://eshrho3u052d"
-path="res://.godot/imported/hex_atlas.png-8969b42f896f2f7061c7997f9a68f186.ctex"
+path="res://.godot/imported/hex_atlas.png-0a31820544fadccad1eecba5e2bced1a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/hex_atlas.png"
-dest_files=["res://.godot/imported/hex_atlas.png-8969b42f896f2f7061c7997f9a68f186.ctex"]
+source_file="res://assets/board/hex_atlas.png"
+dest_files=["res://.godot/imported/hex_atlas.png-0a31820544fadccad1eecba5e2bced1a.ctex"]
 
 [params]
 

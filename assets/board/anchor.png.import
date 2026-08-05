@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxfnyx6bkqiqo"
-path="res://.godot/imported/blank_piece.png-0a2e1a3405ee5e2eb3388712697aec4f.ctex"
+uid="uid://vc4l7udul7am"
+path="res://.godot/imported/anchor.png-3a35b0335ee3e5e4d16eda96d3743815.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/blank_piece.png"
-dest_files=["res://.godot/imported/blank_piece.png-0a2e1a3405ee5e2eb3388712697aec4f.ctex"]
+source_file="res://assets/board/anchor.png"
+dest_files=["res://.godot/imported/anchor.png-3a35b0335ee3e5e4d16eda96d3743815.ctex"]
 
 [params]
 

@@ -24,7 +24,7 @@ const resource_icons := {
 	Model.ResourceTypes.WHEAT: preload("res://assets/resources/wheat.png"),
 	Model.ResourceTypes.WOOD: preload("res://assets/resources/wood.png"),
 	Model.ResourceTypes.WOOL: preload("res://assets/resources/wool.png"),
-	Model.ResourceTypes.ANY: preload("res://assets/unknown.png"),
+	Model.ResourceTypes.ANY: preload("res://assets/icons/unknown.png"),
 }
 
 const BRICK: Texture2D = preload("res://assets/resources/brick.png")

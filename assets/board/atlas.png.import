@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2rj0cc18t68g"
-path="res://.godot/imported/discard_dialog_button_up_inactive.png-43821b8cceba23250d037df7feb230c3.ctex"
+uid="uid://8bpdu0rdg5mb"
+path="res://.godot/imported/atlas.png-d991b60bdf9de54db035ca3870bc6513.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buttons/discard_dialog_button_up_inactive.png"
-dest_files=["res://.godot/imported/discard_dialog_button_up_inactive.png-43821b8cceba23250d037df7feb230c3.ctex"]
+source_file="res://assets/board/atlas.png"
+dest_files=["res://.godot/imported/atlas.png-d991b60bdf9de54db035ca3870bc6513.ctex"]
 
 [params]
 

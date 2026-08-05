@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://t3lbmsckccj2" path="res://hud/components/dialog_sprite_control.tscn" id="1_8c46h"]
 [ext_resource type="Script" uid="uid://cspay5h8i3atd" path="res://hud/components/draggable_sprite_control.gd" id="2_f0606"]
 [ext_resource type="Script" uid="uid://bwub0la08s7mr" path="res://standalone/mouse/drag_node_ui.gd" id="3_y5ogi"]
-[ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/unknown.png" id="4_rflb4"]
+[ext_resource type="Texture2D" uid="uid://cwwkc80s1k242" path="res://assets/icons/unknown.png" id="4_rflb4"]
 [ext_resource type="Script" uid="uid://bevp5cowl65sy" path="res://hud/components/scaled_sprite.gd" id="5_6oatp"]
 
 [node name="DraggableSpriteControl" instance=ExtResource("1_8c46h")]

@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="6_d7flh"]
 [ext_resource type="Theme" uid="uid://dypl76lfa5loe" path="res://hud/themes/hover.tres" id="6_yxbma"]
 [ext_resource type="Theme" uid="uid://lh281vapdk0a" path="res://hud/themes/selected.tres" id="7_jers3"]
-[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="8_5bo68"]
+[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/board/road_piece.png" id="8_5bo68"]
 [ext_resource type="Theme" uid="uid://cq40ymbvy7qbn" path="res://hud/themes/selected_hover.tres" id="8_k35cd"]
 [ext_resource type="Script" uid="uid://dlqvt84bsa26l" path="res://hud/store_dialog/house_control.gd" id="10_a07sl"]
 [ext_resource type="Texture2D" uid="uid://d3ywknxm0qvs1" path="res://assets/resources/wood_color.png" id="10_k8u2y"]

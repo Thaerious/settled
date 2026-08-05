@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bf7wdu50td2ej" path="res://hud/components/draggable_sprite_control.tscn" id="2_0qara"]
 [ext_resource type="Script" uid="uid://dskww1or2n4x7" path="res://hud/initial_placement/initial_placement_dialog.gd" id="2_72fy6"]
 [ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="3_72fy6"]
-[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/road_piece.png" id="4_01nxw"]
+[ext_resource type="Texture2D" uid="uid://c068so6c88o2d" path="res://assets/board/road_piece.png" id="4_01nxw"]
 [ext_resource type="Script" uid="uid://dlqvt84bsa26l" path="res://hud/store_dialog/house_control.gd" id="4_wkid4"]
 [ext_resource type="Script" uid="uid://c6hptqk7i52eg" path="res://hud/store_dialog/road_control.gd" id="5_0qara"]
 [ext_resource type="Texture2D" uid="uid://6rat1u237mu2" path="res://assets/store/road.png" id="5_t6han"]

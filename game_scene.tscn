@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="1_1wc4g"]
 [ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="1_j5hk1"]
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="1_miq82"]
-[ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/hex_atlas.png" id="2_v1wow"]
+[ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/board/hex_atlas.png" id="2_v1wow"]
 [ext_resource type="PackedScene" uid="uid://b2eyce4vakbj1" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="3_kdryc"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="3_v1wow"]
 [ext_resource type="PackedScene" uid="uid://cqkf4h28hkb1l" path="res://hud/hand_dialog/hand_dialog.tscn" id="4_6e45b"]
@@ -46,8 +46,8 @@ sources/0 = SubResource("TileSetAtlasSource_mixcd")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="DevController" parent="CanvasLayer" instance=ExtResource("1_miq82")]
-offset_left = 1736.0
-offset_right = 1915.0
+offset_left = 1599.0
+offset_right = 1916.0
 offset_bottom = 750.0
 
 [node name="PlayerContainer" type="VBoxContainer" parent="CanvasLayer"]

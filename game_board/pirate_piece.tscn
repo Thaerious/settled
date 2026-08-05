@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://ytcs6q88bnkx"]
 
 [ext_resource type="Script" uid="uid://fwyc80kb78qs" path="res://game_board/pirate_piece.gd" id="1_p5y87"]
-[ext_resource type="Texture2D" uid="uid://bwuu7tun4vv1r" path="res://assets/pirate.png" id="1_qcyo4"]
+[ext_resource type="Texture2D" uid="uid://bwuu7tun4vv1r" path="res://assets/board/pirate.png" id="1_qcyo4"]
 [ext_resource type="Script" uid="uid://c65k22a7x3iey" path="res://standalone/mouse/drag_node_2d.gd" id="2_ln2ed"]
 [ext_resource type="Script" uid="uid://d4bof1yxe04s" path="res://game_board/sprite_2d_exact.gd" id="2_p5y87"]
 

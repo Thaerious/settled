@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwuu7tun4vv1r"
-path="res://.godot/imported/pirate.png-294ca8f2283dabcfee57f2afd700a996.ctex"
+uid="uid://baife5oamxio6"
+path="res://.godot/imported/chest.png-56658f5777528f81e231d72b890c81c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/pirate.png"
-dest_files=["res://.godot/imported/pirate.png-294ca8f2283dabcfee57f2afd700a996.ctex"]
+source_file="res://assets/icons/chest.png"
+dest_files=["res://.godot/imported/chest.png-56658f5777528f81e231d72b890c81c2.ctex"]
 
 [params]
 

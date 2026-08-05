@@ -26,6 +26,7 @@ func load_state() -> void:
 		self.global_position = config.get_value("camera", "position", Vector2.ZERO)
 		self.zoom = config.get_value("camera", "zoom", Vector2(1, 1))
 
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:			

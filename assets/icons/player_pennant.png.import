@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bndgc4abt4y1b"
-path="res://.godot/imported/portrait.png-1f0068becc3cd410bd587c58458dff66.ctex"
+uid="uid://cs8sksfum1leu"
+path="res://.godot/imported/player_pennant.png-e101627b40c20a29c1e22e3f21092738.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/portrait.png"
-dest_files=["res://.godot/imported/portrait.png-1f0068becc3cd410bd587c58458dff66.ctex"]
+source_file="res://assets/icons/player_pennant.png"
+dest_files=["res://.godot/imported/player_pennant.png-e101627b40c20a29c1e22e3f21092738.ctex"]
 
 [params]
 
