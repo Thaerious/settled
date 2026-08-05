@@ -14,10 +14,10 @@ offset_right = 358.0
 offset_bottom = 106.0
 script = ExtResource("2_72fy6")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer" index="0"]
 layout_mode = 2
 
-[node name="HouseControl1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="0" instance=ExtResource("2_0qara")]
+[node name="HouseControl1" parent="MarginContainer/PanelContainer/HBoxContainer" index="0" instance=ExtResource("2_0qara")]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("4_wkid4")
@@ -25,7 +25,7 @@ drop_layer = 1
 sprite_texture = ExtResource("3_72fy6")
 display_texture = ExtResource("3_72fy6")
 
-[node name="RoadControl1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="1" instance=ExtResource("2_0qara")]
+[node name="RoadControl1" parent="MarginContainer/PanelContainer/HBoxContainer" index="1" instance=ExtResource("2_0qara")]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("5_0qara")
@@ -33,7 +33,7 @@ drop_layer = 1
 sprite_texture = ExtResource("4_01nxw")
 display_texture = ExtResource("5_t6han")
 
-[node name="HouseControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="2" instance=ExtResource("2_0qara")]
+[node name="HouseControl2" parent="MarginContainer/PanelContainer/HBoxContainer" index="2" instance=ExtResource("2_0qara")]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("4_wkid4")
@@ -41,7 +41,7 @@ drop_layer = 1
 sprite_texture = ExtResource("3_72fy6")
 display_texture = ExtResource("3_72fy6")
 
-[node name="RoadControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="3" instance=ExtResource("2_0qara")]
+[node name="RoadControl2" parent="MarginContainer/PanelContainer/HBoxContainer" index="3" instance=ExtResource("2_0qara")]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("5_0qara")
