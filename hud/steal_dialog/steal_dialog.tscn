@@ -9,32 +9,29 @@ script = ExtResource("2_elrgv")
 visible_phase = 5
 hide_when_not_my_turn = true
 
-[node name="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
-text = "Steal Resources"
-
-[node name="PlayerGroup" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]
+[node name="PlayerGroup" type="VBoxContainer" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Player1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/PlayerGroup" index="0" instance=ExtResource("3_elrgv")]
+[node name="Player1" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/PlayerGroup" index="0" instance=ExtResource("3_elrgv")]
 layout_mode = 2
 display_text = "Not Set"
 horizontal_alignment = 1
 behaviour = 1
 
-[node name="Player2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/PlayerGroup" index="1" instance=ExtResource("3_elrgv")]
+[node name="Player2" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/PlayerGroup" index="1" instance=ExtResource("3_elrgv")]
 layout_mode = 2
 display_text = "Not Set"
 horizontal_alignment = 1
 behaviour = 1
 
-[node name="Player3" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/PlayerGroup" index="2" instance=ExtResource("3_elrgv")]
+[node name="Player3" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/PlayerGroup" index="2" instance=ExtResource("3_elrgv")]
 layout_mode = 2
 display_text = "Not Set"
 horizontal_alignment = 1
 behaviour = 1
 
-[node name="Player4" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/PlayerGroup" index="3" instance=ExtResource("3_elrgv")]
+[node name="Player4" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/PlayerGroup" index="3" instance=ExtResource("3_elrgv")]
 layout_mode = 2
 display_text = "Not Set"
 horizontal_alignment = 1
