@@ -1,11 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://b4rkbgo81jcc6"]
+[gd_scene load_steps=16 format=3 uid="uid://b4rkbgo81jcc6"]
 
 [ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="2_dqb7s"]
 [ext_resource type="PackedScene" uid="uid://t3lbmsckccj2" path="res://hud/components/dialog_sprite_control.tscn" id="3_xre04"]
 [ext_resource type="PackedScene" uid="uid://dgg24iv8r8tkv" path="res://hud/components/dialog_control.tscn" id="5_rec6y"]
 [ext_resource type="PackedScene" uid="uid://bf7wdu50td2ej" path="res://hud/components/draggable_sprite_control.tscn" id="6_igtqi"]
-[ext_resource type="Texture2D" uid="uid://co4vl7gwwxney" path="res://assets/star.png" id="7_bstsi"]
 [ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="9_3t6qa"]
 [ext_resource type="PackedScene" uid="uid://d00jr2m8bmn28" path="res://hud/components/dialog_pane.tscn" id="10_rb1vg"]
 [ext_resource type="PackedScene" uid="uid://b2eyce4vakbj1" path="res://hud/initial_placement/initial_placement_dialog.tscn" id="11_tl212"]
@@ -151,7 +150,7 @@ offset_left = 551.0
 offset_top = 72.0
 offset_right = 625.0
 offset_bottom = 146.0
-sprite_texture = ExtResource("7_bstsi")
+drop_layer = 0
 
 [node name="DialogContainer" parent="." instance=ExtResource("9_3t6qa")]
 offset_left = 914.0

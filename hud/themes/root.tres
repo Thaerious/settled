@@ -72,16 +72,11 @@ corner_radius_bottom_left = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w0xv1"]
 bg_color = Color(0, 0.58431375, 0.7019608, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 corner_radius_top_left = 20
 corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qg0j0"]
 draw_center = false

@@ -8,18 +8,20 @@
 [ext_resource type="Script" uid="uid://c6hptqk7i52eg" path="res://hud/store_dialog/road_control.gd" id="4_r5lkv"]
 
 [node name="FreeRoadDialog" instance=ExtResource("1_gr3dg")]
+offset_right = 386.0
+offset_bottom = 209.0
 script = ExtResource("2_r5lkv")
 visible_phase = 9
 hide_when_not_my_turn = true
 
-[node name="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
-text = "Free Road"
+[node name="Title" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Road Builder"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer" index="0"]
 layout_mode = 2
 alignment = 1
 
-[node name="FreeRoadControl1" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/HBoxContainer" index="0" instance=ExtResource("2_0whds")]
+[node name="FreeRoadControl1" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/HBoxContainer" index="0" instance=ExtResource("2_0whds")]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("4_r5lkv")
@@ -27,11 +29,11 @@ drop_layer = 1
 sprite_texture = ExtResource("3_r5lkv")
 display_texture = ExtResource("4_86gl5")
 
-[node name="Spacer" type="Control" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/HBoxContainer" index="1"]
+[node name="Spacer" type="Control" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/HBoxContainer" index="1"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="FreeRoadControl2" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/HBoxContainer" index="2" instance=ExtResource("2_0whds")]
+[node name="FreeRoadControl2" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/HBoxContainer" index="2" instance=ExtResource("2_0whds")]
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("4_r5lkv")

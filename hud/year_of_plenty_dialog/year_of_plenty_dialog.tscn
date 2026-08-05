@@ -12,39 +12,38 @@
 [node name="YearOfPlentyDialog" instance=ExtResource("1_841ht")]
 script = ExtResource("2_fp45j")
 
-[node name="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
-unique_name_in_owner = true
-text = "Year of Plenty"
+[node name="Title" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Cornucopia"
 
-[node name="ControlGroup" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer" index="0"]
+[node name="ControlGroup" type="HBoxContainer" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="WoodControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="0" instance=ExtResource("3_lqffb")]
+[node name="WoodControl" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="0" instance=ExtResource("3_lqffb")]
 unique_name_in_owner = true
 layout_mode = 2
 resource = 1
 display_texture = ExtResource("3_7gre4")
 
-[node name="BrickControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="1" instance=ExtResource("3_lqffb")]
+[node name="BrickControl" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="1" instance=ExtResource("3_lqffb")]
 unique_name_in_owner = true
 layout_mode = 2
 resource = 0
 display_texture = ExtResource("4_0fxpq")
 
-[node name="WheatControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="2" instance=ExtResource("3_lqffb")]
+[node name="WheatControl" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="2" instance=ExtResource("3_lqffb")]
 unique_name_in_owner = true
 layout_mode = 2
 resource = 2
 display_texture = ExtResource("5_8h46o")
 
-[node name="RockControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="3" instance=ExtResource("3_lqffb")]
+[node name="RockControl" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="3" instance=ExtResource("3_lqffb")]
 unique_name_in_owner = true
 layout_mode = 2
 resource = 4
 display_texture = ExtResource("6_qsqui")
 
-[node name="WoolControl" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ContentContainer/ControlGroup" index="4" instance=ExtResource("3_lqffb")]
+[node name="WoolControl" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="4" instance=ExtResource("3_lqffb")]
 unique_name_in_owner = true
 layout_mode = 2
 resource = 3

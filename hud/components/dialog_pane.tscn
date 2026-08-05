@@ -4,7 +4,7 @@
 
 [node name="DialogPane" instance=ExtResource("1_toy0t")]
 
-[node name="ButtonAccept" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="2"]
+[node name="ButtonAccept" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer" index="2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2

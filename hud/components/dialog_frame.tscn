@@ -6,20 +6,22 @@
 offset_right = 396.0
 offset_bottom = 225.0
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" index="0"]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer" index="0"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PanelContainer/HBoxContainer" index="0"]
 layout_mode = 2
 theme_type_variation = &"InnerBorderTitle"
 
-[node name="Title" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/PanelContainer" index="0"]
+[node name="Title" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelTitle"
 text = "Dialog Title"
 horizontal_alignment = 1
 
-[node name="ContentContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+[node name="ContentContainer" type="MarginContainer" parent="MarginContainer/PanelContainer/HBoxContainer" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_type_variation = &"BorderMargin"

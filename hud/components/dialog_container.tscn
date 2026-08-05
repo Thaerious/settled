@@ -17,7 +17,3 @@ theme_type_variation = &"BorderMargin"
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_type_variation = &"InnerBorder"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
-layout_mode = 2
-theme_type_variation = &"BorderMargin"
