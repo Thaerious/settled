@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://d00jr2m8bmn28"]
+[gd_scene load_steps=3 format=3 uid="uid://d00jr2m8bmn28"]
 
 [ext_resource type="PackedScene" uid="uid://dlwfrhwxsrfq2" path="res://hud/components/dialog_frame.tscn" id="1_toy0t"]
+[ext_resource type="Script" uid="uid://crpknldyekpef" path="res://hud/components/dialog_pane.gd" id="2_mrpax"]
 
 [node name="DialogPane" instance=ExtResource("1_toy0t")]
+script = ExtResource("2_mrpax")
+
+[node name="Title" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
+mouse_filter = 1
 
 [node name="ButtonAccept" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer" index="2"]
 unique_name_in_owner = true

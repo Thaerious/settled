@@ -11,9 +11,17 @@
 [ext_resource type="Texture2D" uid="uid://d3tekarm7gxpq" path="res://assets/resources/wool.png" id="8_mpfal"]
 
 [node name="MonopolyDialog" instance=ExtResource("1_vlsx7")]
-offset_right = 507.0
-offset_bottom = 295.0
+offset_left = 800.0
+offset_top = 148.0
+offset_right = 1307.0
+offset_bottom = 443.0
 script = ExtResource("1_fgov0")
+dialog_identifier = "MonopolyDialog"
+visible_phase = 8
+hide_when_not_my_turn = true
+
+[node name="Title" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Monopoly"
 
 [node name="SelectableHBox" type="HBoxContainer" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer" index="0"]
 unique_name_in_owner = true

@@ -1,10 +1,11 @@
 @tool
 class_name YearOfPlentyDialog
-extends DialogContainer
+extends DialogPane
 
 var _wallet = Wallet.new()
 
 func _ready() -> void:
+	super._ready()
 	EventBus.current_phase_updated.connect(self._update_phase)
 	%ButtonAccept.pressed.connect(self._accept)
 

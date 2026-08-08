@@ -9,6 +9,9 @@ script = ExtResource("2_elrgv")
 visible_phase = 5
 hide_when_not_my_turn = true
 
+[node name="Title" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Steal Resources"
+
 [node name="PlayerGroup" type="VBoxContainer" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2

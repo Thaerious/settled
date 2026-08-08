@@ -96,11 +96,10 @@ offset_right = 467.0
 offset_bottom = 1067.0
 
 [node name="StealDialog" parent="CanvasLayer" instance=ExtResource("6_udeyl")]
-visible = false
-offset_left = 1282.0
-offset_top = 675.0
-offset_right = 1678.0
-offset_bottom = 1050.0
+offset_left = 1232.0
+offset_top = 292.0
+offset_right = 1628.0
+offset_bottom = 633.0
 
 [node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("1_j5hk1")]
 offset_left = 1529.0
@@ -108,29 +107,29 @@ offset_top = 722.0
 offset_right = 1919.0
 offset_bottom = 1080.0
 
-[node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("8_daj04")]
-offset_left = 753.0
-offset_top = 712.0
-offset_right = 1215.0
-offset_bottom = 1078.0
-
-[node name="YearOfPlentyDialog" parent="CanvasLayer" instance=ExtResource("4_j5hk1")]
-offset_left = 760.0
-offset_top = 702.0
-offset_right = 1222.0
-offset_bottom = 1072.0
-
 [node name="FreeRoadDialog" parent="CanvasLayer" instance=ExtResource("10_mlphb")]
-offset_left = 788.0
-offset_top = 704.0
-offset_right = 1184.0
-offset_bottom = 929.0
+offset_left = 793.0
+offset_top = 382.0
+offset_right = 1189.0
+offset_bottom = 607.0
 
 [node name="DiscardDialog" parent="CanvasLayer" instance=ExtResource("11_mlphb")]
 offset_left = 755.0
 offset_top = 705.0
 offset_right = 1217.0
 offset_bottom = 1075.0
+
+[node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("8_daj04")]
+offset_left = 727.0
+offset_top = 744.0
+offset_right = 1234.0
+offset_bottom = 1039.0
+
+[node name="YearOfPlentyDialog" parent="CanvasLayer" instance=ExtResource("4_j5hk1")]
+offset_left = 757.0
+offset_top = 311.0
+offset_right = 1199.0
+offset_bottom = 637.0
 
 [node name="GameBoard" type="Node2D" parent="."]
 script = ExtResource("3_v1wow")

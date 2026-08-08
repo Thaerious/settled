@@ -14,6 +14,7 @@ offset_right = 438.0
 offset_bottom = 268.0
 script = ExtResource("2_h61qm")
 dice_textures = Array[Texture2D]([ExtResource("2_1w65n"), ExtResource("4_wc7jj"), ExtResource("5_3n3l0"), ExtResource("6_5l0go"), ExtResource("7_ik714"), ExtResource("3_h61qm")])
+drag_identifier = ""
 
 [node name="Title" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
 text = "Dice"

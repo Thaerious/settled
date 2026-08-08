@@ -1,6 +1,6 @@
 @tool
 class_name MonopolyDialog
-extends DialogContainer
+extends DialogPane
 
 
 const BUTTON_TO_RESOURCE = {
@@ -13,6 +13,7 @@ const BUTTON_TO_RESOURCE = {
 
 
 func _ready() -> void:
+	print("MonopolyDialog Ready %s" % self.dialog_identifier)
 	super._ready()
 	%SelectableHBox.on_selection_changed.connect(self._hnd_selection_changed)
 	%ButtonAccept.pressed.connect(self._accept)
@@ -22,7 +23,7 @@ func  _hnd_selection_changed(_target: Node):
 	%ButtonAccept.disabled = false
 
 
-func _hnd_current_phase_updated(phase: Model.GamePhase) -> void:
+func _hnd_visible_phase(phase: Model.GamePhase) -> void:
 	self.visible = false
 	if phase != Model.GamePhase.MONOPOLY: return
 	if Game.model.get_current_player() != Game.self_id: return

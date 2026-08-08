@@ -1,8 +1,9 @@
-extends PanelContainer
+extends DialogFrame
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	super._ready()
 	EventBus.model_loaded.connect(self._on_model_loaded)
 	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
 	EventBus.current_player_updated.connect(func(_1): self._on_model_loaded())
