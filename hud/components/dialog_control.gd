@@ -44,8 +44,10 @@ signal on_unselected()
 		if not is_node_ready(): return
 		self._update_style()
 
+
 @export var hoverable: bool = true
 @export var behaviour:= Behaviour.NONE
+
 
 var _hover := false
 var _pressed: bool = false
@@ -91,7 +93,8 @@ func _on_gui_input(event: InputEvent) -> void:
 		self._is_select_event(event)
 
 
-func _on_mouse_entered() -> void:	
+func _on_mouse_entered() -> void:
+	print("%s On Mouse Entered %s" % [self, self.hoverable])	
 	if not self.hoverable: return
 	self._hover = true
 	self._update_style()
