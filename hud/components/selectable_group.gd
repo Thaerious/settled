@@ -5,27 +5,33 @@ class_name SelectableGroup
 extends Node
 
 signal on_selection_changed(target: Node)
-var current_selection: Node = null
-var current_selected_index: int = -1
+var current_selection_index: int = -1
+var _selectable_children = []
+
+var current_selection: Node = null:
+	get:
+		return current_selection
+	set(v):
+		self.hnd_selected(v)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for child in self.get_children():
-		assert("selected" in child)
-		assert("on_selected" in child)
-		assert("on_unselected" in child)
-		child.on_selected.connect(func(): self.hnd_selected(child))
+	var all: Array[Node] = find_children("*", "DialogControl", true, false)
+
+	for child in all:
+		child.on_selected.connect(func(): self.current_selection = child)
+		_selectable_children.append(child)
+		if child.selected: self.current_selection = child
 
 
 func hnd_selected(target: Node):
 	if target == self.current_selection: return
-	self.current_selection = target
-	self.current_selected_index = self.get_children().find(target)
+	self.current_selection_index = self.get_children().find(target)
 
-	for child in self.get_children():	
+	for child in _selectable_children:	
 		if child == target: continue
 		child.selected = false
-
-	print("selected %s %s" % [self.current_selection, self.current_selected_index])
+	
 	self.on_selection_changed.emit(target)
 		

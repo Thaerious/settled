@@ -1,0 +1,84 @@
+[gd_scene load_steps=4 format=3 uid="uid://duafb6jo8gt5x"]
+
+[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_dvjla"]
+[ext_resource type="PackedScene" uid="uid://bsr140pvnqoba" path="res://hud/components/dialog_label_control.tscn" id="2_3jcoq"]
+[ext_resource type="Script" uid="uid://dr1nvfy57qqlq" path="res://hud/components/selectable_group.gd" id="2_771jm"]
+
+[node name="SoloScreen" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DialogContainer" parent="CanvasLayer" instance=ExtResource("1_dvjla")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -224.5
+offset_top = -144.5
+offset_right = 224.5
+offset_bottom = 144.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Username"
+alignment = 1
+
+[node name="Spacer" type="Control" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+script = ExtResource("2_771jm")
+
+[node name="DialogLabelControl" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_3jcoq")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+display_text = "1"
+horizontal_alignment = 1
+behaviour = 0
+
+[node name="DialogLabelControl2" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_3jcoq")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+display_text = "2"
+horizontal_alignment = 1
+behaviour = 0
+
+[node name="DialogLabelControl3" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_3jcoq")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+display_text = "3"
+horizontal_alignment = 1
+selected = true
+behaviour = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Number of Bots"
+horizontal_alignment = 1
+
+[node name="Spacer2" type="Control" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"AcceptButton"
+text = "Start Game"
+
+[editable path="CanvasLayer/DialogContainer"]

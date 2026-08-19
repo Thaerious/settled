@@ -244,6 +244,11 @@ func do_set_house(id: int, ax: Axial) -> void:
 	self._calc_longest_road()
 
 
+func do_set_initial_house(id: int, ax: Axial) -> void:
+	self.do_set_house(id, ax)
+	self._initial_houses[id].append(ax)
+
+
 func do_set_city(id: int, ax: Axial) -> void:
 	self._cities[ax.key()] = id
 	self._cities_mirror[id].add_item(ax)

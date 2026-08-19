@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://b4rkbgo81jcc6"]
 
-[ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://debug_scene.gd" id="1_lnlp5"]
+[ext_resource type="Script" uid="uid://dmi7yy3miod71" path="res://sandbox/debug_scene.gd" id="1_lnlp5"]
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="2_dqb7s"]
 [ext_resource type="PackedScene" uid="uid://t3lbmsckccj2" path="res://hud/components/dialog_sprite_control.tscn" id="3_xre04"]
 [ext_resource type="PackedScene" uid="uid://dgg24iv8r8tkv" path="res://hud/components/dialog_control.tscn" id="5_rec6y"]

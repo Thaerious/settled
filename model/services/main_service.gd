@@ -44,14 +44,14 @@ func _request_update_phase(phase: GamePhase):
 
 
 func _request_house(id: int, corner: Axial) -> void:
-	var count = Game.model.get_houses(id).size()	
-	Game.model.do_set_house(id, corner)
+	var count = Game.model.get_houses(id).size()		
 
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP:
 		if count == 1: self._award_resources(id, corner)
-		Game.model._initial_houses[id].append(corner)
+		Game.model.do_set_initial_house(id, corner)
 	else:
-		Game.model.do_remove_resources(id, Model.COSTS["house"])		
+		Game.model.do_remove_resources(id, Model.COSTS["house"])
+		Game.model.do_set_house(id, corner)		
 
 
 func _request_city(id: int, corner: Axial) -> void:

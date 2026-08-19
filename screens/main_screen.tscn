@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://qmfg7tlp5wmo"]
+
+[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_mrqkd"]
+
+[node name="MainScreen" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DialogContainer" parent="CanvasLayer" instance=ExtResource("1_mrqkd")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -224.5
+offset_top = -144.5
+offset_right = 224.5
+offset_bottom = 144.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SoloButton" type="Button" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"AcceptButton"
+text = "Solo Game"
+
+[node name="LocalButton" type="Button" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"AcceptButton"
+disabled = true
+text = "Local Game"
+
+[node name="ServerButton" type="Button" parent="CanvasLayer/DialogContainer/MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"AcceptButton"
+disabled = true
+text = "Online Game"
+
+[editable path="CanvasLayer/DialogContainer"]

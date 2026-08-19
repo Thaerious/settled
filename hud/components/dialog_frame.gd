@@ -25,8 +25,6 @@ func _process(_delta: float) -> void:
 
 
 func _on_mouse_input(event: InputEvent) -> void:
-	print("Dialog Frame On Mouse Input %s" % self.dialog_identifier)
-
 	if not self.draggable: return
 	if not event is InputEventMouseButton: return
 	
@@ -46,6 +44,7 @@ func _do_start_drag() -> void:
 		item.z_index -= 1
 
 	self.z_index = 1000
+	self.move_to_front()
 
 	DialogFrame.z_index_dictionary[self] = self
 

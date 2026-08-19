@@ -16,7 +16,7 @@
 class_name DialogControl
 extends Container
 
-enum Behaviour {SELECTABLE, CLICKABLE, NONE}
+enum Behaviour {TOGGLE, CLICK, NONE}
 
 signal on_clicked()
 signal on_selected()
@@ -87,9 +87,9 @@ func _on_gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton: return
 	if self.disabled: return
 
-	if self.behaviour == Behaviour.CLICKABLE:
+	if self.behaviour == Behaviour.CLICK:
 		self._is_click_event(event)
-	elif self.behaviour == Behaviour.SELECTABLE:
+	elif self.behaviour == Behaviour.TOGGLE:
 		self._is_select_event(event)
 
 

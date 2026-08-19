@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=11 format=3 uid="uid://c1voxdoftfv08"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://c1voxdoftfv08"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xn4x1"]
 bg_color = Color(0.25, 0.5, 0.43333334, 1)
@@ -81,6 +81,20 @@ corner_radius_top_right = 20
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qg0j0"]
 draw_center = false
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xn4x1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc0bg"]
+bg_color = Color(0, 0.70610815, 0.52188826, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.99625546, 0.7387036, 0.5273885, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xnmyk"]
 bg_color = Color(0.101960786, 0.5568628, 0.7647059, 1)
 border_width_left = 2
@@ -112,6 +126,8 @@ InnerBorder/base_type = &"PanelContainer"
 InnerBorder/styles/panel = SubResource("StyleBoxFlat_hrvmb")
 InnerBorderTitle/base_type = &"PanelContainer"
 InnerBorderTitle/styles/panel = SubResource("StyleBoxFlat_w0xv1")
+Label/colors/font_color = Color(0.9, 0.9, 0.9, 1)
+Label/font_sizes/font_size = 30
 LabelLarge/base_type = &"Label"
 LabelLarge/font_sizes/font_size = 16
 LabelSmall/base_type = &"Label"
@@ -119,6 +135,9 @@ LabelSmall/font_sizes/font_size = 12
 LabelTitle/base_type = &"Label"
 LabelTitle/font_sizes/font_size = 40
 LabelTitle/styles/normal = SubResource("StyleBoxFlat_qg0j0")
+LineEdit/font_sizes/font_size = 40
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_xn4x1")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_oc0bg")
 MarginContainer/constants/margin_bottom = 10
 MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10
