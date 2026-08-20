@@ -74,6 +74,14 @@ enum GamePhase {
 	PRE_ROLL
 }
 
+enum PlacementPhase{
+	HOUSE1,
+	HOUSE2,
+	ROAD1,
+	ROAD2,
+	NONE
+}
+
 static var COSTS = {
 	"house" : Wallet.new([ResourceTypes.WOOD, ResourceTypes.BRICK, ResourceTypes.WOOL, ResourceTypes.WHEAT]),
 	"city" :  Wallet.new([ResourceTypes.WHEAT, ResourceTypes.WHEAT, ResourceTypes.WHEAT, ResourceTypes.ROCK, ResourceTypes.ROCK]),
@@ -507,3 +515,39 @@ func _fill_terrain_bag() -> Array[Terrain]:
 	terrain_bag.shuffle()
 
 	return terrain_bag
+
+
+func resources_of(corner: Axial) -> Wallet:
+	var wallet := Wallet.new()
+
+	for hex: Axial in corner.hexes():
+		var hexdata = self.get_hex_data(hex)
+		if hexdata.resource == Model.ResourceTypes.NONE: continue
+		wallet.add_resource(hexdata.resource)
+
+	return wallet
+
+
+func get_placement_phase() -> Model.PlacementPhase:
+	if Game.model.get_current_phase() != Model.GamePhase.SETUP: 
+		return Model.PlacementPhase.NONE
+
+	var count_houses = Game.model.get_houses(Game.self_id).size()
+	var count_roads = Game.model.get_roads(Game.self_id).size()
+
+	if count_houses == 0 and count_roads == 0:
+		return Model.PlacementPhase.HOUSE1
+	elif count_houses == 1 and count_roads == 0:
+		return Model.PlacementPhase.ROAD1
+	elif count_houses == 1 and count_roads == 1:
+		return Model.PlacementPhase.HOUSE2
+	elif count_houses == 2 and count_roads == 1:
+		return Model.PlacementPhase.ROAD2
+	else:
+		return Model.PlacementPhase.NONE
+
+
+func get_initial_road_targets(id: int) -> AxialEdgeSet:
+	var house_axial = self.get_initial_houses(id)[-1]
+	var edges = house_axial.edges()
+	return edges			

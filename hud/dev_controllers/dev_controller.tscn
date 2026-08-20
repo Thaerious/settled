@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvedcrp05i4w5"]
+[gd_scene load_steps=10 format=3 uid="uid://bvedcrp05i4w5"]
 
 [ext_resource type="Script" uid="uid://bsec75ti05trd" path="res://hud/phase_buttons/phase_button.gd" id="1_gdvxq"]
+[ext_resource type="Script" uid="uid://w7u64ku6dsy5" path="res://hud/dev_controllers/dev_controller.gd" id="1_srtjr"]
 [ext_resource type="Script" uid="uid://c77hxmeldfwl7" path="res://hud/phase_buttons/player_button.gd" id="2_srtjr"]
 [ext_resource type="Script" uid="uid://seinwaxkktt6" path="res://hud/phase_buttons/play_as_button.gd" id="3_c1lov"]
 [ext_resource type="Script" uid="uid://2ichsd5ic0jx" path="res://hud/dev_controllers/auto_update_player.gd" id="4_1qrw7"]
@@ -10,6 +11,7 @@
 [ext_resource type="Script" uid="uid://obg0r517lbgm" path="res://hud/phase_buttons/button_reset.gd" id="8_1rylp"]
 
 [node name="DevController" type="HBoxContainer"]
+script = ExtResource("1_srtjr")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -133,9 +135,9 @@ layout_mode = 2
 text = "Reset"
 script = ExtResource("8_1rylp")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
+text = "Do Bot Action"
 
 [node name="PhaseButtons" type="VBoxContainer" parent="HBoxContainer"]
 unique_name_in_owner = true
@@ -256,3 +258,5 @@ text = "Game Over
 script = ExtResource("1_gdvxq")
 phase = 11
 metadata/_custom_type_script = "uid://bsec75ti05trd"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/Button" to="." method="_on_bot_button_pressed"]

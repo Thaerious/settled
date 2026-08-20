@@ -20,25 +20,15 @@ func _on_current_phase_updated(phase: Model.GamePhase) -> void:
 
 
 func _on_model_loaded() -> void:
-	print("Initial Placement Dialog on model loaded")
-	var count_houses = Game.model.get_houses(Game.self_id).size()
-	var count_roads = Game.model.get_roads(Game.self_id).size()
+	if Game.model.get_current_player() != Game.self_id: return
 
 	%HouseControl1.disabled = true
 	%RoadControl1.disabled = true
 	%HouseControl2.disabled = true
 	%RoadControl2.disabled = true
 
-	if Game.model.get_current_player() != Game.self_id: return
-	if Game.model.get_current_phase() != Model.GamePhase.SETUP: return
-
-	print("Houses, Roads: %s %s" % [count_houses, count_roads])
-
-	if count_houses == 0 and count_roads == 0:
-		%HouseControl1.disabled = false
-	elif count_houses == 1 and count_roads == 0:
-		%RoadControl1.disabled = false
-	elif count_houses == 1 and count_roads == 1:
-		%HouseControl2.disabled = false
-	elif count_houses == 2 and count_roads == 1:
-		%RoadControl2.disabled = false
+	match Game.model.get_placement_phase():
+		Model.PlacementPhase.HOUSE1: %HouseControl1.disabled = false
+		Model.PlacementPhase.ROAD1:  %RoadControl1.disabled = false
+		Model.PlacementPhase.HOUSE2: %HouseControl2.disabled = false
+		Model.PlacementPhase.ROAD2:  %RoadControl2.disabled = false		

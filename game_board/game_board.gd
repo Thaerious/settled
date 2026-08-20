@@ -132,10 +132,8 @@ func show_initial_house_targets_hnd():
 
 
 func show_initial_road_targets_hnd():
-	var house_axial = Game.model.get_initial_houses(Game.self_id)[-1]
-	var edges = house_axial.edges()
-	self.show_targets(edges)
-	
+	self.show_targets(Game.model.get_initial_road_targets(Game.self_id))
+
 
 func show_city_targets_hnd():
 	self.show_targets(Game.model.get_houses(Game.self_id))
@@ -213,6 +211,8 @@ func set_road_hnd(id: int, edge: AxialEdge) -> void:
 	road_piece.rotation = edge.rotation
 
 
+# Show one or more axial/edgeaxial targets.
+# Accepts collections and single axials.
 func show_targets(ax: Variant):
 	var target: Node2D
 

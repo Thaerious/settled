@@ -236,20 +236,6 @@ func _next_player() -> void:
 	var next = Game.model.get_current_player() + 1
 	Game.model.do_update_player(next)
 	Game.model.do_update_phase(GamePhase.MAIN)
-	
-
-# todo remove
-# func place_house(id: int, corner: Axial) -> void:
-# 	Game.model.do_set_house(id, corner)
-# 	var port_resource = Game.model.get_port(corner)
-
-# 	if port_resource == Model.ResourceTypes.ANY:
-# 		for r in EXCHANGABLE:
-# 			if Game.model.get_exchange_rate(id).get_resource(r) > 3:
-# 				Game.model.do_set_exchange_rate(id, r, 3)
-# 	elif port_resource != Model.ResourceTypes.NONE:
-# 		if Game.model.get_exchange_rate(id).get_resource(port_resource) > 2:
-# 			Game.model.do_set_exchange_rate(id, port_resource, 2)
 
 
 func _award_resources(id:int, corner: Axial) -> void:
@@ -263,5 +249,6 @@ func _award_resources(id:int, corner: Axial) -> void:
 	Game.model.do_add_resources(id, payout)
 
 
-func get_resource(ax: Axial) -> Model.ResourceTypes:
-	return Game.model.get_hex_data(ax).resource
+## Static helper to get neighbors of a given Axial.
+static func resources_of(ax: Axial) -> AxialSet:
+	return ax.neighbors()

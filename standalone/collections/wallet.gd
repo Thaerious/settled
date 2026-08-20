@@ -77,6 +77,7 @@ func keep_only(resouce: Model.ResourceTypes) -> void:
 func keys() -> Array[Model.ResourceTypes]: return self._data.keys()
 
 
+# Return a count of the resource 'r'.
 func get_resource(r: Model.ResourceTypes) -> int:
 	return self._data[r]
 

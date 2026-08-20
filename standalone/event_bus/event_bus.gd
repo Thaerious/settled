@@ -3,6 +3,7 @@
 extends Node
 
 # View to view events (show, clear)
+# Does not require id since only the client needs view events.
 signal show_initial_road_targets(house_axial: Axial)
 signal show_house_targets()
 signal show_city_targets()
