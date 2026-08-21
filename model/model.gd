@@ -138,12 +138,25 @@ func get_initial_houses(id: int) -> Array:  return self._initial_houses[id].dupl
 
 # return all edges that can accept a road
 # ie not edges that only border water
-func playable_edges() -> AxialEdgeSet:
+func playable_edges(id: int = -1) -> AxialEdgeSet:
 	var edge_set := AxialEdgeSet.new()
+
 	for hex_data in self._hex_data.values():
 		if hex_data.terrain == Terrain.WATER: continue
 		edge_set.add_all(hex_data.axial.edges())
-	return edge_set
+
+	if id == -1: return edge_set
+
+	var my_roads = self.get_roads(id)
+	var my_buildings = self.get_all_buildings(id)
+	var my_corners = my_roads.corner_map().union(my_buildings) 
+
+	# remove oppenents buildings
+	var their_buildings = self.get_all_buildings().difference(my_buildings)
+	my_corners = my_corners.difference(their_buildings)
+
+	var edges = my_corners.edge_map()
+	return edges.difference(self.get_roads())
 
 
 # return all corners that can accept a house
@@ -156,19 +169,16 @@ func playable_corners(id: int = -1) -> AxialSet:
 		if hex_data.terrain == Model.Terrain.WATER: continue
 		corners.add_all(hex_data.axial.corners())
 
-	var houses = Game.model.get_all_buildings()
+	var houses = self.get_all_buildings()
 	var neighbors := houses.map(Axial.neighbors_of)
 	houses = houses.add_all(neighbors)
 	corners = corners.difference(houses)
 
 	if id == -1: return corners
 
-	var roads := Game.model.get_roads(id)
+	var roads := self.get_roads(id)
 	var road_corners := roads.corner_map()
 	return road_corners.intersect(corners)
-
-
-
 
 
 func has_resources(id: int, wallet: Wallet) -> bool: 
@@ -246,11 +256,11 @@ func get_hex_data(hex: Axial) -> HexData:
 
 
 func get_placement_phase() -> Model.PlacementPhase:
-	if Game.model.get_current_phase() != Model.GamePhase.SETUP: 
+	if self.get_current_phase() != Model.GamePhase.SETUP: 
 		return Model.PlacementPhase.NONE
 
-	var count_houses = Game.model.get_houses(Game.self_id).size()
-	var count_roads = Game.model.get_roads(Game.self_id).size()
+	var count_houses = self.get_houses(Game.self_id).size()
+	var count_roads = self.get_roads(Game.self_id).size()
 
 	if count_houses == 0 and count_roads == 0:
 		return Model.PlacementPhase.HOUSE1
@@ -282,8 +292,8 @@ func do_end_turn() -> void:
 	self._game_phase = Model.GamePhase.PRE_ROLL
 
 	# emit events
-	EventBus.current_phase_updated.emit(Game.model.get_current_phase())
-	EventBus.current_player_updated.emit(Game.model.get_current_player())	
+	EventBus.current_phase_updated.emit(self.get_current_phase())
+	EventBus.current_player_updated.emit(self.get_current_player())	
 	EventBus.action_cards_updated.emit(self._current_player, owned, playable)
 	
 
@@ -357,7 +367,7 @@ func do_update_phase(phase: GamePhase) -> void:
 	self._game_phase = phase
 
 	if phase == Model.GamePhase.ROAD_BUILDING:
-		Game.model._road_building = 2
+		self._road_building = 2
 
 	EventBus.current_phase_updated.emit(phase)
 

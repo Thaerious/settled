@@ -104,35 +104,9 @@ func _model_loaded() -> void:
 
 func show_house_targets_hnd():
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP:
-		self.show_initial_house_targets_hnd()
+		self.show_targets(Game.model.playable_corners())
 	else:
-		self.show_main_house_targets_hnd()
-
-
-func show_main_house_targets_hnd():
-	var all_buildings = Game.model.get_all_buildings()
-
-	var black_list = all_buildings.union(all_buildings.map(Axial.neighbors_of))
-	var white_list = self.buildable_corners.difference(black_list)
-	
-	var roads := Game.model.get_roads(Game.self_id)
-	var road_corners := roads.corner_map()
-	var permitted = road_corners.intersect(white_list)
-
-	self.show_targets(permitted)		
-
-
-func show_initial_house_targets_hnd():
-	var corners = self.buildable_corners
-	var houses = Game.model.get_all_buildings()
-	var neighbors := houses.map(Axial.neighbors_of)
-	houses = houses.add_all(neighbors)
-	corners = corners.difference(houses)
-	self.show_targets(corners)
-
-
-func show_initial_road_targets_hnd():
-	self.show_targets(Game.model.get_initial_road_targets(Game.self_id))
+		self.show_targets(Game.model.playable_corners(Game.self_id))
 
 
 func show_city_targets_hnd():
@@ -141,29 +115,9 @@ func show_city_targets_hnd():
 
 func show_road_targets_hnd():
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP:
-		self.show_initial_road_targets_hnd()
+		self.show_targets(Game.model.get_initial_road_targets(Game.self_id))
 	else:
-		self.show_main_road_targets_hnd()	
-
-
-func show_main_road_targets_hnd():
-	var my_roads = Game.model.get_roads(Game.self_id)
-	var my_houses = Game.model.get_houses(Game.self_id)
-
-	var my_corners = my_roads.corner_map().union(my_houses)
-
-	# remove oppenents houses from my corners
-	var their_houses = Game.model.get_houses().difference(my_houses)
-	my_corners = my_corners.difference(their_houses)
-
-	var candidates = my_corners.edge_map()
-
-	# remove all occupied edges
-	var all_roads = Game.model.get_roads()
-	candidates = candidates.difference(all_roads)
-	candidates = candidates.intersect(Game.model.playable_edges())
-
-	self.show_targets(candidates)
+		self.show_targets(Game.model.playable_edges(Game.self_id))		
 
 
 func get_hexes_for_vertex(hex: Vector2i) -> Vec2iSet:

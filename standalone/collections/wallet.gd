@@ -93,12 +93,12 @@ func set_resource(r: Model.ResourceTypes, value: int) -> void:
 
 
 func add_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
-	assert(self._data.has(r), "Wallet: invalid resource type: %s" % r)
+	if not self._data.has(r): return
 	self._data[r] += amount
 
 
 func remove_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
-	assert(self._data.has(r), "Wallet: invalid resource type: %s" % r)
+	if not self._data.has(r): return
 	self._data[r] -= amount
 
 
