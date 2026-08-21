@@ -6,44 +6,57 @@ var _resource_counts := Wallet.new()
 var id: int
 
 # unique resource weights
-var uni_res_w: Dictionary[Model.ResourceTypes, int] = {
-	Model.ResourceTypes.WOOD: 2,
-	Model.ResourceTypes.BRICK: 2,
-	Model.ResourceTypes.WHEAT: 2,
-	Model.ResourceTypes.ROCK: 2,
-	Model.ResourceTypes.WOOL: 2
-}
-
-# repeat resource weights
-var rep_res_w: Dictionary[Model.ResourceTypes, int] = {
-	Model.ResourceTypes.WOOD: 1,
-	Model.ResourceTypes.BRICK: 1,
-	Model.ResourceTypes.WHEAT: 1,
-	Model.ResourceTypes.ROCK: 1,
-	Model.ResourceTypes.WOOL: 1
+var resource_w: Dictionary[Model.ResourceTypes, int] = {
+	Model.ResourceTypes.WOOD: 30,
+	Model.ResourceTypes.BRICK: 30,
+	Model.ResourceTypes.WHEAT: 25,
+	Model.ResourceTypes.ROCK: 20,
+	Model.ResourceTypes.WOOL: 25
 }
 
 # weight for numbers
 var number_w: Dictionary[int, float] = {
 	2: 0,
-	3: 1,
-	4: 1,
-	5: 2,
-	6: 2.5,
-	8: 2.5,
-	9: 2,
-	10: 1,
-	11: 1,
+	3: 10,
+	4: 20,
+	5: 40,
+	6: 80,
+	8: 80,
+	9: 40,
+	10: 20,
+	11: 10,
 	12: 0
 }
+
+var resouce_w_delta: int = 5
+var number_w_delta: int = 15
 
 
 func _init(id: int) -> void:
 	self.id = id
 
 
-func process(game_model: Model) -> void:
+func pre_process(game_model: Model) -> void:
 	self._game_model = game_model
+	
+	# record the resouce counts of occupied tiles
+	# adjust the weights for resource type and tile number
+	self._resource_counts = Wallet.new()
+	for corner in game_model.get_houses(self.id):
+		for hex in corner.hexes():
+			var hex_data := game_model.get_hex_data(hex)
+			self._resource_counts.add_resource(hex_data.resource)
+			self.resource_w[hex_data.resouce] -= self.resource_w_delta
+
+	for corner in game_model.get_cities(self.id):
+		for hex in corner.hexes():
+			var hex_data := game_model.get_hex_data(hex)
+			self._resource_counts.add_resource(hex_data.resource, 2)
+			self.resource_w[hex_data.resouce] -= (self.resource_w_delta * 2)
+
+
+func process(game_model: Model) -> void:
+	self.pre_process(game_model)
 
 	assert(game_model.get_placement_phase() != Model.PlacementPhase.NONE)
 
@@ -61,18 +74,17 @@ func initial_road() -> void:
 	var edges = self._game_model.get_initial_road_targets(self.id)
 	var edge = edges.to_array().pick_random()
 	print("Bot Action: request_road | AxialEdge: %s" % [edge])
-	EventBus.request_road.emit(self.id, edge)	
+	EventBus.request_road.emit(self.id, edge)
 
 
 func initial_house() -> void:
 	var best_rank = 0
 	var best_axial = null
 
-	# check each edge and rank them
+	# check each empty corner and rank them
 	for corner:Axial in self.buildable_corners():
-		print("Considering corner axial: %s" % [corner])
 		var rank = self.rank_initial(corner)
-		print("Calculated rank for axial: %s | rank: %s" % [corner, rank])
+		print(" - rank: %s" % [corner, rank])
 		if rank > best_rank:
 			best_rank = rank
 			best_axial = corner
@@ -84,9 +96,18 @@ func initial_house() -> void:
 
 func rank_initial(corner: Axial) -> int:
 	var rank = 0
-	var wallet := Game.model.resources_of(corner)
-	for resource in wallet:
-		rank = rank + uni_res_w[resource]
+
+	for hex:Axial in corner.hexes():
+		var hex_data := self._game_model.get_hex_data(hex)
+		if hex_data.number == -1: continue
+
+		# adjust rank for the number
+		var hex_rank = self.number_w[hex_data.number]
+
+		# adjust rank for the resouce
+		hex_rank = hex_rank + self.resource_w[hex_data.resource]
+		
+		rank += hex_rank		
 
 	return rank
 

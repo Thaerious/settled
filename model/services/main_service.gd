@@ -174,10 +174,6 @@ func _on_request_roll() -> void:
 	var d1: int = randi_range(1, 6)
 	var d2: int = randi_range(1, 6)
 
-	# # debug/dev override
-	# if dev_dice[0] != -1: d1 = dev_dice[0]
-	# if dev_dice[1] != -1: d2 = dev_dice[1]
-
 	Game.model.do_set_dice(d1, d2)
 	if d1 + d2 == 7:
 		Game.model.do_update_phase(GamePhase.INIT_DISCARD)

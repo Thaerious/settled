@@ -51,4 +51,3 @@ func _update_view() -> void:
 	var ex_rate = self._exchange_rate.get_resource(self.resource_type)
 	if ex_rate > qty: self.hoverable = false
 	else: self.hoverable = true
-	print("%s Update View %s" % [self, self.hoverable])

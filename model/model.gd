@@ -146,10 +146,37 @@ func playable_edges() -> AxialEdgeSet:
 	return edge_set
 
 
+# return all corners that can accept a house
+# 1) does not have a house / city
+# 2) is not adjacent to a house / city
+# if an id is provided restrict the result to corners adjacent to an owned road
+func playable_corners(id: int = -1) -> AxialSet:
+	var corners := AxialSet.new()
+	for hex_data: HexData in self.all_hex_data():
+		if hex_data.terrain == Model.Terrain.WATER: continue
+		corners.add_all(hex_data.axial.corners())
+
+	var houses = Game.model.get_all_buildings()
+	var neighbors := houses.map(Axial.neighbors_of)
+	houses = houses.add_all(neighbors)
+	corners = corners.difference(houses)
+
+	if id == -1: return corners
+
+	var roads := Game.model.get_roads(id)
+	var road_corners := roads.corner_map()
+	return road_corners.intersect(corners)
+
+
+
+
+
 func has_resources(id: int, wallet: Wallet) -> bool: 
 	return self._bank[id].has_resources(wallet)
 
 
+## Get the player that has a house or city on this corner axial
+## If there is no owner, or the axial is not a corner, returns -1
 func get_owner(ax: Axial) -> int:
 	if self._cities.has(ax.key()):
 		return self._cities[ax.key()]
@@ -158,6 +185,7 @@ func get_owner(ax: Axial) -> int:
 	return -1
 
 
+## Get all roads owned by id, or all roads if id is not provided
 func get_roads(id: int = -1) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 
@@ -170,6 +198,7 @@ func get_roads(id: int = -1) -> AxialEdgeSet:
 	return aset	
 
 
+## Get all houses owned by id, or all houses if id is not provided
 func get_houses(id: int = -1) -> AxialSet:
 	var aset := AxialSet.new()
 
@@ -182,6 +211,7 @@ func get_houses(id: int = -1) -> AxialSet:
 	return aset	
 
 
+## Get all cities owned by id, or all cities if id is not provided
 func get_cities(id: int = -1) -> AxialSet:
 	var aset := AxialSet.new()
 
@@ -194,16 +224,11 @@ func get_cities(id: int = -1) -> AxialSet:
 	return aset
 
 
+## Get all houses & cities owned by id, or all houses & cities if id is not provided
 func get_all_buildings(id: int = -1) -> AxialSet:
 	var result := AxialSet.new()
-
-	if id == -1:
-		for p in range(4):
-			result.add_all(self.get_houses(p))
-			result.add_all(self.get_cities(p))
-	else:
-		result.add_all(self.get_houses(id))
-		result.add_all(self.get_cities(id))
+	result.add_all(self.get_houses(id))
+	result.add_all(self.get_cities(id))
 	return result
 
 
@@ -219,6 +244,30 @@ func get_hex_data(hex: Axial) -> HexData:
 		data.pirate = false
 	return data
 
+
+func get_placement_phase() -> Model.PlacementPhase:
+	if Game.model.get_current_phase() != Model.GamePhase.SETUP: 
+		return Model.PlacementPhase.NONE
+
+	var count_houses = Game.model.get_houses(Game.self_id).size()
+	var count_roads = Game.model.get_roads(Game.self_id).size()
+
+	if count_houses == 0 and count_roads == 0:
+		return Model.PlacementPhase.HOUSE1
+	elif count_houses == 1 and count_roads == 0:
+		return Model.PlacementPhase.ROAD1
+	elif count_houses == 1 and count_roads == 1:
+		return Model.PlacementPhase.HOUSE2
+	elif count_houses == 2 and count_roads == 1:
+		return Model.PlacementPhase.ROAD2
+	else:
+		return Model.PlacementPhase.NONE
+
+
+func get_initial_road_targets(id: int) -> AxialEdgeSet:
+	var house_axial = self.get_initial_houses(id)[-1]
+	var edges = house_axial.edges()
+	return edges	
 
 func do_end_turn() -> void:
 	# increment the current player
@@ -270,37 +319,6 @@ func do_set_road(id: int, edge: AxialEdge) -> void:
 	self._roads_mirror[id].add_item(edge)
 	EventBus.road_added.emit(id, edge)
 	self._calc_longest_road()
-
-
-func _calc_longest_road() -> void:
-	# calculate all road lengths
-	for pid in range(Game.player_count):
-		var length := RoadCalculator.calculate_longest_road(pid, self)
-		self._player_records[pid].roads = length
-
-	# find longest >= 5, favouring current holder on tie
-	var best_length := 0
-	var best_id := -1
-
-	for pid in range(Game.player_count):
-		var length: int = self._player_records[pid].roads
-		if length < 5:
-			continue
-		if length > best_length or (length == best_length and pid == self._longest_road):
-			best_length = length
-			best_id = pid
-
-	if best_id != self._longest_road:
-		self._set_longest_road(best_id)
-
-
-func _set_longest_road(id: int) -> void:
-	if self._longest_road != -1:
-		self._player_records[self._longest_road].victory_points -= 2
-
-	self._longest_road = id
-	self._player_records[id].victory_points += 2
-	EventBus.update_longest_road.emit(id)
 
 
 func do_add_resources(id: int, resources: Wallet) -> void:
@@ -528,26 +546,32 @@ func resources_of(corner: Axial) -> Wallet:
 	return wallet
 
 
-func get_placement_phase() -> Model.PlacementPhase:
-	if Game.model.get_current_phase() != Model.GamePhase.SETUP: 
-		return Model.PlacementPhase.NONE
+func _calc_longest_road() -> void:
+	# calculate all road lengths
+	for pid in range(Game.player_count):
+		var length := RoadCalculator.calculate_longest_road(pid, self)
+		self._player_records[pid].roads = length
 
-	var count_houses = Game.model.get_houses(Game.self_id).size()
-	var count_roads = Game.model.get_roads(Game.self_id).size()
+	# find longest >= 5, favouring current holder on tie
+	var best_length := 0
+	var best_id := -1
 
-	if count_houses == 0 and count_roads == 0:
-		return Model.PlacementPhase.HOUSE1
-	elif count_houses == 1 and count_roads == 0:
-		return Model.PlacementPhase.ROAD1
-	elif count_houses == 1 and count_roads == 1:
-		return Model.PlacementPhase.HOUSE2
-	elif count_houses == 2 and count_roads == 1:
-		return Model.PlacementPhase.ROAD2
-	else:
-		return Model.PlacementPhase.NONE
+	for pid in range(Game.player_count):
+		var length: int = self._player_records[pid].roads
+		if length < 5:
+			continue
+		if length > best_length or (length == best_length and pid == self._longest_road):
+			best_length = length
+			best_id = pid
+
+	if best_id != self._longest_road:
+		self._set_longest_road(best_id)
 
 
-func get_initial_road_targets(id: int) -> AxialEdgeSet:
-	var house_axial = self.get_initial_houses(id)[-1]
-	var edges = house_axial.edges()
-	return edges			
+func _set_longest_road(id: int) -> void:
+	if self._longest_road != -1:
+		self._player_records[self._longest_road].victory_points -= 2
+
+	self._longest_road = id
+	self._player_records[id].victory_points += 2
+	EventBus.update_longest_road.emit(id)	
