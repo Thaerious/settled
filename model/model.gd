@@ -137,7 +137,9 @@ func free_road_count() -> int:              return self._road_building
 func get_initial_houses(id: int) -> Array:  return self._initial_houses[id].duplicate()
 
 # return all edges that can accept a road
-# ie not edges that only border water
+# not edges that only border water.
+# Providing an id will only return the edges 
+# adjacent to buildings or roads for that player.
 func playable_edges(id: int = -1) -> AxialEdgeSet:
 	var edge_set := AxialEdgeSet.new()
 
@@ -559,7 +561,7 @@ func resources_of(corner: Axial) -> Wallet:
 func _calc_longest_road() -> void:
 	# calculate all road lengths
 	for pid in range(Game.player_count):
-		var length := RoadCalculator.calculate_longest_road(pid, self)
+		var length := RoadCalculator.calculate_shortest_path(pid, self)
 		self._player_records[pid].roads = length
 
 	# find longest >= 5, favouring current holder on tie

@@ -93,6 +93,14 @@ func invert() -> Axial:
 	return Axial.new(self.q * -1, self.r * -1, self.s * -1)
 
 
+## Return the other corner attached to an edge
+## If neither corner on the edge is attached to self, return null
+func neighbor(edge: AxialEdge) -> Axial:
+	if edge.ax1.equals(self): return edge.ax2
+	if edge.ax2.equals(self): return edge.ax1
+	return null
+
+
 ## Returns the neighboring coordinates.
 ## For hexes: the 6 adjacent hexes.
 ## For even corners: the 3 adjacent even-axis neighbors.

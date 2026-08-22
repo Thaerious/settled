@@ -3,7 +3,7 @@
 class_name AxialEdgeSet
 extends RefCounted
 
-var _data: Dictionary[String, AxialEdge] = {}
+var _data: Dictionary[String, AxialEdge] = {} # edge key -> edge
 var _iter_index: int = 0
 var _iter_keys: Array = []
 
