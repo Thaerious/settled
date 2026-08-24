@@ -6,7 +6,7 @@ var model: Model = null
 var self_id: int = 0
 var player_count: int = 4
 var names: Array[String] = ["Adam", "Barney", "Charles III", "Diana"]
-var _bots: Array[BotBasic] = [BotBasic.new(0), BotBasic.new(1), BotBasic.new(2), BotBasic.new(3)]
+# var _bots: Array[BotBasic] = [BotBasic.new(0), BotBasic.new(1), BotBasic.new(2), BotBasic.new(3)]
 
 func _ready() -> void:
 	if not self.load_last_save():
@@ -25,7 +25,8 @@ func _ready() -> void:
 
 
 func do_bot_action(id: int) -> void:
-	self._bots[id].process(self.model)
+	# self._bots[id].process(self.model)
+	BotBasic.new(id, self.model).process()
 
 
 func load_last_save() -> bool:

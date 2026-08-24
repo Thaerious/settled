@@ -14,7 +14,6 @@ var _drag_offset := Vector2.ZERO
 func _ready():
 	super._ready()
 	if self.dialog_identifier == "": self.dialog_identifier = self.name
-	print("Dialog Frame Ready %s" % self.dialog_identifier)
 	self.load_pos()
 	%Title.gui_input.connect(self._on_mouse_input)
 

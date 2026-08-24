@@ -58,36 +58,34 @@ func distance_weight(distance: int) -> int:
 	if distance_w.has(distance): return distance_w[distance]
 	return 0
 
-func _init(id: int) -> void:
+func _init(id: int, game_model: Model) -> void:
 	self.id = id
-
-
-func pre_process(game_model: Model) -> void:
 	self._game_model = game_model
-	
+
+func pre_process() -> void:
 	# record the resource counts of occupied tiles
 	# adjust the weights for resource type and tile number
 	self._resource_counts = Wallet.new()
-	for corner in game_model.get_houses(self.id):
+	for corner in self._game_model.get_houses(self.id):
 		for hex in corner.hexes():
-			var hex_data := game_model.get_hex_data(hex)
+			var hex_data := self._game_model.get_hex_data(hex)
 			if hex_data.number == -1: continue
 			self._resource_counts.add_resource(hex_data.resource)
 			self.resource_w[hex_data.resource] -= self.resource_w_delta
 			self.port_w[hex_data.resource] += self.port_w_delta
 
 
-	for corner in game_model.get_cities(self.id):
+	for corner in self._game_model.get_cities(self.id):
 		for hex in corner.hexes():
-			var hex_data := game_model.get_hex_data(hex)
+			var hex_data := self._game_model.get_hex_data(hex)
 			if hex_data.number == -1: continue
 			self._resource_counts.add_resource(hex_data.resource, 2)
 			self.resource_w[hex_data.resource] -= (self.resource_w_delta * 2)
 			self.port_w[hex_data.resource] += (self.port_w_delta * 2)
 
 	# discourage repeat ports
-	for corner in game_model.get_all_buildings(self.id):
-		var port = game_model.get_port(corner)
+	for corner in self._game_model.get_all_buildings(self.id):
+		var port = self._game_model.get_port(corner)
 		if port == Model.ResourceTypes.NONE: continue			
 		self.port_w[port] = 0
 
@@ -95,8 +93,8 @@ func pre_process(game_model: Model) -> void:
 	self.path_builder = PathBuilder.new().run(self._game_model, self.id)
 
 
-func process(game_model: Model) -> void:
-	self.pre_process(game_model)
+func process() -> void:
+	self.pre_process()
 
 	if self._game_model.get_current_phase() == Model.GamePhase.SETUP:
 		self.phase_setup()
@@ -116,7 +114,7 @@ func phase_setup() -> void:
 
 
 func phase_main() -> void:		
-	var best_rank = 0
+	var best_rank = -INF
 	var best_axial = null
 
 	# Evaluate each valid corner that can accept a house
@@ -165,7 +163,7 @@ func initial_road() -> void:
 
 
 func initial_house() -> void:
-	var best_rank = 0
+	var best_rank = -INF
 	var best_axial = null
 
 	# check each empty corner and rank them
@@ -181,7 +179,7 @@ func initial_house() -> void:
 
 func rank_corner(corner: Axial) -> int:
 	var port = self._game_model.get_port(corner)
-	var rank = self.port_w[port]
+	var rank = 0
 
 	for hex:Axial in corner.hexes():
 		var hex_data := self._game_model.get_hex_data(hex)
