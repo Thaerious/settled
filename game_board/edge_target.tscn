@@ -13,6 +13,7 @@ script = ExtResource("1_iwkds")
 texture = ExtResource("2_83k23")
 
 [node name="Area2D" type="Area2D" parent="."]
+unique_name_in_owner = true
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]

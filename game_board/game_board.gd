@@ -11,8 +11,6 @@ const HOUSE_PIECE: PackedScene = preload("res://game_board/house_piece.tscn")
 const CITY_PIECE: PackedScene = preload("res://game_board/city_piece.tscn")
 const ROAD_PIECE: PackedScene = preload("res://game_board/road_piece.tscn")
 
-var buildable_corners := AxialSet.new()
-
 ## player tint for game pieces
 static var tint: Array = [
 	Color("#ff0000"),
@@ -74,13 +72,6 @@ func _input(event: InputEvent) -> void:
 
 
 func _model_loaded() -> void:
-	# track corners on non-water hexes
-	self.buildable_corners.clear()
-
-	for hex_data: HexData in Game.model.all_hex_data():
-		if hex_data.terrain == Model.Terrain.WATER: continue
-		self.buildable_corners.add_all(hex_data.axial.corners())
-
 	# clear targets
 	clear_targets_hnd()
 
@@ -167,18 +158,25 @@ func set_road_hnd(id: int, edge: AxialEdge) -> void:
 
 # Show one or more axial/edgeaxial targets.
 # Accepts collections and single axials.
-func show_targets(ax: Variant):
+# Returns a map of axial -> target
+func show_targets(ax: Variant) -> Array[Node]:
+	var targets: Array[Node] = []
 	var target: Node2D
 
 	if ax is Axial:
 		target = CORNER_TARGET.instantiate()
 		target.axial = ax
+		targets.append(target)
+		target.position = ax.map_to_local(self.tiles)
+		self.structures.add_child(target)		
 	elif ax is AxialEdge:
 		target = EDGE_TARGET.instantiate()
 		target.axial_edge = ax
+		targets.append(target)
+		target.position = ax.map_to_local(self.tiles)
+		self.structures.add_child(target)		
 	else:
-		for _ax in ax: self.show_targets(_ax)
-		return
+		for _ax in ax: 
+			targets.append_array(self.show_targets(_ax))
 
-	target.position = ax.map_to_local(self.tiles)
-	self.structures.add_child(target)
+	return targets

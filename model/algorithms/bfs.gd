@@ -11,7 +11,6 @@ var _adj: Dictionary[String, AxialSet]
 var _visited: Dictionary[String, Axial] = {} # to -> from
 var result: Array[Axial] = []
 
-
 # start: Starting point
 # end: Array of valid end points
 # adj: Adjacenty table of connections Axial -> AxialSet

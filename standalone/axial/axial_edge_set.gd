@@ -94,14 +94,6 @@ func for_each(cb: Callable) -> AxialEdgeSet:
 	return self
 
 
-# Returns a shallow copy of this set.
-# {E1, E2, E3}.clone() → {E1, E2, E3}
-func clone() -> AxialEdgeSet:
-	var aset := AxialEdgeSet.new()
-	aset._data.merge(self._data)
-	return aset
-
-
 # Maps each AxialEdge to a collection of Axials. 
 # Default behaviour is to return the corners directly adjacent to all edges
 # The callback function 'fn' must return a collection of edges.
@@ -127,7 +119,7 @@ func difference(that: AxialEdgeSet) -> AxialEdgeSet:
 # Returns a new set containing all elements from both sets.
 # {A, B, C} ∪ {B, C, D} → {A, B, C, D}
 func union(that: AxialEdgeSet) -> AxialEdgeSet:
-	return self.clone().add_all(that)
+	return self.duplicate().add_all(that)
 
 
 # Returns a new set containing only elements present in both sets.

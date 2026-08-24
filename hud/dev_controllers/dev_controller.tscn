@@ -135,9 +135,28 @@ layout_mode = 2
 text = "Reset"
 script = ExtResource("8_1rylp")
 
-[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer1"]
+[node name="ButtonBot" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
 text = "Do Bot Action"
+
+[node name="ButtonTestEdges" type="Button" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Test Playable Edges"
+
+[node name="ButtonTestCorners" type="Button" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Test Playable Corners
+"
+
+[node name="ButtonTestEnds" type="Button" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Test Ends
+"
+
+[node name="ButtonTestDistance" type="Button" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Test Distance
+"
 
 [node name="PhaseButtons" type="VBoxContainer" parent="HBoxContainer"]
 unique_name_in_owner = true
@@ -259,4 +278,8 @@ script = ExtResource("1_gdvxq")
 phase = 11
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/Button" to="." method="_on_bot_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonBot" to="." method="_on_bot_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestEdges" to="." method="_on_button_test_edges_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestCorners" to="." method="_on_button_test_corners_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestEnds" to="." method="_on_button_test_ends"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance" to="." method="_on_button_test_distance_pressed"]

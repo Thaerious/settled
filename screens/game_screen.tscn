@@ -133,6 +133,7 @@ offset_bottom = 637.0
 dialog_identifier = "YearOfPlentyDialog"
 
 [node name="GameBoard" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("12_d32la")
 
 [node name="Tiles" type="TileMapLayer" parent="GameBoard"]

@@ -136,16 +136,21 @@ func player_count() -> int:                 return self._player_records.size() #
 func free_road_count() -> int:              return self._road_building
 func get_initial_houses(id: int) -> Array:  return self._initial_houses[id].duplicate()
 
-# return all edges that can accept a road
+var _valid_corners: AxialSet = null
+var _valid_edges: AxialEdgeSet = null
+
+func valid_corners() -> AxialSet: return self._valid_corners.duplicate()
+func valid_edges() -> AxialEdgeSet: return self._valid_edges.duplicate()
+
+# return all edges that can accept a road (empty edges)
 # not edges that only border water.
 # Providing an id will only return the edges 
 # adjacent to buildings or roads for that player.
 func playable_edges(id: int = -1) -> AxialEdgeSet:
-	var edge_set := AxialEdgeSet.new()
+	var edge_set := self._valid_edges.duplicate()
 
-	for hex_data in self._hex_data.values():
-		if hex_data.terrain == Terrain.WATER: continue
-		edge_set.add_all(hex_data.axial.edges())
+	for pid in range(0, Game.player_count):
+		edge_set = edge_set.difference(self._roads_mirror[pid])
 
 	if id == -1: return edge_set
 
@@ -158,18 +163,16 @@ func playable_edges(id: int = -1) -> AxialEdgeSet:
 	my_corners = my_corners.difference(their_buildings)
 
 	var edges = my_corners.edge_map()
-	return edges.difference(self.get_roads())
+	return edges.intersect(edge_set).difference(self.get_roads())
 
 
 # return all corners that can accept a house
 # 1) does not have a house / city
 # 2) is not adjacent to a house / city
 # if an id is provided restrict the result to corners adjacent to an owned road
+# if an id is not provided roads are not taken into account
 func playable_corners(id: int = -1) -> AxialSet:
-	var corners := AxialSet.new()
-	for hex_data: HexData in self.all_hex_data():
-		if hex_data.terrain == Model.Terrain.WATER: continue
-		corners.add_all(hex_data.axial.corners())
+	var corners := self._valid_corners.duplicate()
 
 	var houses = self.get_all_buildings()
 	var neighbors := houses.map(Axial.neighbors_of)
@@ -189,23 +192,32 @@ func has_resources(id: int, wallet: Wallet) -> bool:
 
 ## Get the player that has a house or city on this corner axial
 ## If there is no owner, or the axial is not a corner, returns -1
-func get_owner(ax: Axial) -> int:
-	if self._cities.has(ax.key()):
-		return self._cities[ax.key()]
-	if self._houses.has(ax.key()):
-		return self._houses[ax.key()]
+func get_owner(ax: Variant) -> int:
+	
+	if ax is AxialEdge:
+		if self._roads.has(ax.key()):
+			return self._roads[ax.key()]
+	if ax is Axial:
+		if self._cities.has(ax.key()):
+			return self._cities[ax.key()]
+		if self._houses.has(ax.key()):
+			return self._houses[ax.key()]
 	return -1
 
 
 ## Get all roads owned by id, or all roads if id is not provided
-func get_roads(id: int = -1) -> AxialEdgeSet:
+## If an array is passed in get roads for all listed ids
+func get_roads(ids: Variant = -1) -> AxialEdgeSet:
+	if ids is int: return self.get_roads([ids])
+
 	var aset := AxialEdgeSet.new()
 
-	if id == -1:
-		for p in range(4):
-			aset.add_all(self.get_roads(p))
-	else:
-		aset.add_all(self._roads_mirror[id])
+	for id in ids:
+		if id == -1:
+			for p in range(4):
+				aset.add_all(self.get_roads(p))
+		else:
+			aset.add_all(self._roads_mirror[id])
 
 	return aset	
 
@@ -451,6 +463,21 @@ func build(names: Array[String]) -> void:
 	var hexes := self._place_tiles()
 	self._place_water(hexes)
 	self._place_ports()
+	self.build_derived_data()
+
+
+func build_derived_data():
+	self._valid_corners = AxialSet.new()
+	self._valid_edges = AxialEdgeSet.new()
+
+	for hex_data: HexData in self.all_hex_data():
+		if hex_data.terrain == Model.Terrain.WATER: continue
+		self._valid_corners.add_all(hex_data.axial.corners())	
+
+	for hex_data in self._hex_data.values():
+		if hex_data.terrain == Terrain.WATER: continue
+		self._valid_edges.add_all(hex_data.axial.edges())
+
 
 # populates (non-wate) hexes, corners, edges
 # populate hexdata with hex, terrain, resource
@@ -561,7 +588,7 @@ func resources_of(corner: Axial) -> Wallet:
 func _calc_longest_road() -> void:
 	# calculate all road lengths
 	for pid in range(Game.player_count):
-		var length := RoadCalculator.calculate_shortest_path(pid, self)
+		var length := LongestRoadCalculator.calculate_longest_road(pid, self)
 		self._player_records[pid].roads = length
 
 	# find longest >= 5, favouring current holder on tie

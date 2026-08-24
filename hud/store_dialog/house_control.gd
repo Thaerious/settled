@@ -35,5 +35,6 @@ func _on_hover_enter(rec: DragRecord) -> void:
 
 
 func _on_hover_exit(_rec: DragRecord) -> void:
+	if not self._last_target: return
 	self._last_target.clear_piece()
 	self._last_target = null

@@ -104,4 +104,5 @@ static func load(path: String) -> Model:
 			model._initial_houses[p].append(Axial.deserialize(j))
 		p += 1
 
+	model.build_derived_data()
 	return model		

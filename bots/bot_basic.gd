@@ -26,7 +26,7 @@ var port_w: Dictionary[Model.ResourceTypes, int] = {
 }
 
 # weight for numbers
-var number_w: Dictionary[int, float] = {
+var number_w: Dictionary[int, int] = {
 	2: 0,
 	3: 10,
 	4: 20,
@@ -39,10 +39,24 @@ var number_w: Dictionary[int, float] = {
 	12: 0
 }
 
+# weight for distance (number of roads to build)
+var distance_w: Dictionary[int, int] = {
+	0: 30,
+	1: 20,
+	2: 5,
+	3: 5,
+	4: 0
+}
+
+var path_builder: PathBuilder = null
 var port_w_delta: int = 10 # applied for each resource
 var resource_w_delta: int = 5
 var number_w_delta: int = 15
 
+
+func distance_weight(distance: int) -> int:
+	if distance_w.has(distance): return distance_w[distance]
+	return 0
 
 func _init(id: int) -> void:
 	self.id = id
@@ -77,20 +91,71 @@ func pre_process(game_model: Model) -> void:
 		if port == Model.ResourceTypes.NONE: continue			
 		self.port_w[port] = 0
 
+	# build path_builder
+	self.path_builder = PathBuilder.new().run(self._game_model, self.id)
+
 
 func process(game_model: Model) -> void:
 	self.pre_process(game_model)
 
-	assert(game_model.get_placement_phase() != Model.PlacementPhase.NONE)
+	if self._game_model.get_current_phase() == Model.GamePhase.SETUP:
+		self.phase_setup()
+	elif self._game_model.get_current_phase() == Model.GamePhase.MAIN:
+		self.phase_main()
 
-	if game_model.get_placement_phase() == Model.PlacementPhase.HOUSE1:
+
+func phase_setup() -> void:
+	if self._game_model.get_placement_phase() == Model.PlacementPhase.HOUSE1:
 		self.initial_house()
-	elif game_model.get_placement_phase() == Model.PlacementPhase.ROAD1:
+	elif self._game_model.get_placement_phase() == Model.PlacementPhase.ROAD1:
 		self.initial_road()
-	elif game_model.get_placement_phase() == Model.PlacementPhase.HOUSE2:
+	elif self._game_model.get_placement_phase() == Model.PlacementPhase.HOUSE2:
 		self.initial_house()
-	elif game_model.get_placement_phase() == Model.PlacementPhase.ROAD2:
+	elif self._game_model.get_placement_phase() == Model.PlacementPhase.ROAD2:
 		self.initial_road()
+
+
+func phase_main() -> void:		
+	var best_rank = 0
+	var best_axial = null
+
+	# Evaluate each valid corner that can accept a house
+	var corners := self._game_model.playable_corners()
+	for corner in corners:
+		var rank = self.rank_corner(corner)
+		var distance = self.path_builder.distances[corner.key()]
+		rank = rank + self.distance_weight(distance)
+
+		if rank > best_rank:
+			best_rank = rank
+			best_axial = corner
+
+	var best_distance = self.path_builder.distances[best_axial.key()]
+	print("Best Axial %s at distance %s" % [best_axial, best_distance])
+
+	if best_distance == 0:
+		self.try_buy_house(best_axial)
+	else:
+		var path = self.path_builder.paths[best_axial.key()]
+		self.try_buy_road(path[0])
+
+
+func try_buy_house(corner: Axial) -> bool:
+	var wallet := self._game_model.get_bank(self.id)
+	if wallet.has_resources(Model.COSTS["house"]):
+		EventBus.request_house.emit(self.id, corner)
+		return true
+	
+	return false
+
+
+func try_buy_road(edge: AxialEdge) -> bool:
+	var wallet := self._game_model.get_bank(self.id)
+	if wallet.has_resources(Model.COSTS["road"]):
+		EventBus.request_road.emit(self.id, edge)
+		return true
+	
+	return false
 
 
 func initial_road() -> void:
@@ -104,8 +169,8 @@ func initial_house() -> void:
 	var best_axial = null
 
 	# check each empty corner and rank them
-	for corner:Axial in self.buildable_corners():
-		var rank = self.rank_initial(corner)
+	for corner:Axial in self._game_model.playable_corners():
+		var rank = self.rank_corner(corner)
 		if rank > best_rank:
 			best_rank = rank
 			best_axial = corner
@@ -114,7 +179,7 @@ func initial_house() -> void:
 	EventBus.request_house.emit(self.id, best_axial)
 
 
-func rank_initial(corner: Axial) -> int:
+func rank_corner(corner: Axial) -> int:
 	var port = self._game_model.get_port(corner)
 	var rank = self.port_w[port]
 
@@ -137,15 +202,35 @@ func rank_initial(corner: Axial) -> int:
 	return rank
 
 
-func buildable_corners() -> AxialSet:
-	var buildable_corners := AxialSet.new()
+func build_end_points() -> Array[Axial]:
+	var edges = self._game_model.get_roads(self.id)
 
-	for hex_data: HexData in self._game_model.all_hex_data():
-		if hex_data.terrain == Model.Terrain.WATER: continue
-		buildable_corners.add_all(hex_data.axial.corners())
-
-	var houses = self._game_model.get_all_buildings()
-	var neighbors := houses.map(Axial.neighbors_of)
-	houses = houses.add_all(neighbors)
-	return buildable_corners.difference(houses)
+	for pid in range(0, Game.player_count):
+		if pid == self.id: continue
+		var houses = Game.model.get_all_buildings(pid)
+		edges = edges.difference(houses.edge_map())
 	
+	return edges.corner_map().to_array()
+
+
+# only follow edges that are empty
+# don't have an opposing building on either corner
+func build_adj_table() -> Dictionary[String, AxialSet]:
+	var adj:Dictionary[String, AxialSet] = {}
+
+	for edge in self.followable_edges():
+		adj[edge.ax1.key()].add_item(edge.ax2)
+		adj[edge.ax2.key()].add_item(edge.ax1)
+
+	return adj
+
+
+func followable_edges() -> AxialEdgeSet:
+	var edges = Game.model.playable_edges()
+
+	for pid in range(0, Game.player_count):
+		if pid == self.id: continue
+		var houses = Game.model.get_all_buildings(pid)
+		edges = edges.difference(houses.edge_map())	
+
+	return edges
