@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=18 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="1_ku83o"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="2_cm2m7"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dmd0ltmlfo4vg" path="res://hud/steal_dialog/steal_dialog.tscn" id="6_6phfd"]
 [ext_resource type="PackedScene" uid="uid://c8hobn7iwbkp4" path="res://hud/store_dialog/store_dialog.tscn" id="7_vqg55"]
 [ext_resource type="PackedScene" uid="uid://creskaqj2salj" path="res://hud/free_road_dialog/free_road_dialog.tscn" id="8_7yxj4"]
+[ext_resource type="Script" uid="uid://lt4niljffwm2" path="res://hud/store_dialog/store_dialog.gd" id="8_cm2m7"]
 [ext_resource type="PackedScene" uid="uid://cbl0eprhn3k2g" path="res://hud/discard_dialog/discard_dialog.tscn" id="9_25jd7"]
 [ext_resource type="PackedScene" uid="uid://b7hxt3o0jdil" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="10_dlyeo"]
 [ext_resource type="PackedScene" uid="uid://dqr0hpeu73nhq" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.tscn" id="11_mg75d"]
@@ -106,6 +107,7 @@ offset_left = 1529.0
 offset_top = 722.0
 offset_right = 1919.0
 offset_bottom = 1080.0
+script = ExtResource("8_cm2m7")
 
 [node name="FreeRoadDialog" parent="CanvasLayer" instance=ExtResource("8_7yxj4")]
 offset_left = 793.0

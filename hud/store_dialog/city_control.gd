@@ -1,4 +1,5 @@
 @tool
+class_name CityControl
 extends DraggableSpriteControl
 
 var _last_target: CornerTarget = null

@@ -1,4 +1,5 @@
 @tool
+class_name HouseControl
 extends DraggableSpriteControl
 
 var _last_target: CornerTarget = null
@@ -11,6 +12,11 @@ func _ready() -> void:
 	self.drag_node.drag_end.connect(self._on_drag_end)
 	self.drag_node.hover_enter.connect(self._on_hover_enter)
 	self.drag_node.hover_exit.connect(self._on_hover_exit)
+
+
+func _disable() -> void:
+	if self.name == "HouseControl": print("house_control._disable() (%s)" % [self.name])
+	super._disable()
 
 
 func _on_drag_start() -> void:

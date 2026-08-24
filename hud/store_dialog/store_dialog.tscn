@@ -1,7 +1,6 @@
-[gd_scene load_steps=26 format=3 uid="uid://c8hobn7iwbkp4"]
+[gd_scene load_steps=25 format=3 uid="uid://c8hobn7iwbkp4"]
 
 [ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_7tufi"]
-[ext_resource type="Script" uid="uid://nowtrfpgd5pc" path="res://hud/components/dialog_control.gd" id="2_bfmbl"]
 [ext_resource type="PackedScene" uid="uid://t3lbmsckccj2" path="res://hud/components/dialog_sprite_control.tscn" id="2_la76g"]
 [ext_resource type="PackedScene" uid="uid://bf7wdu50td2ej" path="res://hud/components/draggable_sprite_control.tscn" id="2_ygfqv"]
 [ext_resource type="Texture2D" uid="uid://yhi3vc1getyk" path="res://assets/store/house.png" id="3_0blrl"]
@@ -35,12 +34,11 @@ theme_type_variation = &"BorderMargin"
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" index="0"]
 layout_mode = 2
 
-[node name="RoadControl" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" index="0"]
+[node name="HouseControlContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("2_bfmbl")
 
-[node name="StyleHelper" type="Node" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControl" index="0"]
+[node name="StyleHelper" type="Node" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer" index="0"]
 unique_name_in_owner = true
 script = ExtResource("3_s6gul")
 style_map = Dictionary[String, Theme]({
@@ -51,21 +49,23 @@ style_map = Dictionary[String, Theme]({
 "selected_hover": ExtResource("8_k35cd")
 })
 
-[node name="DraggableSpriteControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControl" index="1" instance=ExtResource("2_ygfqv")]
+[node name="HouseControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer" index="1" instance=ExtResource("2_ygfqv")]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("10_a07sl")
 drop_layer = 1
 sprite_texture = ExtResource("3_0blrl")
 display_texture = ExtResource("3_0blrl")
 
-[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControl" index="2" instance=ExtResource("3_ygfqv")]
+[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer" index="2" instance=ExtResource("3_ygfqv")]
 layout_mode = 2
 size_flags_horizontal = 3
+hoverable = false
 
-[node name="BoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
+[node name="BoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
 alignment = 2
 
-[node name="ItemTexture" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+[node name="ItemTexture" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -75,7 +75,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
+[node name="ItemTexture2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -85,12 +85,11 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="HouseControl" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" index="1"]
+[node name="RoadControlContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("2_bfmbl")
 
-[node name="StyleHelper" type="Node" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl" index="0"]
+[node name="StyleHelper" type="Node" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer" index="0"]
 script = ExtResource("3_s6gul")
 style_map = Dictionary[String, Theme]({
 "default": ExtResource("4_yrqh4"),
@@ -100,21 +99,23 @@ style_map = Dictionary[String, Theme]({
 "selected_hover": ExtResource("8_k35cd")
 })
 
-[node name="DraggableSpriteControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl" index="1" instance=ExtResource("2_ygfqv")]
+[node name="RoadControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer" index="1" instance=ExtResource("2_ygfqv")]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("15_s6gul")
 drop_layer = 1
 sprite_texture = ExtResource("8_5bo68")
 display_texture = ExtResource("6_d7flh")
 
-[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl" index="2" instance=ExtResource("3_ygfqv")]
+[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer" index="2" instance=ExtResource("3_ygfqv")]
 layout_mode = 2
 size_flags_horizontal = 3
+hoverable = false
 
-[node name="BoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
+[node name="BoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
 alignment = 2
 
-[node name="ItemTexture" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+[node name="ItemTexture" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -124,7 +125,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
+[node name="ItemTexture2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -134,7 +135,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture3" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="2"]
+[node name="ItemTexture3" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="2"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -144,7 +145,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture4" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="3"]
+[node name="ItemTexture4" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="3"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -154,12 +155,11 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="CityControl" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" index="2"]
+[node name="CityControlContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("2_bfmbl")
 
-[node name="StyleHelper" type="Node" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl" index="0"]
+[node name="StyleHelper" type="Node" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer" index="0"]
 script = ExtResource("3_s6gul")
 style_map = Dictionary[String, Theme]({
 "default": ExtResource("4_yrqh4"),
@@ -169,21 +169,23 @@ style_map = Dictionary[String, Theme]({
 "selected_hover": ExtResource("8_k35cd")
 })
 
-[node name="DraggableSpriteControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl" index="1" instance=ExtResource("2_ygfqv")]
+[node name="CityControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer" index="1" instance=ExtResource("2_ygfqv")]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("20_s6gul")
 drop_layer = 1
 sprite_texture = ExtResource("4_dtuxt")
 display_texture = ExtResource("4_dtuxt")
 
-[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl" index="2" instance=ExtResource("3_ygfqv")]
+[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer" index="2" instance=ExtResource("3_ygfqv")]
 layout_mode = 2
 size_flags_horizontal = 3
+hoverable = false
 
-[node name="BoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
+[node name="BoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
 alignment = 2
 
-[node name="ItemTexture" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+[node name="ItemTexture" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -193,7 +195,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
+[node name="ItemTexture2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -203,7 +205,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture3" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="2"]
+[node name="ItemTexture3" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="2"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -213,7 +215,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture4" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="3"]
+[node name="ItemTexture4" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="3"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -223,7 +225,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture5" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="4"]
+[node name="ItemTexture5" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="4"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -233,12 +235,11 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="CardControl" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" index="3"]
+[node name="CardControlContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" index="3"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("2_bfmbl")
 
-[node name="StyleHelper" type="Node" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControl" index="0"]
+[node name="StyleHelper" type="Node" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer" index="0"]
 script = ExtResource("3_s6gul")
 style_map = Dictionary[String, Theme]({
 "default": ExtResource("4_yrqh4"),
@@ -248,20 +249,22 @@ style_map = Dictionary[String, Theme]({
 "selected_hover": ExtResource("8_k35cd")
 })
 
-[node name="DialogSpriteControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControl" index="1" instance=ExtResource("2_la76g")]
+[node name="CardControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer" index="1" instance=ExtResource("2_la76g")]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("24_s6gul")
 display_texture = ExtResource("5_64xnv")
 behaviour = 1
 
-[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControl" index="2" instance=ExtResource("3_ygfqv")]
+[node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer" index="2" instance=ExtResource("3_ygfqv")]
 layout_mode = 2
 size_flags_horizontal = 3
+hoverable = false
 
-[node name="BoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
+[node name="BoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
 alignment = 2
 
-[node name="ItemTexture" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+[node name="ItemTexture" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -271,7 +274,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
+[node name="ItemTexture2" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="1"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -281,7 +284,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemTexture3" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControl/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="2"]
+[node name="ItemTexture3" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/DialogControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="2"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -291,7 +294,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControl/DialogControl"]
-[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControl/DialogControl"]
-[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControl/DialogControl"]
-[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControl/DialogControl"]
+[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/DialogControl"]
+[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/DialogControl"]
+[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/DialogControl"]
+[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/DialogControl"]
