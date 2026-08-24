@@ -129,7 +129,6 @@ func phase_main() -> void:
 			best_axial = corner
 
 	var best_distance = self.path_builder.distances[best_axial.key()]
-	print("Best Axial %s at distance %s" % [best_axial, best_distance])
 
 	if best_distance == 0:
 		self.try_buy_house(best_axial)

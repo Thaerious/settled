@@ -12,11 +12,6 @@ func _ready() -> void:
 	self.drag_node.hover_enter.connect(self._on_hover_enter)
 	self.drag_node.hover_exit.connect(self._on_hover_exit)
 
-func _disable() -> void:
-	super._disable()
-	print("%s disabled" % self.name)	
-	print("%s" % self.disabled)
-
 
 func _on_drag_start() -> void:
 	EventBus.show_road_targets.emit()	

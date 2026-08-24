@@ -26,8 +26,7 @@ signal on_unselected()
 	get: 
 		return disabled
 	set(v): 
-		# if disabled == v: return
-		if self.name == "HouseControl": print("dialog_control._disabled = %s (%s)" % [v, self.name])
+		if disabled == v: return
 		disabled = v
 		if not is_node_ready(): return
 		if v: self._disable()
@@ -95,7 +94,6 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 func _on_mouse_entered() -> void:
-	print("%s On Mouse Entered %s" % [self, self.hoverable])	
 	if not self.hoverable: return
 	self._hover = true
 	self._update_style()
@@ -111,7 +109,6 @@ func _update_style() -> void:
 	var highlight_bg = self.selected or self._pressed
 
 	if self.disabled: 
-		if self.name == "HouseControl": print("dialog_control._update_style() (%s)" % self.name)
 		self.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		%StyleHelper.style = "disabled"
 	elif self._hover and highlight_bg:
@@ -133,7 +130,6 @@ func _enable() -> void:
 
 
 func _disable() -> void:
-	if self.name == "HouseControl": print("dialog_control._disable() (%s)" % self.name)
 	self._update_style()
 
 

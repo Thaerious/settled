@@ -171,7 +171,7 @@ func update_view(views: Dictionary, format: String = "%s", field: String = "text
 
 
 func _to_string() -> String:
-	return "Wallet[Bk:%s Wd:%s Rk:%s Wt:%s Wl:%s]" % [
+	return "[Bk:%s Wd:%s Rk:%s Wt:%s Wl:%s]" % [
 		self._data[Model.ResourceTypes.BRICK],
 		self._data[Model.ResourceTypes.WOOD],
 		self._data[Model.ResourceTypes.ROCK],

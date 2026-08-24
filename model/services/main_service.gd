@@ -185,6 +185,7 @@ func _on_request_roll() -> void:
 		self._scan_cities(id, d1 + d2, resources)
 		Game.model.do_add_resources(id, resources)
 
+	Game.model.do_update_phase(GamePhase.MAIN)
 
 func _scan_houses(id:int, number:int, resources: Wallet):
 	var houses := Game.model.get_houses(id)

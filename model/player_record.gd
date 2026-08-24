@@ -68,7 +68,7 @@ static func deserialize(id: int, data: Dictionary) -> PlayerRecord:
 
 
 func _to_string() -> String:
-	return "PlayerRecord[id:%s name:%s vp:%s res:%s cards:%s roads:%s soldiers:%s]" % [
+	return "[id:%s name:%s vp:%s res:%s crds:%s rds:%s sol:%s]" % [
 		self.id, self.name, self._victory_points, self._resources,
 		self._action_cards, self._roads, self._soldiers
 	]

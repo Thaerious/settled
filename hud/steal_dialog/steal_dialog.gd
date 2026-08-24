@@ -6,8 +6,6 @@ func _ready() -> void:
 	EventBus.model_loaded.connect(self._on_visibility_changed)
 	visibility_changed.connect(_on_visibility_changed)
 
-	print(%PlayerGroup)
-
 	for p in Game.model.player_count():
 		var node = %PlayerGroup.get_child(p)
 		node.on_clicked.connect(

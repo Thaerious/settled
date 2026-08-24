@@ -7,5 +7,4 @@ func _ready() -> void:
 
 
 func _on_clicked() -> void:
-	print("on clicked card control")
 	EventBus.request_purchase_action_card.emit()

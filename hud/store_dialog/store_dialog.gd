@@ -3,7 +3,6 @@ extends DialogContainer
 
 func _ready() -> void:
 	super._ready()
-	print("%s._ready()" % self.name)
 	EventBus.current_phase_updated.connect(func(_1): self._on_update())
 	EventBus.current_player_updated.connect(func(_1): self._on_update())
 	EventBus.model_loaded.connect(func(): self._on_update())
@@ -11,7 +10,6 @@ func _ready() -> void:
 
 
 func _disable_all() -> void:
-	print("%s _disable_all" % self.name)
 	%RoadControl.disabled = true
 	%HouseControl.disabled = true
 	%CityControl.disabled = true
@@ -19,7 +17,6 @@ func _disable_all() -> void:
 
 
 func _on_update() -> void:
-	print("%s _on_update" % self.name)
 	self._disable_all()
 	if Game.model.get_current_phase() != Model.GamePhase.MAIN: return
 	if Game.model.get_current_player() != Game.self_id: return

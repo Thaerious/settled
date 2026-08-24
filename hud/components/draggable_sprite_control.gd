@@ -44,6 +44,5 @@ func _enable() -> void:
 
 
 func _disable() -> void:	
-	if self.name == "HouseControl": print("draggable_dialog_control._disable() (%s)" % [self.name])
 	super._disable()
 	%DragNodeUI.disabled = true

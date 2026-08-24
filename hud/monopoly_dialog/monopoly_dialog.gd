@@ -13,7 +13,6 @@ const BUTTON_TO_RESOURCE = {
 
 
 func _ready() -> void:
-	print("MonopolyDialog Ready %s" % self.dialog_identifier)
 	super._ready()
 	%SelectableHBox.on_selection_changed.connect(self._hnd_selection_changed)
 	%ButtonAccept.pressed.connect(self._accept)
@@ -31,7 +30,7 @@ func _hnd_visible_phase(phase: Model.GamePhase) -> void:
 
 
 func _accept() -> void:
-	var idx = %SelectableHBox.current_selected_index
+	var idx = %SelectableHBox.current_selection_index
 	if idx == -1: return
 	var resource = BUTTON_TO_RESOURCE[idx]
 	EventBus.play_monopoly_card.emit(Game.self_id, resource)
