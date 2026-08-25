@@ -1,7 +1,6 @@
 class_name DialogFrame
 extends DialogContainer
 
-static var base_z_index = 1000
 static var z_index_dictionary = {}
 
 
@@ -42,10 +41,12 @@ func _do_start_drag() -> void:
 	for item in DialogFrame.z_index_dictionary.keys():
 		item.z_index -= 1
 
-	self.z_index = 1000
-	self.move_to_front()
-
+	self.float_to_top()
 	DialogFrame.z_index_dictionary[self] = self
+
+
+func float_to_top() -> void:
+	self.move_to_front()
 
 
 func _do_stop_drag() -> void:

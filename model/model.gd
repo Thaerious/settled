@@ -60,8 +60,7 @@ enum GamePhase {
 	NOT_STARTED,
 	SETUP,
 	MOVE_PIRATE,
-	INIT_DISCARD,
-	DURING_DISCARD,
+	DISCARD,
 	STEAL_RESOURCES,
 	MAIN,
 	YEAR_OF_PLENTY,
@@ -106,7 +105,6 @@ var _bank: Dictionary[int, Wallet] = {}                  # map of player id -> o
 var _exchange_rate: Dictionary[int, Wallet] = {}         # map of player id -> exchange rate
 var _owned_cards: Dictionary[int, ActionCardWallet] = {}    # map of player id -> all actions cards
 var _playable_cards: Dictionary[int, ActionCardWallet] = {} # map of player id -> actions cards that can be played this turn
-var _discard_target: Dictionary[int, int]           # player_id -> count of cards that this player must discard
 var _houses: Dictionary[String, int] = {}             # map of house axial -> player who owns it
 var _cities: Dictionary[String, int] = {}             # map of city axial -> player who owns it
 var _roads: Dictionary[String, int] = {}              # map of road axial -> player who owns it
@@ -128,7 +126,6 @@ func get_bank(id: int) -> Wallet:           return self._bank[id].duplicate()
 func get_owned_action_cards(id: int) -> ActionCardWallet: return self._owned_cards[id]
 func get_playable_action_cards(id: int) -> ActionCardWallet: return self._playable_cards[id]
 func count_resources(id: int) -> int:       return self._bank[id].size()
-func get_discard_target(id: int) -> int:    return self._discard_target[id]
 func get_longest_road() -> int:             return self._longest_road 
 func get_largest_army() -> int:             return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
@@ -424,22 +421,12 @@ func do_add_soldier(id: int) -> void:
 	EventBus.update_largest_army.emit(id)
 
 
-func do_discard(id: int, wallet: Wallet) -> void:
-	self.do_remove_resources(id, wallet)
-	self._discard_target[id] = INT_MAX
-
-
 func reset_road_building() -> void:
 	self._road_building = 2
 
 
 func decrement_road_building() -> void:
 	self._road_building = self._road_building - 1
-
-
-# players need to discard to this amount
-func set_discard_target(id: int, value: int) -> void:	
-	self._discard_target[id] = value
 
 
 func _init() -> void:
@@ -452,7 +439,6 @@ func _init() -> void:
 		self._cities_mirror[id] = AxialSet.new()
 		self._roads_mirror[id] = AxialEdgeSet.new()	
 		self._player_records[id] = PlayerRecord.new(id)
-		self._discard_target[id] = INT_MAX	
 		self._initial_houses[id] = []
 
 

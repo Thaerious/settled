@@ -15,7 +15,7 @@ func _hnd_visible_phase(phase: Model.GamePhase) -> void:
 	elif visible_phase == Model.GamePhase.ALL:
 		self.visible = true
 	elif visible_phase == Model.GamePhase.NONE:
-		self.visible = false
+		pass
 	elif phase == self.visible_phase: 
 		self.visible = true
 	else: 

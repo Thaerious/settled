@@ -185,7 +185,7 @@ layout_mode = 2
 text = "Pre Roll
 "
 script = ExtResource("1_gdvxq")
-phase = 14
+phase = 13
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMovePirate" type="Button" parent="HBoxContainer/PhaseButtons"]
@@ -197,22 +197,13 @@ script = ExtResource("1_gdvxq")
 phase = 2
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[node name="ButtonDiscard" type="Button" parent="HBoxContainer/PhaseButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Init Discard
-"
-script = ExtResource("1_gdvxq")
-phase = 3
-metadata/_custom_type_script = "uid://bsec75ti05trd"
-
 [node name="ButtonDiscard2" type="Button" parent="HBoxContainer/PhaseButtons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "During Discard
+text = "Discard
 "
 script = ExtResource("1_gdvxq")
-phase = 4
+phase = 3
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonSteal" type="Button" parent="HBoxContainer/PhaseButtons"]
@@ -221,7 +212,7 @@ layout_mode = 2
 text = "Steal Resources
 "
 script = ExtResource("1_gdvxq")
-phase = 5
+phase = 4
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMain" type="Button" parent="HBoxContainer/PhaseButtons"]
@@ -230,7 +221,7 @@ layout_mode = 2
 text = "Main
 "
 script = ExtResource("1_gdvxq")
-phase = 6
+phase = 5
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonPlenty" type="Button" parent="HBoxContainer/PhaseButtons"]
@@ -239,7 +230,7 @@ layout_mode = 2
 text = "Plenty
 "
 script = ExtResource("1_gdvxq")
-phase = 7
+phase = 6
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonMonopoly" type="Button" parent="HBoxContainer/PhaseButtons"]
@@ -248,7 +239,7 @@ layout_mode = 2
 text = "Monopoly
 "
 script = ExtResource("1_gdvxq")
-phase = 8
+phase = 7
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonRoadBuilding" type="Button" parent="HBoxContainer/PhaseButtons"]
@@ -257,7 +248,7 @@ layout_mode = 2
 text = "Road Building
 "
 script = ExtResource("1_gdvxq")
-phase = 9
+phase = 8
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonSoldier" type="Button" parent="HBoxContainer/PhaseButtons"]
@@ -266,7 +257,7 @@ layout_mode = 2
 text = "Soldier
 "
 script = ExtResource("1_gdvxq")
-phase = 10
+phase = 9
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [node name="ButtonGameOver" type="Button" parent="HBoxContainer/PhaseButtons"]
@@ -275,7 +266,7 @@ layout_mode = 2
 text = "Game Over
 "
 script = ExtResource("1_gdvxq")
-phase = 11
+phase = 10
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonBot" to="." method="_on_bot_button_pressed"]

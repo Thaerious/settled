@@ -24,6 +24,7 @@ func _ready() -> void:
 	EventBus.play_monopoly_card.connect(func(id: int, resource: Model.ResourceTypes): print("EventBus.play_monopoly_card | id: %s | resource: %s" % [id, Model.ResourceTypes.find_key(resource)]))
 	EventBus.play_plenty_card.connect(func(id: int, resources: Wallet): print("EventBus.play_plenty_card | id: %s | resources: %s" % [id, resources]))
 	EventBus.play_road_building_card.connect(func(id: int, roads: AxialEdgeSet): print("EventBus._play_road_building_card | id: %s | roads: %s" % [id, roads]))
+	EventBus.notify.connect(func(id: int, msg: String): print("EventBus.notify | id: %s | msg: %s" % [id, msg]))
 
 	EventBus.update_longest_road.connect(func(id: int): print("EventBus.update_longest_road | id: %s" % [id]))
 	EventBus.update_largest_army.connect(func(id: int): print("EventBus.update_largest_army | id: %s" % [id]))

@@ -3,6 +3,7 @@ class_name DiscardDialog
 extends DialogContainer
 
 var _wallet = Wallet.new()
+var _target = 0
 
 func _ready() -> void:
 	EventBus.current_phase_updated.connect(self._update_phase)
@@ -13,14 +14,19 @@ func _ready() -> void:
 
 
 func _update_phase(phase: Model.GamePhase) -> void:
-	var target = Game.model.get_discard_target(Game.self_id)
+	var bank = Game.model.get_bank(Game.self_id)
+	self._target = bank.size() / 2
 
-	if phase != Model.GamePhase.DURING_DISCARD or target < 0: 
-		self.visible = false	
+	if phase != Model.GamePhase.DISCARD:
+		self.visible = false
+		return
+	elif bank.size() < 8: 
+		self.visible = false
+		EventBus.notify.emit(Game.self_id, "Waiting for players to discard")
 		return
 	else: 
 		self.visible = true
-		%Title.text = "Discard to %s" % target	
+		%Title.text = "Discard to %s" % self._target
 		%ButtonAccept.disabled = true	
 
 	self._wallet.set_all(0)
@@ -29,22 +35,19 @@ func _update_phase(phase: Model.GamePhase) -> void:
 	for child in %ControlGroup.get_children():
 		child.reset()
 		var allow_up = resources.get_resource(child.resource)
-		child.set_state(allow_up, false)
-		
+		child.set_state(allow_up, false)		
 
 
 func count_changed(resource: Model.ResourceTypes, count: int):
-	var target = Game.model.get_discard_target(Game.self_id)
 	var resources = Game.model.get_bank(Game.self_id)	
 	self._wallet.set_resource(resource, count)
 	
-	if self._wallet.size() == target:		
+	if self._wallet.size() == self._target:		
 		for child in %ControlGroup.get_children():
 			count = self._wallet.get_resource(child.resource)
 			child.set_state(false, count > 0)
 			%ButtonAccept.disabled = false
-
-	if self._wallet.size() != target:		
+	else:
 		for child in %ControlGroup.get_children():
 			count = self._wallet.get_resource(child.resource)
 			var allow_up = resources.get_resource(child.resource) > count

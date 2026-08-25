@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0ofnqau5wxby"]
+
+[ext_resource type="PackedScene" uid="uid://d00jr2m8bmn28" path="res://hud/components/dialog_pane.tscn" id="1_hkstf"]
+[ext_resource type="Script" uid="uid://d0dhjsj4seroc" path="res://hud/ok_dialog/ok_dialog.gd" id="2_v426e"]
+
+[node name="OkDialog" instance=ExtResource("1_hkstf")]
+script = ExtResource("2_v426e")
+visible_phase = 12
+
+[node name="Title" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
+text = "Info"
+
+[node name="ContentLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "No Text"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonAccept" parent="MarginContainer/PanelContainer/HBoxContainer" index="2"]
+text = "Ok
+"

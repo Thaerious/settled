@@ -112,6 +112,7 @@ func _request_set_pirate(_id: int, hex: Axial):
 		Game.model.do_update_phase(GamePhase.STEAL_RESOURCES)
 		return
 
+	EventBus.notify.emit(Game.model.get_current_player(), "No players to steal from")
 	Game.model.do_update_phase(GamePhase.MAIN)
 
 
@@ -176,7 +177,10 @@ func _on_request_roll() -> void:
 
 	Game.model.do_set_dice(d1, d2)
 	if d1 + d2 == 7:
-		Game.model.do_update_phase(GamePhase.INIT_DISCARD)
+		if DiscardService.is_pending():
+			Game.model.do_update_phase(Model.GamePhase.DISCARD)
+		else:
+			Game.model.do_update_phase(Model.GamePhase.MOVE_PIRATE)		
 		return
 
 	for id in range(Game.player_count):	

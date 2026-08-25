@@ -5,6 +5,7 @@
 [node name="MainScreen" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
 
 [node name="DialogContainer" parent="CanvasLayer" instance=ExtResource("1_mrqkd")]
 anchors_preset = 8

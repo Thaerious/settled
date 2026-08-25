@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=19 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="1_ku83o"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="2_cm2m7"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b7hxt3o0jdil" path="res://hud/monopoly_dialog/monopoly_dialog.tscn" id="10_dlyeo"]
 [ext_resource type="PackedScene" uid="uid://dqr0hpeu73nhq" path="res://hud/year_of_plenty_dialog/year_of_plenty_dialog.tscn" id="11_mg75d"]
 [ext_resource type="Script" uid="uid://mmlwirenidxj" path="res://game_board/game_board.gd" id="12_d32la"]
+[ext_resource type="PackedScene" uid="uid://b0ofnqau5wxby" path="res://hud/ok_dialog/ok_dialog.tscn" id="13_854lc"]
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/board/hex_atlas.png" id="13_hco4n"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://standalone/camera_2d.gd" id="14_0bc1i"]
 
@@ -101,6 +102,7 @@ offset_left = 1232.0
 offset_top = 292.0
 offset_right = 1628.0
 offset_bottom = 633.0
+visible_phase = 4
 
 [node name="StoreDialog" parent="CanvasLayer" instance=ExtResource("7_vqg55")]
 offset_left = 1529.0
@@ -110,29 +112,40 @@ offset_bottom = 1080.0
 script = ExtResource("8_cm2m7")
 
 [node name="FreeRoadDialog" parent="CanvasLayer" instance=ExtResource("8_7yxj4")]
-offset_left = 793.0
-offset_top = 382.0
-offset_right = 1189.0
-offset_bottom = 607.0
+offset_left = 691.0
+offset_top = 87.0
+offset_right = 1087.0
+offset_bottom = 312.0
+visible_phase = 8
 
 [node name="DiscardDialog" parent="CanvasLayer" instance=ExtResource("9_25jd7")]
-offset_left = 755.0
-offset_top = 705.0
-offset_right = 1217.0
-offset_bottom = 1075.0
+offset_left = 1206.0
+offset_top = 538.0
+offset_right = 1668.0
+offset_bottom = 908.0
 
 [node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("10_dlyeo")]
-offset_left = 727.0
-offset_top = 744.0
-offset_right = 1234.0
-offset_bottom = 1039.0
+offset_left = 635.0
+offset_top = 357.0
+offset_right = 1142.0
+offset_bottom = 652.0
+visible_phase = 7
 
 [node name="YearOfPlentyDialog" parent="CanvasLayer" instance=ExtResource("11_mg75d")]
-offset_left = 757.0
-offset_top = 311.0
-offset_right = 1199.0
-offset_bottom = 637.0
+offset_left = 663.0
+offset_top = 335.0
+offset_right = 1105.0
+offset_bottom = 661.0
 dialog_identifier = "YearOfPlentyDialog"
+visible_phase = 7
+
+[node name="OkDialog" parent="CanvasLayer" instance=ExtResource("13_854lc")]
+visible = false
+offset_left = 781.0
+offset_top = 49.0
+offset_right = 1177.0
+offset_bottom = 274.0
+visible_phase = 13
 
 [node name="GameBoard" type="Node2D" parent="."]
 unique_name_in_owner = true
