@@ -12,11 +12,14 @@ func request_steal_from(id: int) -> void:
 	var i = randi_range(0, count - 1)
 	var sum = 0
 
-	for r in Model.ResourceTypes.values():
-		sum = sum + bank.get_resource(r)
-		if sum > i:
-			Game.model.do_remove_resources(id, Wallet.new([r]))
-			Game.model.do_add_resources(Game.self_id, Wallet.new([r]))
-			break
+	print("Request Steal From %s | bank: %s | size: %s" % [id, bank, bank.size()]);
+
+	if bank.size() > 0:
+		for r in Model.ResourceTypes.values():
+			sum = sum + bank.get_resource(r)
+			if sum > i:
+				Game.model.do_remove_resources(id, Wallet.new([r]))
+				Game.model.do_add_resources(Game.self_id, Wallet.new([r]))
+				break
 
 	Game.model.do_update_phase(Model.GamePhase.MAIN)

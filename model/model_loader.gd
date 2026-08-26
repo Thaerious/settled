@@ -21,6 +21,7 @@ static func save(model: Model, path: String) -> void:
 		"roads":                 model._roads,
 		"ports":                 model._ports,
 		"initial_houses":        serialize_initial_houses(model._initial_houses),
+		"discard_targets":       model._discard_targets
 	}
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data, "\t"))
@@ -55,7 +56,10 @@ static func load(path: String) -> Model:
 	model._game_phase      = int(data["game_phase"]) as Model.GamePhase
 	model._largest_army    = int(data["largest_army"])	
 	model._longest_road    = int(data["longest_road"])
-	model._pirate          = Axial.from_key(data["pirate"])	
+	model._pirate          = Axial.from_key(data["pirate"])
+
+	var targets: Array = data["discard_targets"]
+	model._discard_targets = Array(targets, TYPE_INT, "", null)
 
 	for k in data["player_records"]:
 		model._player_records[int(k)] = PlayerRecord.deserialize(int(k), data["player_records"][k])		

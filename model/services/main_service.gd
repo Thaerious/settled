@@ -171,12 +171,15 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 	Game.model.do_add_resources(id, Wallet.new([to]))
 
 # called by the game in production
-func _on_request_roll() -> void:
-	var d1: int = randi_range(1, 6)
-	var d2: int = randi_range(1, 6)
+func _on_request_roll(d1: int = 0, d2: int = 0) -> void:
+	if d1 == 0: d1 = randi_range(1, 6)
+	if d2 == 0: d2 = randi_range(1, 6)
 
 	Game.model.do_set_dice(d1, d2)
+
 	if d1 + d2 == 7:
+		Game.model.update_discard_targets()
+
 		if DiscardService.is_pending():
 			Game.model.do_update_phase(Model.GamePhase.DISCARD)
 		else:

@@ -112,7 +112,9 @@ var _ports: Dictionary[String, ResourceTypes] = {}    # map of port axial -> res
 var _road_building: int = 2                           # during road building phase, number of roads left to build
 var _initial_houses: Dictionary[int, Array]           # initial house placements for each player
 var _dice: Array[int] = [1, 1]                        # this is used for dev & debug - is not saved
-
+var _discard_targets: Array[int] = []                 # during discard players discard to this amount
+var _valid_corners: AxialSet = null                   # set once, corners that can be played on
+var _valid_edges: AxialEdgeSet = null                 # set once, edges that can be played on
 
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
@@ -132,10 +134,7 @@ func get_player_record(id: int) -> PlayerRecord: return self._player_records[id]
 func player_count() -> int:                 return self._player_records.size() # todo move all player counts to this
 func free_road_count() -> int:              return self._road_building
 func get_initial_houses(id: int) -> Array:  return self._initial_houses[id].duplicate()
-
-var _valid_corners: AxialSet = null
-var _valid_edges: AxialEdgeSet = null
-
+func get_discard_target(id: int) -> int:    return self._discard_targets[id]
 func valid_corners() -> AxialSet: return self._valid_corners.duplicate()
 func valid_edges() -> AxialEdgeSet: return self._valid_edges.duplicate()
 
@@ -354,6 +353,11 @@ func do_remove_resources(id: int, resources:Wallet) -> void:
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 
+func do_discard(id: int, resources:Wallet) -> void:
+	self.do_remove_resources(id, resources)
+	self._discard_targets[id] = self._discard_targets[id] - resources.size()
+
+
 func do_add_action_card(id: int, card: ActionCardTypes) -> void:
 	self._owned_cards[id].add_card(card)
 	var owned := self._owned_cards[id].duplicate()
@@ -374,11 +378,18 @@ func do_remove_action_card(id: int, card) -> void:
 	EventBus.action_cards_updated.emit(id, owned, playable)	
 
 
+func update_discard_targets() -> void:
+	for pid in self.player_count():
+		self._discard_targets[pid] = 0
+		if self._bank[pid].size() <= 7: continue
+		self._discard_targets[pid] = self._bank[pid].size() / 2
+
+
 func do_update_phase(phase: GamePhase) -> void:
 	self._game_phase = phase
 
 	if phase == Model.GamePhase.ROAD_BUILDING:
-		self._road_building = 2
+		self._road_building = 2	
 
 	for pid in self.player_count():
 		self._playable_cards[pid].copy_from(self._owned_cards[pid])
@@ -433,7 +444,7 @@ func decrement_road_building() -> void:
 
 
 func _init() -> void:
-	for id in range(Game.player_count):
+	for id in Game.player_count:
 		self._bank[id] = Wallet.new()
 		self._exchange_rate[id] = Wallet.new(4)
 		self._owned_cards[id] = ActionCardWallet.new()
@@ -443,6 +454,9 @@ func _init() -> void:
 		self._roads_mirror[id] = AxialEdgeSet.new()	
 		self._player_records[id] = PlayerRecord.new(id)
 		self._initial_houses[id] = []
+		
+	self._discard_targets.resize(Game.player_count)
+	self._discard_targets.fill(0)
 
 
 func build(names: Array[String]) -> void:

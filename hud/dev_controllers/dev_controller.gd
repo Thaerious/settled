@@ -48,3 +48,7 @@ func _on_button_test_distance_pressed():
 		target.get_node("%Area2D").mouse_entered.connect(func():
 			print("Distance to %s = %d" % [target.axial, path_builder.distances[target.axial.key()]])
 		)
+
+
+func _on_button_roll_7_pressed():
+	ServiceModule._on_request_roll(4, 3)
