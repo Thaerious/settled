@@ -22,5 +22,4 @@ func _hnd_visible_phase(phase: Model.GamePhase) -> void:
 		self.visible = false
 
 	if self.visible:
-		self.z_index = 1000
 		self.move_to_front()

@@ -119,10 +119,11 @@ offset_bottom = 312.0
 visible_phase = 8
 
 [node name="DiscardDialog" parent="CanvasLayer" instance=ExtResource("9_25jd7")]
-offset_left = 1206.0
-offset_top = 538.0
-offset_right = 1668.0
-offset_bottom = 908.0
+offset_left = 1013.0
+offset_top = 242.0
+offset_right = 1475.0
+offset_bottom = 612.0
+dialog_identifier = "DiscardDialog"
 
 [node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("10_dlyeo")]
 offset_left = 635.0
@@ -145,7 +146,6 @@ offset_left = 781.0
 offset_top = 49.0
 offset_right = 1177.0
 offset_bottom = 274.0
-visible_phase = 13
 
 [node name="GameBoard" type="Node2D" parent="."]
 unique_name_in_owner = true

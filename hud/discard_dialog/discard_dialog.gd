@@ -1,11 +1,13 @@
 @tool
 class_name DiscardDialog
-extends DialogContainer
+extends DialogFrame
 
 var _wallet = Wallet.new()
 var _target = 0
 
 func _ready() -> void:
+	super._ready()
+
 	EventBus.current_phase_updated.connect(self._update_phase)
 	%ButtonAccept.pressed.connect(self._accept)
 
@@ -26,6 +28,7 @@ func _update_phase(phase: Model.GamePhase) -> void:
 		return
 	else: 
 		self.visible = true
+		self.float_to_top()
 		%Title.text = "Discard to %s" % self._target
 		%ButtonAccept.disabled = true	
 

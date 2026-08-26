@@ -1,8 +1,6 @@
 class_name DialogFrame
 extends DialogContainer
 
-static var z_index_dictionary = {}
-
 
 @export var dialog_identifier := ""
 @export var draggable := true
@@ -37,12 +35,7 @@ func _do_start_drag() -> void:
 	self._dragging = true
 	self._drag_offset = get_global_mouse_position() - self.global_position
 	%Title.set_default_cursor_shape(Input.CURSOR_DRAG)
-
-	for item in DialogFrame.z_index_dictionary.keys():
-		item.z_index -= 1
-
 	self.float_to_top()
-	DialogFrame.z_index_dictionary[self] = self
 
 
 func float_to_top() -> void:
