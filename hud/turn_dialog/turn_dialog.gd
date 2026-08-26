@@ -7,7 +7,7 @@ func _ready() -> void:
 	super._ready()
 	EventBus.dice_set.connect(self._on_dice_set)
 	%ButtonAccept.button_up.connect(self._on_button_up)
-	print(self.dice_textures)
+
 
 func _on_dice_set(d1: int, d2: int) -> void:
 	%Die1.texture = self.dice_textures[d1 - 1]

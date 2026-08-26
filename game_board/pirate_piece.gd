@@ -6,7 +6,7 @@ var _origin_axial = Axial.zero()
 func _ready() -> void:
 	%DragNode2D.drag_start.connect(self._on_drag_start)
 	%DragNode2D.drag_end.connect(self._on_drag_end)
-	%DragNode2D.hover_enter.connect(self._on_hover_enter)
+	# %DragNode2D.hover_enter.connect(self._on_hover_enter)
 	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
 	EventBus.pirate_set.connect(self._on_pirate_set)
 
@@ -32,8 +32,8 @@ func _on_drag_end(rec: DragRecord) -> void:
 		EventBus.request_set_pirate.emit(Game.self_id, drop_axial)
 
 
-func _on_hover_enter(rec: DragRecord) -> void:
-	print(rec)
+# func _on_hover_enter(rec: DragRecord) -> void:
+# 	pass
 
 
 func _on_current_phase_updated(phase: Model.GamePhase) -> void:

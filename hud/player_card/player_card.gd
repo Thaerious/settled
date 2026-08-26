@@ -30,7 +30,6 @@ var x_pos_shift: float = 40
 
 var player_record: PlayerRecord = null:
 	set(value):
-		print(value)
 		player_record = value
 		if self.is_node_ready():
 			self._update_style()

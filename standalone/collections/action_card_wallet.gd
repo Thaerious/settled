@@ -62,6 +62,11 @@ func update_view(views: Dictionary) -> void:
 		views[r].text = str(self.get_card(r))
 
 
+func set_all(amount: int) -> void:
+	for card in self._data.keys():
+		self.set_card(card, amount)	
+
+
 func copy_from(that: ActionCardWallet) -> void:
 	for c in self.keys():
 		self.set_card(c, that.get_card(c))

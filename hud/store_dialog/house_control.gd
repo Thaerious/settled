@@ -14,11 +14,6 @@ func _ready() -> void:
 	self.drag_node.hover_exit.connect(self._on_hover_exit)
 
 
-func _disable() -> void:
-	if self.name == "HouseControl": print("house_control._disable() (%s)" % [self.name])
-	super._disable()
-
-
 func _on_drag_start() -> void:
 	EventBus.show_house_targets.emit()
 

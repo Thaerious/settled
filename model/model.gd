@@ -366,7 +366,7 @@ func do_add_action_card(id: int, card: ActionCardTypes) -> void:
 
 func do_remove_action_card(id: int, card) -> void:
 	self._owned_cards[id].remove_card(card)
-	self._playable_cards[id].remove_card(card)
+	self._playable_cards[id].set_all(0)
 	var owned := self._owned_cards[id].duplicate()
 	var playable := self._playable_cards[id].duplicate()
 	self._player_records[id].action_cards = owned.size()
@@ -379,6 +379,9 @@ func do_update_phase(phase: GamePhase) -> void:
 
 	if phase == Model.GamePhase.ROAD_BUILDING:
 		self._road_building = 2
+
+	for pid in self.player_count():
+		self._playable_cards[pid].copy_from(self._owned_cards[pid])
 
 	EventBus.current_phase_updated.emit(phase)
 
