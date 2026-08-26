@@ -34,7 +34,7 @@ func _ready() -> void:
 	EventBus.exchange_rate_set.connect(func(id: int, wallet: Wallet): print("EventBus.exchange_rate_set | id: %s | wallet: %s " % [id, wallet]))
 	EventBus.current_player_updated.connect(func(current_player: int): print("EventBus.current_player_updated | current_player: %s" % [current_player]))
 	EventBus.current_phase_updated.connect(func(phase: Model.GamePhase): print("EventBus.current_phase_updated | phase: %s" % [Model.GamePhase.find_key(phase)]))
-	EventBus.action_cards_updated.connect(func(id: int, owned: ActionCardWallet, playable: ActionCardWallet, has_played: bool): print("EventBus.action_cards_updated | id: %s | owned: %s | playable: %s | has_played: %s" % [id, owned, playable, has_played]))
+	EventBus.action_cards_updated.connect(func(id: int, owned: ActionCardWallet, playable: ActionCardWallet): print("EventBus.action_cards_updated | id: %s | owned: %s | playable: %s" % [id, owned, playable]))
 	EventBus.house_added.connect(func(id: int, corner: Axial): print("EventBus.house_added | id: %s | corner: %s" % [id, corner]))
 	EventBus.city_added.connect(func(id: int, corner: Axial): print("EventBus.city_added | id: %s | corner: %s" % [id, corner]))
 	EventBus.road_added.connect(func(id: int, edge: AxialEdge): print("EventBus.road_added | id: %s | edge: %s" % [id, edge]))

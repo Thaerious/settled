@@ -11,6 +11,10 @@ func _ready() -> void:
 	EventBus.action_cards_updated.connect(self._on_action_cards_updated)
 
 
+func _on_clicked() -> void:
+	EventBus.request_play_action_card.emit(Game.self_id, self.action_type)
+
+
 func _on_model_loaded() -> void:
 	var current_player = Game.model.get_current_player()
 	var owned = Game.model.get_owned_action_cards(Game.self_id)

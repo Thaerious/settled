@@ -29,25 +29,30 @@ layout_mode = 2
 layout_mode = 2
 action_type = 0
 display_texture = ExtResource("3_ais11")
+behaviour = 1
 
 [node name="HandActionControl2" parent="MarginContainer/PanelContainer/VBoxContainer/ActionContainter" index="1" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
 action_type = 3
 display_texture = ExtResource("5_706re")
+behaviour = 1
 
 [node name="HandActionControl3" parent="MarginContainer/PanelContainer/VBoxContainer/ActionContainter" index="2" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
 action_type = 2
 display_texture = ExtResource("7_ruhtk")
+behaviour = 1
 
 [node name="HandActionControl4" parent="MarginContainer/PanelContainer/VBoxContainer/ActionContainter" index="3" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
 display_texture = ExtResource("9_8jger")
+behaviour = 1
 
 [node name="HandActionControl5" parent="MarginContainer/PanelContainer/VBoxContainer/ActionContainter" index="4" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
 action_type = 4
 display_texture = ExtResource("11_ccy7u")
+behaviour = 1
 
 [node name="ResourceContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true

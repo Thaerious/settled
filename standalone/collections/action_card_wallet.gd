@@ -72,7 +72,7 @@ func copy_to(that: ActionCardWallet) -> void:
 
 
 func _to_string() -> String:
-	return "ActionCardWallet[Soldier:%s Road:%s Plenty:%s Monopoly:%s VP:%s]" % [
+	return "[S:%s R:%s P:%s M:%s V:%s]" % [
 		self._data[Model.ActionCardTypes.SOLDIER],
 		self._data[Model.ActionCardTypes.BUILD_ROAD],
 		self._data[Model.ActionCardTypes.PLENTY],
