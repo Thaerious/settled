@@ -12,8 +12,6 @@ func request_steal_from(id: int) -> void:
 	var i = randi_range(0, count - 1)
 	var sum = 0
 
-	print("Request Steal From %s | bank: %s | size: %s" % [id, bank, bank.size()]);
-
 	if bank.size() > 0:
 		for r in Model.ResourceTypes.values():
 			sum = sum + bank.get_resource(r)

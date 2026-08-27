@@ -4,6 +4,7 @@ extends PanelContainer
 
 func _ready() -> void:
 	EventBus.message.connect(self._on_message)
+	InfoBoxLogger.new()
 
 
 func _on_message(id: int, message: String) -> void:

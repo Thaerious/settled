@@ -79,7 +79,6 @@ func _next_initial_player(id: int):
 		next_player = next_player + 1
 		if next_player > 3: next_player = 3
 		Game.model.do_update_player(next_player)
-		Game.model.do_update_phase(GamePhase.SETUP)
 	else: # reverse
 		next_player = next_player - 1
 		if next_player < 0:
@@ -88,7 +87,6 @@ func _next_initial_player(id: int):
 			self._on_request_roll()
 		else:
 			Game.model.do_update_player(next_player)
-			Game.model.do_update_phase(GamePhase.SETUP)		
 
 
 func _request_add_action_card(id: int, c: Model.ActionCardTypes) -> void:
