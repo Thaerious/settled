@@ -1,45 +1,26 @@
 [gd_scene load_steps=3 format=3 uid="uid://dt6nvhadney4p"]
 
-[ext_resource type="Script" uid="uid://dr1nvfy57qqlq" path="res://hud/components/selectable_group.gd" id="1_6gs2s"]
-[ext_resource type="PackedScene" uid="uid://dgg24iv8r8tkv" path="res://hud/components/dialog_control.tscn" id="1_vos54"]
+[ext_resource type="Script" uid="uid://bkusrv2mttpqp" path="res://sandbox/sandbox.gd" id="1_6gs2s"]
+[ext_resource type="PackedScene" uid="uid://drbuonwbcqihf" path="res://hud/info_box/basic_info_box.tscn" id="1_vos54"]
 
 [node name="Sandbox" type="Node2D"]
+script = ExtResource("1_6gs2s")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="SelectableGroup" type="Node" parent="CanvasLayer"]
-script = ExtResource("1_6gs2s")
-metadata/_custom_type_script = "uid://dr1nvfy57qqlq"
+[node name="BasicInfoBox" parent="CanvasLayer" instance=ExtResource("1_vos54")]
+unique_name_in_owner = true
+offset_left = 739.0
+offset_top = 340.0
+offset_right = 1279.0
+offset_bottom = 680.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/SelectableGroup"]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Button" type="Button" parent="."]
+offset_left = 962.0
+offset_top = 692.0
+offset_right = 1030.0
+offset_bottom = 723.0
+text = "Append
+"
 
-[node name="DialogControl1" parent="CanvasLayer/SelectableGroup/HBoxContainer" instance=ExtResource("1_vos54")]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-behaviour = 0
-
-[node name="DialogControl2" parent="CanvasLayer/SelectableGroup/HBoxContainer" instance=ExtResource("1_vos54")]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-selected = true
-behaviour = 0
-
-[node name="StyleHelper" parent="CanvasLayer/SelectableGroup/HBoxContainer/DialogControl2" index="0"]
-style = "selected"
-
-[node name="DialogControl3" parent="CanvasLayer/SelectableGroup/HBoxContainer" instance=ExtResource("1_vos54")]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-behaviour = 0
-
-[node name="DialogControl4" parent="CanvasLayer/SelectableGroup/HBoxContainer" instance=ExtResource("1_vos54")]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-behaviour = 0
-
-[editable path="CanvasLayer/SelectableGroup/HBoxContainer/DialogControl1"]
-[editable path="CanvasLayer/SelectableGroup/HBoxContainer/DialogControl2"]
-[editable path="CanvasLayer/SelectableGroup/HBoxContainer/DialogControl3"]
-[editable path="CanvasLayer/SelectableGroup/HBoxContainer/DialogControl4"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

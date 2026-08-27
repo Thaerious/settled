@@ -45,7 +45,8 @@ signal road_added(id: int, edge: AxialEdge)
 signal dice_set(d1: int, d2:int)
 signal player_record_updated(id: int, record: PlayerRecord)
 signal resources_updated(id: int, wallet:Wallet)
-signal notify(id: int, msg: String)
+signal notify(id: int, msg: String) # for popup boxes
+signal message(id: int, msg: String) # for infofox messages
 
 # Debug and development signals
 signal set_player_view(id: int)

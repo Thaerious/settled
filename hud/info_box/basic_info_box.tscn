@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://drbuonwbcqihf"]
+
+[ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_jl2ww"]
+[ext_resource type="Script" uid="uid://bw7ciq8bmfxfk" path="res://hud/info_box/basic_info_box.gd" id="2_pa24h"]
+
+[node name="BasicInfoBox" instance=ExtResource("1_jl2ww")]
+script = ExtResource("2_pa24h")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer" index="0"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/PanelContainer/MarginContainer" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 300)
+layout_mode = 2
+scroll_following = true
