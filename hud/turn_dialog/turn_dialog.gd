@@ -22,6 +22,10 @@ func _on_button_up() -> void:
 
 
 func _hnd_visible_phase(phase: Model.GamePhase) -> void:
+	if Game.model.get_current_player() != Game.self_id:
+		%ButtonAccept.disabled = true
+		return
+
 	if phase == Model.GamePhase.PRE_ROLL:
 		%ButtonAccept.text = "Roll"
 		%ButtonAccept.disabled = false

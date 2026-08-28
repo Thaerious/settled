@@ -172,7 +172,7 @@ func playable_corners(id: int = -1) -> AxialSet:
 
 	var houses = self.get_all_buildings()
 	var neighbors := houses.map(Axial.neighbors_of)
-	houses = houses.add_all(neighbors)
+	houses = houses.add(neighbors)
 	corners = corners.difference(houses)
 
 	if id == -1: return corners
@@ -183,7 +183,7 @@ func playable_corners(id: int = -1) -> AxialSet:
 
 
 func has_resources(id: int, wallet: Wallet) -> bool: 
-	return self._bank[id].has_resources(wallet)
+	return self._bank[id].contains(wallet)
 
 
 ## Get the player that has a house or city on this corner axial
@@ -211,9 +211,9 @@ func get_roads(ids: Variant = -1) -> AxialEdgeSet:
 	for id in ids:
 		if id == -1:
 			for p in range(4):
-				aset.add_all(self.get_roads(p))
+				aset.add(self.get_roads(p))
 		else:
-			aset.add_all(self._roads_mirror[id])
+			aset.add(self._roads_mirror[id])
 
 	return aset	
 
@@ -224,9 +224,9 @@ func get_houses(id: int = -1) -> AxialSet:
 
 	if id == -1:
 		for p in range(4):
-			aset.add_all(self.get_houses(p))
+			aset.add(self.get_houses(p))
 	else:
-		aset.add_all(self._houses_mirror[id])
+		aset.add(self._houses_mirror[id])
 
 	return aset	
 
@@ -237,9 +237,9 @@ func get_cities(id: int = -1) -> AxialSet:
 
 	if id == -1:
 		for p in range(4):
-			aset.add_all(self.get_cities(p))
+			aset.add(self.get_cities(p))
 	else:
-		aset.add_all(self._cities_mirror[id])
+		aset.add(self._cities_mirror[id])
 
 	return aset
 
@@ -247,8 +247,8 @@ func get_cities(id: int = -1) -> AxialSet:
 ## Get all houses & cities owned by id, or all houses & cities if id is not provided
 func get_all_buildings(id: int = -1) -> AxialSet:
 	var result := AxialSet.new()
-	result.add_all(self.get_houses(id))
-	result.add_all(self.get_cities(id))
+	result.add(self.get_houses(id))
+	result.add(self.get_cities(id))
 	return result
 
 
@@ -315,7 +315,7 @@ func do_set_dice(d1: int, d2:int) -> void:
 
 func do_set_house(id: int, ax: Axial) -> void:	
 	self._houses[ax.key()] = id
-	self._houses_mirror[id].add_item(ax)
+	self._houses_mirror[id].add(ax)
 	self.do_add_victory_point(id)
 	EventBus.house_added.emit(id, ax)
 	self._calc_longest_road()
@@ -328,7 +328,7 @@ func do_set_initial_house(id: int, ax: Axial) -> void:
 
 func do_set_city(id: int, ax: Axial) -> void:
 	self._cities[ax.key()] = id
-	self._cities_mirror[id].add_item(ax)
+	self._cities_mirror[id].add(ax)
 	self._houses_mirror[id].remove_item(ax)
 	self.do_add_victory_point(id)
 	EventBus.city_added.emit(id, ax)
@@ -336,7 +336,7 @@ func do_set_city(id: int, ax: Axial) -> void:
 
 func do_set_road(id: int, edge: AxialEdge) -> void:
 	self._roads[edge.key()] = id
-	self._roads_mirror[id].add_item(edge)
+	self._roads_mirror[id].add(edge)
 	EventBus.road_added.emit(id, edge)
 	self._calc_longest_road()
 
@@ -475,11 +475,11 @@ func build_derived_data():
 
 	for hex_data: HexData in self.all_hex_data():
 		if hex_data.terrain == Model.Terrain.WATER: continue
-		self._valid_corners.add_all(hex_data.axial.corners())	
+		self._valid_corners.add(hex_data.axial.corners())	
 
 	for hex_data in self._hex_data.values():
 		if hex_data.terrain == Terrain.WATER: continue
-		self._valid_edges.add_all(hex_data.axial.edges())
+		self._valid_edges.add(hex_data.axial.edges())
 
 
 # populates (non-wate) hexes, corners, edges
@@ -495,9 +495,9 @@ func _place_tiles() -> AxialSet:
 
 	var hexes: AxialSet = AxialSet.new()
 
-	hexes.add_item(Axial.zero())
-	hexes.add_all(neighbors)
-	hexes.add_all(distant_neighbors)
+	hexes.add(Axial.zero())
+	hexes.add(neighbors)
+	hexes.add(distant_neighbors)
 
 	for hex in hexes:
 		var hex_data = HexData.new()
@@ -549,7 +549,7 @@ func _place_ports() -> void:
 func _place_port(hex: Axial, corner: int, value: ResourceTypes) -> void:
 	var cax = hex.corners().to_array()[corner]
 	self._ports[cax.key()] = value
-	self._hex_data[hex.key()].ports.add_item(cax.duplicate())
+	self._hex_data[hex.key()].ports.add(cax.duplicate())
 	self._hex_data[hex.key()].port_type = value
 
 
@@ -563,7 +563,7 @@ func _place_water(hexes: AxialSet) -> void:
 		self._hex_data[hex.key()].axial = hex
 		self._hex_data[hex.key()].terrain = Terrain.WATER
 
-	hexes.add_all(water)	
+	hexes.add(water)	
 
 
 func _fill_terrain_bag() -> Array[Terrain]:

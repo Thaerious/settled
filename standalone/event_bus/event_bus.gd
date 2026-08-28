@@ -31,6 +31,7 @@ signal play_road_building_card(id: int, roads: AxialEdgeSet)
 # Model/Service to view events
 signal update_longest_road(id: int)
 signal update_largest_army(id: int)
+signal resources_received(id: int, wallet:Wallet)
 
 # Model outgoing events (only the model should emit these)
 signal model_loaded()

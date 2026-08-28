@@ -36,42 +36,44 @@ func _iter_get(_arg) -> Axial:
 	return self._item_values[self._iter_index]
 
 
-# Returns true if the set contains the given Axial.
-# A in {A, B, C} → true
-func has_axial(ax: Axial) -> bool:
-	if ax == null: return false
-	return self._data.has(ax.key())
+## Adds all items from [param items] to the set.
+# {A, B} + [C, D] → {A, B, C, D}
+func add(items: Variant) -> AxialSet:
+	if items == null: return self
 
+	if items is Axial:
+		self._data[items.key()] = items		
+		return self
 
-## Adds [param ax] to the set. Has no effect if already present.
-# {A, B} + C → {A, B, C}
-func add_item(ax: Axial) -> bool:
-	if ax == null: return false
-	self._data[ax.key()] = ax
-	return true
+	for item in items:
+		var ax = item as Axial
+		self._data[ax.key()] = ax
+	return self
 
 
 ## Removes [param ax] from the set. Has no effect if not present.
 # {A, B, C} - B → {A, C}
 func remove_item(ax: Axial) -> AxialSet:
-	if not self.has_axial(ax): return
+	if not self.has(ax): return
 	self._data.erase(ax.key())
 	return self
 
 
-## Returns [code]true[/code] if [param ax] is in the set.
+# Returns true if the set contains all of the given Axials.
 # A in {A, B, C} → true
-func contains(ax: Axial) -> bool:
-	return ax.key() in self._data
+func has(ax: Variant) -> bool:
+	if ax == null: return false
+
+	if ax is Axial: return self._data.has(ax.key())
+	return self.intersect(ax).size() == self.size()
 
 
-## Adds all items from [param items] to the set.
-# {A, B} + [C, D] → {A, B, C, D}
-func add_all(items: Variant) -> AxialSet:
-	for item in items:
-		var ax = item as Axial
-		self._data[ax.key()] = ax
-	return self
+# Returns true if the set contains any of the given Axials.
+# A in {A, B, C} → true
+func any(ax: Variant) -> bool:
+	if ax == null: return false
+	if ax is Axial: return self._data.has(ax.key())
+	return not self.intersect(ax).is_empty()
 
 
 ## Removes all items from the set.
@@ -116,27 +118,27 @@ func for_each(cb: Callable) -> AxialSet:
 
 # Returns a new set containing only elements present in both sets.
 # {A, B, C} & {B, C, D} → {B, C}
-func intersect(that: AxialSet) -> AxialSet:
+func intersect(that: Variant) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
-		if that.has_axial(ax):
-			aset.add_item(ax)
+		if that.has(ax):
+			aset.add(ax)
 	return aset
 
 
 # Returns a new set with elements in this set that are not in that set.
 # {A, B, C} \ {B, C, D} → {A}
-func difference(that: AxialSet) -> AxialSet:
+func difference(that: Variant) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
-		if not that.has_axial(ax):
-			aset.add_item(ax)
+		if not that.has(ax):
+			aset.add(ax)
 	return aset
 
 
 # Returns a new set containing all elements from both sets.
 # {A, B, C} | {B, C, D} → {A, B, C, D}
-func union(that: AxialSet) -> AxialSet:
+func union(that: Variant) -> AxialSet:
 	var aset := AxialSet.new()
 	aset._data.merge(self._data)
 	aset._data.merge(that._data)
@@ -148,7 +150,7 @@ func union(that: AxialSet) -> AxialSet:
 func transform(bx: Axial) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
-		aset.add_item(ax.transform(bx))
+		aset.add(ax.transform(bx))
 	return aset
 
 
@@ -157,7 +159,7 @@ func transform(bx: Axial) -> AxialSet:
 func scale(x: int) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
-		aset.add_item(ax.scale(x))
+		aset.add(ax.scale(x))
 	return aset
 
 
@@ -169,21 +171,12 @@ func map(cb: Callable) -> AxialSet:
 	for ax in self:
 		var result = cb.call(ax)
 		if result is Axial: 
-			aset.add_item(result)
+			aset.add(result)
 		elif result is Array or result is Dictionary or result.has_method("_iter_init"):
-			aset.add_all(result)
+			aset.add(result)
 		else:
 			push_warning("Unhandled map result of type '%s' ignored." % result.get_class())			
 	return aset
-
-
-func map_to_array(cb: Callable) -> Array:
-	var an_array := []
-	for ax in self:
-		var result = cb.call(ax)
-		if result is Array:	an_array.append_array(result)
-		else: an_array.append(result)
-	return an_array	
 
 
 # Maps each Axial to a collection of AxialEdges.
@@ -204,7 +197,7 @@ func select(cb: Callable) -> AxialSet:
 	var aset := AxialSet.new()
 	for ax in self:
 		if cb.call(ax):
-			aset.add_item(ax)
+			aset.add(ax)
 	return aset
 
 
@@ -214,7 +207,7 @@ func duplicate(deep: bool = false) -> AxialSet:
 	var aset := AxialSet.new()
 	if deep:
 		for ax in self:
-			aset.add_item(ax.duplicate())
+			aset.add(ax.duplicate())
 	else:
 		aset._data = self._data.duplicate()
 	return aset
@@ -227,5 +220,5 @@ func serialize() -> Array:
 static func deserialize(data: Array) -> AxialSet:
 	var aset := AxialSet.new()
 	for key in data:
-		aset.add_item(Axial.from_key(key))
+		aset.add(Axial.from_key(key))
 	return aset

@@ -69,15 +69,15 @@ static func load(path: String) -> Model:
 
 	for k in data["houses"]: 
 		model._houses[k] = int(data["houses"][k])
-		model._houses_mirror[model._houses[k]].add_item(Axial.from_key(k))
+		model._houses_mirror[model._houses[k]].add(Axial.from_key(k))
 
 	for k in data["cities"]: 
 		model._cities[k] = int(data["cities"][k])
-		model._cities_mirror[model._cities[k]].add_item(Axial.from_key(k))
+		model._cities_mirror[model._cities[k]].add(Axial.from_key(k))
 
 	for k in data["roads"]: 
 		model._roads[k] = int(data["roads"][k])
-		model._roads_mirror[model._roads[k]].add_item(AxialEdge.from_key(k))
+		model._roads_mirror[model._roads[k]].add(AxialEdge.from_key(k))
 	
 	for k in data["bank"]:
 		var wallet := Wallet.deserialize(data["bank"][k])

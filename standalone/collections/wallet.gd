@@ -153,7 +153,7 @@ func has_resource(r: Model.ResourceTypes) -> bool:
 	return self._data[r] > 0
 
 
-func has_resources(that: Wallet) -> bool:
+func contains(that: Wallet) -> bool:
 	if self._data[Model.ResourceTypes.BRICK] < that.brick: return false
 	if self._data[Model.ResourceTypes.WOOD]  < that.wood:  return false
 	if self._data[Model.ResourceTypes.ROCK]  < that.rock:  return false

@@ -9,6 +9,7 @@ var pirate: bool = false
 var ports: AxialSet = AxialSet.new()
 var port_type := Model.ResourceTypes.NONE
 
+
 func _to_string() -> String:
 	return "HexData(axial=%s, terrain=%s, resource=%s, number=%d, pirate=%s, ports=%d, port_type=%s)" % [
 		self.axial,

@@ -85,6 +85,6 @@ static func _is_blocked(corner: Axial, player_id: int) -> bool:
 	for i in range(Game.player_count):
 		if i == player_id:
 			continue
-		if Game.model.get_all_buildings(i).has_axial(corner):
+		if Game.model.get_all_buildings(i).has(corner):
 			return true
 	return false

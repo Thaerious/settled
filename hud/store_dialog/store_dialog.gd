@@ -26,22 +26,22 @@ func _on_update() -> void:
 func _update_controls() -> void:
 	var wallet = Game.model.get_bank(Game.self_id)
 
-	if wallet.has_resources(Model.COSTS["road"]):
+	if wallet.contains(Model.COSTS["road"]):
 		%RoadControl.disabled = false
 	else:
 		%RoadControl.disabled = true		
 
-	if wallet.has_resources(Model.COSTS["house"]):
+	if wallet.contains(Model.COSTS["house"]):
 		%HouseControl.disabled = false
 	else:
 		%HouseControl.disabled = true
 
-	if wallet.has_resources(Model.COSTS["city"]):
+	if wallet.contains(Model.COSTS["city"]):
 		%CityControl.disabled = false
 	else:
 		%CityControl.disabled = true
 
-	if wallet.has_resources(Model.COSTS["card"]):
+	if wallet.contains(Model.COSTS["card"]):
 		%CardControl.disabled = false
 	else:
 		%CardControl.disabled = true

@@ -34,7 +34,7 @@ func has_item(item: Vector2i) -> bool:
 
 
 ## Adds [param item] to the set. Has no effect if already present.
-func add_item(item: Vector2i) -> void:
+func add(item: Vector2i) -> void:
 	self._data[item] = true
 
 
@@ -88,7 +88,7 @@ func intersect(that: Vec2iSet) -> Vec2iSet:
 	var vset = Vec2iSet.new()
 	for v in self._data:
 		if that.has_item(v):
-			vset.add_item(v)
+			vset.add(v)
 	return vset
 
 
@@ -98,7 +98,7 @@ func difference(that: Vec2iSet) -> Vec2iSet:
 	var vset := Vec2iSet.new()
 	for v in self._data:
 		if not that.has_item(v):
-			vset.add_item(v)
+			vset.add(v)
 	return vset
 
 
@@ -116,7 +116,7 @@ func union(that: Vec2iSet) -> Vec2iSet:
 func transform(offset: Vector2i) -> Vec2iSet:
 	var vset := Vec2iSet.new()
 	for v in self._data:
-		vset.add_item(v + offset)
+		vset.add(v + offset)
 	return vset
 
 
@@ -125,7 +125,7 @@ func transform(offset: Vector2i) -> Vec2iSet:
 func scale(scaler: float) -> Vec2iSet:
 	var vset := Vec2iSet.new()
 	for v in self._data:
-		vset.add_item(v * scaler)
+		vset.add(v * scaler)
 	return vset
 
 
@@ -134,7 +134,7 @@ func scale(scaler: float) -> Vec2iSet:
 func map(cb: Callable) -> Vec2iSet:
 	var vset := Vec2iSet.new()
 	for v in self._data:
-		vset.add_item(cb.call(v))
+		vset.add(cb.call(v))
 	return vset
 
 
@@ -153,5 +153,5 @@ func select(cb: Callable) -> Vec2iSet:
 	var vset := Vec2iSet.new()
 	for v in self._data:
 		if cb.call(v):
-			vset.add_item(v)
+			vset.add(v)
 	return vset	

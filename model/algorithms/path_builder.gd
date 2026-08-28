@@ -17,14 +17,14 @@ func _next_corners(from: Axial) -> AxialSet:
 		if edge_owner != -1 and edge_owner != _id: continue
 		
 		for corner in edge.corners():
-			if not self._white_list.contains(corner): continue
-			if self.corners.contains(corner): continue
+			if not self._white_list.has(corner): continue
+			if self.corners.has(corner): continue
 			var corner_owner = self._model.get_owner(corner)
 			if corner_owner != -1 and corner_owner != _id: continue
 			self.distances[corner.key()] = self.distances[from.key()] + 1
-			self.corners.add_item(corner)
+			self.corners.add(corner)
 			self.paths[corner.key()] = self.paths[from.key()] + [edge]
-			next_corners.add_item(corner)
+			next_corners.add(corner)
 
 	return next_corners
 
@@ -45,19 +45,19 @@ func run(model: Model, id: int) -> PathBuilder:
 	# build initial queue
 	for road in roads: 
 		for corner in road.corners():
-			if not self._white_list.contains(corner): continue
+			if not self._white_list.has(corner): continue
 			var owner = model.get_owner(corner)
 			if owner != -1 and owner != id: continue
 			self.distances[corner.key()] = 0
 			self.paths[corner.key()] = []
-			self.corners.add_item(corner)
+			self.corners.add(corner)
 			queue.push_back(corner)	
 
 	while not queue.is_empty():
 		var current = queue.pop_front()		
 		for next in self._next_corners(current):
 			self.distances[next.key()] = self.distances[current.key()] + 1
-			self.corners.add_item(next)
+			self.corners.add(next)
 			queue.push_back(next)		
 	
 	return self

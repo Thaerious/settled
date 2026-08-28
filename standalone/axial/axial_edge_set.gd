@@ -38,31 +38,39 @@ func _iter_get(_arg) -> AxialEdge:
 
 # Returns true if the set contains the given AxialEdge.
 # E in {E1, E2, E3} → true
-func has_item(edge: AxialEdge) -> bool:
+func has(edge: Variant) -> bool:
 	if edge == null: return false
-	return self._data.has(edge.key())
+	if edge is AxialEdge: return self._data.has(edge.key())
+	return self.intersect(edge).size() == self.size()
 
 
-# Adds edge to the set. Has no effect if already present.
-# {E1, E2} + E3 → {E1, E2, E3}
-func add_item(edge: AxialEdge) -> bool:
-	if edge == null: return false
-	self._data[edge.key()] = edge
-	return true
+# Returns true if the set contains any of the given AxialEdges.
+# A in {A, B, C} → true
+func any(ax: Variant) -> bool:
+	if ax == null: return false
+	if ax is AxialEdge: return self._data.has(ax.key())
+	return not self.intersect(ax).is_empty()
 
 
 # Adds all items from items to the set.
 # {E1, E2} + [E3, E4] → {E1, E2, E3, E4}
-func add_all(items: Variant) -> AxialEdgeSet:
+func add(items: Variant) -> AxialEdgeSet:
+	if items == null: return self
+
+	if items is AxialEdge:
+		self._data[items.key()] = items		
+		return self
+
 	for item in items:
-		self._data[item.key()] = item
+		var ax = item as AxialEdge
+		self._data[ax.key()] = ax
 	return self
 
 
 # Removes edge from the set. Has no effect if not present.
 # {E1, E2, E3} - E2 → {E1, E3}
 func remove_item(edge: AxialEdge) -> AxialEdgeSet:
-	if not self.has_item(edge): return
+	if not self.has(edge): return
 	self._data.erase(edge.key())
 	return self
 
@@ -102,7 +110,7 @@ func for_each(cb: Callable) -> AxialEdgeSet:
 func corner_map(fn: Callable = AxialEdge.corners_of) -> AxialSet:
 	var aset := AxialSet.new()
 	for edge in self._data.values():
-		aset.add_all(fn.call(edge))
+		aset.add(fn.call(edge))
 	return aset
 
 
@@ -111,15 +119,15 @@ func corner_map(fn: Callable = AxialEdge.corners_of) -> AxialSet:
 func difference(that: AxialEdgeSet) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 	for axial_edge in self:
-		if not that.has_item(axial_edge):
-			aset.add_item(axial_edge)
+		if not that.has(axial_edge):
+			aset.add(axial_edge)
 	return aset
 
 
 # Returns a new set containing all elements from both sets.
 # {A, B, C} ∪ {B, C, D} → {A, B, C, D}
 func union(that: AxialEdgeSet) -> AxialEdgeSet:
-	return self.duplicate().add_all(that)
+	return self.duplicate().add(that)
 
 
 # Returns a new set containing only elements present in both sets.
@@ -127,8 +135,8 @@ func union(that: AxialEdgeSet) -> AxialEdgeSet:
 func intersect(that: AxialEdgeSet) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 	for ax in self:
-		if that.has_item(ax):
-			aset.add_item(ax)
+		if that.has(ax):
+			aset.add(ax)
 	return aset
 
 
@@ -138,7 +146,7 @@ func duplicate(deep: bool = false) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 	if deep:
 		for edge in self._data.values():
-			aset.add_item(edge.duplicate())
+			aset.add(edge.duplicate())
 	else:
 		aset._data.merge(self._data)
 	return aset	
@@ -151,7 +159,7 @@ func serialize() -> Array:
 static func deserialize(data: Array) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 	for key in data:
-		aset.add_item(AxialEdge.from_key(key))
+		aset.add(AxialEdge.from_key(key))
 	return aset	
 
 
@@ -160,9 +168,9 @@ func map(cb: Callable) -> AxialEdgeSet:
 	for ax in self:
 		var result = cb.call(ax)
 		if result is AxialEdge: 
-			aset.add_item(result)
+			aset.add(result)
 		elif result is Array or result is Dictionary or result.has_method("_iter_init"):
-			aset.add_all(result)
+			aset.add(result)
 		else:
 			push_warning("Unhandled map result of type '%s' ignored." % result.get_class())			
 	return aset
@@ -179,8 +187,3 @@ func to_array() -> Array[AxialEdge]:
 	for axe in self._data.values():
 		result.append(axe)
 	return result	
-
-
-func any() -> AxialEdge:
-	if self.is_empty(): return null
-	return self.to_array()[0]

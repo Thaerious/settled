@@ -111,15 +111,15 @@ func neighbors() -> AxialSet:
 	if self.is_hex():
 		for neighbor in Axial.NEIGHBORS:
 			var ax := Axial.from_vec3i(neighbor)
-			aset.add_item(self.duplicate().transform(ax))
+			aset.add(self.duplicate().transform(ax))
 	elif self.is_even():
-		aset.add_item(self.duplicate().transform(Axial.new(-1, 0, 0)))
-		aset.add_item(self.duplicate().transform(Axial.new(0, -1, 0)))
-		aset.add_item(self.duplicate().transform(Axial.new(0, 0, -1)))
+		aset.add(self.duplicate().transform(Axial.new(-1, 0, 0)))
+		aset.add(self.duplicate().transform(Axial.new(0, -1, 0)))
+		aset.add(self.duplicate().transform(Axial.new(0, 0, -1)))
 	else:
-		aset.add_item(self.duplicate().transform(Axial.new(1, 0, 0)))
-		aset.add_item(self.duplicate().transform(Axial.new(0, 1, 0)))
-		aset.add_item(self.duplicate().transform(Axial.new(0, 0, 1)))
+		aset.add(self.duplicate().transform(Axial.new(1, 0, 0)))
+		aset.add(self.duplicate().transform(Axial.new(0, 1, 0)))
+		aset.add(self.duplicate().transform(Axial.new(0, 0, 1)))
 
 	return aset
 
@@ -136,20 +136,20 @@ func edges() -> AxialEdgeSet:
 
 	if self.is_hex():
 		var corners := self.corners().to_array()
-		aset.add_item(AxialEdge.new(corners[0], corners[1]))
-		aset.add_item(AxialEdge.new(corners[1], corners[2]))
-		aset.add_item(AxialEdge.new(corners[2], corners[3]))
-		aset.add_item(AxialEdge.new(corners[3], corners[4]))
-		aset.add_item(AxialEdge.new(corners[4], corners[5]))
-		aset.add_item(AxialEdge.new(corners[5], corners[0]))
+		aset.add(AxialEdge.new(corners[0], corners[1]))
+		aset.add(AxialEdge.new(corners[1], corners[2]))
+		aset.add(AxialEdge.new(corners[2], corners[3]))
+		aset.add(AxialEdge.new(corners[3], corners[4]))
+		aset.add(AxialEdge.new(corners[4], corners[5]))
+		aset.add(AxialEdge.new(corners[5], corners[0]))
 	elif self.is_even():
-		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(-1, 0, 0))))
-		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, -1, 0))))
-		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, 0, -1))))
+		aset.add(AxialEdge.new(self, self.transform(Axial.new(-1, 0, 0))))
+		aset.add(AxialEdge.new(self, self.transform(Axial.new(0, -1, 0))))
+		aset.add(AxialEdge.new(self, self.transform(Axial.new(0, 0, -1))))
 	else:
-		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(1, 0, 0))))
-		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, 1, 0))))
-		aset.add_item(AxialEdge.new(self, self.transform(Axial.new(0, 0, 1))))
+		aset.add(AxialEdge.new(self, self.transform(Axial.new(1, 0, 0))))
+		aset.add(AxialEdge.new(self, self.transform(Axial.new(0, 1, 0))))
+		aset.add(AxialEdge.new(self, self.transform(Axial.new(0, 0, 1))))
 
 	return aset
 
@@ -166,7 +166,7 @@ func corners() -> AxialSet:
 	var aset := AxialSet.new()
 	for neighbor in Axial.CORNERS:
 		var ax := Axial.from_vec3i(neighbor)
-		aset.add_item(self.duplicate().transform(ax))
+		aset.add(self.duplicate().transform(ax))
 	return aset
 
 
@@ -186,7 +186,7 @@ func hexes() -> AxialSet:
 		ax = self.duplicate().transform(ax.invert())
 
 		if ax.is_hex():
-			aset.add_item(ax)
+			aset.add(ax)
 
 	return aset
 

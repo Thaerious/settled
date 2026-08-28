@@ -33,9 +33,16 @@ func _init() -> void:
 	)	
 
 	EventBus.request_steal_from.connect(func(id):
-		EventBus.message.emit(-1, "%s stole from " % [name(), name(id)])
+		EventBus.message.emit(-1, "%s stole from %s" % [name(), name(id)])
 	)	
 
+	EventBus.request_end_turn.connect(func():
+		EventBus.message.emit(-1, "End Turn")
+	)
+
+	EventBus.resources_received.connect(func(id, wallet):
+		EventBus.message.emit(-1, "%s Received %s" % [name(id), wallet])
+	)
 
 func name(id: int = -1) -> String:
 	if id == -1: id = Game.model.get_current_player()

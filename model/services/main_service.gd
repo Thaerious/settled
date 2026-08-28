@@ -188,6 +188,7 @@ func _on_request_roll(d1: int = 0, d2: int = 0) -> void:
 		var resources := Wallet.new()
 		self._scan_houses(id, d1 + d2, resources)
 		self._scan_cities(id, d1 + d2, resources)
+		EventBus.resources_received.emit(id, resources)
 		Game.model.do_add_resources(id, resources)
 
 	Game.model.do_update_phase(GamePhase.MAIN)

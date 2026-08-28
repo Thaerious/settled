@@ -42,6 +42,7 @@ func _ready() -> void:
 	EventBus.dice_set.connect(func(d1: int, d2: int): print("EventBus.dice_set | d1: %s | d2: %s" % [d1, d2]))
 	EventBus.player_record_updated.connect(func(id: int, record: PlayerRecord): print("EventBus.player_record_updated | id: %s | record: %s" % [id, record]))
 	EventBus.resources_updated.connect(func(id: int, wallet: Wallet): print("EventBus.resources_updated | id: %s | wallet: %s" % [id, wallet]))
+	EventBus.resources_received.connect(func(id: int, wallet: Wallet): print("EventBus.resources_received | id: %s | wallet: %s" % [id, wallet]))
 
 	EventBus.set_player_view.connect(func(id: int): print("EventBus.set_player_view | id: %s" % [id]))
 	EventBus.save_model_state.connect(func(): print("EventBus.save_model_state"))
