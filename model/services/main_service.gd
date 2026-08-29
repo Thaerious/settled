@@ -215,10 +215,10 @@ func _scan_cities(id:int, number:int, resources: Wallet):
 			resources.add_resource(data.resource, 2)
 
 
-func _on_request_purchase_action_card() -> void:
-	Game.model.do_remove_resources(Game.self_id, Model.COSTS["card"])
+func _on_request_purchase_action_card(id: int) -> void:
+	Game.model.do_remove_resources(id, Model.COSTS["card"])
 	var card = weighted_random(Model.CARD_DISTRIBUTION)
-	Game.model.do_add_action_card(Game.self_id, card)
+	Game.model.do_add_action_card(id, card)
 
 
 static func weighted_random(weights: Dictionary) -> Variant:

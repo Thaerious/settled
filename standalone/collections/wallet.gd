@@ -97,11 +97,6 @@ func add_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
 	self._data[r] += amount
 
 
-func remove_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
-	if not self._data.has(r): return
-	self._data[r] -= amount
-
-
 func copy_from(that: Variant) -> void:
 	if that is Dictionary:
 		for r in self._data.keys(): self.set_resource(r, that[r])
@@ -121,8 +116,21 @@ func add_resources(that: Variant) -> void:
 		for r in that: self.add_resource(r)
 
 
-func remove_resources(that: Variant) -> void:
-	if that is Dictionary:
+func remove_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
+	if not self._data.has(r): return
+	self._data[r] -= amount
+
+
+# Remove the listed resources from this collection
+# Alters the collection
+# if that is:
+#   a resource - remove one of that resource
+# 	a dictionary or wallet - remove all resources in that from this
+#   an array - for each instance of a resource in that, remove 1 from this
+func remove(that: Variant) -> void:
+	if that is int:
+		self.remove_resource(that)
+	elif that is Dictionary:
 		for r in self._data.keys(): self.remove_resource(r, that[r])
 	elif that is Wallet:
 		for r in self._data.keys(): self.remove_resource(r, that.get_resource(r))
@@ -149,8 +157,8 @@ func size() -> int:
 	return total
 
 
-func has_resource(r: Model.ResourceTypes) -> bool:
-	return self._data[r] > 0
+func has_resource(r: Model.ResourceTypes, count: int = 1) -> bool:
+	return self._data[r] >= count
 
 
 func contains(that: Wallet) -> bool:

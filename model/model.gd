@@ -348,7 +348,7 @@ func do_add_resources(id: int, resources: Wallet) -> void:
 
 
 func do_remove_resources(id: int, resources:Wallet) -> void:
-	self._bank[id].remove_resources(resources)
+	self._bank[id].remove(resources)
 	self._player_records[id].resources = self._bank[id].size()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 

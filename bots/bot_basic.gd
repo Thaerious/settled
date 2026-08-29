@@ -76,6 +76,22 @@ func _init(id: int, game_model: Model) -> void:
 	self.id = id
 	self._game_model = game_model
 
+
+func process() -> void:
+	self.pre_process()
+
+	if self._game_model.get_current_phase() == Model.GamePhase.SETUP:
+		self.phase_setup()
+	elif self._game_model.get_current_phase() == Model.GamePhase.PRE_ROLL:
+		self.phase_pre_roll()		
+	elif self._game_model.get_current_phase() == Model.GamePhase.MAIN:
+		self.phase_main()
+	elif self._game_model.get_current_phase() == Model.GamePhase.MOVE_PIRATE:
+		self.phase_move_pirate()
+	elif self._game_model.get_current_phase() == Model.GamePhase.STEAL_RESOURCES:
+		self.phase_steal_resource()		
+
+
 func pre_process() -> void:
 	# record the resource counts of occupied tiles
 	# adjust the weights for resource type and tile number
@@ -103,58 +119,86 @@ func pre_process() -> void:
 		if port == Model.ResourceTypes.NONE: continue			
 		self.port_w[port] = 0
 
-	# build path_builder
+	# initialize path_builder
 	self.path_builder = PathBuilder.new().run(self._game_model, self.id)
 
 
-func process() -> void:
-	self.pre_process()
-
-	if self._game_model.get_current_phase() == Model.GamePhase.SETUP:
-		self.phase_setup()
-	elif self._game_model.get_current_phase() == Model.GamePhase.PRE_ROLL:
-		self.phase_pre_roll()		
-	elif self._game_model.get_current_phase() == Model.GamePhase.MAIN:
-		self.phase_main()
-	elif self._game_model.get_current_phase() == Model.GamePhase.MOVE_PIRATE:
-		self.phase_move_pirate()
-	elif self._game_model.get_current_phase() == Model.GamePhase.STEAL_RESOURCES:
-		self.phase_steal_resource()		
-
-
 func phase_setup() -> void:
-	if self._game_model.get_placement_phase() == Model.PlacementPhase.HOUSE1:
-		self.initial_house()
-	elif self._game_model.get_placement_phase() == Model.PlacementPhase.ROAD1:
-		self.initial_road()
-	elif self._game_model.get_placement_phase() == Model.PlacementPhase.HOUSE2:
-		self.initial_house()
-	elif self._game_model.get_placement_phase() == Model.PlacementPhase.ROAD2:
-		self.initial_road()
+	match self._game_model.get_placement_phase():
+		Model.PlacementPhase.HOUSE1:
+			self.initial_house()
+		Model.PlacementPhase.ROAD1:
+			self.initial_road()
+		Model.PlacementPhase.HOUSE2:
+			self.initial_house()
+		Model.PlacementPhase.ROAD2:
+			self.initial_road()
 
 
 func phase_pre_roll() -> void:
 	EventBus.request_roll.emit()
 
 
+func rank_actions() -> Array[Variant]:  # [rank, item, data, ...]
+	var best = [-INF, null, null] 
+
+	var rank_house = self._rank_house()
+	if rank_house[0] > best[0]: best = rank_house
+
+	return best
+
+
 func phase_main() -> void:
-	if self.phase_main_short_circuit(): return
-	self.phase_main_house()
+	print("Phase Main in Bot Basic")
+
+	var best = self.rank_actions() # [rank, item, data, ...]
+	print("Bot Basic Best %s" % [best])
+
+	if best[1] == null: 
+		EventBus.request_end_turn.emit()
+		return
+
+	var exchange = self._game_model.get_exchange_rate(self.id) # this is a copy
+	var wallet = self._game_model.get_bank(self.id)
+	var cost = Model.COSTS[best[1]]
+
+	# don't trade away resources that we need to buy the item
+	# set the exchange rate to 0 so the algorithm ignores it
+	for r in wallet.keys():
+		var r_cost = cost.get_resource(r)
+		var r_wallet = wallet.get_resource(r)
+		var r_exchange = exchange.get_resource(r)
+		if r_wallet - r_cost - r_exchange < 0: exchange.set_resource(r, 0)
+
+	# Esnure we have enough of each resource
+	for trade_for in wallet.keys():
+		# already have enough resources
+		if wallet.get_resource(trade_for) >= cost.get_resource(trade_for): continue		
+
+		var trade_away = ExchangeCalculator.best_source_for(exchange, wallet, trade_for)		
+
+		if trade_away == trade_for: # could not trade
+			EventBus.request_end_turn.emit()
+			return
+		else:
+			EventBus.request_exchange.emit(self.id, trade_away, trade_for)
+			wallet = self._game_model.get_bank(self.id)
 
 
-func phase_main_short_circuit() -> bool:
-	var wallet := self._game_model.get_bank(self.id)
-	
-	if wallet.contains(Model.COSTS["house"]): return false
-	if wallet.contains(Model.COSTS["city"]): return false
-	if wallet.contains(Model.COSTS["road"]): return false
-	if wallet.contains(Model.COSTS["card"]): return false
+	match best[1]:
+		"house": 			
+			EventBus.request_house.emit(self.id, best[2])
+		"city": 
+			EventBus.request_city.emit(self.id, best[2])
+		"road": 
+			EventBus.request_road.emit(self.id, best[2])
+		"card": 
+			EventBus.request_purchase_action_card.emit(self.id)
 
-	EventBus.request_end_turn.emit()
-	return true
 
-
-func phase_main_house() -> void:
+# Decide which long term action to take
+# Returns [rank, action, data, ...]
+func _rank_house() -> Array[Variant]:
 	var best_rank = -INF
 	var best_axial = null
 
@@ -172,19 +216,13 @@ func phase_main_house() -> void:
 	var best_distance = self.path_builder.distances[best_axial.key()]
 
 	if best_distance == 0:
-		self.try_buy_house(best_axial)
+		return [best_rank, "house", best_axial]
 	else:
 		var path = self.path_builder.paths[best_axial.key()]
-		self.try_buy_road(path[0])
+		return [best_rank, "road", path[0]]
 
 
-func try_buy_house(corner: Axial) -> bool:
-	var wallet := self._game_model.get_bank(self.id)
-	if wallet.contains(Model.COSTS["house"]):
-		EventBus.request_house.emit(self.id, corner)
-		return true
-	
-	return false
+
 
 
 func try_buy_road(edge: AxialEdge) -> bool:
@@ -251,29 +289,6 @@ func build_end_points() -> Array[Axial]:
 	return edges.corner_map().to_array()
 
 
-# only follow edges that are empty
-# don't have an opposing building on either corner
-func build_adj_table() -> Dictionary[String, AxialSet]:
-	var adj:Dictionary[String, AxialSet] = {}
-
-	for edge in self.followable_edges():
-		adj[edge.ax1.key()].add(edge.ax2)
-		adj[edge.ax2.key()].add(edge.ax1)
-
-	return adj
-
-
-func followable_edges() -> AxialEdgeSet:
-	var edges = Game.model.playable_edges()
-
-	for pid in range(0, Game.player_count):
-		if pid == self.id: continue
-		var houses = Game.model.get_all_buildings(pid)
-		edges = edges.difference(houses.edge_map())	
-
-	return edges
-
-
 func phase_move_pirate() -> void:
 	# count the number of buildins on a hex (house 1, city 2)
 	# and multiply it by the number_w
@@ -288,10 +303,10 @@ func phase_move_pirate() -> void:
 
 	for hex_data: HexData in self._game_model.all_hex_data():
 		if hex_data.number == -1: continue
+		if hex_data.axial.equals(self._game_model.get_pirate()): continue
 		var rank = 0
 
-		for corner in hex_data.axial.corners():	
-
+		for corner in hex_data.axial.corners():				
 			if black.has(corner):
 				rank = 0
 				break
@@ -309,7 +324,7 @@ func phase_move_pirate() -> void:
 
 func phase_steal_resource() -> void:
 	var best_rank = -INF
-	var best_pid := -1		
+	var best_pid := -1
 
 	for corner in self._game_model.get_pirate().corners():
 		var owner = self._game_model.get_owner(corner)
@@ -322,4 +337,3 @@ func phase_steal_resource() -> void:
 			best_pid = owner
 
 	EventBus.request_steal_from.emit(best_pid)
-		

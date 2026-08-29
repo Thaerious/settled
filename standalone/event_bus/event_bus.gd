@@ -12,7 +12,7 @@ signal clear_targets()
 
 # View to service events (request, play)
 signal request_roll()
-signal request_purchase_action_card()
+signal request_purchase_action_card(id: int)
 signal request_play_action_card(id: int, card: Model.ActionCardTypes)
 signal request_house(id: int, corner: Axial)
 signal request_city(id: int, corner: Axial)

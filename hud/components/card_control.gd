@@ -7,4 +7,4 @@ func _ready() -> void:
 
 
 func _on_clicked() -> void:
-	EventBus.request_purchase_action_card.emit()
+	EventBus.request_purchase_action_card.emit(Game.self_id)
