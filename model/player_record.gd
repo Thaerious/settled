@@ -7,27 +7,27 @@ var name: String
 var _victory_points: int
 var victory_points: int:
 	get: return _victory_points
-	set(v): _victory_points = v; EventBus.player_record_updated.emit(self.id, self)
+	set(v): _victory_points = v; EventBus.player_record_updated.emit(self)
 
 var _resources: int
 var resources: int:
 	get: return _resources
-	set(v): _resources = v; EventBus.player_record_updated.emit(self.id, self)
+	set(v): _resources = v; EventBus.player_record_updated.emit(self)
 
 var _action_cards: int
 var action_cards: int:
 	get: return _action_cards
-	set(v): _action_cards = v; EventBus.player_record_updated.emit(self.id, self)
+	set(v): _action_cards = v; EventBus.player_record_updated.emit(self)
 
 var _roads: int
 var roads: int:
 	get: return _roads
-	set(v): _roads = v; EventBus.player_record_updated.emit(self.id, self)
+	set(v): _roads = v; EventBus.player_record_updated.emit(self)
 
 var _soldiers: int
 var soldiers: int:
 	get: return _soldiers
-	set(v): _soldiers = v; EventBus.player_record_updated.emit(self.id, self)
+	set(v): _soldiers = v; EventBus.player_record_updated.emit(self)
 
 
 func _init(id: int) -> void:

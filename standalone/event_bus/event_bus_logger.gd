@@ -40,7 +40,7 @@ func _ready() -> void:
 	EventBus.city_added.connect(func(id: int, corner: Axial): print("EventBus.city_added | id: %s | corner: %s" % [id, corner]))
 	EventBus.road_added.connect(func(id: int, edge: AxialEdge): print("EventBus.road_added | id: %s | edge: %s" % [id, edge]))
 	EventBus.dice_set.connect(func(d1: int, d2: int): print("EventBus.dice_set | d1: %s | d2: %s" % [d1, d2]))
-	EventBus.player_record_updated.connect(func(id: int, record: PlayerRecord): print("EventBus.player_record_updated | id: %s | record: %s" % [id, record]))
+	EventBus.player_record_updated.connect(func(record: PlayerRecord): print("EventBus.player_record_updated | %s" % [record]))
 	EventBus.resources_updated.connect(func(id: int, wallet: Wallet): print("EventBus.resources_updated | id: %s | wallet: %s" % [id, wallet]))
 	EventBus.resources_received.connect(func(id: int, wallet: Wallet): print("EventBus.resources_received | id: %s | wallet: %s" % [id, wallet]))
 

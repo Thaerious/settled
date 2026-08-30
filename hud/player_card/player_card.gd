@@ -42,8 +42,8 @@ func _ready() -> void:
 		self._update_position(Game.model.get_current_player())
 	)
 
-	EventBus.player_record_updated.connect(func(id: int, rec: PlayerRecord):
-		if self.player_id == id:
+	EventBus.player_record_updated.connect(func(rec: PlayerRecord):
+		if self.player_id == rec.id:
 			self.player_record = rec
 	)
 
