@@ -95,7 +95,7 @@ func process() -> void:
 	elif self._game_model.get_current_phase() == Model.GamePhase.STEAL_RESOURCES:
 		self.phase_steal_resource()
 
-	print(" ------------------------ ")		
+	print(" ------------------------- ")		
 
 
 func pre_process() -> void:
@@ -130,7 +130,7 @@ func pre_process() -> void:
 
 
 func phase_setup() -> void:
-	match self._game_model.get_placement_phase():
+	match self._game_model.get_placement_phase(self.id):
 		Model.PlacementPhase.HOUSE1:
 			self.initial_house()
 		Model.PlacementPhase.ROAD1:
@@ -297,6 +297,7 @@ func initial_house() -> void:
 		if rank > best_rank:
 			best_rank = rank
 			best_axial = corner
+			print("[%s, %s, %s]" % [best_rank, "house", best_axial])
 
 	assert (best_axial != null)
 	EventBus.request_house.emit(self.id, best_axial)

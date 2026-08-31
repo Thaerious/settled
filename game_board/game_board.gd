@@ -56,19 +56,30 @@ func _setup() -> void:
 # debug function - Alt LMB
 var last: Array = []
 func _input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton: return
+	if not event.pressed: return
+	if not event.alt_pressed: return
+
+	var local_pos := self.tiles.get_local_mouse_position()
+	var hex := Axial.offset_to_axial(self.tiles.local_to_map(local_pos))
+	var corners := hex.corners()
+	var data = Game.model.get_hex_data(hex)
+
+	print(" --- HEX %s ---" % hex)
+	if data != null: print(" - %s" % [data])
+
+	self.clear_targets_hnd()
 	
-	if event is InputEventMouseButton and event.pressed and event.alt_pressed:				
-		var local_pos := self.tiles.get_local_mouse_position()
-		var hex := Axial.offset_to_axial(self.tiles.local_to_map(local_pos))
-		var corners := hex.corners()
+	var targets = self.show_targets(corners)
+	for target in targets:
+		target.area_2d.input_event.connect(func(_1, e, _2): self._on_input_target(target, e))
 
-		print(" hex     - %s" % hex)
-		print(" data    - %s" % [Game.model.get_hex_data(hex)])
-		print(" corners - %s" % [hex.corners()])
-		print(" edges   - %s" % [hex.edges()])
 
-		self.clear_targets_hnd()
-		self.show_targets(corners)
+func _on_input_target(target, event) -> void:	
+	if not event is InputEventMouseButton: return
+	if not MouseHelper.is_left_press(event): return
+	
+	print(" - %s %s" % [target.get_script().get_global_name(), target.axial])
 
 
 func _model_loaded() -> void:

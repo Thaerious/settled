@@ -3,7 +3,7 @@ extends Node2D
 
 var _current_piece: GamePiece = null
 var axial: Axial = null
-
+@onready var area_2d := %Area2D
 
 func set_piece(game_piece: GamePiece) -> void:    
 	if self._current_piece == game_piece: return

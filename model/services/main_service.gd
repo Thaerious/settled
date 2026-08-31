@@ -170,8 +170,8 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 
 # called by the game in production
 func _on_request_roll(d1: int = 0, d2: int = 0) -> void:
-	if d1 == 0: d1 = randi_range(1, 6)
-	if d2 == 0: d2 = randi_range(1, 6)
+	if d1 == 0: d1 = Game.model.rng.randi_range(1, 6)
+	if d2 == 0: d2 = Game.model.rng.randi_range(1, 6)
 
 	Game.model.do_set_dice(d1, d2)
 

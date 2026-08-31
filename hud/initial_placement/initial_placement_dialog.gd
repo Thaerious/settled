@@ -27,7 +27,7 @@ func _on_model_loaded() -> void:
 	%HouseControl2.disabled = true
 	%RoadControl2.disabled = true
 
-	match Game.model.get_placement_phase():
+	match Game.model.get_placement_phase(Game.self_id):
 		Model.PlacementPhase.HOUSE1: %HouseControl1.disabled = false
 		Model.PlacementPhase.ROAD1:  %RoadControl1.disabled = false
 		Model.PlacementPhase.HOUSE2: %HouseControl2.disabled = false

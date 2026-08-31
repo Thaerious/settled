@@ -115,6 +115,7 @@ var _dice: Array[int] = [1, 1]                        # this is used for dev & d
 var _discard_targets: Array[int] = []                 # during discard players discard to this amount
 var _valid_corners: AxialSet = null                   # set once, corners that can be played on
 var _valid_edges: AxialEdgeSet = null                 # set once, edges that can be played on
+var rng := RandomNumberGenerator.new()
 
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
@@ -258,6 +259,8 @@ func all_hex_data() -> Array[HexData]:
 
 func get_hex_data(hex: Axial) -> HexData:
 	var data = self._hex_data.get(hex.key(), null)
+	if data == null: return null
+
 	if data and hex.equals(self._pirate):
 		data.pirate = true
 	else:
@@ -265,12 +268,12 @@ func get_hex_data(hex: Axial) -> HexData:
 	return data
 
 
-func get_placement_phase() -> Model.PlacementPhase:
+func get_placement_phase(id: int) -> Model.PlacementPhase:
 	if self.get_current_phase() != Model.GamePhase.SETUP: 
 		return Model.PlacementPhase.NONE
 
-	var count_houses = self.get_houses(Game.self_id).size()
-	var count_roads = self.get_roads(Game.self_id).size()
+	var count_houses = self.get_houses(id).size()
+	var count_roads = self.get_roads(id).size()
 
 	if count_houses == 0 and count_roads == 0:
 		return Model.PlacementPhase.HOUSE1
