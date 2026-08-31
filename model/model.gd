@@ -183,7 +183,7 @@ func playable_corners(id: int = -1) -> AxialSet:
 
 
 func has_resources(id: int, wallet: Wallet) -> bool: 
-	return self._bank[id].contains(wallet)
+	return self._bank[id].has(wallet)
 
 
 ## Get the player that has a house or city on this corner axial

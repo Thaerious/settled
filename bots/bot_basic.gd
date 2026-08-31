@@ -66,11 +66,14 @@ var path_builder: PathBuilder = null
 var port_w_delta: int = 10 # applied for each resource
 var resource_w_delta: int = 5
 var number_w_delta: int = 15
-
+var base_card: int = 30
+var afford_card: int = 15
+var pirate_card: int = 30
 
 func distance_weight(distance: int) -> int:
 	if distance_w.has(distance): return distance_w[distance]
 	return 0
+
 
 func _init(id: int, game_model: Model) -> void:
 	self.id = id
@@ -78,6 +81,7 @@ func _init(id: int, game_model: Model) -> void:
 
 
 func process() -> void:
+	print(" --- Bot Basic Process ---")
 	self.pre_process()
 
 	if self._game_model.get_current_phase() == Model.GamePhase.SETUP:
@@ -89,7 +93,9 @@ func process() -> void:
 	elif self._game_model.get_current_phase() == Model.GamePhase.MOVE_PIRATE:
 		self.phase_move_pirate()
 	elif self._game_model.get_current_phase() == Model.GamePhase.STEAL_RESOURCES:
-		self.phase_steal_resource()		
+		self.phase_steal_resource()
+
+	print(" ------------------------ ")		
 
 
 func pre_process() -> void:
@@ -145,6 +151,12 @@ func rank_actions() -> Array[Variant]:  # [rank, item, data, ...]
 	var rank_house = self._rank_house()
 	if rank_house[0] > best[0]: best = rank_house
 
+	var rank_city = self._rank_city()
+	if rank_city[0] > best[0]: best = rank_city
+
+	var rank_card = self._rank_card()
+	if rank_card[0] > best[0]: best = rank_card	
+
 	return best
 
 
@@ -199,6 +211,7 @@ func phase_main() -> void:
 # Decide which long term action to take
 # Returns [rank, action, data, ...]
 func _rank_house() -> Array[Variant]:
+	print("Rank House")
 	var best_rank = -INF
 	var best_axial = null
 
@@ -212,6 +225,7 @@ func _rank_house() -> Array[Variant]:
 		if rank > best_rank:
 			best_rank = rank
 			best_axial = corner
+			print("[%s, %s, %s]" % [best_rank, "house", best_axial])
 
 	var best_distance = self.path_builder.distances[best_axial.key()]
 
@@ -222,17 +236,50 @@ func _rank_house() -> Array[Variant]:
 		return [best_rank, "road", path[0]]
 
 
+# Decide which long term action to take
+# Returns [rank, action, data, ...]
+func _rank_city() -> Array[Variant]:
+	print("Rank City")
+	var best_rank = -INF
+	var best_axial = null
 
+	# Evaluate each valid corner that can accept a city
+	var corners := self._game_model.get_houses(self.id)
+	for corner in corners:
+		print(corner)
+		var rank = self.rank_corner(corner)
+
+		if rank > best_rank:
+			best_rank = rank
+			best_axial = corner
+			print("[%s, %s, %s]" % [best_rank, "city", best_axial])
+
+	return [best_rank, "city", best_axial]
 
 
 func try_buy_road(edge: AxialEdge) -> bool:
 	var wallet := self._game_model.get_bank(self.id)
-	if wallet.contains(Model.COSTS["road"]):
+	if wallet.has(Model.COSTS["road"]):
 		EventBus.request_road.emit(self.id, edge)
 		return true
 	
 	return false
 
+
+func _rank_card() -> Array[Variant]:
+	var wallet = self._game_model.get_bank(self.id)
+	var action = self._game_model.get_playable_action_cards(self.id)
+	var cost = Model.COSTS["card"]
+
+	print("Rank Card")
+	var rank = self.base_card
+	if wallet.has(cost): rank = rank + self.afford_card
+
+	if self.pirate_is_on_self() and not action.has_card(Model.ActionCardTypes.SOLDIER):
+		rank = rank + self.pirate_card
+
+	print("[%s, %s]" % [rank, "card"])
+	return [rank, "card"]
 
 func initial_road() -> void:
 	var edges = self._game_model.get_initial_road_targets(self.id)
@@ -337,3 +384,15 @@ func phase_steal_resource() -> void:
 			best_pid = owner
 
 	EventBus.request_steal_from.emit(best_pid)
+
+
+func pirate_is_on_self() -> bool:
+	var pirate = self._game_model.get_pirate()
+	var hex_data = self._game_model.get_hex_data(pirate)
+
+	var first = hex_data.axial.corners().first(func(ax):
+		if self._game_model.get_owner(ax) == self.id: return true
+		return false			
+	)
+
+	return first != null

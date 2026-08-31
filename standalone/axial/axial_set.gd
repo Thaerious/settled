@@ -70,7 +70,7 @@ func has(ax: Variant) -> bool:
 
 # Returns true if the set contains any of the given Axials.
 # A in {A, B, C} → true
-func any(ax: Variant) -> bool:
+func any(ax: Variant) -> bool:	
 	if ax == null: return false
 	if ax is Axial: return self._data.has(ax.key())
 	return not self.intersect(ax).is_empty()
@@ -200,6 +200,17 @@ func select(cb: Callable) -> AxialSet:
 			aset.add(ax)
 	return aset
 
+
+# Returns the first for which cb returns true.
+# CB defaults to accepting any element
+# Returns null if no element found
+# {A, B, C}.select(fn) → {x | fn(x) == true}
+func first(cb: Callable = func(_1): return true) -> Axial:
+	for ax in self:
+		if cb.call(ax): 
+			return ax
+
+	return null
 
 # Returns a copy of this set.
 # {A, B, C}.duplicate() → {A, B, C}
