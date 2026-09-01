@@ -17,7 +17,12 @@ var _dragging := false
 ## This is the first child attached to the drag node.
 var _sprite: Sprite2D = null
 
+## Events do not fire when disabled is true
 @export var disabled = false
+
+# Events fire when the target layer matches drop layer
+# UI targets must have a field called "drop_layer" events trigger when they match.
+# Area2D targets must have their collision layer match this value.
 @export_flags_2d_physics var drop_layer: int = 0
 
 # connect a press handler to trigger that is invoked on a LMB press

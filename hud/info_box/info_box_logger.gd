@@ -36,10 +36,6 @@ func _init() -> void:
 		EventBus.message.emit(-1, "%s stole from %s" % [name(), name(id)])
 	)	
 
-	EventBus.request_end_turn.connect(func():
-		EventBus.message.emit(-1, "End Turn")
-	)
-
 	EventBus.resources_received.connect(func(id, wallet):
 		EventBus.message.emit(-1, "%s Received %s" % [name(id), wallet])
 	)

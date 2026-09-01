@@ -6,7 +6,10 @@
 [node name="HandResourceControl" instance=ExtResource("1_mytik")]
 script = ExtResource("2_g8r32")
 resource_type = 5
-drop_layer = 0
+drop_layer = 3
+
+[node name="DragNodeUI" parent="." index="1"]
+drop_layer = 4
 
 [node name="BoxContainer" parent="MarginContainerBorder/InnerBorder/MarginContainer" index="0"]
 vertical = true

@@ -2,7 +2,11 @@ extends HBoxContainer
 
 
 func _on_bot_button_pressed():
-	Game.do_bot_action()
+	if Game.model.get_current_phase() == Model.GamePhase.DISCARD:
+		for i in Game.model.player_count():
+			BotBasic.new(i, Game.model).process()		
+	else:
+		BotBasic.new(Game.model.get_current_player(), Game.model).process()
 
 
 func _on_button_test_edges_pressed():

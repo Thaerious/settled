@@ -23,8 +23,8 @@ func _ready() -> void:
 	self.call_deferred("_emit_initial_state")
 
 
-func do_bot_action() -> void:
-	BotBasic.new(Game.model.get_current_player(), self.model).process()
+# func do_bot_action() -> void:
+# 	BotBasic.new(Game.model.get_current_player(), self.model).process()
 
 
 func load_last_save() -> bool:

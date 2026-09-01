@@ -54,12 +54,17 @@ func _get_world_target(world: Vector2, drag_layer: int) -> Node:
 ## Matches with Nodes whose drag_layer matches the drag_layer 
 ## from the source drag node.
 func get_ui_target(drag_layer: int) -> Control:
-	var ui_target: Control = get_viewport().gui_get_hovered_control()
+	var ui_target: Node = get_viewport().gui_get_hovered_control()
 	if ui_target == null: return null
+	if not ui_target is Control: return null
+	ui_target = ui_target.owner
 
+	GeneralUtil.print_once("Get UI Target %s %s" % [ui_target, ("drop_layer" in ui_target)])
 	# A drop target MUST have a drag_layer:int field
-	if not "drop_mask" in ui_target: return null
-	if not ui_target.drag_layer and drag_layer: return null
+	if not "drop_layer" in ui_target: return null
+
+	# Boolean AND both layers, must return true
+	if not ui_target.drop_layer and drag_layer: return null
 	
 	# If the drop target has an on_drop:bool method only accept the drop
 	# if the method returns true.
@@ -109,4 +114,3 @@ func is_left_release(event: InputEvent) -> bool:
 		and event.button_index == MouseButton.MOUSE_BUTTON_LEFT
 		and not event.pressed
 	)		
-

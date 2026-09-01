@@ -387,12 +387,17 @@ func update_discard_targets() -> void:
 		if self._bank[pid].size() <= 7: continue
 		self._discard_targets[pid] = self._bank[pid].size() / 2
 
+	print("Model Update Discard Targets %s" % [self._discard_targets])
 
 func do_update_phase(phase: GamePhase) -> void:
+	print("Model Do Update Phase %s" % [phase])
 	self._game_phase = phase
 
 	if phase == Model.GamePhase.ROAD_BUILDING:
 		self._road_building = 2	
+
+	if phase == Model.GamePhase.DISCARD:
+		self.update_discard_targets()
 
 	for pid in self.player_count():
 		self._playable_cards[pid].copy_from(self._owned_cards[pid])

@@ -18,6 +18,7 @@ func _ready() -> void:
 
 
 func _on_drag_end(rec: DragRecord) -> void:
+	print("hand resource control %s %s" % [rec, rec.drop_target])
 	if not rec.drop_target is HandResourceControl: return
 	var target = rec.drop_target as HandResourceControl
 	EventBus.request_exchange.emit(Game.self_id, self.resource_type, target.resource_type)

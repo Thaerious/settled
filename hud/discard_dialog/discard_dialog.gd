@@ -31,7 +31,7 @@ func _update_phase(phase: Model.GamePhase) -> void:
 
 	self.visible = true
 	self.float_to_top()
-	%Title.text = "Discard to %s" % self._target
+	%Title.text = "Discard %s Resources" % self._target
 	%ButtonAccept.disabled = true	
 
 	self._wallet.set_all(0)

@@ -127,7 +127,7 @@ func remove_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
 #   a resource - remove one of that resource
 # 	a dictionary or wallet - remove all resources in that from this
 #   an array - for each instance of a resource in that, remove 1 from this
-func remove(that: Variant) -> void:
+func remove(that: Variant, allow_negative: bool = true) -> void:
 	if that is int:
 		self.remove_resource(that)
 	elif that is Dictionary:
@@ -136,6 +136,10 @@ func remove(that: Variant) -> void:
 		for r in self._data.keys(): self.remove_resource(r, that.get_resource(r))
 	else: # array 
 		for r in that: self.remove_resource(r)
+
+	if not allow_negative:
+		for r in self._data.keys():
+			if self.get(r) < 0: self.set(r, 0)
 
 
 func to_dict() -> Dictionary[Model.ResourceTypes, int]:

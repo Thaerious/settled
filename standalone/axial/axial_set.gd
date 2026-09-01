@@ -187,7 +187,7 @@ func map(cb: Callable) -> AxialSet:
 func edge_map(cb: Callable = Axial.edges_of) -> AxialEdgeSet:
 	var aset := AxialEdgeSet.new()
 	for ax in self:
-		aset.add_all(cb.call(ax))
+		aset.add(cb.call(ax))
 	return aset
 
 
@@ -201,7 +201,7 @@ func select(cb: Callable) -> AxialSet:
 	return aset
 
 
-# Returns the first for which cb returns true.
+# Returns the first element for which cb returns true.
 # CB defaults to accepting any element
 # Returns null if no element found
 # {A, B, C}.select(fn) → {x | fn(x) == true}

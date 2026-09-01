@@ -94,6 +94,8 @@ func process() -> void:
 		self.phase_move_pirate()
 	elif self._game_model.get_current_phase() == Model.GamePhase.STEAL_RESOURCES:
 		self.phase_steal_resource()
+	elif self._game_model.get_current_phase() == Model.GamePhase.DISCARD:
+		self.phase_discard()		
 
 	print(" ------------------------- ")		
 
@@ -219,6 +221,7 @@ func _rank_house() -> Array[Variant]:
 	var corners := self._game_model.playable_corners()
 	for corner in corners:
 		var rank = self.rank_corner(corner)
+		if not self.path_builder.distances.values().has(corner.key()): continue
 		var distance = self.path_builder.distances[corner.key()]
 		rank = rank + self.distance_weight(distance)
 
@@ -397,3 +400,25 @@ func pirate_is_on_self() -> bool:
 	)
 
 	return first != null
+
+
+func phase_discard() -> void:
+	var target = self._game_model.get_discard_target(self.id)
+	print("Bot Basic Phase Discard | %s | target: %s" % [self._game_model._discard_targets, target])
+	if target <= 0: return
+	# var action = self.rank_actions()
+	var discard = Wallet.new()
+	var wallet = self._game_model.get_bank(self.id)
+	# var cost = Model.COSTS[action[1]]
+
+	# wallet.remove(cost, false) todo account for desired target
+	while target > 0:
+		target = target - 1
+		var resource = wallet.to_array().pick_random()
+		wallet.remove(resource)
+		discard.add_resource(resource)
+	
+	print("[%s, %s, %s]" % [0, "discard", discard])
+	EventBus.request_discard.emit(self.id, discard)
+
+	
