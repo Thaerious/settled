@@ -357,8 +357,8 @@ func do_remove_resources(id: int, resources:Wallet) -> void:
 
 
 func do_discard(id: int, resources:Wallet) -> void:
-	self.do_remove_resources(id, resources)
 	self._discard_targets[id] = self._discard_targets[id] - resources.size()
+	self.do_remove_resources(id, resources)
 
 
 func do_add_action_card(id: int, card: ActionCardTypes) -> void:

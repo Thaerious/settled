@@ -9,6 +9,10 @@ func _ready() -> void:
 	super._ready()
 
 	EventBus.current_phase_updated.connect(self._update_phase)
+	EventBus.resources_updated.connect(func(_1, _2): 
+		self._update_phase(Game.model.get_current_phase())
+	)
+
 	%ButtonAccept.pressed.connect(self._accept)
 
 	for child in %ControlGroup.get_children():
@@ -16,21 +20,19 @@ func _ready() -> void:
 
 
 func _update_phase(phase: Model.GamePhase) -> void:
-	var bank = Game.model.get_bank(Game.self_id)
-	self._target = bank.size() / 2
+	self._target = Game.model.get_discard_target(Game.self_id)
+	self.visible = false
 
-	if phase != Model.GamePhase.DISCARD:
-		self.visible = false
-		return
-	elif bank.size() < 8: 
-		self.visible = false
+	if phase != Model.GamePhase.DISCARD: return
+
+	if self._target <= 0:
 		EventBus.notify.emit(Game.self_id, "Waiting for players to discard")
 		return
-	else: 
-		self.visible = true
-		self.float_to_top()
-		%Title.text = "Discard to %s" % self._target
-		%ButtonAccept.disabled = true	
+
+	self.visible = true
+	self.float_to_top()
+	%Title.text = "Discard to %s" % self._target
+	%ButtonAccept.disabled = true	
 
 	self._wallet.set_all(0)
 	var resources = Game.model.get_bank(Game.self_id)
@@ -42,7 +44,7 @@ func _update_phase(phase: Model.GamePhase) -> void:
 
 
 func count_changed(resource: Model.ResourceTypes, count: int):
-	var resources = Game.model.get_bank(Game.self_id)	
+	var resources = Game.model.get_bank(Game.self_id)		
 	self._wallet.set_resource(resource, count)
 	
 	if self._wallet.size() == self._target:		
@@ -59,4 +61,5 @@ func count_changed(resource: Model.ResourceTypes, count: int):
 
 
 func _accept() -> void:
+	print(self._wallet)
 	EventBus.request_discard.emit(Game.self_id, self._wallet)
