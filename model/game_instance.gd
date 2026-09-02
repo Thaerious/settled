@@ -14,7 +14,6 @@ func _ready() -> void:
 
 	EventBus.set_player_view.connect(func(id: int): 
 		self.self_id = id
-		EventBus.player_view_set.emit(id)
 		EventBus.model_loaded.emit()
 		EventBus.current_phase_updated.emit(Game.model.get_current_phase())
 		EventBus.current_player_updated.emit(Game.model.get_current_player())		

@@ -439,7 +439,6 @@ func do_add_soldier(id: int) -> void:
 
 	self._largest_army = id
 	self._player_records[id].victory_points += 2
-	EventBus.update_largest_army.emit(id)
 
 
 func reset_road_building() -> void:
@@ -623,4 +622,3 @@ func _set_longest_road(id: int) -> void:
 
 	self._longest_road = id
 	self._player_records[id].victory_points += 2
-	EventBus.update_longest_road.emit(id)	

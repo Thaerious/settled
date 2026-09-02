@@ -4,7 +4,6 @@ extends Node
 
 # View to view events (show, clear)
 # Does not require id since only the client needs view events.
-signal show_initial_road_targets(house_axial: Axial)
 signal show_house_targets()
 signal show_city_targets()
 signal show_road_targets()
@@ -20,7 +19,6 @@ signal request_road(id: int, edge: AxialEdge)
 signal request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes)
 signal request_set_pirate(id: int, hex: Axial)
 signal request_steal_from(id: int)
-signal request_update_phase(phase: Model.GamePhase)
 signal request_add_action_card(id: int, c: Model.ActionCardTypes)
 signal request_discard(id:int, discard: Wallet)
 signal request_end_turn()
@@ -28,12 +26,7 @@ signal play_monopoly_card(id: int, resource: Model.ResourceTypes)
 signal play_plenty_card(id: int, resources: Wallet)
 signal play_road_building_card(id: int, roads: AxialEdgeSet) 
 
-# Model/Service to view events
-signal update_longest_road(id: int)
-signal update_largest_army(id: int)
-signal resources_received(id: int, wallet:Wallet)
-
-# Model outgoing events (only the model should emit these)
+# Model outgoing events (only the model or service should emit these)
 signal model_loaded()
 signal pirate_set(hex: Axial)
 signal exchange_rate_set(id: int, wallet: Wallet)
@@ -46,14 +39,12 @@ signal road_added(id: int, edge: AxialEdge)
 signal dice_set(d1: int, d2:int)
 signal player_record_updated(record: PlayerRecord)
 signal resources_updated(id: int, wallet:Wallet)
+signal resources_received(id: int, wallet:Wallet)
+
+# Debug and Development Events
+signal set_player_view(id: int)
+
+# Notification Events
 signal notify(id: int, msg: String) # for popup boxes
 signal message(id: int, msg: String) # for infofox messages
-
-# Debug and development signals
-signal set_player_view(id: int)
-signal player_view_set(id: int)
-signal save_model_state()
-signal load_model_state()
-
-# Terminal Events
-signal service_error(id: int, msg: String)
+signal error(msg: String) # for infofox messages

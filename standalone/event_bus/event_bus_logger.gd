@@ -18,7 +18,6 @@ func _ready() -> void:
 	EventBus.request_exchange.connect(func(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes): print("EventBus.request_exchange | id: %s | from: %s | to: %s" % [id, Model.ResourceTypes.find_key(from), Model.ResourceTypes.find_key(to)]))
 	EventBus.request_set_pirate.connect(func(id: int, hex: Axial): print("EventBus.request_set_pirate | id: %s | hex: %s" % [id, hex]))
 	EventBus.request_steal_from.connect(func(id: int): print("EventBus.request_steal_from | id: %s" % [id]))
-	EventBus.request_update_phase.connect(func(phase: Model.GamePhase): print("EventBus.request_update_phase | phase: %s" % [Model.GamePhase.find_key(phase)]))
 	EventBus.request_add_action_card.connect(func(id: int, c: Model.ActionCardTypes): print("EventBus.request_add_action_card | id: %s | c: %s" % [id, Model.ActionCardTypes.find_key(c)]))
 	EventBus.request_discard.connect(func(id: int, discard: Wallet): print("EventBus.request_discard | id: %s | discard: %s" % [id, discard]))
 	EventBus.play_monopoly_card.connect(func(id: int, resource: Model.ResourceTypes): print("EventBus.play_monopoly_card | id: %s | resource: %s" % [id, Model.ResourceTypes.find_key(resource)]))
@@ -26,10 +25,6 @@ func _ready() -> void:
 	EventBus.play_road_building_card.connect(func(id: int, roads: AxialEdgeSet): print("EventBus._play_road_building_card | id: %s | roads: %s" % [id, roads]))
 	EventBus.notify.connect(func(id: int, msg: String): print("EventBus.notify | id: %s | msg: %s" % [id, msg]))
 	EventBus.message.connect(func(id: int, msg: String): print("EventBus.message | id: %s | msg: %s" % [id, msg]))
-
-	EventBus.update_longest_road.connect(func(id: int): print("EventBus.update_longest_road | id: %s" % [id]))
-	EventBus.update_largest_army.connect(func(id: int): print("EventBus.update_largest_army | id: %s" % [id]))
-
 	EventBus.model_loaded.connect(func(): print("EventBus.model_loaded"))
 	EventBus.pirate_set.connect(func(hex: Axial): print("EventBus.pirate_set | hex: %s" % [hex]))
 	EventBus.exchange_rate_set.connect(func(id: int, wallet: Wallet): print("EventBus.exchange_rate_set | id: %s | wallet: %s " % [id, wallet]))
@@ -43,10 +38,6 @@ func _ready() -> void:
 	EventBus.player_record_updated.connect(func(record: PlayerRecord): print("EventBus.player_record_updated | %s" % [record]))
 	EventBus.resources_updated.connect(func(id: int, wallet: Wallet): print("EventBus.resources_updated | id: %s | wallet: %s" % [id, wallet]))
 	EventBus.resources_received.connect(func(id: int, wallet: Wallet): print("EventBus.resources_received | id: %s | wallet: %s" % [id, wallet]))
-
 	EventBus.set_player_view.connect(func(id: int): print("EventBus.set_player_view | id: %s" % [id]))
-	EventBus.save_model_state.connect(func(): print("EventBus.save_model_state"))
-	EventBus.load_model_state.connect(func(): print("EventBus.load_model_state"))
-
-	EventBus.service_error.connect(func(id: int, msg: String): print("EventBus.service_error | id: %s | msg: %s" % [id, msg]))
+	EventBus.error.connect(func(msg: String): print("EventBus.error | msg: %s" % [msg]))
 	

@@ -19,7 +19,7 @@ func _ready() -> void:
 	self.add_child(StealService.new())
 
 	# Listeners
-	EventBus.service_error.connect(self._on_service_error)
+	EventBus.error.connect(self._on_error)
 	EventBus.request_roll.connect(self._on_request_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 	EventBus.request_exchange.connect(self.request_exchange)
@@ -32,15 +32,11 @@ func _ready() -> void:
 	EventBus.request_house.connect(self._request_house)
 	EventBus.request_city.connect(self._request_city)
 	EventBus.request_road.connect(self._request_road)
-	EventBus.request_update_phase.connect(self._request_update_phase)
 	EventBus.request_end_turn.connect(self._request_end_turn)	
 
 
 func _request_end_turn() -> void:
 	Game.model.do_end_turn()
-
-func _request_update_phase(phase: GamePhase):
-	Game.model.do_update_phase(phase)
 
 
 func _request_house(id: int, corner: Axial) -> void:
@@ -152,8 +148,8 @@ func _play_road_building_card(id: int, roads: AxialEdgeSet) -> void:
 		Game.model.do_set_road(id, axe)
 
 
-func _on_service_error(id: int, msg: String) -> void:
-	push_error("service error from id=%s: %s" % [id, msg])
+func _on_error(msg: String) -> void:
+	push_error("Error: %s" % [msg])
 
 
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:
