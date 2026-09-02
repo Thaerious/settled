@@ -136,8 +136,8 @@ func player_count() -> int:                 return self._player_records.size() #
 func free_road_count() -> int:              return self._road_building
 func get_initial_houses(id: int) -> Array:  return self._initial_houses[id].duplicate()
 func get_discard_target(id: int) -> int:    return self._discard_targets[id]
-func valid_corners() -> AxialSet: return self._valid_corners.duplicate()
-func valid_edges() -> AxialEdgeSet: return self._valid_edges.duplicate()
+func valid_corners() -> AxialSet:           return self._valid_corners.duplicate()
+func valid_edges() -> AxialEdgeSet:         return self._valid_edges.duplicate()
 
 # return all edges that can accept a road (empty edges)
 # not edges that only border water.
@@ -163,14 +163,13 @@ func playable_edges(id: int = -1) -> AxialEdgeSet:
 	return edges.intersect(edge_set).difference(self.get_roads())
 
 
-# return all corners that can accept a house
+# return all empty corners that can accept a house
 # 1) does not have a house / city
 # 2) is not adjacent to a house / city
-# if an id is provided restrict the result to corners adjacent to an owned road
+# if an id is provided restrict the result to corners adjacent to an owned road edge
 # if an id is not provided roads are not taken into account
 func playable_corners(id: int = -1) -> AxialSet:
 	var corners := self._valid_corners.duplicate()
-
 	var houses = self.get_all_buildings()
 	var neighbors := houses.map(Axial.neighbors_of)
 	houses = houses.add(neighbors)
@@ -477,7 +476,7 @@ func build(names: Array[String]) -> void:
 	self.build_derived_data()
 
 
-func build_derived_data():
+func build_derived_data():	
 	self._valid_corners = AxialSet.new()
 	self._valid_edges = AxialEdgeSet.new()
 

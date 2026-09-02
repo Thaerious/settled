@@ -138,28 +138,34 @@ script = ExtResource("8_1rylp")
 layout_mode = 2
 text = "Do Bot Action"
 
-[node name="ButtonTestEdges" type="Button" parent="HBoxContainer/VBoxContainer1"]
+[node name="ButtonRoll7" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
-text = "Test Playable Edges"
-
-[node name="ButtonTestCorners" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Test Playable Corners
-"
-
-[node name="ButtonTestEnds" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Test Ends
+text = "Roll 7
 "
 
 [node name="ButtonTestDistance" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
-text = "Test Distance
+text = "Show Valid Corners
 "
 
-[node name="ButtonRoll7" type="Button" parent="HBoxContainer/VBoxContainer1"]
+[node name="ButtonTestDistance4" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
-text = "Roll 7
+text = "Show Playable Corners
+"
+
+[node name="ButtonTestDistance5" type="Button" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Show Player Corners
+"
+
+[node name="ButtonTestDistance2" type="Button" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Test Bot Path
+"
+
+[node name="ButtonTestDistance3" type="Button" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Clear Targets
 "
 
 [node name="PhaseButtons" type="VBoxContainer" parent="HBoxContainer"]
@@ -274,8 +280,9 @@ phase = 10
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonBot" to="." method="_on_bot_button_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestEdges" to="." method="_on_button_test_edges_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestCorners" to="." method="_on_button_test_corners_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestEnds" to="." method="_on_button_test_ends"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance" to="." method="_on_button_test_distance_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonRoll7" to="." method="_on_button_roll_7_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance" to="." method="on_button_show_valid_corners_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance4" to="." method="on_button_show_playable_corners_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance5" to="." method="_on_button_show_player_corners_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance2" to="." method="_on_button_test_path_builder_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance3" to="." method="_on_button_clear_markers_pressed"]

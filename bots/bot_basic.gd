@@ -217,11 +217,13 @@ func _rank_house() -> Array[Variant]:
 	var best_rank = -INF
 	var best_axial = null
 
-	# Evaluate each valid corner that can accept a house
-	var corners := self._game_model.playable_corners()
+	var reachable := self.path_builder.visited_corners
+	var playable := Game.model.playable_corners()
+	var corners := reachable.intersect(playable)
+
 	for corner in corners:
 		var rank = self.rank_corner(corner)
-		if not self.path_builder.distances.values().has(corner.key()): continue
+		# if not self.path_builder.distances.values().has(corner.key()): continue
 		var distance = self.path_builder.distances[corner.key()]
 		rank = rank + self.distance_weight(distance)
 
