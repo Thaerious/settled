@@ -3,7 +3,7 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	EventBus.message.connect(self._on_message)
+	EventBus.info.connect(self._on_message)
 	InfoBoxLogger.new()
 
 

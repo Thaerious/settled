@@ -5,6 +5,13 @@ extends RefCounted
 var _iter_index: int = 0
 var _iter_array: Array = []
 
+var _print_map: Dictionary[Model.ResourceTypes, String] = {
+	Model.ResourceTypes.BRICK: "br",
+	Model.ResourceTypes.WOOD:  "wd",
+	Model.ResourceTypes.WHEAT: "wh",	
+	Model.ResourceTypes.WOOL:  "wl",
+	Model.ResourceTypes.ROCK:  "rk",	
+}
 
 var _data: Dictionary[Model.ResourceTypes, int] = {
 	Model.ResourceTypes.BRICK: 0,
@@ -103,12 +110,16 @@ func add_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
 
 func copy_from(that: Variant) -> void:
 	if that is Dictionary:
-		for r in self._data.keys(): self.set_resource(r, that[r])
+		for r in self._data.keys(): 
+			self.set_resource(r, that[r])
 	elif that is Wallet:
-		for r in self._data.keys(): self.set_resource(r, that.get_resource(r))
+		for r in self._data.keys(): 
+			if not that.keys().has(r): continue
+			self.set_resource(r, that.get_resource(r))
 	else: # array
 		self.set_all(0)
-		for r in that: self.add_resource(r)
+		for r in that: 
+			self.add_resource(r)
 
 
 func add_resources(that: Variant) -> void:
@@ -131,7 +142,7 @@ func remove_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
 #   a resource - remove one of that resource
 # 	a dictionary or wallet - remove all resources in that from this
 #   an array - for each instance of a resource in that, remove 1 from this
-func remove(that: Variant, allow_negative: bool = true) -> void:
+func remove(that: Variant, allow_negative: bool = true) -> Wallet:
 	if that is int:
 		self.remove_resource(that)
 	elif that is Dictionary:
@@ -144,6 +155,8 @@ func remove(that: Variant, allow_negative: bool = true) -> void:
 	if not allow_negative:
 		for r in self._data.keys():
 			if self.get(r) < 0: self.set(r, 0)
+
+	return self
 
 
 func to_dict() -> Dictionary[Model.ResourceTypes, int]:
@@ -158,7 +171,7 @@ func to_array() -> Array[Model.ResourceTypes]:
 	return result
 
 
-func size() -> int:
+func sum() -> int:
 	var total: int = 0
 	for r in self._data.keys():
 		total += self._data[r]
@@ -202,6 +215,31 @@ func max() -> Model.ResourceTypes:
 	return max_r
 
 
+# return a new wallet with only the keys for which cb returns true
+# cb(resource, value): int
+func select(cb: Callable) -> Wallet:
+	var selected = self.duplicate()
+	
+	for r in self.keys(): 
+		var b = cb.call(r, self.get_resource(r))
+		if not b: selected.erase(r)
+	
+	return selected
+
+
+# return a new wallet maping values using cb
+# the value returned by cb for a given resource will be used for the new wallet
+# cb(resource, value): int
+func map(cb: Callable) -> Wallet:
+	var mapped = self.duplicate()
+	
+	for r in self.keys(): 
+		var v = self.get_resource(r)
+		mapped.set_resource(r, cb.call(r, v))
+	
+	return mapped
+
+
 func update_view(views: Dictionary, format: String = "%s", field: String = "text") -> void:
 	for r in self.keys(): 
 		if not views.has(r): continue
@@ -211,13 +249,12 @@ func update_view(views: Dictionary, format: String = "%s", field: String = "text
 
 
 func _to_string() -> String:
-	return "[Bk:%s Wd:%s Rk:%s Wt:%s Wl:%s]" % [
-		self._data[Model.ResourceTypes.BRICK],
-		self._data[Model.ResourceTypes.WOOD],
-		self._data[Model.ResourceTypes.ROCK],
-		self._data[Model.ResourceTypes.WHEAT],
-		self._data[Model.ResourceTypes.WOOL],
-	]
+	var sb = ""
+
+	for r in self.keys():
+		sb = sb + "%s:%s " % [self._print_map[r], self.get_resource(r)]
+
+	return ("[%s]" % sb)
 
 
 func serialize() -> Array:

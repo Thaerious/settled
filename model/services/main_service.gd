@@ -156,6 +156,13 @@ func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceType
 	from_array.resize(rate)
 	from_array.fill(from)
 
+	EventBus.info.emit(-1, "%s exchanged %s %s for %s" % [
+		Game.model.get_player_record(id).name,
+		rate,
+		Model.ResourceTypes.find_key(from),
+		Model.ResourceTypes.find_key(to)
+	])
+
 	Game.model.do_remove_resources(id, Wallet.new(from_array))
 	Game.model.do_add_resources(id, Wallet.new([to]))
 

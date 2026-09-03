@@ -128,7 +128,7 @@ func get_exchange_rate(id: int) -> Wallet:  return self._exchange_rate[id].dupli
 func get_bank(id: int) -> Wallet:           return self._bank[id].duplicate()
 func get_owned_action_cards(id: int) -> ActionCardWallet: return self._owned_cards[id]
 func get_playable_action_cards(id: int) -> ActionCardWallet: return self._playable_cards[id]
-func count_resources(id: int) -> int:       return self._bank[id].size()
+func count_resources(id: int) -> int:       return self._bank[id].sum()
 func get_longest_road() -> int:             return self._longest_road 
 func get_largest_army() -> int:             return self._largest_army
 func get_player_record(id: int) -> PlayerRecord: return self._player_records[id].duplicate()
@@ -345,13 +345,13 @@ func do_set_road(id: int, edge: AxialEdge) -> void:
 
 func do_add_resources(id: int, resources: Wallet) -> void:
 	self._bank[id].add_resources(resources)
-	self._player_records[id].resources = self._bank[id].size()
+	self._player_records[id].resources = self._bank[id].sum()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 
 func do_remove_resources(id: int, resources:Wallet) -> void:
 	self._bank[id].remove(resources)
-	self._player_records[id].resources = self._bank[id].size()
+	self._player_records[id].resources = self._bank[id].sum()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 	for r in self._bank[id].keys():
@@ -361,7 +361,7 @@ func do_remove_resources(id: int, resources:Wallet) -> void:
 
 
 func do_discard(id: int, resources:Wallet) -> void:
-	self._discard_targets[id] = self._discard_targets[id] - resources.size()
+	self._discard_targets[id] = self._discard_targets[id] - resources.sum()
 	self.do_remove_resources(id, resources)
 
 
@@ -388,8 +388,8 @@ func do_remove_action_card(id: int, card) -> void:
 func update_discard_targets() -> void:
 	for pid in self.player_count():
 		self._discard_targets[pid] = 0
-		if self._bank[pid].size() <= 7: continue
-		self._discard_targets[pid] = self._bank[pid].size() / 2
+		if self._bank[pid].sum() <= 7: continue
+		self._discard_targets[pid] = self._bank[pid].sum() / 2
 
 	print("Model Update Discard Targets %s" % [self._discard_targets])
 

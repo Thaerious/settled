@@ -30,13 +30,13 @@ func _update_phase(phase: Model.GamePhase) -> void:
 func count_changed(resource: Model.ResourceTypes, count: int):
 	self._wallet.set_resource(resource, count)
 	
-	if self._wallet.size() == 2:		
+	if self._wallet.sum() == 2:		
 		for child in %ControlGroup.get_children():
 			count = self._wallet.get_resource(child.resource)
 			child.set_state(false, count > 0)
 			%ButtonAccept.disabled = false
 
-	if self._wallet.size() != 2:		
+	if self._wallet.sum() != 2:		
 		for child in %ControlGroup.get_children():
 			count = self._wallet.get_resource(child.resource)
 			child.set_state(count < 2, count > 0)			

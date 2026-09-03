@@ -47,7 +47,7 @@ func count_changed(resource: Model.ResourceTypes, count: int):
 	var resources = Game.model.get_bank(Game.self_id)		
 	self._wallet.set_resource(resource, count)
 	
-	if self._wallet.size() == self._target:		
+	if self._wallet.sum() == self._target:		
 		for child in %ControlGroup.get_children():
 			count = self._wallet.get_resource(child.resource)
 			child.set_state(false, count > 0)

@@ -24,7 +24,7 @@ func _ready() -> void:
 	EventBus.play_plenty_card.connect(func(id: int, resources: Wallet): print("EventBus.play_plenty_card | id: %s | resources: %s" % [id, resources]))
 	EventBus.play_road_building_card.connect(func(id: int, roads: AxialEdgeSet): print("EventBus._play_road_building_card | id: %s | roads: %s" % [id, roads]))
 	EventBus.notify.connect(func(id: int, msg: String): print("EventBus.notify | id: %s | msg: %s" % [id, msg]))
-	EventBus.message.connect(func(id: int, msg: String): print("EventBus.message | id: %s | msg: %s" % [id, msg]))
+	EventBus.info.connect(func(id: int, msg: String): print("EventBus.message | id: %s | msg: %s" % [id, msg]))
 	EventBus.model_loaded.connect(func(): print("EventBus.model_loaded"))
 	EventBus.pirate_set.connect(func(hex: Axial): print("EventBus.pirate_set | hex: %s" % [hex]))
 	EventBus.exchange_rate_set.connect(func(id: int, wallet: Wallet): print("EventBus.exchange_rate_set | id: %s | wallet: %s " % [id, wallet]))

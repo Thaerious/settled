@@ -46,5 +46,5 @@ signal set_player_view(id: int)
 
 # Notification Events
 signal notify(id: int, msg: String) # for popup boxes
-signal message(id: int, msg: String) # for infofox messages
+signal info(id: int, msg: String) # for infofox messages
 signal error(msg: String) # for infofox messages

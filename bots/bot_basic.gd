@@ -176,29 +176,55 @@ func phase_main() -> void:
 	var wallet = self._game_model.get_bank(self.id)
 	var cost = Model.COSTS[best[1]]
 
-	# don't trade away resources that we need to buy the item
-	# delete the key so the algorithm ignores it
-	for r in wallet.keys():
-		var r_cost = cost.get_resource(r)
-		var r_wallet = wallet.get_resource(r)
-		var r_exchange = exchange.get_resource(r)
-		if r_wallet - r_cost - r_exchange < 0: exchange.erase(r)
+	# the number of resources needed to purchase
+	var remaining = wallet.duplicate().remove(cost)	
+	var short = remaining.select(func(_r, v): return v < 0)
+	remaining = remaining.select(func(_r, v): return v > 0)
+	var exchangeable = remaining.map(func(r, v): return v / exchange.get_resource(r))
 
-	# Ensure we have enough of each resource
-	for trade_for in wallet.keys():
-		# already have enough resources
-		if wallet.get_resource(trade_for) >= cost.get_resource(trade_for): continue		
+	print("Wallet %s" % wallet)
+	print("Cost %s" % cost)
+	print("Remaining %s" % remaining)
+	print("Short %s %s" % [short, short.sum()])
+	print("Exchangable %s %s" % [exchangeable, exchangeable.sum()])
 
-		var trade_away = ExchangeCalculator.best_source_for(exchange, wallet, trade_for)		
+	# the action can be afforded w/o exchange
+	if short.sum() >= 0:
+		self.do_action(best)
+		return
 
-		if trade_away == trade_for: # could not trade
-			EventBus.request_end_turn.emit()
-			return
-		else:
-			EventBus.request_exchange.emit(self.id, trade_away, trade_for)
-			wallet = self._game_model.get_bank(self.id)
+	if exchangeable.sum() < (short.sum() * -1): 
+		print("Can not exchange for %s" % best[1])
+		EventBus.request_end_turn.emit()
+	else:                                
+		print("Can exchange for %s" % best[1])
+		self.do_exchange(best[1])
+		self.do_action(best)
 
 
+func do_exchange(action: String) -> void:
+	var ex_rates = self._game_model.get_exchange_rate(self.id)
+	var wallet = self._game_model.get_bank(self.id)		
+	var cost = Model.COSTS[action]
+	var remaining = wallet.duplicate().remove(cost)	
+	var short = remaining.select(func(_r, v): return v < 0)
+	short = short.map(func(_r, v): return v * -1)
+	var exchangeable = remaining.map(func(r, v): return v / ex_rates.get_resource(r))
+
+	var ex_keys = exchangeable.to_array()
+	var short_keys = short.to_array()
+
+	ex_keys.sort_custom(func(a, b):
+		return ex_rates.get_resource(a) < ex_rates.get_resource(b)
+	)
+	
+	while short_keys.size() > 0:
+		var next_exchange = ex_keys.pop_front()
+		var next_short = short_keys.pop_front()
+		EventBus.request_exchange.emit(self.id, next_exchange, next_short)
+
+
+func do_action(best: Array[Variant]) -> void:
 	match best[1]:
 		"house": 			
 			EventBus.request_house.emit(self.id, best[2])
@@ -384,7 +410,7 @@ func phase_steal_resource() -> void:
 		if owner == self.id: continue
 		if owner == -1: continue
 
-		var rank = self._game_model.get_bank(owner).size()
+		var rank = self._game_model.get_bank(owner).sum()
 		if rank > best_rank:
 			best_rank = rank
 			best_pid = owner

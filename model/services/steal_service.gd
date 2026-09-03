@@ -12,7 +12,7 @@ func request_steal_from(id: int) -> void:
 	var i = randi_range(0, count - 1)
 	var sum = 0
 
-	if bank.size() > 0:
+	if bank.sum() > 0:
 		for r in Model.ResourceTypes.values():
 			sum = sum + bank.get_resource(r)
 			if sum > i:
