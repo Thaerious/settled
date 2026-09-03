@@ -322,6 +322,10 @@ func do_set_house(id: int, ax: Axial) -> void:
 	EventBus.house_added.emit(id, ax)
 	self._calc_longest_road()
 
+	for corner in ax.hexes():
+		var hex_data = self.get_hex_data(corner)
+		self.do_set_exchange_rate(id, hex_data.port_type)
+
 
 func do_set_initial_house(id: int, ax: Axial) -> void:
 	self.do_set_house(id, ax)
@@ -414,8 +418,18 @@ func do_update_player(id: int) -> void:
 	EventBus.current_player_updated.emit(id)
 
 
-func do_set_exchange_rate(id: int, resource, value: int) -> void:
-	self._exchange_rate[id].set_resource(resource, value)
+func do_set_exchange_rate(id: int, resource:Model.ResourceTypes) -> void:
+	print("Do Set Exchange Rate | id: %s | resource: %s" % [id, Model.ResourceTypes.find_key(resource)])
+	
+	if resource == Model.ResourceTypes.NONE: 
+		return
+	elif resource == Model.ResourceTypes.ANY: 
+		for r in self._exchange_rate[id].keys():
+			if self._exchange_rate[id].get_resource(r) > 3:
+				self._exchange_rate[id].set_resource(r, 3)
+	elif self._exchange_rate[id].get_resource(resource) > 2: 	
+		self._exchange_rate[id].set_resource(resource, 2)
+
 	EventBus.exchange_rate_set.emit(id, self._exchange_rate[id].duplicate())
 
 
