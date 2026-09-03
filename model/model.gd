@@ -354,6 +354,11 @@ func do_remove_resources(id: int, resources:Wallet) -> void:
 	self._player_records[id].resources = self._bank[id].size()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
+	for r in self._bank[id].keys():
+		var count = self._bank[id].get_resource(r)
+		if count < 0: 
+			EventBus.error.emit("On player %s resource %s = %s" % [id, Model.ResourceTypes.find_key(r), count])
+
 
 func do_discard(id: int, resources:Wallet) -> void:
 	self._discard_targets[id] = self._discard_targets[id] - resources.size()

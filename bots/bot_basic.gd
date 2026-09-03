@@ -177,14 +177,14 @@ func phase_main() -> void:
 	var cost = Model.COSTS[best[1]]
 
 	# don't trade away resources that we need to buy the item
-	# set the exchange rate to 0 so the algorithm ignores it
+	# delete the key so the algorithm ignores it
 	for r in wallet.keys():
 		var r_cost = cost.get_resource(r)
 		var r_wallet = wallet.get_resource(r)
 		var r_exchange = exchange.get_resource(r)
-		if r_wallet - r_cost - r_exchange < 0: exchange.set_resource(r, 0)
+		if r_wallet - r_cost - r_exchange < 0: exchange.erase(r)
 
-	# Esnure we have enough of each resource
+	# Ensure we have enough of each resource
 	for trade_for in wallet.keys():
 		# already have enough resources
 		if wallet.get_resource(trade_for) >= cost.get_resource(trade_for): continue		
@@ -223,7 +223,6 @@ func _rank_house() -> Array[Variant]:
 
 	for corner in corners:
 		var rank = self.rank_corner(corner)
-		# if not self.path_builder.distances.values().has(corner.key()): continue
 		var distance = self.path_builder.distances[corner.key()]
 		rank = rank + self.distance_weight(distance)
 
@@ -285,6 +284,7 @@ func _rank_card() -> Array[Variant]:
 
 	print("[%s, %s]" % [rank, "card"])
 	return [rank, "card"]
+
 
 func initial_road() -> void:
 	var edges = self._game_model.get_initial_road_targets(self.id)

@@ -13,6 +13,10 @@ func _init() -> void:
 		EventBus.message.emit(-1, "Current phase %s" % phase_s)
 	)
 
+	EventBus.city_added.connect(func(id, _ax):
+		EventBus.message.emit(-1, "%s placed a city" % name(id))
+	)
+
 	EventBus.house_added.connect(func(id, _ax):
 		EventBus.message.emit(-1, "%s placed a house" % name(id))
 	)	

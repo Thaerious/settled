@@ -19,7 +19,6 @@ func _ready() -> void:
 	self.add_child(StealService.new())
 
 	# Listeners
-	EventBus.error.connect(self._on_error)
 	EventBus.request_roll.connect(self._on_request_roll)
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 	EventBus.request_exchange.connect(self.request_exchange)
@@ -146,10 +145,6 @@ func _play_plenty_card(id: int, wallet: Wallet):
 func _play_road_building_card(id: int, roads: AxialEdgeSet) -> void:
 	for axe in roads:
 		Game.model.do_set_road(id, axe)
-
-
-func _on_error(msg: String) -> void:
-	push_error("Error: %s" % [msg])
 
 
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:

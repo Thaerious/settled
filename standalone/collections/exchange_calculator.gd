@@ -6,7 +6,6 @@ static func best_source_for(exchange: Wallet, wallet: Wallet, target: Model.Reso
 
 	for resource: Model.ResourceTypes in exchange.keys():
 		if resource == target: continue
-		if exchange.get_resource(resource) == 0: continue
 
 		var rate: int = exchange.get_resource(resource)
 

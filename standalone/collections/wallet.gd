@@ -43,6 +43,10 @@ func duplicate() -> Wallet:
 	return  Wallet.new(self)
 
 
+func erase(key: Model.ResourceTypes) -> bool:
+	return self._data.erase(key)
+
+
 var brick: int:
 	get: return self.get_resource(Model.ResourceTypes.BRICK)
 	set(v): self.set_resource(Model.ResourceTypes.BRICK, v)
@@ -172,6 +176,30 @@ func has(that: Wallet) -> bool:
 	if self._data[Model.ResourceTypes.WHEAT] < that.wheat: return false
 	if self._data[Model.ResourceTypes.WOOL]  < that.wool:  return false
 	return true
+
+
+func min() -> Model.ResourceTypes:
+	var min_v = INF
+	var min_r = Model.ResourceTypes.NONE
+	
+	for r in self.keys(): 
+		if self.get_resource(r) < min_v:
+			min_v = self.get_resource(r)
+			min_r = r
+	
+	return min_r
+
+
+func max() -> Model.ResourceTypes:
+	var max_v = -INF
+	var max_r = Model.ResourceTypes.NONE
+	
+	for r in self.keys(): 
+		if self.get_resource(r) > max_v:
+			max_v = self.get_resource(r)
+			max_r = r
+	
+	return max_r
 
 
 func update_view(views: Dictionary, format: String = "%s", field: String = "text") -> void:

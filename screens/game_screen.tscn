@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://i8e1xl7e7oqx"]
+[gd_scene load_steps=21 format=3 uid="uid://i8e1xl7e7oqx"]
 
 [ext_resource type="PackedScene" uid="uid://bvedcrp05i4w5" path="res://hud/dev_controllers/dev_controller.tscn" id="1_ku83o"]
 [ext_resource type="PackedScene" uid="uid://4ustx1deyfr6" path="res://hud/player_card/PlayerCard.tscn" id="2_cm2m7"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://eshrho3u052d" path="res://assets/board/hex_atlas.png" id="13_hco4n"]
 [ext_resource type="Script" uid="uid://dndmka3k4eeyb" path="res://standalone/camera_2d.gd" id="14_0bc1i"]
 [ext_resource type="PackedScene" uid="uid://drbuonwbcqihf" path="res://hud/info_box/basic_info_box.tscn" id="14_4q12g"]
+[ext_resource type="PackedScene" uid="uid://ejtckamibkmq" path="res://hud/error_dialog/error_dialog.tscn" id="18_2qwh6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mixcd"]
 resource_name = "board_tiles"
@@ -140,6 +141,13 @@ offset_right = 1105.0
 offset_bottom = 661.0
 dialog_identifier = "YearOfPlentyDialog"
 visible_phase = 7
+
+[node name="ErrorDialog" parent="CanvasLayer" instance=ExtResource("18_2qwh6")]
+visible = false
+offset_left = 690.0
+offset_top = 393.0
+offset_right = 1086.0
+offset_bottom = 618.0
 
 [node name="OkDialog" parent="CanvasLayer" instance=ExtResource("13_854lc")]
 visible = false
