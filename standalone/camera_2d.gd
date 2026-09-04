@@ -28,6 +28,8 @@ func load_state() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if not event.alt_pressed: return
+
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:			
 			self._dragging = event.pressed

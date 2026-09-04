@@ -59,6 +59,7 @@ func _input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton: return
 	if not event.pressed: return
 	if not event.alt_pressed: return
+	if not event.button_index == MOUSE_BUTTON_LEFT: return
 
 	var local_pos := self.tiles.get_local_mouse_position()
 	var hex := Axial.offset_to_axial(self.tiles.local_to_map(local_pos))

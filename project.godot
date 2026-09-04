@@ -19,7 +19,6 @@ config/icon="res://icon.svg"
 
 MouseHelper="*res://standalone/mouse/mouse_helper.gd"
 EventBus="*res://standalone/event_bus/event_bus.gd"
-MainLogger="*res://standalone/event_bus/event_bus_logger.gd"
 ServiceModule="*res://model/services/main_service.gd"
 Game="*res://model/game_instance.gd"
 

@@ -148,7 +148,7 @@ func phase_pre_roll() -> void:
 
 
 func rank_actions() -> Array[Variant]:  # [rank, item, data, ...]
-	var best = [-INF, null, null] 
+	var best = [-INF, "no-op"] 
 
 	var rank_house = self._rank_house()
 	if rank_house[0] > best[0]: best = rank_house
@@ -168,7 +168,7 @@ func phase_main() -> void:
 	var best = self.rank_actions() # [rank, item, data, ...]
 	print("Bot Basic Best %s" % [best])
 
-	if best[1] == null: 
+	if best[1] == "no-op": 
 		EventBus.request_end_turn.emit()
 		return
 
@@ -190,6 +190,7 @@ func phase_main() -> void:
 
 	# the action can be afforded w/o exchange
 	if short.sum() >= 0:
+		print("Can perform %s for cost" % best[1])
 		self.do_action(best)
 		return
 
@@ -239,7 +240,6 @@ func do_action(best: Array[Variant]) -> void:
 # Decide which long term action to take
 # Returns [rank, action, data, ...]
 func _rank_house() -> Array[Variant]:
-	print("Rank House")
 	var best_rank = -INF
 	var best_axial = null
 
@@ -257,6 +257,8 @@ func _rank_house() -> Array[Variant]:
 			best_axial = corner
 			print("[%s, %s, %s]" % [best_rank, "house", best_axial])
 
+	
+	if best_axial == null: return [-INF, "no-op"]
 	var best_distance = self.path_builder.distances[best_axial.key()]
 
 	if best_distance == 0:
