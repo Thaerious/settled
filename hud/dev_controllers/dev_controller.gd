@@ -1,6 +1,7 @@
 extends HBoxContainer
 
 @onready var board = get_tree().current_scene.get_node("%GameBoard") as GameBoard
+var _last = null
 
 func _on_bot_button_pressed():
 	if Game.model.get_current_phase() == Model.GamePhase.DISCARD:
@@ -40,5 +41,20 @@ func _on_button_test_distance_6_pressed():
 	pass # Replace with function body.
 
 
-func _x():
-	pass # Replace with function body.
+func _show_building_ranks():
+	var axials = []
+	var bot = BotBasic.new(Game.self_id, Game.model)
+	bot.process()
+
+	var building_ranks = bot.rank_buildings()
+	for string in building_ranks:
+		axials.append(string)
+
+	for target in self.board.show_targets(axials):
+		target.area_2d.input_event.connect(func(_1, _2, _3): 
+			if self._last == target: return
+			print(" - %s %s %s" % [target.get_script().get_global_name(), target.axial, building_ranks[target.axial.key()]])
+			target.modulate = Color.RED
+			if self._last != null: self._last.modulate = Color.WHITE
+			self._last = target
+		)

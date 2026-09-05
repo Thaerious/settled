@@ -5,6 +5,11 @@ var _game_model: Model
 var _resource_counts := Wallet.new()
 var id: int
 
+
+func get_ranks() -> Dictionary[String, Array]:
+	return {}
+
+
 # unique resource weights
 var resource_w: Dictionary[Model.ResourceTypes, int] = {
 	Model.ResourceTypes.WOOD: 30,
@@ -100,9 +105,9 @@ func process() -> void:
 	print(" ------------------------- ")		
 
 
+# record the resource counts of occupied tiles
+# adjust the weights for resource type and tile number
 func pre_process() -> void:
-	# record the resource counts of occupied tiles
-	# adjust the weights for resource type and tile number
 	self._resource_counts = Wallet.new()
 	for corner in self._game_model.get_houses(self.id):
 		for hex in corner.hexes():
@@ -147,14 +152,29 @@ func phase_pre_roll() -> void:
 	EventBus.request_roll.emit()
 
 
+# Assign a value to each corner and edge based on what can be
+# built on it.  Roads take the value of highest corner they path to.
+func rank_buildings() -> Dictionary[String, int]:
+	var house_ranks := self.rank_houses()
+	var city_ranks := self.rank_cities()
+	return house_ranks.merged(city_ranks)
+
+
 func rank_actions() -> Array[Variant]:  # [rank, item, data, ...]
-	var best = [-INF, "no-op"] 
+	var ranks := self.rank_buildings()
+	var best := [-INF, "no-op"]
 
-	var rank_house = self._rank_house()
-	if rank_house[0] > best[0]: best = rank_house
-
-	var rank_city = self._rank_city()
-	if rank_city[0] > best[0]: best = rank_city
+	for key in ranks.keys():
+		var rank = ranks[key]
+		if rank <= best[0]: continue
+		if key.contains("."):
+			best = [rank, "road", AxialEdge.from_key(key)]
+		else:
+			var axial = Axial.from_key(key)
+			if self._game_model.get_houses().has(axial):
+				best = [rank, "city", axial]
+			else:
+				best = [rank, "house", axial]
 
 	var rank_card = self._rank_card()
 	if rank_card[0] > best[0]: best = rank_card	
@@ -163,8 +183,6 @@ func rank_actions() -> Array[Variant]:  # [rank, item, data, ...]
 
 
 func phase_main() -> void:
-	print("Phase Main in Bot Basic")
-
 	var best = self.rank_actions() # [rank, item, data, ...]
 	print("Bot Basic Best %s" % [best])
 
@@ -239,9 +257,8 @@ func do_action(best: Array[Variant]) -> void:
 
 # Decide which long term action to take
 # Returns [rank, action, data, ...]
-func _rank_house() -> Array[Variant]:
-	var best_rank = -INF
-	var best_axial = null
+func rank_houses() -> Dictionary[String, int]:
+	var ranks:Dictionary[String, int] = {}
 
 	var reachable := self.path_builder.visited_corners
 	var playable := Game.model.playable_corners()
@@ -251,42 +268,27 @@ func _rank_house() -> Array[Variant]:
 		var rank = self.rank_corner(corner)
 		var distance = self.path_builder.distances[corner.key()]
 		rank = rank + self.distance_weight(distance)
+		ranks[corner.key()] = rank
 
-		if rank > best_rank:
-			best_rank = rank
-			best_axial = corner
-			print("[%s, %s, %s]" % [best_rank, "house", best_axial])
+		var path = self.path_builder.paths[corner.key()]
+		for edge in path: 
+			if not ranks.has(edge.key()) or ranks[edge.key()] < rank:
+				ranks[edge.key()] = rank
 
-	
-	if best_axial == null: return [-INF, "no-op"]
-	var best_distance = self.path_builder.distances[best_axial.key()]
 
-	if best_distance == 0:
-		return [best_rank, "house", best_axial]
-	else:
-		var path = self.path_builder.paths[best_axial.key()]
-		return [best_rank, "road", path[0]]
+	return ranks
 
 
 # Decide which long term action to take
 # Returns [rank, action, data, ...]
-func _rank_city() -> Array[Variant]:
-	print("Rank City")
-	var best_rank = -INF
-	var best_axial = null
+func rank_cities() -> Dictionary[String, int]:
+	var ranks:Dictionary[String, int] = {}
 
 	# Evaluate each valid corner that can accept a city
-	var corners := self._game_model.get_houses(self.id)
-	for corner in corners:
-		print(corner)
-		var rank = self.rank_corner(corner)
+	for corner in self._game_model.get_houses(self.id):
+		ranks[corner.key()] = self.rank_corner(corner)
 
-		if rank > best_rank:
-			best_rank = rank
-			best_axial = corner
-			print("[%s, %s, %s]" % [best_rank, "city", best_axial])
-
-	return [best_rank, "city", best_axial]
+	return ranks
 
 
 func try_buy_road(edge: AxialEdge) -> bool:

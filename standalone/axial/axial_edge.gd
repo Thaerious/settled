@@ -26,6 +26,7 @@ func _init(a: Axial, b:Axial):
 	elif round(s) != s:
 		self.rotation = deg_to_rad(30)
 
+
 func key() -> String:
 	return "%.1f,%.1f,%.1f" % [self.q, self.r, self.s]
 

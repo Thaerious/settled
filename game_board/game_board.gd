@@ -183,13 +183,13 @@ func show_targets(ax: Variant) -> Array[Node]:
 		self.structures.add_child(target)		
 	elif ax is AxialEdge:
 		target = EDGE_TARGET.instantiate()
-		target.axial_edge = ax
+		target.axial = ax
 		targets.append(target)
 		target.position = ax.map_to_local(self.tiles)
 		self.structures.add_child(target)		
 	elif ax is String:
-		if ax.contains("."): self.show_targets(AxialEdge.from_key(ax))
-		else: self.show_targets(Axial.from_key(ax))
+		if ax.contains("."): return self.show_targets(AxialEdge.from_key(ax))
+		else: return self.show_targets(Axial.from_key(ax))
 	else:
 		for _ax in ax: 
 			targets.append_array(self.show_targets(_ax))

@@ -2,7 +2,7 @@ class_name PathBuilder
 extends RefCounted
 
 var distances: Dictionary[String, int] = {}
-var paths: Dictionary[String, Array] = {}
+var paths: Dictionary[String, Array] = {}   # shortest array of edges that reach a corner
 var visited_corners := AxialSet.new()       # a collection of all visited_corners that were visited
 var _white_list: AxialSet
 var _model: Model = null
