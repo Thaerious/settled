@@ -36,10 +36,6 @@ func _init() -> void:
 		EventBus.info.emit(-1, "%s moved the pirate to %s-%s" % [name(), number, resource])
 	)	
 
-	EventBus.request_steal_from.connect(func(id):
-		EventBus.info.emit(-1, "%s stole from %s" % [name(), name(id)])
-	)	
-
 	EventBus.resources_received.connect(func(id, wallet):
 		EventBus.info.emit(-1, "%s Received %s" % [name(id), wallet])
 	)

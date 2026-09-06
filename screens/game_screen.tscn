@@ -151,6 +151,7 @@ offset_right = 1086.0
 offset_bottom = 618.0
 
 [node name="OkDialog" parent="CanvasLayer" instance=ExtResource("13_854lc")]
+unique_name_in_owner = true
 visible = false
 offset_left = 781.0
 offset_top = 49.0

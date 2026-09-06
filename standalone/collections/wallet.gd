@@ -1,21 +1,20 @@
 class_name Wallet
 extends RefCounted
 
-
 var _iter_index: int = 0
 var _iter_array: Array = []
 
 var _print_map: Dictionary[Model.ResourceTypes, String] = {
-	Model.ResourceTypes.BRICK: "br",
 	Model.ResourceTypes.WOOD:  "wd",
+	Model.ResourceTypes.BRICK: "br",
 	Model.ResourceTypes.WHEAT: "wh",	
 	Model.ResourceTypes.WOOL:  "wl",
 	Model.ResourceTypes.ROCK:  "rk",	
 }
 
-var _data: Dictionary[Model.ResourceTypes, int] = {
-	Model.ResourceTypes.BRICK: 0,
+var _data: Dictionary[Model.ResourceTypes, int] = {	
 	Model.ResourceTypes.WOOD:  0,
+	Model.ResourceTypes.BRICK: 0,
 	Model.ResourceTypes.WHEAT: 0,	
 	Model.ResourceTypes.WOOL:  0,
 	Model.ResourceTypes.ROCK:  0,	

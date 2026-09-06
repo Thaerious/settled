@@ -1,4 +1,4 @@
-class_name OKDialog
+class_name OkDialog
 extends DialogPane
 
 func _ready() -> void:

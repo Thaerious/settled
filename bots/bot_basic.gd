@@ -5,10 +5,11 @@ var _game_model: Model
 var _resource_counts := Wallet.new()
 var id: int
 
-
-func get_ranks() -> Dictionary[String, Array]:
-	return {}
-
+var ranks: Dictionary[String, int] = {}:
+	get:
+		if ranks.is_empty(): 
+			ranks = self.rank_all()
+		return ranks
 
 # unique resource weights
 var resource_w: Dictionary[Model.ResourceTypes, int] = {
@@ -83,32 +84,14 @@ func distance_weight(distance: int) -> int:
 func _init(id: int, game_model: Model) -> void:
 	self.id = id
 	self._game_model = game_model
-
-
-func process() -> void:
-	print(" --- Bot Basic Process ---")
-	self.pre_process()
-
-	if self._game_model.get_current_phase() == Model.GamePhase.SETUP:
-		self.phase_setup()
-	elif self._game_model.get_current_phase() == Model.GamePhase.PRE_ROLL:
-		self.phase_pre_roll()		
-	elif self._game_model.get_current_phase() == Model.GamePhase.MAIN:
-		self.phase_main()
-	elif self._game_model.get_current_phase() == Model.GamePhase.MOVE_PIRATE:
-		self.phase_move_pirate()
-	elif self._game_model.get_current_phase() == Model.GamePhase.STEAL_RESOURCES:
-		self.phase_steal_resource()
-	elif self._game_model.get_current_phase() == Model.GamePhase.DISCARD:
-		self.phase_discard()		
-
-	print(" ------------------------- ")		
+	self._pre_process()
 
 
 # record the resource counts of occupied tiles
 # adjust the weights for resource type and tile number
-func pre_process() -> void:
+func _pre_process() -> void:
 	self._resource_counts = Wallet.new()
+
 	for corner in self._game_model.get_houses(self.id):
 		for hex in corner.hexes():
 			var hex_data := self._game_model.get_hex_data(hex)
@@ -116,7 +99,6 @@ func pre_process() -> void:
 			self._resource_counts.add_resource(hex_data.resource)
 			self.resource_w[hex_data.resource] -= self.resource_w_delta
 			self.port_w[hex_data.resource] += self.port_w_delta
-
 
 	for corner in self._game_model.get_cities(self.id):
 		for hex in corner.hexes():
@@ -136,45 +118,111 @@ func pre_process() -> void:
 	self.path_builder = PathBuilder.new().run(self._game_model, self.id)
 
 
-func phase_setup() -> void:
+func process() -> void:
+	var action = self.get_action()
+	action = self.exchange_if(action)
+	print(action)
+	self.do_action(action)
+
+
+func get_action() -> Array[Variant]:
+	if self._game_model.get_current_phase() == Model.GamePhase.SETUP:
+		return self.phase_setup()
+	elif self._game_model.get_current_phase() == Model.GamePhase.PRE_ROLL:
+		return self.phase_pre_roll()		
+	elif self._game_model.get_current_phase() == Model.GamePhase.MAIN:
+		return self.phase_main()
+	elif self._game_model.get_current_phase() == Model.GamePhase.MOVE_PIRATE:
+		return self.phase_move_pirate()
+	elif self._game_model.get_current_phase() == Model.GamePhase.STEAL_RESOURCES:
+		return self.phase_steal_resource()
+	elif self._game_model.get_current_phase() == Model.GamePhase.DISCARD:
+		return self.phase_discard()		
+	else:
+		return [-INF, "no-op"]	
+
+
+func do_action(best: Array[Variant]) -> void:
+	match best[1]:
+		"house": 		
+			EventBus.request_house.emit(self.id, Axial.from_key(best[2]))
+		"city": 
+			EventBus.request_city.emit(self.id, Axial.from_key(best[2]))
+		"road": 
+			EventBus.request_road.emit(self.id, best[2])
+		"card": 
+			EventBus.request_purchase_action_card.emit(self.id)
+		"pirate":
+			EventBus.request_set_pirate.emit(self.id, best[2])
+		"steal":
+			EventBus.request_steal_from.emit(self.id, best[2])
+		"discard":
+			EventBus.request_discard.emit(self.id, best[2])
+		"roll":
+			EventBus.request_roll.emit()
+		"end":
+			EventBus.request_end_turn.emit()
+		"wait":
+			pass
+		"no-op":
+			EventBus.error.emit("Bot no-op")			
+
+
+func phase_setup() -> Array[Variant]:
 	match self._game_model.get_placement_phase(self.id):
 		Model.PlacementPhase.HOUSE1:
-			self.initial_house()
+			return self.initial_house()
 		Model.PlacementPhase.ROAD1:
-			self.initial_road()
+			return self.initial_road()
 		Model.PlacementPhase.HOUSE2:
-			self.initial_house()
+			return self.initial_house()
 		Model.PlacementPhase.ROAD2:
-			self.initial_road()
+			return self.initial_road()
+		_:
+			return [-INF, "no-op"]
 
 
-func phase_pre_roll() -> void:
-	EventBus.request_roll.emit()
+func exchange_if(action: Array[Variant]) -> Array[Variant]:
+	if not action[1] in Model.COSTS.keys(): return action
+	var wallet = self._game_model.get_bank(self.id)
+	var cost = Model.COSTS[action[1]]
+	if wallet.has(cost): return action
+	
+	if poll_exchange(action[1]):
+		self.do_exchange(action[1])
+		return action
+	else:
+		return [-INF, "end"]
+
+
+func phase_pre_roll() -> Array[Variant]:
+	return [INF, "roll"]
 
 
 # Assign a value to each corner and edge based on what can be
 # built on it.  Roads take the value of highest corner they path to.
-func rank_buildings() -> Dictionary[String, int]:
+func rank_all() -> Dictionary[String, int]:
 	var house_ranks := self.rank_houses()
 	var city_ranks := self.rank_cities()
 	return house_ranks.merged(city_ranks)
 
 
-func rank_actions() -> Array[Variant]:  # [rank, item, data, ...]
-	var ranks := self.rank_buildings()
-	var best := [-INF, "no-op"]
+func phase_main() -> Array[Variant]:  # [rank, item, data, ...]
+	var ranks := self.rank_all()
+	var best := [-INF, "end"]
 
-	for key in ranks.keys():
-		var rank = ranks[key]
-		if rank <= best[0]: continue
-		if key.contains("."):
-			best = [rank, "road", AxialEdge.from_key(key)]
+	for key in self.rank_cities():
+		if ranks[key] <= best[0]: continue
+		best = [ranks[key], "city", key]
+
+	for key in self.rank_houses():
+		if ranks[key] <= best[0]: continue
+		var path = self.path_builder.paths[key]
+		if path.size() == 0:
+			best = [ranks[key], "house", key]
 		else:
-			var axial = Axial.from_key(key)
-			if self._game_model.get_houses().has(axial):
-				best = [rank, "city", axial]
-			else:
-				best = [rank, "house", axial]
+			best = [ranks[key], "road", path[0]]
+
 
 	var rank_card = self._rank_card()
 	if rank_card[0] > best[0]: best = rank_card	
@@ -182,17 +230,10 @@ func rank_actions() -> Array[Variant]:  # [rank, item, data, ...]
 	return best
 
 
-func phase_main() -> void:
-	var best = self.rank_actions() # [rank, item, data, ...]
-	print("Bot Basic Best %s" % [best])
-
-	if best[1] == "no-op": 
-		EventBus.request_end_turn.emit()
-		return
-
+func poll_exchange(action: String) -> bool:
 	var exchange = self._game_model.get_exchange_rate(self.id) # this is a copy
 	var wallet = self._game_model.get_bank(self.id)
-	var cost = Model.COSTS[best[1]]
+	var cost = Model.COSTS[action]
 
 	# the number of resources needed to purchase
 	var remaining = wallet.duplicate().remove(cost)	
@@ -205,20 +246,13 @@ func phase_main() -> void:
 	print("Remaining %s" % remaining)
 	print("Short %s %s" % [short, short.sum()])
 	print("Exchangable %s %s" % [exchangeable, exchangeable.sum()])
-
-	# the action can be afforded w/o exchange
-	if short.sum() >= 0:
-		print("Can perform %s for cost" % best[1])
-		self.do_action(best)
-		return
-
-	if exchangeable.sum() < (short.sum() * -1): 
-		print("Can not exchange for %s" % best[1])
-		EventBus.request_end_turn.emit()
-	else:                                
-		print("Can exchange for %s" % best[1])
-		self.do_exchange(best[1])
-		self.do_action(best)
+	
+	if exchangeable.sum() < (short.sum() * -1):
+		# no exchange possible
+		return false
+	else:       
+		# exchange is possible
+		return true                
 
 
 func do_exchange(action: String) -> void:
@@ -243,18 +277,6 @@ func do_exchange(action: String) -> void:
 		EventBus.request_exchange.emit(self.id, next_exchange, next_short)
 
 
-func do_action(best: Array[Variant]) -> void:
-	match best[1]:
-		"house": 			
-			EventBus.request_house.emit(self.id, best[2])
-		"city": 
-			EventBus.request_city.emit(self.id, best[2])
-		"road": 
-			EventBus.request_road.emit(self.id, best[2])
-		"card": 
-			EventBus.request_purchase_action_card.emit(self.id)
-
-
 # Decide which long term action to take
 # Returns [rank, action, data, ...]
 func rank_houses() -> Dictionary[String, int]:
@@ -266,15 +288,7 @@ func rank_houses() -> Dictionary[String, int]:
 
 	for corner in corners:
 		var rank = self.rank_corner(corner)
-		var distance = self.path_builder.distances[corner.key()]
-		rank = rank + self.distance_weight(distance)
 		ranks[corner.key()] = rank
-
-		var path = self.path_builder.paths[corner.key()]
-		for edge in path: 
-			if not ranks.has(edge.key()) or ranks[edge.key()] < rank:
-				ranks[edge.key()] = rank
-
 
 	return ranks
 
@@ -291,51 +305,36 @@ func rank_cities() -> Dictionary[String, int]:
 	return ranks
 
 
-func try_buy_road(edge: AxialEdge) -> bool:
-	var wallet := self._game_model.get_bank(self.id)
-	if wallet.has(Model.COSTS["road"]):
-		EventBus.request_road.emit(self.id, edge)
-		return true
-	
-	return false
-
-
 func _rank_card() -> Array[Variant]:
 	var wallet = self._game_model.get_bank(self.id)
 	var action = self._game_model.get_playable_action_cards(self.id)
 	var cost = Model.COSTS["card"]
 
-	print("Rank Card")
 	var rank = self.base_card
 	if wallet.has(cost): rank = rank + self.afford_card
 
-	if self.pirate_is_on_self() and not action.has_card(Model.ActionCardTypes.SOLDIER):
+	if self._pirate_is_on_self() and not action.has_card(Model.ActionCardTypes.SOLDIER):
 		rank = rank + self.pirate_card
 
-	print("[%s, %s]" % [rank, "card"])
 	return [rank, "card"]
 
 
-func initial_road() -> void:
+func initial_road() -> Array[Variant]:
 	var edges = self._game_model.get_initial_road_targets(self.id)
 	var edge = edges.to_array().pick_random()
-	EventBus.request_road.emit(self.id, edge)
+	return [INF, "road", edge]
 
 
-func initial_house() -> void:
-	var best_rank = -INF
-	var best_axial = null
+func initial_house() -> Array[Variant]:
+	var best = [-INF, "no-op"]
 
 	# check each empty corner and rank them
 	for corner:Axial in self._game_model.playable_corners():
 		var rank = self.rank_corner(corner)
-		if rank > best_rank:
-			best_rank = rank
-			best_axial = corner
-			print("[%s, %s, %s]" % [best_rank, "house", best_axial])
+		if rank > best[0]:
+			best = [rank, "house", corner]
 
-	assert (best_axial != null)
-	EventBus.request_house.emit(self.id, best_axial)
+	return best
 
 
 func rank_corner(corner: Axial) -> int:
@@ -361,28 +360,16 @@ func rank_corner(corner: Axial) -> int:
 	return rank
 
 
-func build_end_points() -> Array[Axial]:
-	var edges = self._game_model.get_roads(self.id)
-
-	for pid in range(0, Game.player_count):
-		if pid == self.id: continue
-		var houses = Game.model.get_all_buildings(pid)
-		edges = edges.difference(houses.edge_map())
-	
-	return edges.corner_map().to_array()
-
-
-func phase_move_pirate() -> void:
-	# count the number of buildins on a hex (house 1, city 2)
+func phase_move_pirate() -> Array[Variant]:
+	# count the number of buildings on a hex (house 1, city 2)
 	# and multiply it by the number_w
 	# skip hexes the player occupies
 
-	var best_rank = -INF
-	var best_hex = null
+	var best = [-INF, "no-op"]	
 
 	var houses = self._game_model.get_houses()
 	var cities = self._game_model.get_cities()
-	var black = self._game_model.get_houses(self.id)
+	var owned_houses = self._game_model.get_houses(self.id)
 
 	for hex_data: HexData in self._game_model.all_hex_data():
 		if hex_data.number == -1: continue
@@ -390,24 +377,21 @@ func phase_move_pirate() -> void:
 		var rank = 0
 
 		for corner in hex_data.axial.corners():				
-			if black.has(corner):
-				rank = 0
+			if owned_houses.has(corner):
 				break
 			elif houses.has(corner):
 				rank = rank + self.pirate_w[hex_data.number]
 			elif cities.has(corner):
 				rank = rank + (self.pirate_w[hex_data.number] * 2)
 
-			if rank > best_rank:
-				best_rank = rank
-				best_hex = hex_data.axial
+			if rank > best[0]:
+				best = [rank, "pirate", hex_data.axial]
 
-	EventBus.request_set_pirate.emit(self.id, best_hex)
+	return best
 
 
-func phase_steal_resource() -> void:
-	var best_rank = -INF
-	var best_pid := -1
+func phase_steal_resource() -> Array[Variant]:
+	var best = [-INF, "no-op"]	
 
 	for corner in self._game_model.get_pirate().corners():
 		var owner = self._game_model.get_owner(corner)
@@ -415,14 +399,13 @@ func phase_steal_resource() -> void:
 		if owner == -1: continue
 
 		var rank = self._game_model.get_bank(owner).sum()
-		if rank > best_rank:
-			best_rank = rank
-			best_pid = owner
+		if rank > best[0]:
+			best = [rank, "steal", owner]
 
-	EventBus.request_steal_from.emit(best_pid)
+	return best
 
 
-func pirate_is_on_self() -> bool:
+func _pirate_is_on_self() -> bool:
 	var pirate = self._game_model.get_pirate()
 	var hex_data = self._game_model.get_hex_data(pirate)
 
@@ -434,23 +417,21 @@ func pirate_is_on_self() -> bool:
 	return first != null
 
 
-func phase_discard() -> void:
+func phase_discard() -> Array[Variant]:
 	var target = self._game_model.get_discard_target(self.id)
 	print("Bot Basic Phase Discard | %s | target: %s" % [self._game_model._discard_targets, target])
-	if target <= 0: return
-	# var action = self.rank_actions()
+	if target <= 0: return [INF, "wait"]
+	# var action = self.best_building_action()
 	var discard = Wallet.new()
 	var wallet = self._game_model.get_bank(self.id)
-	# var cost = Model.COSTS[action[1]]
 
-	# wallet.remove(cost, false) todo account for desired target
+	# todo account for desired target - ie don't discard house resources when going to build a house
 	while target > 0:
 		target = target - 1
 		var resource = wallet.to_array().pick_random()
 		wallet.remove(resource)
 		discard.add_resource(resource)
 	
-	print("[%s, %s, %s]" % [0, "discard", discard])
-	EventBus.request_discard.emit(self.id, discard)
+	return [INF, "discard", discard]
 
 	

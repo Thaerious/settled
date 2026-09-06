@@ -1,0 +1,772 @@
+{
+	"bank": {
+		"0": [
+			2,
+			3,
+			3,
+			1,
+			0
+		],
+		"1": [
+			1,
+			2,
+			2,
+			0,
+			0
+		],
+		"2": [
+			1,
+			4,
+			1,
+			1,
+			0
+		],
+		"3": [
+			0,
+			1,
+			3,
+			1,
+			0
+		]
+	},
+	"cities": {
+
+	},
+	"current_player": 1,
+	"discard_targets": [
+		0,
+		0,
+		0,
+		0
+	],
+	"exchange_rate": {
+		"0": [
+			4,
+			4,
+			4,
+			4,
+			4
+		],
+		"1": [
+			4,
+			4,
+			4,
+			4,
+			4
+		],
+		"2": [
+			4,
+			4,
+			4,
+			2,
+			4
+		],
+		"3": [
+			4,
+			4,
+			4,
+			4,
+			4
+		]
+	},
+	"game_phase": 13,
+	"hex_data": {
+		"-1,-1,2": {
+			"axial": {
+				"q": -1,
+				"r": -1,
+				"s": 2
+			},
+			"number": 9,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 3,
+			"terrain": 4
+		},
+		"-1,-2,3": {
+			"axial": {
+				"q": -1,
+				"r": -2,
+				"s": 3
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"-1,0,1": {
+			"axial": {
+				"q": -1,
+				"r": 0,
+				"s": 1
+			},
+			"number": 3,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 4,
+			"terrain": 2
+		},
+		"-1,1,0": {
+			"axial": {
+				"q": -1,
+				"r": 1,
+				"s": 0
+			},
+			"number": 11,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 4,
+			"terrain": 2
+		},
+		"-1,2,-1": {
+			"axial": {
+				"q": -1,
+				"r": 2,
+				"s": -1
+			},
+			"number": 6,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 1,
+			"terrain": 1
+		},
+		"-1,3,-2": {
+			"axial": {
+				"q": -1,
+				"r": 3,
+				"s": -2
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 4,
+			"ports": [
+				"-1,3,-1",
+				"0,3,-1"
+			],
+			"resource": 5,
+			"terrain": 6
+		},
+		"-2,-1,3": {
+			"axial": {
+				"q": -2,
+				"r": -1,
+				"s": 3
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 6,
+			"ports": [
+				"-1,-1,3",
+				"-1,0,3"
+			],
+			"resource": 5,
+			"terrain": 6
+		},
+		"-2,0,2": {
+			"axial": {
+				"q": -2,
+				"r": 0,
+				"s": 2
+			},
+			"number": 4,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 3,
+			"terrain": 4
+		},
+		"-2,1,1": {
+			"axial": {
+				"q": -2,
+				"r": 1,
+				"s": 1
+			},
+			"number": 3,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 1,
+			"terrain": 1
+		},
+		"-2,2,0": {
+			"axial": {
+				"q": -2,
+				"r": 2,
+				"s": 0
+			},
+			"number": 10,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 0,
+			"terrain": 0
+		},
+		"-2,3,-1": {
+			"axial": {
+				"q": -2,
+				"r": 3,
+				"s": -1
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"-3,0,3": {
+			"axial": {
+				"q": -3,
+				"r": 0,
+				"s": 3
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"-3,1,2": {
+			"axial": {
+				"q": -3,
+				"r": 1,
+				"s": 2
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 2,
+			"ports": [
+				"-2,1,2",
+				"-2,2,2"
+			],
+			"resource": 5,
+			"terrain": 6
+		},
+		"-3,2,1": {
+			"axial": {
+				"q": -3,
+				"r": 2,
+				"s": 1
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"-3,3,0": {
+			"axial": {
+				"q": -3,
+				"r": 3,
+				"s": 0
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 6,
+			"ports": [
+				"-2,3,1",
+				"-2,3,0"
+			],
+			"resource": 5,
+			"terrain": 6
+		},
+		"0,-1,1": {
+			"axial": {
+				"q": 0,
+				"r": -1,
+				"s": 1
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 5
+		},
+		"0,-2,2": {
+			"axial": {
+				"q": 0,
+				"r": -2,
+				"s": 2
+			},
+			"number": 8,
+			"pirate": true,
+			"port_type": 5,
+			"ports": [],
+			"resource": 2,
+			"terrain": 3
+		},
+		"0,-3,3": {
+			"axial": {
+				"q": 0,
+				"r": -3,
+				"s": 3
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 6,
+			"ports": [
+				"1,-2,3",
+				"0,-2,3"
+			],
+			"resource": 5,
+			"terrain": 6
+		},
+		"0,0,0": {
+			"axial": {
+				"q": 0,
+				"r": 0,
+				"s": 0
+			},
+			"number": 12,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 2,
+			"terrain": 3
+		},
+		"0,1,-1": {
+			"axial": {
+				"q": 0,
+				"r": 1,
+				"s": -1
+			},
+			"number": 5,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 4,
+			"terrain": 2
+		},
+		"0,2,-2": {
+			"axial": {
+				"q": 0,
+				"r": 2,
+				"s": -2
+			},
+			"number": 6,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 0,
+			"terrain": 0
+		},
+		"0,3,-3": {
+			"axial": {
+				"q": 0,
+				"r": 3,
+				"s": -3
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"1,-1,0": {
+			"axial": {
+				"q": 1,
+				"r": -1,
+				"s": 0
+			},
+			"number": 5,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 2,
+			"terrain": 3
+		},
+		"1,-2,1": {
+			"axial": {
+				"q": 1,
+				"r": -2,
+				"s": 1
+			},
+			"number": 11,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 2,
+			"terrain": 3
+		},
+		"1,-3,2": {
+			"axial": {
+				"q": 1,
+				"r": -3,
+				"s": 2
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"1,0,-1": {
+			"axial": {
+				"q": 1,
+				"r": 0,
+				"s": -1
+			},
+			"number": 10,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 3,
+			"terrain": 4
+		},
+		"1,1,-2": {
+			"axial": {
+				"q": 1,
+				"r": 1,
+				"s": -2
+			},
+			"number": 2,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 1,
+			"terrain": 1
+		},
+		"1,2,-3": {
+			"axial": {
+				"q": 1,
+				"r": 2,
+				"s": -3
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 3,
+			"ports": [
+				"1,2,-2",
+				"2,2,-2"
+			],
+			"resource": 5,
+			"terrain": 6
+		},
+		"2,-1,-1": {
+			"axial": {
+				"q": 2,
+				"r": -1,
+				"s": -1
+			},
+			"number": 8,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 1,
+			"terrain": 1
+		},
+		"2,-2,0": {
+			"axial": {
+				"q": 2,
+				"r": -2,
+				"s": 0
+			},
+			"number": 4,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 3,
+			"terrain": 4
+		},
+		"2,-3,1": {
+			"axial": {
+				"q": 2,
+				"r": -3,
+				"s": 1
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 0,
+			"ports": [
+				"2,-2,1",
+				"2,-2,2"
+			],
+			"resource": 5,
+			"terrain": 6
+		},
+		"2,0,-2": {
+			"axial": {
+				"q": 2,
+				"r": 0,
+				"s": -2
+			},
+			"number": 9,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 0,
+			"terrain": 0
+		},
+		"2,1,-3": {
+			"axial": {
+				"q": 2,
+				"r": 1,
+				"s": -3
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"3,-1,-2": {
+			"axial": {
+				"q": 3,
+				"r": -1,
+				"s": -2
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"3,-2,-1": {
+			"axial": {
+				"q": 3,
+				"r": -2,
+				"s": -1
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 6,
+			"ports": [
+				"3,-1,-1",
+				"3,-1,0"
+			],
+			"resource": 5,
+			"terrain": 6
+		},
+		"3,-3,0": {
+			"axial": {
+				"q": 3,
+				"r": -3,
+				"s": 0
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 5,
+			"ports": [],
+			"resource": 5,
+			"terrain": 6
+		},
+		"3,0,-3": {
+			"axial": {
+				"q": 3,
+				"r": 0,
+				"s": -3
+			},
+			"number": -1,
+			"pirate": false,
+			"port_type": 1,
+			"ports": [
+				"3,1,-2",
+				"3,0,-2"
+			],
+			"resource": 5,
+			"terrain": 6
+		}
+	},
+	"houses": {
+		"-1,2,0": 3,
+		"0,-1,2": 3,
+		"0,2,-1": 0,
+		"1,-2,2": 1,
+		"1,0,0": 0,
+		"1,2,-2": 2,
+		"2,-1,0": 2,
+		"2,0,-1": 1
+	},
+	"initial_houses": [
+		[
+			{
+				"q": 0,
+				"r": 2,
+				"s": -1
+			},
+			{
+				"q": 1,
+				"r": 0,
+				"s": 0
+			}
+		],
+		[
+			{
+				"q": 2,
+				"r": 0,
+				"s": -1
+			},
+			{
+				"q": 1,
+				"r": -2,
+				"s": 2
+			}
+		],
+		[
+			{
+				"q": 2,
+				"r": -1,
+				"s": 0
+			},
+			{
+				"q": 1,
+				"r": 2,
+				"s": -2
+			}
+		],
+		[
+			{
+				"q": -1,
+				"r": 2,
+				"s": 0
+			},
+			{
+				"q": 0,
+				"r": -1,
+				"s": 2
+			}
+		]
+	],
+	"largest_army": -1,
+	"longest_road": -1,
+	"owned_action_cards": {
+		"0": [
+			0,
+			0,
+			0,
+			0,
+			0
+		],
+		"1": [
+			0,
+			0,
+			0,
+			0,
+			0
+		],
+		"2": [
+			0,
+			0,
+			0,
+			0,
+			0
+		],
+		"3": [
+			0,
+			0,
+			0,
+			0,
+			0
+		]
+	},
+	"pirate": "0,-2,2",
+	"playable_action_cards": {
+		"0": [
+			0,
+			0,
+			0,
+			0,
+			0
+		],
+		"1": [
+			0,
+			0,
+			0,
+			0,
+			0
+		],
+		"2": [
+			0,
+			0,
+			0,
+			0,
+			0
+		],
+		"3": [
+			0,
+			0,
+			0,
+			0,
+			0
+		]
+	},
+	"player_records": {
+		"0": {
+			"action_cards": 0,
+			"name": "Adam",
+			"resources": 9,
+			"roads": 1,
+			"soldiers": 0,
+			"victory_points": 2
+		},
+		"1": {
+			"action_cards": 0,
+			"name": "Barney",
+			"resources": 5,
+			"roads": 1,
+			"soldiers": 0,
+			"victory_points": 2
+		},
+		"2": {
+			"action_cards": 0,
+			"name": "Charles III",
+			"resources": 7,
+			"roads": 1,
+			"soldiers": 0,
+			"victory_points": 2
+		},
+		"3": {
+			"action_cards": 0,
+			"name": "Diana",
+			"resources": 5,
+			"roads": 1,
+			"soldiers": 0,
+			"victory_points": 2
+		}
+	},
+	"ports": {
+		"-1,-1,3": 6,
+		"-1,0,3": 6,
+		"-1,3,-1": 4,
+		"-2,1,2": 2,
+		"-2,2,2": 2,
+		"-2,3,0": 6,
+		"-2,3,1": 6,
+		"0,-2,3": 6,
+		"0,3,-1": 4,
+		"1,-2,3": 6,
+		"1,2,-2": 3,
+		"2,-2,1": 0,
+		"2,-2,2": 0,
+		"2,2,-2": 3,
+		"3,-1,-1": 6,
+		"3,-1,0": 6,
+		"3,0,-2": 1,
+		"3,1,-2": 1
+	},
+	"rng_state": 4628154368366693376,
+	"road_building": 2,
+	"roads": {
+		"-1.0,2.0,0.5": 3,
+		"0.5,-1.0,2.0": 3,
+		"0.5,2.0,-1.0": 0,
+		"1.0,-1.5,2.0": 1,
+		"1.0,2.5,-2.0": 2,
+		"1.5,0.0,0.0": 0,
+		"2.0,-1.0,0.5": 2,
+		"2.0,0.0,-0.5": 1
+	}
+}

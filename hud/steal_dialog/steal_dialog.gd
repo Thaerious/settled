@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func _on_clicked(index: int) -> void:
-	EventBus.request_steal_from.emit(index)
+	EventBus.request_steal_from.emit(Game.self_id, index)
 	
 
 func _on_visibility_changed() -> void:

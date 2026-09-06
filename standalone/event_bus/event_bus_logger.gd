@@ -22,7 +22,7 @@ func _ready() -> void:
 	EventBus.request_road.connect(func(id: int, edge: AxialEdge):event_print("EventBus.request_road | id: %s | edge: %s" % [id, edge]))
 	EventBus.request_exchange.connect(func(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes):event_print("EventBus.request_exchange | id: %s | from: %s | to: %s" % [id, Model.ResourceTypes.find_key(from), Model.ResourceTypes.find_key(to)]))
 	EventBus.request_set_pirate.connect(func(id: int, hex: Axial):event_print("EventBus.request_set_pirate | id: %s | hex: %s" % [id, hex]))
-	EventBus.request_steal_from.connect(func(id: int):event_print("EventBus.request_steal_from | id: %s" % [id]))
+	EventBus.request_steal_from.connect(func(to: int, from:int):event_print("EventBus.request_steal_from | to: %s | from: %s" % [to, from]))
 	EventBus.request_add_action_card.connect(func(id: int, c: Model.ActionCardTypes):event_print("EventBus.request_add_action_card | id: %s | c: %s" % [id, Model.ActionCardTypes.find_key(c)]))
 	EventBus.request_discard.connect(func(id: int, discard: Wallet):event_print("EventBus.request_discard | id: %s | discard: %s" % [id, discard]))
 	EventBus.play_monopoly_card.connect(func(id: int, resource: Model.ResourceTypes):event_print("EventBus.play_monopoly_card | id: %s | resource: %s" % [id, Model.ResourceTypes.find_key(resource)]))
