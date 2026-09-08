@@ -15,3 +15,7 @@ func _on_message(id: int, message: String) -> void:
 func append_text(text: String) -> void:
 	%RichTextLabel.append_text(text)
 	%RichTextLabel.append_text("\n")
+
+
+func clear() -> void:
+	%RichTextLabel.clear()

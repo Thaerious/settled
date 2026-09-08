@@ -45,4 +45,6 @@ func _ready() -> void:
 	EventBus.resources_received.connect(func(id: int, wallet: Wallet):event_print("EventBus.resources_received | id: %s | wallet: %s" % [id, wallet]))
 	EventBus.set_player_view.connect(func(id: int):event_print("EventBus.set_player_view | id: %s" % [id]))
 	EventBus.error.connect(func(msg: String):event_print("EventBus.error | msg: %s" % [msg]))
+	EventBus.request_end_turn.connect(func():event_print("EventBus.request_end_turn"))
+	EventBus.end_turn.connect(func(id:int):event_print("EventBus.end_turn | id: %s" % [id]))
 	

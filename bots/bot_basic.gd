@@ -119,35 +119,39 @@ func _pre_process() -> void:
 
 
 func process() -> void:
-	var action = self.get_action()
-	action = self.exchange_if(action)
-	print(action)
+	var action = self.get_action()	
 	self.do_action(action)
 
 
 func get_action() -> Array[Variant]:
+	var action = [-INF, "no-op"]	
+
 	if self._game_model.get_current_phase() == Model.GamePhase.SETUP:
-		return self.phase_setup()
+		action = self.phase_setup()
 	elif self._game_model.get_current_phase() == Model.GamePhase.PRE_ROLL:
-		return self.phase_pre_roll()		
+		action = self.phase_pre_roll()		
 	elif self._game_model.get_current_phase() == Model.GamePhase.MAIN:
-		return self.phase_main()
+		action = self.phase_main()
+		print("Bot Desired Action %s" % [action])
+		action = self.exchange_if(action)
 	elif self._game_model.get_current_phase() == Model.GamePhase.MOVE_PIRATE:
-		return self.phase_move_pirate()
+		action = self.phase_move_pirate()
 	elif self._game_model.get_current_phase() == Model.GamePhase.STEAL_RESOURCES:
-		return self.phase_steal_resource()
+		action = self.phase_steal_resource()
 	elif self._game_model.get_current_phase() == Model.GamePhase.DISCARD:
-		return self.phase_discard()		
-	else:
-		return [-INF, "no-op"]	
+		action = self.phase_discard()		
+
+	return action
 
 
 func do_action(best: Array[Variant]) -> void:
+	print("bot_basic.do_action(%s)" % [best])
+
 	match best[1]:
 		"house": 		
-			EventBus.request_house.emit(self.id, Axial.from_key(best[2]))
+			EventBus.request_house.emit(self.id, best[2])
 		"city": 
-			EventBus.request_city.emit(self.id, Axial.from_key(best[2]))
+			EventBus.request_city.emit(self.id, best[2])
 		"road": 
 			EventBus.request_road.emit(self.id, best[2])
 		"card": 
@@ -213,15 +217,15 @@ func phase_main() -> Array[Variant]:  # [rank, item, data, ...]
 
 	for key in self.rank_cities():
 		if ranks[key] <= best[0]: continue
-		best = [ranks[key], "city", key]
+		best = [ranks[key], "city", Axial.from_key(key)]
 
 	for key in self.rank_houses():
 		if ranks[key] <= best[0]: continue
 		var path = self.path_builder.paths[key]
 		if path.size() == 0:
-			best = [ranks[key], "house", key]
+			best = [ranks[key], "house", Axial.from_key(key)]
 		else:
-			best = [ranks[key], "road", path[0]]
+			best = [ranks[key], "road", AxialEdge.from_key(path[0])]
 
 
 	var rank_card = self._rank_card()
@@ -241,11 +245,11 @@ func poll_exchange(action: String) -> bool:
 	remaining = remaining.select(func(_r, v): return v > 0)
 	var exchangeable = remaining.map(func(r, v): return v / exchange.get_resource(r))
 
-	print("Wallet %s" % wallet)
-	print("Cost %s" % cost)
-	print("Remaining %s" % remaining)
-	print("Short %s %s" % [short, short.sum()])
-	print("Exchangable %s %s" % [exchangeable, exchangeable.sum()])
+	# print("Wallet %s" % wallet)
+	# print("Cost %s" % cost)
+	# print("Remaining %s" % remaining)
+	# print("Short %s %s" % [short, short.sum()])
+	# print("Exchangable %s %s" % [exchangeable, exchangeable.sum()])
 	
 	if exchangeable.sum() < (short.sum() * -1):
 		# no exchange possible
@@ -325,7 +329,7 @@ func initial_road() -> Array[Variant]:
 	return [INF, "road", edge]
 
 
-func initial_house() -> Array[Variant]:
+func initial_house() -> Array[Variant]:	
 	var best = [-INF, "no-op"]
 
 	# check each empty corner and rank them
@@ -418,8 +422,7 @@ func _pirate_is_on_self() -> bool:
 
 
 func phase_discard() -> Array[Variant]:
-	var target = self._game_model.get_discard_target(self.id)
-	print("Bot Basic Phase Discard | %s | target: %s" % [self._game_model._discard_targets, target])
+	var target = self._game_model.get_discard_target(self.id)	
 	if target <= 0: return [INF, "wait"]
 	# var action = self.best_building_action()
 	var discard = Wallet.new()

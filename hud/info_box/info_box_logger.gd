@@ -4,14 +4,14 @@ extends RefCounted
 
 func _init() -> void:
 
-	EventBus.current_player_updated.connect(func(id: int):
-		EventBus.info.emit(-1, "Now Playing %s" % name(id))
-	)
+	# EventBus.current_player_updated.connect(func(id: int):
+	# 	EventBus.info.emit(-1, "Now Playing %s" % name(id))
+	# )
 
-	EventBus.current_phase_updated.connect(func(phase_i):
-		var phase_s = Model.GamePhase.find_key(phase_i)
-		EventBus.info.emit(-1, "Current phase %s" % phase_s)
-	)
+	# EventBus.current_phase_updated.connect(func(phase_i):
+	# 	var phase_s = Model.GamePhase.find_key(phase_i)
+	# 	EventBus.info.emit(-1, "Current phase %s" % phase_s)
+	# )
 
 	EventBus.city_added.connect(func(id, _ax):
 		EventBus.info.emit(-1, "%s placed a city" % name(id))
@@ -38,6 +38,11 @@ func _init() -> void:
 
 	EventBus.resources_received.connect(func(id, wallet):
 		EventBus.info.emit(-1, "%s Received %s" % [name(id), wallet])
+	)
+
+	EventBus.end_turn.connect(func(id: int):
+		var name = Game.model.get_player_record(id).name
+		EventBus.info.emit(-1, "--- Next Player [%s] ---" % [name])
 	)
 
 func name(id: int = -1) -> String:

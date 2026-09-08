@@ -26,7 +26,6 @@ static func save(model: Model, path: String) -> void:
 	}
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data, "\t"))
-	print("HERE %s" % path)
 
 
 static func serialize_dictionary(dict: Dictionary):

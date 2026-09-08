@@ -48,3 +48,4 @@ signal set_player_view(id: int)
 signal notify(id: int, msg: String) # for popup boxes
 signal info(id: int, msg: String) # for infofox messages
 signal error(msg: String) # for infofox messages
+signal end_turn(id: int) # emitted between turns, id is the next player

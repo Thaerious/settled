@@ -303,10 +303,11 @@ func do_end_turn() -> void:
 	# set turn
 	self._game_phase = Model.GamePhase.PRE_ROLL
 
-	# emit events
+	# emit events	
 	EventBus.current_phase_updated.emit(self.get_current_phase())
 	EventBus.current_player_updated.emit(self.get_current_player())	
 	EventBus.action_cards_updated.emit(self._current_player, owned, playable)
+	EventBus.end_turn.emit(self._current_player)
 	
 
 func do_set_dice(d1: int, d2:int) -> void:
@@ -398,7 +399,6 @@ func update_discard_targets() -> void:
 	print("Model Update Discard Targets %s" % [self._discard_targets])
 
 func do_update_phase(phase: GamePhase) -> void:
-	print("Model Do Update Phase %s" % [phase])
 	self._game_phase = phase
 
 	if phase == Model.GamePhase.ROAD_BUILDING:
