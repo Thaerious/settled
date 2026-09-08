@@ -59,26 +59,27 @@ var number_w: Dictionary[int, int] = {
 	12: 0
 }
 
-# weight for distance (number of roads to build)
-var distance_w: Dictionary[int, int] = {
-	0: 30,
-	1: 20,
-	2: 5,
-	3: 5,
-	4: 0
+# multiplicative, weight for time (houses include roads)
+var time_w: Dictionary[int, float] = {
+	0: 1.0,
+	1: 0.8,
+	2: 0.6,
+	3: 0.4,
+	4: 0.2,
+	-1: 0.2,	
 }
 
 var path_builder: PathBuilder = null
-var port_w_delta: int = 10 # applied for each resource
+var port_w_delta: int = 30 # applied for each resource
 var resource_w_delta: int = 5
 var number_w_delta: int = 15
 var base_card: int = 30
 var afford_card: int = 15
 var pirate_card: int = 30
 
-func distance_weight(distance: int) -> int:
-	if distance_w.has(distance): return distance_w[distance]
-	return 0
+func time_weight(distance: int) -> float:
+	if time_w.has(distance): return time_w[distance]
+	return time_w[-1]
 
 
 func _init(id: int, game_model: Model) -> void:
@@ -215,17 +216,17 @@ func phase_main() -> Array[Variant]:  # [rank, item, data, ...]
 	var ranks := self.rank_all()
 	var best := [-INF, "end"]
 
-	for key in self.rank_cities():
-		if ranks[key] <= best[0]: continue
-		best = [ranks[key], "city", Axial.from_key(key)]
-
 	for key in self.rank_houses():
 		if ranks[key] <= best[0]: continue
 		var path = self.path_builder.paths[key]
 		if path.size() == 0:
 			best = [ranks[key], "house", Axial.from_key(key)]
 		else:
-			best = [ranks[key], "road", AxialEdge.from_key(path[0])]
+			best = [ranks[key], "road", path[0]]
+
+	for key in self.rank_cities():
+		if ranks[key] <= best[0]: continue
+		best = [ranks[key], "city", Axial.from_key(key)]
 
 
 	var rank_card = self._rank_card()
@@ -290,9 +291,18 @@ func rank_houses() -> Dictionary[String, int]:
 	var playable := Game.model.playable_corners()
 	var corners := reachable.intersect(playable)
 
+	# for each corner that can take a house
 	for corner in corners:
 		var rank = self.rank_corner(corner)
-		ranks[corner.key()] = rank
+		var distance = self.path_builder.paths[corner.key()].size()
+		var house_cost := Model.COSTS["house"]
+		var road_cost := Model.COSTS["road"].map(func(_r, v): return v * distance)
+		house_cost.add_resources(road_cost)
+		var est = TimeEstimator.new(self.id, self._game_model)
+		var time = est.estimate(house_cost)
+		var final_rank = rank * self.time_weight(time)
+		ranks[corner.key()] = int(final_rank)
+		print("House | ax: %s | time: %s | %s * %s = %s" % [corner, time, rank, self.time_weight(time), final_rank])
 
 	return ranks
 
@@ -304,7 +314,13 @@ func rank_cities() -> Dictionary[String, int]:
 
 	# Evaluate each valid corner that can accept a city
 	for corner in self._game_model.get_houses(self.id):
-		ranks[corner.key()] = self.rank_corner(corner)
+		var rank = self.rank_corner(corner)
+		var est = TimeEstimator.new(self.id, self._game_model)
+		var time = est.estimate(Model.COSTS["city"])
+		var final_rank = rank * self.time_weight(time)
+		ranks[corner.key()] = int(final_rank)
+		print("City | ax: %s | time: %s | %s * %s = %s" % [corner, time, rank, self.time_weight(time), final_rank])
+
 
 	return ranks
 
@@ -436,5 +452,3 @@ func phase_discard() -> Array[Variant]:
 		discard.add_resource(resource)
 	
 	return [INF, "discard", discard]
-
-	

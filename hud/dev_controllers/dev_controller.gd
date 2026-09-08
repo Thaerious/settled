@@ -68,3 +68,11 @@ func _on_target_click(target: Node2D, event: InputEvent, bot: BotBasic) -> void:
 		self._last.modulate = Color.WHITE
 
 	self._last = target
+
+
+func _on_estimate_house() -> void:
+	var est = TimeEstimator.new(Game.self_id, Game.model)
+	print("A house will take ~%s turns to afford" % [est.estimate(Model.COSTS["house"])])
+	print("A road will take ~%s turns to afford" % [est.estimate(Model.COSTS["road"])])
+	print("A city will take ~%s turns to afford" % [est.estimate(Model.COSTS["city"])])
+	print("A card will take ~%s turns to afford" % [est.estimate(Model.COSTS["card"])])

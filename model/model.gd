@@ -81,7 +81,7 @@ enum PlacementPhase{
 	NONE
 }
 
-static var COSTS = {
+static var COSTS :Dictionary[String, Wallet] = {
 	"house" : Wallet.new([ResourceTypes.WOOD, ResourceTypes.BRICK, ResourceTypes.WOOL, ResourceTypes.WHEAT]),
 	"city" :  Wallet.new([ResourceTypes.WHEAT, ResourceTypes.WHEAT, ResourceTypes.WHEAT, ResourceTypes.ROCK, ResourceTypes.ROCK]),
 	"road" :  Wallet.new([ResourceTypes.WOOD, ResourceTypes.BRICK,]),
