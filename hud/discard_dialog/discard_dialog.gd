@@ -61,5 +61,4 @@ func count_changed(resource: Model.ResourceTypes, count: int):
 
 
 func _accept() -> void:
-	print(self._wallet)
 	EventBus.request_discard.emit(Game.self_id, self._wallet)

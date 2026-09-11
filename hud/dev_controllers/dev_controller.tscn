@@ -175,7 +175,7 @@ text = "Clear Targets
 
 [node name="ButtonTestDistance7" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
-text = "Estimate House
+text = "Estimates
 "
 
 [node name="PhaseButtons" type="VBoxContainer" parent="HBoxContainer"]

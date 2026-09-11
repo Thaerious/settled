@@ -71,8 +71,24 @@ func _on_target_click(target: Node2D, event: InputEvent, bot: BotBasic) -> void:
 
 
 func _on_estimate_house() -> void:
-	var est = TimeEstimator.new(Game.self_id, Game.model)
+	var est = TimeEstimator.new(Game.self_id, Game.model)	
+
+	var house_road = Model.COSTS["road"].duplicate().add_resources(Model.COSTS["house"])
+
 	print("A house will take ~%s turns to afford" % [est.estimate(Model.COSTS["house"])])
 	print("A road will take ~%s turns to afford" % [est.estimate(Model.COSTS["road"])])
+	print("A house + road will take ~%s turns to afford" % [est.estimate(house_road)])
 	print("A city will take ~%s turns to afford" % [est.estimate(Model.COSTS["city"])])
 	print("A card will take ~%s turns to afford" % [est.estimate(Model.COSTS["card"])])
+
+func _exchange_for_house() -> void:
+	print("exchange house %s" % Bot.do_exchange(Game.self_id, Game.model, Model.COSTS["house"]))
+
+func _exchange_for_city() -> void:
+	print("exchange city %s" % Bot.do_exchange(Game.self_id, Game.model, Model.COSTS["city"]))
+
+func _exchange_for_road() -> void:
+	print("exchange road %s" % Bot.do_exchange(Game.self_id, Game.model, Model.COSTS["road"]))
+
+func _exchange_for_card() -> void:
+	print("exchange card %s" % Bot.do_exchange(Game.self_id, Game.model, Model.COSTS["card"]))			

@@ -88,7 +88,7 @@ func _request_add_action_card(id: int, c: Model.ActionCardTypes) -> void:
 	Game.model.do_add_action_card(id, c)
 
 
-func _request_set_pirate(_id: int, hex: Axial):	
+func _request_set_pirate(id: int, hex: Axial):	
 	if hex.equals(Game.model.get_pirate()):
 		Game.model.do_set_pirate(hex)
 		return
@@ -101,7 +101,7 @@ func _request_set_pirate(_id: int, hex: Axial):
 	for ax:Axial in buildings:
 		var corner_owner = Game.model.get_owner(ax)
 		if corner_owner == -1: continue
-		if corner_owner == Game.self_id: continue
+		if corner_owner == id: continue
 		Game.model.do_update_phase(GamePhase.STEAL_RESOURCES)
 		return
 
@@ -148,8 +148,8 @@ func _play_road_building_card(id: int, roads: AxialEdgeSet) -> void:
 
 
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:
-	var rate = Game.model.get_exchange_rate(Game.self_id).get_resource(from)
-	var count = Game.model.get_bank(Game.self_id).get_resource(from)
+	var rate = Game.model.get_exchange_rate(id).get_resource(from)
+	var count = Game.model.get_bank(id).get_resource(from)
 	if count < rate: return
 
 	var from_array: Array[Model.ResourceTypes] = []

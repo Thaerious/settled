@@ -59,7 +59,6 @@ func get_ui_target(drag_layer: int) -> Control:
 	if not ui_target is Control: return null
 	ui_target = ui_target.owner
 
-	GeneralUtil.print_once("Get UI Target %s %s" % [ui_target, ("drop_layer" in ui_target)])
 	# A drop target MUST have a drag_layer:int field
 	if not "drop_layer" in ui_target: return null
 

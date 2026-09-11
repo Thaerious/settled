@@ -121,13 +121,15 @@ func copy_from(that: Variant) -> void:
 			self.add_resource(r)
 
 
-func add_resources(that: Variant) -> void:
+func add_resources(that: Variant) -> Wallet:
 	if that is Dictionary:
 		for r in self._data.keys(): self.add_resource(r, that[r])
 	elif that is Wallet:
 		for r in self._data.keys(): self.add_resource(r, that.get_resource(r))
 	else: # array
 		for r in that: self.add_resource(r)
+
+	return self
 
 
 func remove_resource(r: Model.ResourceTypes, amount: int = 1) -> void:
@@ -181,14 +183,19 @@ func has_resource(r: Model.ResourceTypes, count: int = 1) -> bool:
 	return self._data[r] >= count
 
 
-func has(that: Wallet) -> bool:
-	if self._data[Model.ResourceTypes.BRICK] < that.brick: return false
-	if self._data[Model.ResourceTypes.WOOD]  < that.wood:  return false
-	if self._data[Model.ResourceTypes.ROCK]  < that.rock:  return false
-	if self._data[Model.ResourceTypes.WHEAT] < that.wheat: return false
-	if self._data[Model.ResourceTypes.WOOL]  < that.wool:  return false
-	return true
+func has(that: Variant, quantity: int = 0) -> bool:
+	if that is Wallet:
+		if self._data[Model.ResourceTypes.BRICK] < that.brick: return false
+		if self._data[Model.ResourceTypes.WOOD]  < that.wood:  return false
+		if self._data[Model.ResourceTypes.ROCK]  < that.rock:  return false
+		if self._data[Model.ResourceTypes.WHEAT] < that.wheat: return false
+		if self._data[Model.ResourceTypes.WOOL]  < that.wool:  return false
+		return true
 
+	if that is Model.ResourceTypes:
+		if self._data[that] >= quantity: return true
+
+	return false
 
 func min() -> Model.ResourceTypes:
 	var min_v = INF

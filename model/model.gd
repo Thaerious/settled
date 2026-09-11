@@ -396,7 +396,6 @@ func update_discard_targets() -> void:
 		if self._bank[pid].sum() <= 7: continue
 		self._discard_targets[pid] = self._bank[pid].sum() / 2
 
-	print("Model Update Discard Targets %s" % [self._discard_targets])
 
 func do_update_phase(phase: GamePhase) -> void:
 	self._game_phase = phase
@@ -419,8 +418,6 @@ func do_update_player(id: int) -> void:
 
 
 func do_set_exchange_rate(id: int, resource:Model.ResourceTypes) -> void:
-	print("Do Set Exchange Rate | id: %s | resource: %s" % [id, Model.ResourceTypes.find_key(resource)])
-	
 	if resource == Model.ResourceTypes.NONE: 
 		return
 	elif resource == Model.ResourceTypes.ANY: 
