@@ -49,11 +49,11 @@ enum ActionCardTypes {
 }
 
 const CARD_DISTRIBUTION : Dictionary[Model.ActionCardTypes, int] = {
-	ActionCardTypes.SOLDIER: 56,
-	ActionCardTypes.BUILD_ROAD: 20,
-	ActionCardTypes.PLENTY: 8,
-	ActionCardTypes.MONOPOLY: 8,
-	ActionCardTypes.VICTORY_POINTS: 8,
+	ActionCardTypes.SOLDIER: 14,
+	ActionCardTypes.BUILD_ROAD: 2,
+	ActionCardTypes.PLENTY: 2,
+	ActionCardTypes.MONOPOLY: 2,
+	ActionCardTypes.VICTORY_POINTS: 5,
 }
 
 enum GamePhase {
@@ -89,12 +89,17 @@ static var COSTS :Dictionary[String, Wallet] = {
 }
 
 const INT_MAX = 9223372036854775807 
+const INITIAL_RESOURCE_COUNT = 19
 
 var _current_player: int = 0  						# the current active player
 var _game_phase: GamePhase = GamePhase.NOT_STARTED  # the currnet phase
 var _longest_road:int = -1                          # player who owns longest road (-1 is none)
 var _largest_army:int = -1                          # player with the largest army (-1 is none)
 var _pirate: Axial                                  # the axial the pirate is one (starts on desert)
+var _remaining_houses: Dictionary[int, int]        # map of player id -> remaining house pieces
+var _remaining_cities: Dictionary[int, int]        # map of player id -> remaining city pieces
+var _remaining_roads: Dictionary[int, int]         # map of player id -> remaining road pieces
+var _remaining_resources:= Wallet.new()            # resources available in the bank
 
 var _player_records: Dictionary[int, PlayerRecord] = {}  # player information map
 var _hex_data: Dictionary[String, HexData] = {}          # hex (tile) data map for all tiles (incl water)
@@ -115,6 +120,8 @@ var _dice: Array[int] = [1, 1]                        # this is used for dev & d
 var _discard_targets: Array[int] = []                 # during discard players discard to this amount
 var _valid_corners: AxialSet = null                   # set once, corners that can be played on
 var _valid_edges: AxialEdgeSet = null                 # set once, edges that can be played on
+var _remaining_action_cards := ActionCardWallet.new() # remaining action cards that can be drawn
+var _played_action_cards := ActionCardWallet.new()    # action cards that have been played
 var rng := RandomNumberGenerator.new()
 
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
@@ -138,6 +145,31 @@ func get_initial_houses(id: int) -> Array:  return self._initial_houses[id].dupl
 func get_discard_target(id: int) -> int:    return self._discard_targets[id]
 func valid_corners() -> AxialSet:           return self._valid_corners.duplicate()
 func valid_edges() -> AxialEdgeSet:         return self._valid_edges.duplicate()
+func remaining_houses(id: int) -> int:      return self._remaining_houses[id]
+func remaining_citites(id: int) -> int:     return self._remaining_cities[id]
+func remaining_roads(id: int) -> int:       return self._remaining_roads[id]
+
+
+func _init() -> void:
+	for id in Game.player_count:
+		self._bank[id] = Wallet.new()
+		self._exchange_rate[id] = Wallet.new(4)
+		self._owned_cards[id] = ActionCardWallet.new()
+		self._playable_cards[id] = ActionCardWallet.new()
+		self._houses_mirror[id] = AxialSet.new()
+		self._cities_mirror[id] = AxialSet.new()
+		self._roads_mirror[id] = AxialEdgeSet.new()	
+		self._player_records[id] = PlayerRecord.new(id)
+		self._initial_houses[id] = []
+		self._remaining_houses[id] = 5
+		self._remaining_cities[id] = 4
+		self._remaining_roads[id] = 15
+		
+	self._played_action_cards = ActionCardWallet.new()
+	self._discard_targets.resize(Game.player_count)
+	self._discard_targets.fill(0)
+	self._remaining_action_cards.set_cards(self.CARD_DISTRIBUTION)
+	self._remaining_resources.set_all(self.INITIAL_RESOURCE_COUNT)
 
 # return all edges that can accept a road (empty edges)
 # not edges that only border water.
@@ -370,14 +402,16 @@ func do_discard(id: int, resources:Wallet) -> void:
 	self.do_remove_resources(id, resources)
 
 
-func do_add_action_card(id: int, card: ActionCardTypes) -> void:
+func do_add_action_card(id: int) -> Model.ActionCardTypes:
+	var card = MathUtils.weighted_random(self.rng, self._remaining_action_cards)
+	
 	self._owned_cards[id].add_card(card)
 	var owned := self._owned_cards[id].duplicate()
 	var playable := self._playable_cards[id].duplicate()
-
 	self._player_records[id].action_cards = owned.size()
-
 	EventBus.action_cards_updated.emit(id, owned, playable)
+
+	return card
 
 
 func do_remove_action_card(id: int, card) -> void:
@@ -386,6 +420,7 @@ func do_remove_action_card(id: int, card) -> void:
 	var owned := self._owned_cards[id].duplicate()
 	var playable := self._playable_cards[id].duplicate()
 	self._player_records[id].action_cards = owned.size()
+	self._played_action_cards.add_card(card)
 
 	EventBus.action_cards_updated.emit(id, owned, playable)	
 
@@ -463,22 +498,6 @@ func reset_road_building() -> void:
 
 func decrement_road_building() -> void:
 	self._road_building = self._road_building - 1
-
-
-func _init() -> void:
-	for id in Game.player_count:
-		self._bank[id] = Wallet.new()
-		self._exchange_rate[id] = Wallet.new(4)
-		self._owned_cards[id] = ActionCardWallet.new()
-		self._playable_cards[id] = ActionCardWallet.new()
-		self._houses_mirror[id] = AxialSet.new()
-		self._cities_mirror[id] = AxialSet.new()
-		self._roads_mirror[id] = AxialEdgeSet.new()	
-		self._player_records[id] = PlayerRecord.new(id)
-		self._initial_houses[id] = []
-		
-	self._discard_targets.resize(Game.player_count)
-	self._discard_targets.fill(0)
 
 
 func build(names: Array[String]) -> void:

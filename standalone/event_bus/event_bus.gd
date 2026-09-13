@@ -19,7 +19,6 @@ signal request_road(id: int, edge: AxialEdge)
 signal request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes)
 signal request_set_pirate(id: int, hex: Axial)
 signal request_steal_from(to:int, from: int)
-signal request_add_action_card(id: int, c: Model.ActionCardTypes)
 signal request_discard(id:int, discard: Wallet)
 signal request_end_turn()
 signal play_monopoly_card(id: int, resource: Model.ResourceTypes)
@@ -49,3 +48,14 @@ signal notify(id: int, msg: String) # for popup boxes
 signal info(id: int, msg: String) # for infofox messages
 signal error(msg: String) # for infofox messages
 signal end_turn(id: int) # emitted between turns, id is the next player
+
+func send_info(id: int, msg1: String, msg2: String) -> void:
+	if id == -1: 
+		EventBus.info.emit(-1, msg1)
+		return
+	
+	for pid in Game.model.player_count():
+		if pid == id:
+			EventBus.info.emit(pid, msg1)
+		else:
+			EventBus.info.emit(pid, msg2)

@@ -27,7 +27,6 @@ func _ready() -> void:
 	EventBus.play_plenty_card.connect(self._play_plenty_card)
 	EventBus.play_road_building_card.connect(self._play_road_building_card)
 	EventBus.request_set_pirate.connect(self._request_set_pirate)
-	EventBus.request_add_action_card.connect(self._request_add_action_card) 
 	EventBus.request_house.connect(self._request_house)
 	EventBus.request_city.connect(self._request_city)
 	EventBus.request_road.connect(self._request_road)
@@ -82,10 +81,6 @@ func _next_initial_player(id: int):
 			self._on_request_roll()
 		else:
 			Game.model.do_update_player(next_player)
-
-
-func _request_add_action_card(id: int, c: Model.ActionCardTypes) -> void:
-	Game.model.do_add_action_card(id, c)
 
 
 func _request_set_pirate(id: int, hex: Axial):	
@@ -216,23 +211,14 @@ func _scan_cities(id:int, number:int, resources: Wallet):
 
 func _on_request_purchase_action_card(id: int) -> void:
 	Game.model.do_remove_resources(id, Model.COSTS["card"])
-	var card = weighted_random(Model.CARD_DISTRIBUTION)
-	Game.model.do_add_action_card(id, card)
+	var card = Game.model.do_add_action_card(id)
+	
+	EventBus.send_info(
+		id,
+		"You received action an action card: %s" % [Model.ActionCardTypes.find_key(card)],
+		"%s received an action card" % [Game.model.get_player_record(id).name]
+	)
 
-
-static func weighted_random(weights: Dictionary) -> Variant:
-	var total := 0
-	for key in weights:
-		total += weights[key]
-
-	var roll := randi_range(0, total - 1)
-	var cumulative := 0
-	for key in weights:
-		cumulative += weights[key]
-		if roll < cumulative:
-			return key
-
-	return weights.keys().back()
 
 func _next_player() -> void:
 	var next = Game.model.get_current_player() + 1

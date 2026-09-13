@@ -22,7 +22,13 @@ static func save(model: Model, path: String) -> void:
 		"ports":                 model._ports,
 		"initial_houses":        serialize_initial_houses(model._initial_houses),
 		"discard_targets":       model._discard_targets,
-		"rng_state":             model.rng.state
+		"rng_state":             model.rng.state,
+		"remaining_houses":      serialize_dictionary(model._remaining_houses),
+		"remaining_cities":      serialize_dictionary(model._remaining_cities),
+		"remaining_roads":       serialize_dictionary(model._remaining_roads),
+		"played_action_cards":   model._played_action_cards.serialize(),
+		"remaining_resources":   model._remaining_resources.serialize(),
+		"remaining_action_cards":   model._remaining_resources.serialize()
 	}
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data, "\t"))
@@ -31,7 +37,12 @@ static func save(model: Model, path: String) -> void:
 static func serialize_dictionary(dict: Dictionary):
 	var json = {}
 	for key in dict.keys():
-		json[key] = dict[key].serialize()
+		var value = dict[key]
+		if typeof(value) == TYPE_OBJECT and value.has_method("serialize"):
+			json[key] = dict[key].serialize()
+		else:
+			json[key] = value
+
 	return json
 
 
@@ -59,6 +70,9 @@ static func load(path: String) -> Model:
 	model._longest_road    = int(data["longest_road"])
 	model._pirate          = Axial.from_key(data["pirate"])
 	model.rng.state        = int(data["rng_state"])
+	model._played_action_cards = ActionCardWallet.deserialize(data["played_action_cards"])
+	model._remaining_resources = Wallet.deserialize(data["remaining_resources"])
+	model._remaining_action_cards = ActionCardWallet.deserialize(data["remaining_action_cards"])
 
 	var targets: Array = data["discard_targets"]
 	model._discard_targets = Array(targets, TYPE_INT, "", null)
@@ -99,6 +113,15 @@ static func load(path: String) -> Model:
 
 	for k in data["ports"]:
 		model._ports[k] = int(data["ports"][k]) as Model.ResourceTypes
+
+	for k in data["remaining_houses"]:
+		model._remaining_houses[int(k)] = int(data["remaining_houses"][k]) as int
+
+	for k in data["remaining_cities"]:
+		model._remaining_cities[int(k)] = int(data["remaining_cities"][k]) as int
+
+	for k in data["remaining_roads"]:
+		model._remaining_roads[int(k)] = int(data["remaining_roads"][k]) as int		
 
 	var p = 0
 	for k in data["initial_houses"]:

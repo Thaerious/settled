@@ -22,6 +22,13 @@ func set_card(c: Model.ActionCardTypes, value: int) -> void:
 	self._data[c] = value
 
 
+# can take dictionary or wallet
+func set_cards(dict: Variant) -> void:
+	for key in dict.keys():
+		var value = dict[key]
+		self._data[key] = value
+		
+
 func add_card(c: Model.ActionCardTypes, amount: int = 1) -> void:
 	assert(self._data.has(c), "ActionCardWallet: invalid card type: %s" % c)
 	self._data[c] += amount
