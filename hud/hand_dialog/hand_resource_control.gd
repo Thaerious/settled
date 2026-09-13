@@ -3,16 +3,23 @@ class_name HandResourceControl
 extends DraggableSpriteControl
 
 @export var resource_type: Model.ResourceTypes = Model.ResourceTypes.NONE
-var _resources = null
-var _exchange_rate = null
+
+var quantity := "0":
+	set(v): %Quantity.text = v
+	get: return %Quantity.text
+
+
+var rate := "4:1":
+	set(v): %ExchangeRate.text = v
+	get: return %ExchangeRate.text
 
 
 func _ready() -> void:
 	super._ready()
 
-	EventBus.resources_updated.connect(self.resources_updated)
-	EventBus.exchange_rate_set.connect(self.exchange_rate_set)
-	EventBus.model_loaded.connect(self.model_loaded)
+	EventBus.resources_updated.connect(self._update_resources)
+	EventBus.exchange_rate_set.connect(self._update_rate)
+	EventBus.model_loaded.connect(self.reset_view)
 
 	$DragNodeUI.drag_end.connect(self._on_drag_end)
 
@@ -23,31 +30,29 @@ func _on_drag_end(rec: DragRecord) -> void:
 	EventBus.request_exchange.emit(Game.self_id, self.resource_type, target.resource_type)
 
 
-func model_loaded() -> void:
-	self.resources_updated(Game.self_id, Game.model.get_bank(Game.self_id))
-	self.exchange_rate_set(Game.self_id, Game.model.get_exchange_rate(Game.self_id))
+func reset_view() -> void:
+	self._update_resources(Game.self_id, Game.model.get_bank(Game.self_id))
+	self._update_rate(Game.self_id, Game.model.get_exchange_rate(Game.self_id))
 
 
-func resources_updated(id: int, wallet: Wallet) -> void:
+func _update_resources(id: int, wallet: Wallet) -> void:
 	if not id == Game.self_id: return
-	%Quantity.text = str(wallet.get_resource(self.resource_type))
-	self._resources = wallet
+	self.quantity = str(wallet.get_resource(self.resource_type))
 	self._update_view()
 
 
-func exchange_rate_set(id: int, wallet: Wallet):
+func _update_rate(id: int, wallet: Wallet):
 	if not id == Game.self_id: return
 	var qty = wallet.get_resource(self.resource_type)
-	%ExchangeRate.text = "%s:1" % qty	
-	self._exchange_rate = wallet
+	self.rate = "%s:1" % qty	
 	self._update_view()
 
 
 func _update_view() -> void:
-	if self._resources == null: return
-	if self._exchange_rate == null: return
+	var resources = Game.model.get_bank(Game.self_id)
+	var rates = Game.model.get_exchange_rate(Game.self_id)
 
-	var qty = self._resources.get_resource(self.resource_type)
-	var ex_rate = self._exchange_rate.get_resource(self.resource_type)
+	var qty = resources.get_resource(self.resource_type)
+	var ex_rate = rates.get_resource(self.resource_type)
 	if ex_rate > qty: self.hoverable = false
 	else: self.hoverable = true

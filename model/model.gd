@@ -148,7 +148,8 @@ func valid_edges() -> AxialEdgeSet:         return self._valid_edges.duplicate()
 func remaining_houses(id: int) -> int:      return self._remaining_houses[id]
 func remaining_citites(id: int) -> int:     return self._remaining_cities[id]
 func remaining_roads(id: int) -> int:       return self._remaining_roads[id]
-
+func get_remaining_resources() -> Wallet:   return self._remaining_resources.duplicate()
+func get_remaining_action_cards()-> ActionCardWallet: return self._remaining_action_cards.duplicate()
 
 func _init() -> void:
 	for id in Game.player_count:
@@ -381,12 +382,14 @@ func do_set_road(id: int, edge: AxialEdge) -> void:
 
 
 func do_add_resources(id: int, resources: Wallet) -> void:
+	self._remaining_resources.remove(resources)
 	self._bank[id].add_resources(resources)
-	self._player_records[id].resources = self._bank[id].sum()
+	self._player_records[id].resources = self._bank[id].sum()	
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())
 
 
 func do_remove_resources(id: int, resources:Wallet) -> void:
+	self._remaining_resources.add_resources(resources)
 	self._bank[id].remove(resources)
 	self._player_records[id].resources = self._bank[id].sum()
 	EventBus.resources_updated.emit(id, self._bank[id].duplicate())

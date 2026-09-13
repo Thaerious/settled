@@ -4,10 +4,16 @@ extends DialogSpriteControl
 
 @export var action_type: Model.ActionCardTypes = Model.ActionCardTypes.BUILD_ROAD
 
+@export var quantity: String:
+	get: 
+		return %Quantity.text
+	set(v): 
+		%Quantity.text = v
+
 
 func _ready() -> void:
 	super._ready()
-	EventBus.model_loaded.connect(self._on_model_loaded)
+	EventBus.model_loaded.connect(self.reset_view)
 	EventBus.current_phase_updated.connect(self._on_current_phase_updated)
 	EventBus.action_cards_updated.connect(self._on_action_cards_updated)
 
@@ -27,7 +33,7 @@ func _on_current_phase_updated(phase: Model.GamePhase) -> void:
 			self.disabled = false
 
 
-func _on_model_loaded() -> void:
+func reset_view() -> void:
 	var owned = Game.model.get_owned_action_cards(Game.self_id)
 	var playable = Game.model.get_playable_action_cards(Game.self_id)
 	self._on_action_cards_updated(Game.self_id, owned, playable)

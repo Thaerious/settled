@@ -28,7 +28,7 @@ static func save(model: Model, path: String) -> void:
 		"remaining_roads":       serialize_dictionary(model._remaining_roads),
 		"played_action_cards":   model._played_action_cards.serialize(),
 		"remaining_resources":   model._remaining_resources.serialize(),
-		"remaining_action_cards":   model._remaining_resources.serialize()
+		"remaining_action_cards":   model._remaining_action_cards.serialize()
 	}
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data, "\t"))
