@@ -57,6 +57,32 @@ drop_layer = 1
 sprite_texture = ExtResource("3_0blrl")
 display_texture = ExtResource("3_0blrl")
 
+[node name="DragNodeUI" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/HouseControl" index="1"]
+drop_layer = 1
+
+[node name="ScaledSprite" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/HouseControl/DragNodeUI" index="0"]
+texture = ExtResource("3_0blrl")
+
+[node name="IconTexture" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/HouseControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+texture = ExtResource("3_0blrl")
+
+[node name="InnerBorderAlt" type="PanelContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/HouseControl/MarginContainerBorder" index="1"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"InnerBorderAlt"
+
+[node name="HouseQuantity" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/HouseControl/MarginContainerBorder/InnerBorderAlt" index="0"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.8277695, 0.8277695, 0.82776946, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer" index="2" instance=ExtResource("3_ygfqv")]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -106,6 +132,32 @@ script = ExtResource("15_s6gul")
 drop_layer = 1
 sprite_texture = ExtResource("8_5bo68")
 display_texture = ExtResource("6_d7flh")
+
+[node name="DragNodeUI" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/RoadControl" index="1"]
+drop_layer = 1
+
+[node name="ScaledSprite" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/RoadControl/DragNodeUI" index="0"]
+texture = ExtResource("8_5bo68")
+
+[node name="IconTexture" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/RoadControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+texture = ExtResource("6_d7flh")
+
+[node name="InnerBorderAlt" type="PanelContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/RoadControl/MarginContainerBorder" index="1"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"InnerBorderAlt"
+
+[node name="RoadQuantity" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/RoadControl/MarginContainerBorder/InnerBorderAlt" index="0"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.8277695, 0.8277695, 0.82776946, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer" index="2" instance=ExtResource("3_ygfqv")]
 layout_mode = 2
@@ -176,6 +228,32 @@ script = ExtResource("20_s6gul")
 drop_layer = 1
 sprite_texture = ExtResource("4_dtuxt")
 display_texture = ExtResource("4_dtuxt")
+
+[node name="DragNodeUI" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/CityControl" index="1"]
+drop_layer = 1
+
+[node name="ScaledSprite" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/CityControl/DragNodeUI" index="0"]
+texture = ExtResource("4_dtuxt")
+
+[node name="IconTexture" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/CityControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+texture = ExtResource("4_dtuxt")
+
+[node name="InnerBorderAlt" type="PanelContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/CityControl/MarginContainerBorder" index="1"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"InnerBorderAlt"
+
+[node name="CityQuantity" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/CityControl/MarginContainerBorder/InnerBorderAlt" index="0"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.8277695, 0.8277695, 0.82776946, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer" index="2" instance=ExtResource("3_ygfqv")]
 layout_mode = 2
@@ -256,6 +334,26 @@ script = ExtResource("24_s6gul")
 display_texture = ExtResource("5_64xnv")
 behaviour = 1
 
+[node name="IconTexture" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/CardControl/MarginContainerBorder/InnerBorder/MarginContainer/BoxContainer" index="0"]
+texture = ExtResource("5_64xnv")
+
+[node name="InnerBorderAlt" type="PanelContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/CardControl/MarginContainerBorder" index="1"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"InnerBorderAlt"
+
+[node name="CardQuantity" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/CardControl/MarginContainerBorder/InnerBorderAlt" index="0"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.8277695, 0.8277695, 0.82776946, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="DialogControl" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer" index="2" instance=ExtResource("3_ygfqv")]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -294,7 +392,11 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
+[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/HouseControl"]
 [editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HouseControlContainer/DialogControl"]
+[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/RoadControl"]
 [editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/RoadControlContainer/DialogControl"]
+[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/CityControl"]
 [editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CityControlContainer/DialogControl"]
+[editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/CardControl"]
 [editable path="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/CardControlContainer/DialogControl"]

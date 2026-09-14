@@ -1,6 +1,17 @@
 class_name StoreDialog
 extends DialogContainer
 
+
+var alt_text := false:
+	set(v): 		
+		for node in self.find_children("InnerBorderAlt", "", true, false):
+			node.visible = v
+			%HouseQuantity.text = str(Game.model.remaining_houses(Game.self_id))
+			%RoadQuantity.text = str(Game.model.remaining_roads(Game.self_id))
+			%CityQuantity.text = str(Game.model.remaining_cities(Game.self_id))
+			%CardQuantity.text = str(Game.model.get_remaining_action_cards().size())
+
+
 func _ready() -> void:
 	super._ready()
 	EventBus.current_phase_updated.connect(func(_1): self._on_update())

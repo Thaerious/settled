@@ -211,13 +211,7 @@ func _scan_cities(id:int, number:int, resources: Wallet):
 
 func _on_request_purchase_action_card(id: int) -> void:
 	Game.model.do_remove_resources(id, Model.COSTS["card"])
-	var card = Game.model.do_add_action_card(id)
-	
-	EventBus.send_info(
-		id,
-		"You received action an action card: %s" % [Model.ActionCardTypes.find_key(card)],
-		"%s received an action card" % [Game.model.get_player_record(id).name]
-	)
+	Game.model.do_add_action_card(id)
 
 
 func _next_player() -> void:

@@ -4,7 +4,6 @@ extends PanelContainer
 @export var visible_phase: Model.GamePhase = Model.GamePhase.ALL
 @export var hide_when_not_my_turn := false
 
-
 func _ready() -> void:
 	EventBus.current_phase_updated.connect(self._hnd_visible_phase)
 

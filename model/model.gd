@@ -48,12 +48,25 @@ enum ActionCardTypes {
 	VICTORY_POINTS
 }
 
+enum BuildingTypes{
+	HOUSE,
+	CITY,
+	ROAD,
+}
+
 const CARD_DISTRIBUTION : Dictionary[Model.ActionCardTypes, int] = {
 	ActionCardTypes.SOLDIER: 14,
 	ActionCardTypes.BUILD_ROAD: 2,
 	ActionCardTypes.PLENTY: 2,
 	ActionCardTypes.MONOPOLY: 2,
 	ActionCardTypes.VICTORY_POINTS: 5,
+}
+
+
+const BUILDING_DISTRIBUTION: Dictionary[Model.BuildingTypes, int] = {
+	BuildingTypes.HOUSE: 5,
+	BuildingTypes.CITY: 4,
+	BuildingTypes.ROAD: 15
 }
 
 enum GamePhase {
@@ -146,7 +159,7 @@ func get_discard_target(id: int) -> int:    return self._discard_targets[id]
 func valid_corners() -> AxialSet:           return self._valid_corners.duplicate()
 func valid_edges() -> AxialEdgeSet:         return self._valid_edges.duplicate()
 func remaining_houses(id: int) -> int:      return self._remaining_houses[id]
-func remaining_citites(id: int) -> int:     return self._remaining_cities[id]
+func remaining_cities(id: int) -> int:     return self._remaining_cities[id]
 func remaining_roads(id: int) -> int:       return self._remaining_roads[id]
 func get_remaining_resources() -> Wallet:   return self._remaining_resources.duplicate()
 func get_remaining_action_cards()-> ActionCardWallet: return self._remaining_action_cards.duplicate()
@@ -162,9 +175,9 @@ func _init() -> void:
 		self._roads_mirror[id] = AxialEdgeSet.new()	
 		self._player_records[id] = PlayerRecord.new(id)
 		self._initial_houses[id] = []
-		self._remaining_houses[id] = 5
-		self._remaining_cities[id] = 4
-		self._remaining_roads[id] = 15
+		self._remaining_houses[id] = BUILDING_DISTRIBUTION[BuildingTypes.HOUSE]
+		self._remaining_cities[id] = BUILDING_DISTRIBUTION[BuildingTypes.CITY]
+		self._remaining_roads[id] = BUILDING_DISTRIBUTION[BuildingTypes.ROAD]
 		
 	self._played_action_cards = ActionCardWallet.new()
 	self._discard_targets.resize(Game.player_count)
@@ -350,6 +363,11 @@ func do_set_dice(d1: int, d2:int) -> void:
 
 
 func do_set_house(id: int, ax: Axial) -> void:	
+	if self._remaining_houses[id] <= 0:
+		EventBus.error.emit("Player %s has no houses remaining" % [self._player_records[id].name])
+		return
+
+	self._remaining_houses[id] = self._remaining_houses[id] - 1
 	self._houses[ax.key()] = id
 	self._houses_mirror[id].add(ax)
 	self.do_add_victory_point(id)
@@ -367,6 +385,11 @@ func do_set_initial_house(id: int, ax: Axial) -> void:
 
 
 func do_set_city(id: int, ax: Axial) -> void:
+	if self._remaining_cities[id] <= 0:
+		EventBus.error.emit("Player %s has no cities remaining" % [self._player_records[id].name])
+		return
+
+	self._remaining_cities[id] = self._remaining_cities[id] - 1
 	self._cities[ax.key()] = id
 	self._cities_mirror[id].add(ax)
 	self._houses_mirror[id].remove_item(ax)
@@ -375,6 +398,11 @@ func do_set_city(id: int, ax: Axial) -> void:
 
 
 func do_set_road(id: int, edge: AxialEdge) -> void:
+	if self._remaining_roads[id] <= 0:
+		EventBus.error.emit("Player %s has no roads remaining" % [self._player_records[id].name])
+		return
+
+	self._remaining_roads[id] = self._remaining_roads[id] - 1
 	self._roads[edge.key()] = id
 	self._roads_mirror[id].add(edge)
 	EventBus.road_added.emit(id, edge)
@@ -405,7 +433,11 @@ func do_discard(id: int, resources:Wallet) -> void:
 	self.do_remove_resources(id, resources)
 
 
-func do_add_action_card(id: int) -> Model.ActionCardTypes:
+func do_add_action_card(id: int) -> void:
+	if self._remaining_action_cards.size() <= 0:
+		EventBus.error.emit("Player %s can not purchase card.  No cards remaining." % [self._player_records[id].name])
+		return
+	
 	var card = MathUtils.weighted_random(self.rng, self._remaining_action_cards)
 	
 	self._owned_cards[id].add_card(card)
@@ -414,7 +446,11 @@ func do_add_action_card(id: int) -> Model.ActionCardTypes:
 	self._player_records[id].action_cards = owned.size()
 	EventBus.action_cards_updated.emit(id, owned, playable)
 
-	return card
+	EventBus.send_info(
+		id,
+		"You received action an action card: %s" % [Model.ActionCardTypes.find_key(card)],
+		"%s received an action card" % [Game.model.get_player_record(id).name]
+	)
 
 
 func do_remove_action_card(id: int, card) -> void:

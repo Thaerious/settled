@@ -2,19 +2,14 @@
 class_name HandDialog
 extends PanelContainer
 
+var alt_text := false:
+	set(v): 
+		if v: self._display_bank()
+		else: self._display_hand()
+
 
 func _ready() -> void:
 	EventBus.current_player_updated.connect(self._on_current_player_updated)
-
-
-func _unhandled_key_input(event: InputEvent):
-	print(event)
-	if event is InputEventKey and event.keycode == KEY_ALT:
-		print("GUI EVENT HAND DIALOG")
-		if event.pressed: 
-			self._display_bank()
-		else:
-			self._display_hand()
 
 
 func _display_bank() -> void:
