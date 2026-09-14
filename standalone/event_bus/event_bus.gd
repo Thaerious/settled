@@ -23,7 +23,7 @@ signal request_discard(id:int, discard: Wallet)
 signal request_end_turn()
 signal play_monopoly_card(id: int, resource: Model.ResourceTypes)
 signal play_plenty_card(id: int, resources: Wallet)
-signal play_road_building_card(id: int, roads: AxialEdgeSet) 
+signal play_road_building_card(id: int, roads: AxialEdgeSet)
 
 # Model outgoing events (only the model or service should emit these)
 signal model_loaded()
@@ -39,6 +39,7 @@ signal dice_set(d1: int, d2:int)
 signal player_record_updated(record: PlayerRecord)
 signal resources_updated(id: int, wallet:Wallet)
 signal resources_received(id: int, wallet:Wallet)
+signal end_game(vp: Dictionary[int, int]) # vp is hidden victory points
 
 # Debug and Development Events
 signal set_player_view(id: int)

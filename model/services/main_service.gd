@@ -107,6 +107,10 @@ func _request_set_pirate(id: int, hex: Axial):
 func _request_play_action_card(id: int, card: Model.ActionCardTypes) -> void:
 	Game.model.do_remove_action_card(id, card)
 
+	if Game.model.get_playable_action_cards(id).size() <= 0:
+		EventBus.error.emit("Player %s can not play an action card." % [self._player_records[id].name])		
+		return
+
 	match card:
 		Model.ActionCardTypes.SOLDIER:			
 			Game.model.do_update_phase(GamePhase.MOVE_PIRATE)

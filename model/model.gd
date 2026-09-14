@@ -370,9 +370,9 @@ func do_set_house(id: int, ax: Axial) -> void:
 	self._remaining_houses[id] = self._remaining_houses[id] - 1
 	self._houses[ax.key()] = id
 	self._houses_mirror[id].add(ax)
-	self.do_add_victory_point(id)
 	EventBus.house_added.emit(id, ax)
 	self._calc_longest_road()
+	self.do_add_victory_point(id)
 
 	for corner in ax.hexes():
 		var hex_data = self.get_hex_data(corner)
@@ -513,6 +513,21 @@ func do_set_pirate(ax: Axial) -> void:
 
 func do_add_victory_point(id: int, amt: int = 1) -> void:
 	self._player_records[id].victory_points += amt
+	var cards = self._owned_cards[id].get_card(ActionCardTypes.VICTORY_POINTS)
+	var points = self._player_records[id].victory_points
+	
+	if points + cards >= 10:
+		self.do_update_phase(GamePhase.GAME_OVER)
+		EventBus.end_game.emit(self._build_vp_dict())
+
+
+func _build_vp_dict() -> Dictionary[int, int]:
+	var dict = {}
+
+	for pid in self.player_count():
+		dict[pid] = self._owned_cards[pid].get_card(ActionCardTypes.VICTORY_POINTS)
+
+	return dict
 
 
 func do_remove_victory_point(id: int, amt: int = 1) -> void:
@@ -528,7 +543,7 @@ func do_add_soldier(id: int) -> void:
 		self._player_records[self._largest_army].victory_points -= 2
 
 	self._largest_army = id
-	self._player_records[id].victory_points += 2
+	self.do_add_victory_point(id, 2)
 
 
 func reset_road_building() -> void:
@@ -695,4 +710,5 @@ func _set_longest_road(id: int) -> void:
 		self._player_records[self._longest_road].victory_points -= 2
 
 	self._longest_road = id
-	self._player_records[id].victory_points += 2
+	if id == -1: return
+	self.do_add_victory_point(id, 2)
