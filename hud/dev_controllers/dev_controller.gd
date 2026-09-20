@@ -92,3 +92,6 @@ func _exchange_for_road() -> void:
 
 func _exchange_for_card() -> void:
 	print("exchange card %s" % Bot.do_exchange(Game.self_id, Game.model, Model.COSTS["card"]))			
+
+func _launch_python_server():
+	Python.launch_server(9999)

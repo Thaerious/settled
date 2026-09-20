@@ -1,0 +1,1 @@
+pyinstaller --onedir --noupx --name server server.py

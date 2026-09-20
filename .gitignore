@@ -22,3 +22,10 @@ desktop.ini
 *.bak
 *.swp
 *~.nib
+
+# python
+python/venv/
+python/build/
+python/dist/
+python/*.spec
+__pycache__/

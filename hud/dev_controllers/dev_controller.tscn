@@ -163,19 +163,9 @@ layout_mode = 2
 text = "Reachable & Playable
 "
 
-[node name="ButtonTestDistance2" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Building Ranks
-"
-
-[node name="ButtonTestDistance3" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Clear Targets
-"
-
 [node name="ButtonTestDistance7" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
-text = "Estimates
+text = "Lauch Python Server
 "
 
 [node name="PhaseButtons" type="VBoxContainer" parent="HBoxContainer"]
@@ -295,6 +285,4 @@ metadata/_custom_type_script = "uid://bsec75ti05trd"
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance6" to="." method="_show_reachable"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance4" to="." method="_show_playable"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance5" to="." method="_show_reachable_intersect_playable"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance2" to="." method="_show_building_ranks"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance3" to="." method="_on_button_clear_markers_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance7" to="." method="_on_estimate_house"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance7" to="." method="_launch_python_server"]
