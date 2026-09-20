@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="catanatron-game-model-0001" name="Catanatron Game Model">
+    <mxGraphModel dx="1201" dy="657" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="game" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=6;fontSize=12;" value="Game&#xa;&#xa;+ state: State&#xa;+ players: Player[]&#xa;+ play_tick(): ActionRecord&#xa;+ play(): Color&#xa;+ winning_color(): Color" vertex="1">
+          <mxGeometry height="120" width="220" x="80" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="state" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=6;fontSize=12;" value="State&#xa;&#xa;+ current_prompt: ActionPrompt&#xa;+ board: Board&#xa;+ buildings_by_color: dict&#xa;+ player_state: dict&#xa;+ num_turns: int" vertex="1">
+          <mxGeometry height="120" width="220" x="80" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="board" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=6;fontSize=12;" value="Board&#xa;&#xa;+ map: CatanMap&#xa;+ roads: dict&#xa;+ get_node_color(node_id): Color&#xa;+ get_edge_color(edge): Color" vertex="1">
+          <mxGeometry height="110" width="220" x="80" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="map" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=6;fontSize=12;" value="CatanMap&#xa;&#xa;+ tiles: dict&#xa;+ adjacent_tiles: dict&#xa;+ port_nodes: dict" vertex="1">
+          <mxGeometry height="90" width="220" x="80" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="player" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=6;fontSize=12;" value="Player&#xa;&#xa;+ color: Color&#xa;+ decide(game, playable_actions): Action" vertex="1">
+          <mxGeometry height="80" width="220" x="420" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="action" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=6;fontSize=12;" value="Action&#xa;&#xa;+ color: Color&#xa;+ action_type: ActionType&#xa;+ value" vertex="1">
+          <mxGeometry height="90" width="220" x="420" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="game" style="endArrow=diamondThin;startArrow=none;endFill=1;html=1;fontSize=11;" target="state" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="state" style="endArrow=diamondThin;startArrow=none;endFill=1;html=1;fontSize=11;" target="board" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="board" style="endArrow=diamondThin;startArrow=none;endFill=1;html=1;fontSize=11;" target="map" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="game" style="endArrow=diamondThin;startArrow=none;endFill=0;html=1;fontSize=11;" target="player" value="2..4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="player" style="endArrow=open;dashed=1;html=1;fontSize=11;" target="action" value="returns">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="game" style="endArrow=open;dashed=1;html=1;fontSize=11;" target="action" value="applies">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

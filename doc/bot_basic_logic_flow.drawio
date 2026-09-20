@@ -1,0 +1,157 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="bot-basic-logic-flow-0001" name="BotBasic Logic Flow">
+    <mxGraphModel dx="1201" dy="657" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="decide" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="decide(game, playable_actions)" vertex="1">
+          <mxGeometry height="50" width="240" x="640" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="getaction" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="get_action()&#xa;route by current_prompt" vertex="1">
+          <mxGeometry height="50" width="240" x="640" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="promptdiamond" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="current_prompt?" vertex="1">
+          <mxGeometry height="80" width="120" x="700" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="phasesetup" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="phase_setup()" vertex="1">
+          <mxGeometry height="50" width="200" x="60" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="initialhouse" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="initial_house()&#xa;best-ranked empty corner" vertex="1">
+          <mxGeometry height="50" width="150" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="initialroad" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="initial_road()&#xa;random legal target" vertex="1">
+          <mxGeometry height="50" width="150" x="170" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="phasemain" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="phase_main()" vertex="1">
+          <mxGeometry height="50" width="200" x="460" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="m1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="ROLL offered?" vertex="1">
+          <mxGeometry height="60" width="120" x="500" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="m1yes" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="return ROLL" vertex="1">
+          <mxGeometry height="40" width="140" x="690" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="m2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="rank_houses() / rank_cities()&#xa;score every candidate" vertex="1">
+          <mxGeometry height="50" width="200" x="470" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="m3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="best settlement/road&#xa;from house_ranks" vertex="1">
+          <mxGeometry height="50" width="200" x="470" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="m4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="best city&#xa;from city_ranks" vertex="1">
+          <mxGeometry height="50" width="200" x="470" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="m5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="_rank_card()&#xa;buy dev card?" vertex="1">
+          <mxGeometry height="50" width="200" x="470" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="m6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="_rank_play_knight()&#xa;unblock robber / take army" vertex="1">
+          <mxGeometry height="50" width="200" x="470" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="m7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="_rank_play_road_building()&#xa;2+ road target?" vertex="1">
+          <mxGeometry height="50" width="200" x="470" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="m8" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" value="any candidate beat best_rank?" vertex="1">
+          <mxGeometry height="70" width="160" x="490" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="m8yes" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="return best_action" vertex="1">
+          <mxGeometry height="40" width="150" x="300" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="m8no" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="return END_TURN" vertex="1">
+          <mxGeometry height="40" width="150" x="690" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="phaserobber" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="phase_move_robber()" vertex="1">
+          <mxGeometry height="50" width="220" x="880" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="score each land hex&#xa;(skip desert, skip self-blocked)" vertex="1">
+          <mxGeometry height="50" width="220" x="880" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="pick highest-ranked hex" vertex="1">
+          <mxGeometry height="50" width="220" x="880" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="among victims there,&#xa;pick richest hand" vertex="1">
+          <mxGeometry height="50" width="220" x="880" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="phasediscard" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="phase_discard()" vertex="1">
+          <mxGeometry height="50" width="200" x="1160" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" value="random.choice(playable_actions)&#xa;discard one resource" vertex="1">
+          <mxGeometry height="50" width="200" x="1160" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="fallback" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" value="fallback:&#xa;playable_actions[0]" vertex="1">
+          <mxGeometry height="50" width="180" x="1420" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="decide" style="endArrow=block;html=1;" target="getaction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="getaction" style="endArrow=block;html=1;" target="promptdiamond">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="promptdiamond" style="endArrow=block;html=1;fontSize=10;" target="phasesetup" value="BUILD_INITIAL_*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="promptdiamond" style="endArrow=block;html=1;fontSize=10;" target="phasemain" value="PLAY_TURN">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="promptdiamond" style="endArrow=block;html=1;fontSize=10;" target="phaserobber" value="MOVE_ROBBER">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="promptdiamond" style="endArrow=block;html=1;fontSize=10;" target="phasediscard" value="DISCARD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="promptdiamond" style="endArrow=block;html=1;fontSize=10;" target="fallback" value="else (trade prompts)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="phasesetup" style="endArrow=block;html=1;fontSize=10;" target="initialhouse" value="BUILD_INITIAL_SETTLEMENT">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="phasesetup" style="endArrow=block;html=1;fontSize=10;" target="initialroad" value="BUILD_INITIAL_ROAD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="phasemain" style="endArrow=block;html=1;" target="m1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="m1" style="endArrow=block;html=1;fontSize=10;" target="m1yes" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="m1" style="endArrow=block;html=1;fontSize=10;" target="m2" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="m2" style="endArrow=block;html=1;" target="m3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="m3" style="endArrow=block;html=1;" target="m4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="m4" style="endArrow=block;html=1;" target="m5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="m5" style="endArrow=block;html=1;" target="m6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="m6" style="endArrow=block;html=1;" target="m7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="m7" style="endArrow=block;html=1;" target="m8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="m8" style="endArrow=block;html=1;fontSize=10;" target="m8yes" value="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="m8" style="endArrow=block;html=1;fontSize=10;" target="m8no" value="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="phaserobber" style="endArrow=block;html=1;" target="r1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="r1" style="endArrow=block;html=1;" target="r2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="r2" style="endArrow=block;html=1;" target="r3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" edge="1" parent="1" source="phasediscard" style="endArrow=block;html=1;" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

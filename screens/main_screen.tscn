@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://qmfg7tlp5wmo"]
+[gd_scene load_steps=2 format=3 uid="uid://cqxro0k7calr7"]
 
 [ext_resource type="PackedScene" uid="uid://35ub1kmjadx6" path="res://hud/components/dialog_container.tscn" id="1_mrqkd"]
 
