@@ -29,29 +29,34 @@ layout_mode = 2
 [node name="HandActionControl" parent="MarginContainer/PanelContainer/Contents/ActionContainter" index="0" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
 action_type = 0
+quantity = "0"
 display_texture = ExtResource("3_ais11")
 behaviour = 1
 
 [node name="HandActionControl2" parent="MarginContainer/PanelContainer/Contents/ActionContainter" index="1" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
-action_type = 3
+quantity = "0"
 display_texture = ExtResource("5_706re")
 behaviour = 1
 
 [node name="HandActionControl3" parent="MarginContainer/PanelContainer/Contents/ActionContainter" index="2" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
 action_type = 2
+quantity = "0"
 display_texture = ExtResource("7_ruhtk")
 behaviour = 1
 
 [node name="HandActionControl4" parent="MarginContainer/PanelContainer/Contents/ActionContainter" index="3" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
+action_type = 3
+quantity = "0"
 display_texture = ExtResource("9_8jger")
 behaviour = 1
 
 [node name="HandActionControl5" parent="MarginContainer/PanelContainer/Contents/ActionContainter" index="4" instance=ExtResource("2_jhwv1")]
 layout_mode = 2
 action_type = 4
+quantity = "0"
 display_texture = ExtResource("11_ccy7u")
 behaviour = 1
 
@@ -61,13 +66,13 @@ layout_mode = 2
 
 [node name="HandResourceControl" parent="MarginContainer/PanelContainer/Contents/ResourceContainer" index="0" instance=ExtResource("4_nvqpu")]
 layout_mode = 2
-resource_type = 1
+resource_type = 0
 sprite_texture = ExtResource("5_2edvl")
 display_texture = ExtResource("5_2edvl")
 
 [node name="HandResourceControl2" parent="MarginContainer/PanelContainer/Contents/ResourceContainer" index="1" instance=ExtResource("4_nvqpu")]
 layout_mode = 2
-resource_type = 0
+resource_type = 1
 sprite_texture = ExtResource("7_vy8ti")
 display_texture = ExtResource("7_vy8ti")
 
@@ -79,12 +84,12 @@ display_texture = ExtResource("9_ymvef")
 
 [node name="HandResourceControl4" parent="MarginContainer/PanelContainer/Contents/ResourceContainer" index="3" instance=ExtResource("4_nvqpu")]
 layout_mode = 2
-resource_type = 4
+resource_type = 3
 sprite_texture = ExtResource("11_0h0qd")
 display_texture = ExtResource("11_0h0qd")
 
 [node name="HandResourceControl5" parent="MarginContainer/PanelContainer/Contents/ResourceContainer" index="4" instance=ExtResource("4_nvqpu")]
 layout_mode = 2
-resource_type = 3
+resource_type = 4
 sprite_texture = ExtResource("13_nvqpu")
 display_texture = ExtResource("13_nvqpu")

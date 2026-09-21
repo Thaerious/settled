@@ -13,7 +13,7 @@
 offset_right = 462.0
 offset_bottom = 370.0
 script = ExtResource("2_njngg")
-dialog_identifier = null
+dialog_identifier = "DiscardDialog"
 visible_phase = 12
 
 [node name="Title" parent="MarginContainer/PanelContainer/HBoxContainer/PanelContainer" index="0"]
@@ -25,12 +25,12 @@ layout_mode = 2
 
 [node name="PlentyDialogControl" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="0" instance=ExtResource("2_8bei6")]
 layout_mode = 2
-resource = 1
+resource = 0
 display_texture = ExtResource("3_gkyor")
 
 [node name="PlentyDialogControl2" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="1" instance=ExtResource("2_8bei6")]
 layout_mode = 2
-resource = 0
+resource = 1
 display_texture = ExtResource("4_njngg")
 
 [node name="PlentyDialogControl3" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="2" instance=ExtResource("2_8bei6")]
@@ -40,10 +40,10 @@ display_texture = ExtResource("5_201yn")
 
 [node name="PlentyDialogControl4" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="3" instance=ExtResource("2_8bei6")]
 layout_mode = 2
-resource = 4
+resource = 3
 display_texture = ExtResource("6_5s2c0")
 
 [node name="PlentyDialogControl5" parent="MarginContainer/PanelContainer/HBoxContainer/ContentContainer/ControlGroup" index="4" instance=ExtResource("2_8bei6")]
 layout_mode = 2
-resource = 3
+resource = 4
 display_texture = ExtResource("7_ygxl0")

@@ -2,56 +2,58 @@ class_name Model
 extends Object
 
 const TERRAIN_COUNTS := {
-	Terrain.HILL: 3,
 	Terrain.FOREST: 4,
-	Terrain.MOUNTAIN: 3,
+	Terrain.HILL: 3,
 	Terrain.FIELD: 4,
+	Terrain.MOUNTAIN: 3,
 	Terrain.PASTURE: 4,
 	Terrain.DESERT: 1,
 }
 
 const TERRAIN_TO_RESOURCE : Dictionary[Terrain, ResourceTypes] = {
-	Terrain.HILL: ResourceTypes.BRICK,
 	Terrain.FOREST: ResourceTypes.WOOD,
+	Terrain.HILL: ResourceTypes.BRICK,
 	Terrain.FIELD: ResourceTypes.WHEAT,
-	Terrain.PASTURE: ResourceTypes.WOOL,
 	Terrain.MOUNTAIN: ResourceTypes.ROCK,	
+	Terrain.PASTURE: ResourceTypes.WOOL,
 	Terrain.DESERT: ResourceTypes.NONE,
 	Terrain.WATER: ResourceTypes.NONE
 }
 
 enum Terrain {
-	HILL,
 	FOREST,
-	MOUNTAIN,
+	HILL,	
 	FIELD,
 	PASTURE,
+	MOUNTAIN,
 	DESERT,
 	WATER
 }
 
 enum ResourceTypes {
-	BRICK,
 	WOOD,
+	BRICK,	
 	WHEAT,
-	WOOL,
-	ROCK,	
+	ROCK,
+	WOOL,		
 	NONE,
 	ANY
 }
 
 enum ActionCardTypes {
-	SOLDIER,
-	BUILD_ROAD,
-	PLENTY,
+	SOLDIER,	
 	MONOPOLY,
+	PLENTY,	
+	BUILD_ROAD,
 	VICTORY_POINTS
 }
 
+# things you can purchase
 enum BuildingTypes{
 	HOUSE,
 	CITY,
 	ROAD,
+	CARD
 }
 
 const CARD_DISTRIBUTION : Dictionary[Model.ActionCardTypes, int] = {

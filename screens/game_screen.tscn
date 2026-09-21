@@ -130,7 +130,6 @@ offset_left = 1013.0
 offset_top = 242.0
 offset_right = 1475.0
 offset_bottom = 612.0
-dialog_identifier = "DiscardDialog"
 
 [node name="MonopolyDialog" parent="CanvasLayer" instance=ExtResource("10_dlyeo")]
 offset_left = 635.0
@@ -140,11 +139,10 @@ offset_bottom = 652.0
 visible_phase = 7
 
 [node name="YearOfPlentyDialog" parent="CanvasLayer" instance=ExtResource("11_mg75d")]
-offset_left = 663.0
-offset_top = 335.0
-offset_right = 1105.0
-offset_bottom = 661.0
-dialog_identifier = "YearOfPlentyDialog"
+offset_left = 1154.0
+offset_top = 429.0
+offset_right = 1596.0
+offset_bottom = 755.0
 visible_phase = 7
 
 [node name="ErrorDialog" parent="CanvasLayer" instance=ExtResource("18_2qwh6")]
