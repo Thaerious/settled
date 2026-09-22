@@ -132,11 +132,9 @@ var _ports: Dictionary[String, ResourceTypes] = {}    # map of port axial -> res
 var _road_building: int = 2                           # during road building phase, number of roads left to build
 var _initial_houses: Dictionary[int, Array]           # initial house placements for each player
 var _dice: Array[int] = [1, 1]                        # this is used for dev & debug - is not saved
-var _discard_targets: Array[int] = []                 # during discard players discard to this amount
 var _valid_corners: AxialSet = null                   # set once, corners that can be played on
 var _valid_edges: AxialEdgeSet = null                 # set once, edges that can be played on
 var _remaining_action_cards := ActionCardWallet.new() # remaining action cards that can be drawn
-var _played_action_cards := ActionCardWallet.new()    # action cards that have been played
 var rng := RandomNumberGenerator.new()
 
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
@@ -157,7 +155,7 @@ func get_player_record(id: int) -> PlayerRecord: return self._player_records[id]
 func player_count() -> int:                 return self._player_records.size() # todo move all player counts to this
 func free_road_count() -> int:              return self._road_building
 func get_initial_houses(id: int) -> Array:  return self._initial_houses[id].duplicate()
-func get_discard_target(id: int) -> int:    return self._discard_targets[id]
+func get_discard_target(id: int) -> int:    return self._player_records[id].discard_target
 func valid_corners() -> AxialSet:           return self._valid_corners.duplicate()
 func valid_edges() -> AxialEdgeSet:         return self._valid_edges.duplicate()
 func remaining_houses(id: int) -> int:      return self._remaining_houses[id]
@@ -181,9 +179,6 @@ func _init() -> void:
 		self._remaining_cities[id] = BUILDING_DISTRIBUTION[BuildingTypes.CITY]
 		self._remaining_roads[id] = BUILDING_DISTRIBUTION[BuildingTypes.ROAD]
 		
-	self._played_action_cards = ActionCardWallet.new()
-	self._discard_targets.resize(Game.player_count)
-	self._discard_targets.fill(0)
 	self._remaining_action_cards.set_cards(self.CARD_DISTRIBUTION)
 	self._remaining_resources.set_all(self.INITIAL_RESOURCE_COUNT)
 
@@ -337,7 +332,8 @@ func get_placement_phase(id: int) -> Model.PlacementPhase:
 func get_initial_road_targets(id: int) -> AxialEdgeSet:
 	var house_axial = self.get_initial_houses(id)[-1]
 	var edges = house_axial.edges()
-	return edges	
+	return edges
+
 
 func do_end_turn() -> void:
 	# increment the current player
@@ -394,10 +390,11 @@ func do_set_city(id: int, ax: Axial) -> void:
 	self._remaining_cities[id] = self._remaining_cities[id] - 1
 	self._cities[ax.key()] = id
 	self._cities_mirror[id].add(ax)
+	self._houses.erase(ax.key())
 	self._houses_mirror[id].remove_item(ax)
 	self.do_add_victory_point(id)
 	EventBus.city_added.emit(id, ax)
-
+	
 
 func do_set_road(id: int, edge: AxialEdge) -> void:
 	if self._remaining_roads[id] <= 0:
@@ -431,7 +428,7 @@ func do_remove_resources(id: int, resources:Wallet) -> void:
 
 
 func do_discard(id: int, resources:Wallet) -> void:
-	self._discard_targets[id] = self._discard_targets[id] - resources.sum()
+	self._player_records[id].discard_target -= resources.sum()
 	self.do_remove_resources(id, resources)
 
 
@@ -461,16 +458,15 @@ func do_remove_action_card(id: int, card) -> void:
 	var owned := self._owned_cards[id].duplicate()
 	var playable := self._playable_cards[id].duplicate()
 	self._player_records[id].action_cards = owned.size()
-	self._played_action_cards.add_card(card)
 
 	EventBus.action_cards_updated.emit(id, owned, playable)	
 
 
 func update_discard_targets() -> void:
 	for pid in self.player_count():
-		self._discard_targets[pid] = 0
+		self._player_records[pid].discard_target = 0
 		if self._bank[pid].sum() <= 7: continue
-		self._discard_targets[pid] = self._bank[pid].sum() / 2
+		self._player_records[pid].discard_target = self._bank[pid].sum() / 2
 
 
 func do_update_phase(phase: GamePhase) -> void:
@@ -571,8 +567,14 @@ func build_derived_data():
 	self._valid_edges = AxialEdgeSet.new()
 
 	for hex_data: HexData in self.all_hex_data():
+		for port in hex_data.ports:
+			self._ports[port.key()] = hex_data.resource
+
+		if hex_data.pirate:
+			self._pirate = hex_data.axial
+
 		if hex_data.terrain == Model.Terrain.WATER: continue
-		self._valid_corners.add(hex_data.axial.corners())	
+		self._valid_corners.add(hex_data.axial.corners())			
 
 	for hex_data in self._hex_data.values():
 		if hex_data.terrain == Terrain.WATER: continue

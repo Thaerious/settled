@@ -263,13 +263,19 @@ func _to_string() -> String:
 	return ("[%s]" % sb)
 
 
-func serialize() -> Array:
-	return self._data.values()
+func serialize() -> Dictionary:
+	var serialized = {}
+	for key in self.keys():
+		var k = Model.ResourceTypes.find_key(key)
+		serialized[k] = self.get_resource(key)
+
+	return serialized
 
 
-static func deserialize(array: Array) -> Wallet:
+static func deserialize(json: Dictionary) -> Wallet:
 	var wallet := Wallet.new()
-	for i in array.size():
-		wallet.set_resource(i, array[i])
+	for i in json.keys():
+		var resource = Model.ResourceTypes[i]
+		wallet.set_resource(resource, json[i])
 
 	return wallet	

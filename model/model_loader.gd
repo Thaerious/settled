@@ -2,34 +2,34 @@ class_name ModelLoader
 extends Object
 
 static func save(model: Model, path: String) -> void:
-
-	var data := {
+	var state := {
 		"current_player":        model._current_player,
-		"game_phase":            model._game_phase,
+		"game_phase":            Model.GamePhase.find_key(model._game_phase),
 		"longest_road":          model._longest_road,
 		"largest_army":          model._largest_army,
-		"pirate":                model._pirate.key(),
+		"road_building":         model._road_building,
+		"rng_state":             model.rng.state,
+	}
+
+	var data := {
+		"state":                 state,
 		"player_records":        serialize_dictionary(model._player_records),
 		"hex_data":              serialize_dictionary(model._hex_data),			
 		"bank":                  serialize_dictionary(model._bank),
 		"exchange_rate":         serialize_dictionary(model._exchange_rate),
 		"owned_action_cards":    serialize_dictionary(model._owned_cards),
 		"playable_action_cards": serialize_dictionary(model._playable_cards),			
-		"road_building":         model._road_building,
 		"houses":                model._houses,
 		"cities":                model._cities,
 		"roads":                 model._roads,
-		"ports":                 model._ports,
 		"initial_houses":        serialize_initial_houses(model._initial_houses),
-		"discard_targets":       model._discard_targets,
-		"rng_state":             model.rng.state,
 		"remaining_houses":      serialize_dictionary(model._remaining_houses),
 		"remaining_cities":      serialize_dictionary(model._remaining_cities),
 		"remaining_roads":       serialize_dictionary(model._remaining_roads),
-		"played_action_cards":   model._played_action_cards.serialize(),
 		"remaining_resources":   model._remaining_resources.serialize(),
 		"remaining_action_cards":   model._remaining_action_cards.serialize()
 	}
+
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(data, "\t"))
 
@@ -63,25 +63,20 @@ static func load(path: String) -> Model:
 	var f := FileAccess.open(path, FileAccess.READ)
 	var data: Dictionary = JSON.parse_string(f.get_as_text())
 
-	model._road_building   = int(data["road_building"])
-	model._current_player  = int(data["current_player"])
-	model._game_phase      = int(data["game_phase"]) as Model.GamePhase
-	model._largest_army    = int(data["largest_army"])	
-	model._longest_road    = int(data["longest_road"])
-	model._pirate          = Axial.from_key(data["pirate"])
-	model.rng.state        = int(data["rng_state"])
-	model._played_action_cards = ActionCardWallet.deserialize(data["played_action_cards"])
+	model._road_building   = int(data["state"]["road_building"])
+	model._current_player  = int(data["state"]["current_player"])
+	model._game_phase      = Model.GamePhase[data["state"]["game_phase"]]
+	model._largest_army    = int(data["state"]["largest_army"])	
+	model._longest_road    = int(data["state"]["longest_road"])
+	model.rng.state        = int(data["state"]["rng_state"])
 	model._remaining_resources = Wallet.deserialize(data["remaining_resources"])
 	model._remaining_action_cards = ActionCardWallet.deserialize(data["remaining_action_cards"])
-
-	var targets: Array = data["discard_targets"]
-	model._discard_targets = Array(targets, TYPE_INT, "", null)
 
 	for k in data["player_records"]:
 		model._player_records[int(k)] = PlayerRecord.deserialize(int(k), data["player_records"][k])		
 
 	for k in data["hex_data"]:
-		model._hex_data[k] = HexData.deserialize(data["hex_data"][k])
+		model._hex_data[k] = HexData.deserialize(data["hex_data"][k], k)
 
 	for k in data["houses"]: 
 		model._houses[k] = int(data["houses"][k])
@@ -110,9 +105,6 @@ static func load(path: String) -> Model:
 	for k in data["playable_action_cards"]:
 		var wallet := ActionCardWallet.deserialize(data["playable_action_cards"][k])
 		model._playable_cards[int(k)] = wallet
-
-	for k in data["ports"]:
-		model._ports[k] = int(data["ports"][k]) as Model.ResourceTypes
 
 	for k in data["remaining_houses"]:
 		model._remaining_houses[int(k)] = int(data["remaining_houses"][k]) as int

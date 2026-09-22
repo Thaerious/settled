@@ -30,6 +30,12 @@ var soldiers: int:
 	set(v): _soldiers = v; EventBus.player_record_updated.emit(self)
 
 
+var _discard_target: int
+var discard_target: int:
+	get: return _discard_target
+	set(v): _discard_target = v; EventBus.player_record_updated.emit(self)
+
+
 func _init(id: int) -> void:
 	self.id = id
 
@@ -42,6 +48,7 @@ func duplicate() -> PlayerRecord:
 	r._action_cards   = self.action_cards
 	r._roads          = self.roads
 	r._soldiers       = self.soldiers
+	r._discard_target = self.discard_target
 	return r
 
 
@@ -53,6 +60,7 @@ func serialize() -> Dictionary:
 		"action_cards":   self.action_cards,
 		"roads":          self.roads,
 		"soldiers":       self.soldiers,
+		"discard_target": self.discard_target
 	}
 
 
@@ -64,11 +72,12 @@ static func deserialize(id: int, data: Dictionary) -> PlayerRecord:
 	r._action_cards   = int(data["action_cards"])
 	r._roads          = int(data["roads"])
 	r._soldiers       = int(data["soldiers"])
+	r._discard_target = int(data["discard_target"])
 	return r		
 
 
 func _to_string() -> String:
-	return "[id:%s name:%s vp:%s res:%s crds:%s rds:%s sol:%s]" % [
+	return "[id:%s name:%s vp:%s res:%s crds:%s rds:%s sol:%s dt:%s]" % [
 		self.id, self.name, self._victory_points, self._resources,
-		self._action_cards, self._roads, self._soldiers
+		self._action_cards, self._roads, self._soldiers, self._discard_target
 	]

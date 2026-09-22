@@ -23,22 +23,22 @@ func _to_string() -> String:
 
 func serialize() -> Dictionary:
 	return {
-		"axial": self.axial.serialize(),
-		"terrain": self.terrain,
-		"resource": self.resource,
+		"terrain": Model.Terrain.find_key(self.terrain),
+		"resource": Model.ResourceTypes.find_key(self.resource),
 		"number": self.number,
 		"pirate": self.pirate,
 		"ports": self.ports.serialize(),
-		"port_type": self.port_type
+		"port_type": Model.ResourceTypes.find_key(self.port_type)
 	}
 
-static func deserialize(data: Dictionary) -> HexData:
+
+static func deserialize(data: Dictionary, axial: String) -> HexData:
 	var hex := HexData.new()
-	hex.axial = Axial.deserialize(data["axial"])
-	hex.terrain = data["terrain"]
-	hex.resource = data["resource"]
+	hex.axial = Axial.from_key(axial)
+	hex.terrain = Model.Terrain[data["terrain"]]
+	hex.resource = Model.ResourceTypes[data["resource"]]
 	hex.number = data["number"]
 	hex.pirate = data["pirate"]
 	hex.ports = AxialSet.deserialize(data["ports"])
-	hex.port_type = data["port_type"]
-	return hex	
+	hex.port_type = Model.ResourceTypes[data["port_type"]]
+	return hex

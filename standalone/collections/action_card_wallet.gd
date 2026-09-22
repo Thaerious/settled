@@ -93,13 +93,19 @@ func _to_string() -> String:
 	]
 
 
-func serialize() -> Array:
-	return self._data.values()
+func serialize() -> Dictionary:
+	var serialized = {}
+	for key in self.keys():
+		var k = Model.ActionCardTypes.find_key(key)
+		serialized[k] = self.get_card(key)
+
+	return serialized
 
 
-static func deserialize(array: Array) -> ActionCardWallet:
+static func deserialize(json: Dictionary) -> ActionCardWallet:
 	var wallet := ActionCardWallet.new()
-	for i in array.size():
-		wallet.set_card(i, array[i])
+	for i in json.keys():
+		var card = Model.ActionCardTypes[i]
+		wallet.set_card(card, json[i])
 
-	return wallet	
+	return wallet		
