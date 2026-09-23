@@ -95,3 +95,6 @@ func _exchange_for_card() -> void:
 
 func _launch_python_server():
 	Python.launch_server(9999)
+
+func _on_button_send_model_pressed():
+	Python.send_model(Game.model)

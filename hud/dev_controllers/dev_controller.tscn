@@ -168,6 +168,11 @@ layout_mode = 2
 text = "Lauch Python Server
 "
 
+[node name="ButtonSendModel" type="Button" parent="HBoxContainer/VBoxContainer1"]
+layout_mode = 2
+text = "Send Model
+"
+
 [node name="PhaseButtons" type="VBoxContainer" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -286,3 +291,4 @@ metadata/_custom_type_script = "uid://bsec75ti05trd"
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance4" to="." method="_show_playable"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance5" to="." method="_show_reachable_intersect_playable"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance7" to="." method="_launch_python_server"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonSendModel" to="." method="_on_button_send_model_pressed"]

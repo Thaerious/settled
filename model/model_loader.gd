@@ -2,6 +2,12 @@ class_name ModelLoader
 extends Object
 
 static func save(model: Model, path: String) -> void:
+	var data = ModelLoader.encode(model)
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	f.store_string(JSON.stringify(data, "\t"))
+
+
+static func encode(model: Model) -> Dictionary:
 	var state := {
 		"current_player":        model._current_player,
 		"game_phase":            Model.GamePhase.find_key(model._game_phase),
@@ -30,8 +36,7 @@ static func save(model: Model, path: String) -> void:
 		"remaining_action_cards":   model._remaining_action_cards.serialize()
 	}
 
-	var f := FileAccess.open(path, FileAccess.WRITE)
-	f.store_string(JSON.stringify(data, "\t"))
+	return data
 
 
 static func serialize_dictionary(dict: Dictionary):
