@@ -18,48 +18,54 @@ static func encode(model: Model) -> Dictionary:
 	}
 
 	var data := {
-		"state":                 state,
-		"player_records":        serialize_dictionary(model._player_records),
-		"hex_data":              serialize_dictionary(model._hex_data),			
-		"bank":                  serialize_dictionary(model._bank),
-		"exchange_rate":         serialize_dictionary(model._exchange_rate),
-		"owned_action_cards":    serialize_dictionary(model._owned_cards),
-		"playable_action_cards": serialize_dictionary(model._playable_cards),			
-		"houses":                model._houses,
-		"cities":                model._cities,
-		"roads":                 model._roads,
-		"initial_houses":        serialize_initial_houses(model._initial_houses),
-		"remaining_houses":      serialize_dictionary(model._remaining_houses),
-		"remaining_cities":      serialize_dictionary(model._remaining_cities),
-		"remaining_roads":       serialize_dictionary(model._remaining_roads),
-		"remaining_resources":   model._remaining_resources.serialize(),
-		"remaining_action_cards":   model._remaining_action_cards.serialize()
+		"state":                  state,
+		"player_records":         serialize(model._player_records),
+		"hex_data":               serialize(model._hex_data),			
+		"bank":                   serialize(model._bank),
+		"exchange_rate":          serialize(model._exchange_rate),
+		"owned_action_cards":     serialize(model._owned_cards),
+		"playable_action_cards":  serialize(model._playable_cards),			
+		"houses":                 model._houses,
+		"cities":                 model._cities,
+		"roads":                  model._roads,
+		"initial_houses":         serialize(model._initial_houses),
+		"remaining_houses":       serialize(model._remaining_houses),
+		"remaining_cities":       serialize(model._remaining_cities),
+		"remaining_roads":        serialize(model._remaining_roads),
+		"remaining_resources":    serialize(model._remaining_resources),
+		"remaining_action_cards": serialize(model._remaining_action_cards)
 	}
 
 	return data
 
 
+
+static func serialize(object: Variant):
+	if typeof(object) == TYPE_OBJECT and object.has_method("serialize"):
+		return object.serialize()
+	elif object is Dictionary:
+		return serialize_dictionary(object)
+	elif object is Array:
+		return serialize_array(object)
+	else:
+		return object
+
+
 static func serialize_dictionary(dict: Dictionary):
 	var json = {}
+
 	for key in dict.keys():
-		var value = dict[key]
-		if typeof(value) == TYPE_OBJECT and value.has_method("serialize"):
-			json[key] = dict[key].serialize()
-		else:
-			json[key] = value
+		json[key] = serialize(dict[key])				
 
 	return json
 
 
-static func serialize_initial_houses(dict: Dictionary):
+static func serialize_array(array: Array):
 	var json = []
-	
-	for p in dict:
-		var next = []
-		for item in dict[p]:
-			next.append(item.serialize())
-		json.append(next)
-	
+
+	for value in array:
+		json.append(serialize(value))
+
 	return json
 
 
@@ -119,12 +125,12 @@ static func load(path: String) -> Model:
 
 	for k in data["remaining_roads"]:
 		model._remaining_roads[int(k)] = int(data["remaining_roads"][k]) as int		
-
-	var p = 0
-	for k in data["initial_houses"]:
-		for j in k:
-			model._initial_houses[p].append(Axial.deserialize(j))
-		p += 1
+	
+	for pid in data["initial_houses"]:
+		var houses: Array = []
+		for j in data["initial_houses"][pid]:
+			houses.append(Axial.deserialize(j))
+		model._initial_houses[int(pid)] = houses
 
 	model.build_derived_data()
 	return model		
