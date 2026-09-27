@@ -97,4 +97,8 @@ func _launch_python_server():
 	Python.launch_server(9999)
 
 func _on_button_send_model_pressed():
-	Python.send_model(Game.model)
+	var encoded_model = ModelLoader.encode(Game.model)
+	Python.send_packet("model", encoded_model)
+	await Python.read_response(func(resp):
+		print(resp)
+	)	

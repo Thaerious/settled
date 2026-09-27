@@ -49,7 +49,7 @@ static func zero() -> Axial:
 	return Axial.new()
 
 
-## create a new acial with specific q, r, s values.
+## create a new axial with specific q, r, s values.
 ## Defaults to origin (0, 0, 0)
 func _init(q: int = 0, r: int = 0, s: int = 0):
 	self.q = q
@@ -253,14 +253,10 @@ func map_to_local(tile_map_layer: TileMapLayer) -> Vector2:
 
 
 ## Serializes this Axial to a Dictionary with q, r, s keys.
-func serialize() -> Dictionary:
-	return {
-		"q": self.q,
-		"r": self.r,
-		"s": self.s
-	}
+func serialize() -> String:
+	return self.key()
 
 
 ## Deserializes a Dictionary with q, r, s keys into an Axial.
-static func deserialize(data: Dictionary) -> Axial:
-	return Axial.new(data["q"], data["r"], data["s"])
+static func deserialize(data: String) -> Axial:
+	return Axial.from_key(data)

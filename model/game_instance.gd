@@ -22,15 +22,12 @@ func _ready() -> void:
 	self.call_deferred("_emit_initial_state")
 
 
-# func do_bot_action() -> void:
-# 	BotBasic.new(Game.model.get_current_player(), self.model).process()
-
-
 func load_last_save() -> bool:
 	var config := ConfigFile.new()
 	if config.load("user://settings.cfg") != OK: return false
 	
-	var filename = config.get_value("settings", "last_save_name")		
+	var filename = config.get_value("settings", "last_save_name")	
+	if filename == "": return false	
 	if not FileAccess.file_exists("user://%s.json" % filename): return false
 	
 	Game.model = ModelLoader.load("user://%s.json" % filename)

@@ -15,7 +15,7 @@ from catanatron.state_functions import (
 	player_freqdeck_add,
 	player_key,
 	play_dev_card,
-	mantain_longest_road,
+	maintain_longest_road,
 )
 
 
@@ -52,32 +52,18 @@ CORNER_OFFSETS = [
 ]
 
 
-def load_state(path: str) -> Game:
-	with open(path) as f:
-		data = json.load(f)
-
+def convert_model(data) -> Game:
 	catan_map = _build_map(data["hex_data"])
 	node_lookup = _build_node_lookup(catan_map, data["hex_data"])
 
 	players = [RandomPlayer(COLORS[i]) for i in range(4)]
+	game = Game(players, catan_map=catan_map, seed=0)
+	state = game.state
 
-	# State(initialize=False) skips the normal random-seating constructor,
-	# so every field below has to be hand-built the way State.copy() does it
-	state = State(players, catan_map, initialize=False)
+	# normal init shuffles seating; force Settled id order (P0 = COLORS[0], ...)
 	state.players = players
 	state.colors = tuple(COLORS)
 	state.color_to_index = {c: i for i, c in enumerate(COLORS)}
-	state.board = Board(catan_map)
-	state.discard_limit = 7
-
-	state.player_state = {}
-	for i in range(4):
-		for key, value in PLAYER_INITIAL_STATE.items():
-			state.player_state[f"P{i}_{key}"] = value
-
-	state.buildings_by_color = {c: {"SETTLEMENT": [], "CITY": [], "ROAD": []} for c in COLORS}
-	state.actions = []
-	state.num_turns = 0
 
 	_place_buildings(state, data["houses"], data["cities"], node_lookup)
 	_place_roads(state, data["roads"], node_lookup)
@@ -88,13 +74,7 @@ def load_state(path: str) -> Game:
 	_load_robber(state, data["hex_data"])
 
 	state.playable_actions = generate_playable_actions(state)
-
-	# Game(initialize=False) also leaves id/seed/vps_to_win unset
-	game = Game(players, initialize=False)
-	game.state = state
 	game.id = "loaded-from-settled"
-	game.seed = 0
-	game.vps_to_win = 10
 	return game
 
 
@@ -224,7 +204,7 @@ def _place_roads(state, roads: dict, node_lookup: dict) -> None:
 				continue
 			build_road(state, color, edge, is_free=True)
 			previous_road_color, road_color, road_lengths = result
-			mantain_longest_road(state, previous_road_color, road_color, road_lengths)
+			maintain_longest_road(state, previous_road_color, road_color, road_lengths)
 			placed.append((color, edge))
 
 		if not placed:
