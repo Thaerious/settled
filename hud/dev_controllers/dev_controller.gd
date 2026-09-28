@@ -5,14 +5,35 @@ extends HBoxContainer
 var _last = null
 
 func _on_bot_button_pressed():
+	if not Python.is_launched: await Python.launch_server(9999)
+
+	ModelLoader.save(Game.model, "user://_backup.json")
+	ok_dialog.visible = false
+
 	ModelLoader.save(Game.model, "user://_backup.json")
 	ok_dialog.visible = false
 
 	if Game.model.get_current_phase() == Model.GamePhase.DISCARD:
 		for i in Game.model.player_count():
-			BotBasic.new(i, Game.model).process()
+			self._send_model()
 	else:
-		BotBasic.new(Game.model.get_current_player(), Game.model).process()
+		self._send_model()
+
+
+func _send_model():
+	var encoded_model = ModelLoader.encode(Game.model)
+	Python.send_packet("model", encoded_model)
+	var resp = await Python.read_response()
+
+	if not resp is Dictionary:
+		push_error("bad or no response")
+		return
+
+	if resp.get("action_type") != "decision":
+		push_error("unexpected packet: %s" % resp.get("action"))
+		return
+
+	DoBotAction.run(resp["data"])
 
 
 func _on_button_roll_7_pressed():
@@ -95,10 +116,3 @@ func _exchange_for_card() -> void:
 
 func _launch_python_server():
 	Python.launch_server(9999)
-
-func _on_button_send_model_pressed():
-	var encoded_model = ModelLoader.encode(Game.model)
-	Python.send_packet("model", encoded_model)
-	await Python.read_response(func(resp):
-		print(resp)
-	)	

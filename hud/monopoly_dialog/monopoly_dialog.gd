@@ -33,4 +33,4 @@ func _accept() -> void:
 	var idx = %SelectableHBox.current_selection_index
 	if idx == -1: return
 	var resource = BUTTON_TO_RESOURCE[idx]
-	EventBus.play_monopoly_card.emit(Game.self_id, resource)
+	EventBus.monopoly_card_decision.emit(Game.self_id, resource)

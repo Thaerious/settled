@@ -68,7 +68,6 @@ class BotServer:
 				packet = self.receive_packet()
 				if packet is None: break
 				action = packet.get("action", "")
-				print(f"received packet {packet}", flush=True)
 
 				try:					
 					match action:

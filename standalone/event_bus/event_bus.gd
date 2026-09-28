@@ -11,52 +11,52 @@ signal clear_targets()
 
 # View to service events (request, play)
 signal request_roll()
-signal request_purchase_action_card(id: int)
-signal request_play_action_card(id: int, card: Model.ActionCardTypes)
-signal request_house(id: int, corner: Axial)
-signal request_city(id: int, corner: Axial)
-signal request_road(id: int, edge: AxialEdge)
-signal request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes)
-signal request_set_pirate(id: int, hex: Axial)
-signal request_steal_from(to:int, from: int)
-signal request_discard(id:int, discard: Wallet)
+signal request_purchase_action_card(pid: int)
+signal request_play_action_card(pid: int, card: Model.ActionCardTypes)
+signal request_house(pid: int, corner: Axial)
+signal request_city(pid: int, corner: Axial)
+signal request_road(pid: int, edge: AxialEdge)
+signal request_exchange(pid: int, from: Model.ResourceTypes, to: Model.ResourceTypes)
+signal request_set_pirate(pid: int, hex: Axial)
+signal request_steal_from(pid:int, victim: int)
+signal request_discard(pid:int, discard: Wallet)
 signal request_end_turn()
-signal play_monopoly_card(id: int, resource: Model.ResourceTypes)
-signal play_plenty_card(id: int, resources: Wallet)
-signal play_road_building_card(id: int, roads: AxialEdgeSet)
+signal monopoly_card_decision(pid: int, resource: Model.ResourceTypes)
+signal plenty_card_decision(pid: int, resources: Wallet)
 
 # Model outgoing events (only the model or service should emit these)
 signal model_loaded()
 signal pirate_set(hex: Axial)
-signal exchange_rate_set(id: int, wallet: Wallet)
+signal exchange_rate_set(pid: int, wallet: Wallet)
 signal current_player_updated(current_player: int)
 signal current_phase_updated(phase: Model.GamePhase)
-signal action_cards_updated(id: int, owned: ActionCardWallet, playable: ActionCardWallet)
-signal house_added(id: int, corner: Axial)
-signal city_added(id: int, corner: Axial)
-signal road_added(id: int, edge: AxialEdge)
+signal action_cards_updated(pid: int, owned: ActionCardWallet, playable: ActionCardWallet)
+signal house_added(pid: int, corner: Axial)
+signal city_added(pid: int, corner: Axial)
+signal road_added(pid: int, edge: AxialEdge)
 signal dice_set(d1: int, d2:int)
 signal player_record_updated(record: PlayerRecord)
-signal resources_updated(id: int, wallet:Wallet)
-signal resources_received(id: int, wallet:Wallet)
+signal resources_updated(pid: int, wallet:Wallet)
+signal resources_received(pid: int, wallet:Wallet)
 signal end_game(vp: Dictionary[int, int]) # vp is hidden victory points
 
 # Debug and Development Events
-signal set_player_view(id: int)
+signal set_player_view(pid: int)
 
 # Notification Events
-signal notify(id: int, msg: String) # for popup boxes
-signal info(id: int, msg: String) # for infofox messages
+signal notify(pid: int, msg: String) # for popup boxes
+signal info(pid: int, msg: String) # for infofox messages
 signal error(msg: String) # for infofox messages
-signal end_turn(id: int) # emitted between turns, id is the next player
+signal end_turn(pid: int) # emitted between turns, id is the next player
 
-func send_info(id: int, msg1: String, msg2: String) -> void:
-	if id == -1: 
+
+func send_info(pid: int, msg1: String, msg2: String) -> void:
+	if pid == -1: 
 		EventBus.info.emit(-1, msg1)
 		return
 	
-	for pid in Game.model.player_count():
-		if pid == id:
-			EventBus.info.emit(pid, msg1)
+	for player in Game.model.player_count():
+		if player == pid:
+			EventBus.info.emit(player, msg1)
 		else:
-			EventBus.info.emit(pid, msg2)
+			EventBus.info.emit(player, msg2)

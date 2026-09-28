@@ -23,9 +23,8 @@ func _ready() -> void:
 	EventBus.request_purchase_action_card.connect(self._on_request_purchase_action_card)
 	EventBus.request_exchange.connect(self.request_exchange)
 	EventBus.request_play_action_card.connect(self._request_play_action_card)
-	EventBus.play_monopoly_card.connect(self._play_monopoly_card)
-	EventBus.play_plenty_card.connect(self._play_plenty_card)
-	EventBus.play_road_building_card.connect(self._play_road_building_card)
+	EventBus.monopoly_card_decision.connect(self._play_monopoly_card)
+	EventBus.plenty_card_decision.connect(self._play_plenty_card)
 	EventBus.request_set_pirate.connect(self._request_set_pirate)
 	EventBus.request_house.connect(self._request_house)
 	EventBus.request_city.connect(self._request_city)
@@ -139,11 +138,6 @@ func _play_monopoly_card(id: int, resource: Model.ResourceTypes):
 func _play_plenty_card(id: int, wallet: Wallet):
 	Game.model.do_add_resources(id, wallet)
 	Game.model.do_update_phase(GamePhase.MAIN)
-
-
-func _play_road_building_card(id: int, roads: AxialEdgeSet) -> void:
-	for axe in roads:
-		Game.model.do_set_road(id, axe)
 
 
 func request_exchange(id: int, from: Model.ResourceTypes, to: Model.ResourceTypes) -> void:

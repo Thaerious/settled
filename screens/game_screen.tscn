@@ -190,5 +190,4 @@ script = ExtResource("14_0bc1i")
 
 [node name="EventBusLogger" type="Node" parent="."]
 script = ExtResource("19_6phfd")
-mute = true
 metadata/_custom_type_script = "uid://vrjehlf0myuy"

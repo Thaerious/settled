@@ -44,4 +44,4 @@ func count_changed(resource: Model.ResourceTypes, count: int):
 
 
 func _accept() -> void:
-	EventBus.play_plenty_card.emit(Game.self_id, self._wallet)
+	EventBus.plenty_card_decision.emit(Game.self_id, self._wallet)
