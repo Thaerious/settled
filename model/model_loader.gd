@@ -11,6 +11,7 @@ static func encode(model: Model) -> Dictionary:
 	var state := {
 		"current_player":        model._current_player,
 		"game_phase":            Model.GamePhase.find_key(model._game_phase),
+		"setup_phase":           Model.SetupPhase.find_key(model._setup_phase),
 		"longest_road":          model._longest_road,
 		"largest_army":          model._largest_army,
 		"road_building":         model._road_building,
@@ -77,6 +78,7 @@ static func load(path: String) -> Model:
 	model._road_building   = int(data["state"]["road_building"])
 	model._current_player  = int(data["state"]["current_player"])
 	model._game_phase      = Model.GamePhase[data["state"]["game_phase"]]
+	model._setup_phase     = Model.SetupPhase[data["state"]["setup_phase"]]
 	model._largest_army    = int(data["state"]["largest_army"])	
 	model._longest_road    = int(data["state"]["longest_road"])
 	model.rng.state        = int(data["state"]["rng_state"])

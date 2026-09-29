@@ -88,7 +88,7 @@ enum GamePhase {
 	PRE_ROLL
 }
 
-enum PlacementPhase{
+enum SetupPhase{
 	HOUSE1,
 	HOUSE2,
 	ROAD1,
@@ -107,14 +107,15 @@ const INT_MAX = 9223372036854775807
 const INITIAL_RESOURCE_COUNT = 19
 
 var _current_player: int = 0  						# the current active player
-var _game_phase: GamePhase = GamePhase.NOT_STARTED  # the currnet phase
+var _game_phase := GamePhase.NOT_STARTED            # the current phase
+var _setup_phase := SetupPhase.NONE                 # the setup sub-phase
 var _longest_road:int = -1                          # player who owns longest road (-1 is none)
 var _largest_army:int = -1                          # player with the largest army (-1 is none)
 var _pirate: Axial                                  # the axial the pirate is one (starts on desert)
-var _remaining_houses: Dictionary[int, int]        # map of player id -> remaining house pieces
-var _remaining_cities: Dictionary[int, int]        # map of player id -> remaining city pieces
-var _remaining_roads: Dictionary[int, int]         # map of player id -> remaining road pieces
-var _remaining_resources:= Wallet.new()            # resources available in the bank
+var _remaining_houses: Dictionary[int, int]         # map of player id -> remaining house pieces
+var _remaining_cities: Dictionary[int, int]         # map of player id -> remaining city pieces
+var _remaining_roads: Dictionary[int, int]          # map of player id -> remaining road pieces
+var _remaining_resources:= Wallet.new()             # resources available in the bank
 
 var _player_records: Dictionary[int, PlayerRecord] = {}  # player information map
 var _hex_data: Dictionary[String, HexData] = {}          # hex (tile) data map for all tiles (incl water)
@@ -140,6 +141,7 @@ var rng := RandomNumberGenerator.new()
 func get_pirate() -> Axial:                 return self._pirate.duplicate()
 func get_current_player() -> int:           return self._current_player
 func get_current_phase() -> GamePhase:      return self._game_phase
+func get_setup_phase() -> SetupPhase:       return self._setup_phase
 func get_port(cax: Axial) -> ResourceTypes: return self._ports.get(cax.key(), ResourceTypes.NONE)
 func get_army(id: int) -> int:              return self._player_records[id].soldiers
 func get_victory_points(id: int) -> int:    return self._player_records[id].victory_points
@@ -310,23 +312,24 @@ func get_hex_data(hex: Axial) -> HexData:
 	return data
 
 
-func get_placement_phase(id: int) -> Model.PlacementPhase:
+func _calculate_setup_phase() -> void:
 	if self.get_current_phase() != Model.GamePhase.SETUP: 
-		return Model.PlacementPhase.NONE
+		self._setup_phase = Model.SetupPhase.NONE
 
+	var id = self.get_current_player()
 	var count_houses = self.get_houses(id).size()
 	var count_roads = self.get_roads(id).size()
 
 	if count_houses == 0 and count_roads == 0:
-		return Model.PlacementPhase.HOUSE1
+		self._setup_phase =  Model.SetupPhase.HOUSE1
 	elif count_houses == 1 and count_roads == 0:
-		return Model.PlacementPhase.ROAD1
+		self._setup_phase =  Model.SetupPhase.ROAD1
 	elif count_houses == 1 and count_roads == 1:
-		return Model.PlacementPhase.HOUSE2
+		self._setup_phase =  Model.SetupPhase.HOUSE2
 	elif count_houses == 2 and count_roads == 1:
-		return Model.PlacementPhase.ROAD2
+		self._setup_phase =  Model.SetupPhase.ROAD2
 	else:
-		return Model.PlacementPhase.NONE
+		self._setup_phase =  Model.SetupPhase.NONE
 
 
 func get_initial_road_targets(id: int) -> AxialEdgeSet:
@@ -345,7 +348,7 @@ func do_end_turn() -> void:
 	owned.copy_to(playable)
 
 	# set turn
-	self._game_phase = Model.GamePhase.PRE_ROLL
+	self.do_update_phase(Model.GamePhase.PRE_ROLL)
 
 	# emit events	
 	EventBus.current_phase_updated.emit(self.get_current_phase())
@@ -470,12 +473,13 @@ func update_discard_targets() -> void:
 
 
 func do_update_phase(phase: GamePhase) -> void:
+	print("do update phase %s" % Model.GamePhase.find_key(phase))
 	self._game_phase = phase
-
+	self._calculate_setup_phase()
+	
 	if phase == Model.GamePhase.ROAD_BUILDING:
 		self._road_building = 2	
-
-	if phase == Model.GamePhase.DISCARD:
+	elif phase == Model.GamePhase.DISCARD:
 		self.update_discard_targets()
 
 	for pid in self.player_count():

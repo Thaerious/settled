@@ -1,7 +1,6 @@
 extends DialogFrame
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	super._ready()
 	EventBus.model_loaded.connect(self._on_model_loaded)
@@ -20,15 +19,17 @@ func _on_current_phase_updated(phase: Model.GamePhase) -> void:
 
 
 func _on_model_loaded() -> void:
-	if Game.model.get_current_player() != Game.self_id: return
+	if Game.model.get_current_player() != Game.self_id: 
+		self.visible = false
+		return
 
 	%HouseControl1.disabled = true
 	%RoadControl1.disabled = true
 	%HouseControl2.disabled = true
 	%RoadControl2.disabled = true
 
-	match Game.model.get_placement_phase(Game.self_id):
-		Model.PlacementPhase.HOUSE1: %HouseControl1.disabled = false
-		Model.PlacementPhase.ROAD1:  %RoadControl1.disabled = false
-		Model.PlacementPhase.HOUSE2: %HouseControl2.disabled = false
-		Model.PlacementPhase.ROAD2:  %RoadControl2.disabled = false		
+	match Game.model.get_setup_phase():
+		Model.SetupPhase.HOUSE1: %HouseControl1.disabled = false
+		Model.SetupPhase.ROAD1:  %RoadControl1.disabled = false
+		Model.SetupPhase.HOUSE2: %HouseControl2.disabled = false
+		Model.SetupPhase.ROAD2:  %RoadControl2.disabled = false		

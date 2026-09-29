@@ -42,6 +42,7 @@ func _request_house(id: int, corner: Axial) -> void:
 	if Game.model.get_current_phase() == Model.GamePhase.SETUP:
 		if count == 1: self._award_resources(id, corner)
 		Game.model.do_set_initial_house(id, corner)
+		Game.model.do_update_phase(Model.GamePhase.SETUP)
 	else:
 		Game.model.do_remove_resources(id, Model.COSTS["house"])
 		Game.model.do_set_house(id, corner)		
@@ -55,11 +56,14 @@ func _request_city(id: int, corner: Axial) -> void:
 func _request_road(id: int, edge: AxialEdge) -> void:	
 	if Game.model.get_current_phase() == GamePhase.ROAD_BUILDING:
 		Game.model.decrement_road_building()
-		if Game.model.free_road_count() == 0: Game.model.do_update_phase(GamePhase.MAIN)
-	elif Game.model.get_current_phase() == Model.GamePhase.SETUP:
+		Game.model.do_set_road(id, edge)
+		if Game.model.free_road_count() == 0: Game.model.do_update_phase(GamePhase.MAIN)		
+	elif Game.model.get_current_phase() == Model.GamePhase.SETUP:		
+		Game.model.do_set_road(id, edge)
 		self._next_initial_player(id)
 	else:
 		Game.model.do_remove_resources(id, Model.COSTS["road"])
+		Game.model.do_set_road(id, edge)
 
 	Game.model.do_set_road(id, edge)		
 		
@@ -72,6 +76,7 @@ func _next_initial_player(id: int):
 		next_player = next_player + 1
 		if next_player > 3: next_player = 3
 		Game.model.do_update_player(next_player)
+		Game.model.do_update_phase(Model.GamePhase.SETUP)
 	else: # reverse
 		next_player = next_player - 1
 		if next_player < 0:
@@ -80,6 +85,7 @@ func _next_initial_player(id: int):
 			self._on_request_roll()
 		else:
 			Game.model.do_update_player(next_player)
+			Game.model.do_update_phase(Model.GamePhase.SETUP)
 
 
 func _request_set_pirate(id: int, hex: Axial):	

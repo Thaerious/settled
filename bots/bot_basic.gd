@@ -175,13 +175,13 @@ func do_action(best: BotAction) -> void:
 
 func phase_setup() -> BotAction:
 	match self._game_model.get_placement_phase(self.id):
-		Model.PlacementPhase.HOUSE1:
+		Model.SetupPhase.HOUSE1:
 			return self.initial_house()
-		Model.PlacementPhase.ROAD1:
+		Model.SetupPhase.ROAD1:
 			return self.initial_road()
-		Model.PlacementPhase.HOUSE2:
+		Model.SetupPhase.HOUSE2:
 			return self.initial_house()
-		Model.PlacementPhase.ROAD2:
+		Model.SetupPhase.ROAD2:
 			return self.initial_road()
 		_:
 			return BotAction.NOOP
