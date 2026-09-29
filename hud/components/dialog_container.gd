@@ -1,3 +1,4 @@
+# filename: components/dialog_container.gd
 class_name DialogContainer
 extends PanelContainer
 

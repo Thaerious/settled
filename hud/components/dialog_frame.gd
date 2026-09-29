@@ -1,3 +1,4 @@
+# filename: components/dialog_frame.gd
 class_name DialogFrame
 extends DialogContainer
 

@@ -1,3 +1,4 @@
+# filename: store_dialog/road_control.gd
 @tool
 class_name RoadControl
 extends DraggableSpriteControl

@@ -1,3 +1,4 @@
+# filename: components/draggable_sprite_control.gd
 @tool
 class_name DraggableSpriteControl
 extends DialogSpriteControl

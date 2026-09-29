@@ -1,3 +1,4 @@
+# filename: services/steal_service.gd
 class_name StealService
 extends Node
 

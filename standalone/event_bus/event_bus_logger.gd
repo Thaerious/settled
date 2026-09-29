@@ -1,3 +1,4 @@
+# filename: event_bus/event_bus_logger.gd
 ## event_bus_logger.gd
 class_name EventBusLogger
 extends Node

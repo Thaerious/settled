@@ -1,3 +1,4 @@
+# filename: helpers/game_board_setup.gd
 ## self._board_setup.gd
 class_name GameBoardSetup
 

@@ -1,3 +1,4 @@
+# filename: nodes/style_container.gd
 class_name StyleContainer
 extends PanelContainer
 

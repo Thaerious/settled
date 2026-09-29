@@ -1,3 +1,4 @@
+# filename: components/selectable_group.gd
 # Targetting the immediate child nodes, which must have the signals "on_selected", and "on_unselected" 
 # as well as the property "selected".  When one child is selected the others are unselected.
 

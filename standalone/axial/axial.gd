@@ -1,3 +1,4 @@
+# filename: axial/axial.gd
 ## axial.gd
 class_name Axial
 extends RefCounted

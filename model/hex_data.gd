@@ -1,3 +1,4 @@
+# filename: model/hex_data.gd
 class_name HexData
 extends RefCounted
 

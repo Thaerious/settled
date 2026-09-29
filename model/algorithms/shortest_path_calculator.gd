@@ -1,3 +1,4 @@
+# filename: algorithms/shortest_path_calculator.gd
 class_name ShortestPathCalculator
 extends RefCounted
 

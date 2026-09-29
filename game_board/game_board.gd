@@ -1,3 +1,4 @@
+# filename: game_board/game_board.gd
 ## board.gd
 class_name GameBoard
 extends Node2D

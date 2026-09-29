@@ -1,3 +1,4 @@
+# filename: year_of_plenty_dialog/plenty_dialog_control.gd
 @tool
 class_name PlentyDialogControl
 extends DialogSpriteControl

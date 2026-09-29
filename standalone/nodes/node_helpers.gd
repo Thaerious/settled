@@ -1,3 +1,4 @@
+# filename: nodes/node_helpers.gd
 class_name NodeHelpers
 
 static func print_tree_from(node: Node, indent: int = 0) -> void:

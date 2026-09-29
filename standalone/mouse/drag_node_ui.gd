@@ -1,3 +1,4 @@
+# filename: mouse/drag_node_ui.gd
 class_name DragNodeUI
 extends Node
 

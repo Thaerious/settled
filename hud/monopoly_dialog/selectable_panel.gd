@@ -1,3 +1,4 @@
+# filename: monopoly_dialog/selectable_panel.gd
 class_name SelectablePanelContainer
 extends PanelContainer
 

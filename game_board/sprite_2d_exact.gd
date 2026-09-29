@@ -1,3 +1,4 @@
+# filename: game_board/sprite_2d_exact.gd
 @tool
 class_name Sprite2DExact
 extends Sprite2D

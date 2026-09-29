@@ -1,3 +1,4 @@
+# filename: sandbox/debug_scene.gd
 extends Node2D
 
 func _on_button_4_button_up():

@@ -1,3 +1,4 @@
+# filename: turn_dialog/turn_dialog.gd
 extends DialogPane
 
 @export var dice_textures: Array[Texture2D] = []

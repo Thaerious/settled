@@ -1,3 +1,4 @@
+# filename: free_road_dialog/free_road_dialog.gd
 extends DialogFrame
 
 func _ready() -> void:

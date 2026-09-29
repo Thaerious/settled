@@ -1,3 +1,4 @@
+# filename: info_box/info_box_logger.gd
 class_name InfoBoxLogger
 extends RefCounted
 

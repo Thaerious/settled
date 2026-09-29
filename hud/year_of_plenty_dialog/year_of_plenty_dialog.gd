@@ -1,3 +1,4 @@
+# filename: year_of_plenty_dialog/year_of_plenty_dialog.gd
 @tool
 class_name YearOfPlentyDialog
 extends DialogPane

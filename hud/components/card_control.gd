@@ -1,3 +1,4 @@
+# filename: components/card_control.gd
 @tool
 extends DialogSpriteControl
 

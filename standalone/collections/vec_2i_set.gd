@@ -1,3 +1,4 @@
+# filename: collections/vec_2i_set.gd
 ## vec2i_set.gd
 ## A set collection for Vector2i values. Guarantees uniqueness with no duplicate entries.
 class_name Vec2iSet

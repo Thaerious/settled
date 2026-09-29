@@ -1,3 +1,4 @@
+# filename: axial/axial_edge_set.gd
 ## axial_edge_set.gd
 ## A set collection for AxialEdge values. Guarantees uniqueness with no duplicate entries.
 class_name AxialEdgeSet

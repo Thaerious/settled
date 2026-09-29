@@ -1,3 +1,4 @@
+# filename: python/convert_decision.py
 from catanatron.models.player import Color
 from catanatron.models.enums import ActionType
 from AxialTable import AxialTable

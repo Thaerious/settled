@@ -1,3 +1,4 @@
+# filename: components/scaled_sprite.gd
 class_name ScaledSprite
 extends Sprite2D
 

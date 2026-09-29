@@ -1,3 +1,4 @@
+# filename: store_dialog/city_control.gd
 @tool
 class_name CityControl
 extends DraggableSpriteControl

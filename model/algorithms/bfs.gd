@@ -1,3 +1,4 @@
+# filename: algorithms/bfs.gd
 # Given a starting point, an end point, and an adjacency table;
 # determine the shortest path between the start and end point.
 # Result will contain the reverse array [end, ..., start]

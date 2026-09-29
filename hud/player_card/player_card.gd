@@ -1,3 +1,4 @@
+# filename: player_card/player_card.gd
 extends Control
 
 @onready var name_label: Label = %NameLabel

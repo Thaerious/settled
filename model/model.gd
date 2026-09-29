@@ -1,3 +1,4 @@
+# filename: model/model.gd
 class_name Model
 extends Object
 

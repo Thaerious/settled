@@ -1,3 +1,4 @@
+# filename: collections/wallet.gd
 class_name Wallet
 extends RefCounted
 

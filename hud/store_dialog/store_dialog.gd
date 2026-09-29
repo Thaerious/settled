@@ -1,3 +1,4 @@
+# filename: store_dialog/store_dialog.gd
 class_name StoreDialog
 extends DialogContainer
 

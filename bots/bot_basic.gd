@@ -1,3 +1,4 @@
+# filename: bots/bot_basic.gd
 class_name BotBasic
 extends RefCounted
 

@@ -1,3 +1,4 @@
+# filename: steal_dialog/steal_dialog.gd
 extends DialogFrame
 
 

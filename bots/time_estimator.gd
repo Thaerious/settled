@@ -1,3 +1,4 @@
+# filename: bots/time_estimator.gd
 class_name TimeEstimator
 extends RefCounted
 

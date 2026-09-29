@@ -1,3 +1,4 @@
+# filename: axial/axial_set.gd
 ## axial_set.gd
 ## A set collection for Axial values. Guarantees uniqueness with no duplicate entries.
 class_name AxialSet

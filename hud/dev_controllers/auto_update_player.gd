@@ -1,3 +1,4 @@
+# filename: dev_controllers/auto_update_player.gd
 extends CheckBox
 
 func _ready():

@@ -1,3 +1,4 @@
+# filename: standalone/camera_2d.gd
 ## map_camera.gd
 extends Camera2D
 

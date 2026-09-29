@@ -1,3 +1,4 @@
+# filename: python/bot_runner.py
 from catanatron.game import Game # type: ignore
 from catanatron.models.actions import generate_playable_actions # type: ignore
 

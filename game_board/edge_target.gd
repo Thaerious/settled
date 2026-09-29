@@ -1,3 +1,4 @@
+# filename: game_board/edge_target.gd
 class_name EdgeTarget
 extends Node2D
 

@@ -1,3 +1,4 @@
+# filename: event_bus/event_bus.gd
 # event_bus.gd
 @warning_ignore_start("unused_signal")
 extends Node

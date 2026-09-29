@@ -1,3 +1,4 @@
+# filename: initial_placement/initial_placement_dialog.gd
 extends DialogFrame
 
 

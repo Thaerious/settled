@@ -1,3 +1,4 @@
+# filename: game_board/corner_target.gd
 class_name CornerTarget
 extends Node2D
 

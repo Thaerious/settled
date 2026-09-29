@@ -1,3 +1,4 @@
+# filename: mouse/drag_record.gd
 ## drag_record.gd
 class_name DragRecord
 

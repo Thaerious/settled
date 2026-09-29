@@ -1,3 +1,4 @@
+# filename: components/dialog_sprite_control.gd
 # %UniqueName lookup fails when this scene is used as a regular instance
 # with editable children exposed via [editable path=...], that reassigns
 # ownership of nested nodes to the outer scene root, breaking % lookups

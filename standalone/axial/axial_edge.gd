@@ -1,3 +1,4 @@
+# filename: axial/axial_edge.gd
 class_name AxialEdge
 extends RefCounted
 

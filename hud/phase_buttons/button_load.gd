@@ -1,3 +1,4 @@
+# filename: phase_buttons/button_load.gd
 extends Button
 
 @onready var info_dialog = get_tree().current_scene.get_node("%BasicInfoBox") as BasicInfoBox

@@ -1,3 +1,4 @@
+# filename: hand_dialog/hand_dialog.gd
 ## hand_dialog.gd
 class_name HandDialog
 extends PanelContainer

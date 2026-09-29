@@ -1,3 +1,4 @@
+# filename: discard_dialog/discard_dialog.gd
 @tool
 class_name DiscardDialog
 extends DialogFrame

@@ -1,3 +1,4 @@
+# filename: store_dialog/house_control.gd
 @tool
 class_name HouseControl
 extends DraggableSpriteControl

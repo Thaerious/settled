@@ -1,3 +1,4 @@
+# filename: phase_buttons/play_as_button.gd
 class_name PlayAsButton
 extends Button
 

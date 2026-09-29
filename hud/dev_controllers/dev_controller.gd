@@ -1,3 +1,4 @@
+# filename: dev_controllers/dev_controller.gd
 extends HBoxContainer
 
 @onready var board = get_tree().current_scene.get_node("%GameBoard") as GameBoard

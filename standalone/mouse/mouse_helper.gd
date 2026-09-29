@@ -1,3 +1,4 @@
+# filename: mouse/mouse_helper.gd
 extends Node
 
 ## The mouse button that initiates and releases drags.

@@ -1,3 +1,4 @@
+# filename: services/main_service.gd
 class_name MainService
 extends Node
 

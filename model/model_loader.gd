@@ -1,3 +1,4 @@
+# filename: model/model_loader.gd
 class_name ModelLoader
 extends Object
 

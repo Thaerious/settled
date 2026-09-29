@@ -1,3 +1,4 @@
+# filename: standalone/general_util.gd
 class_name GeneralUtil
 
 static var _last_message = null

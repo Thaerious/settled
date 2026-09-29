@@ -1,3 +1,4 @@
+# filename: monopoly_dialog/monopoly_dialog.gd
 @tool
 class_name MonopolyDialog
 extends DialogPane

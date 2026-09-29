@@ -1,3 +1,4 @@
+# filename: algorithms/path_builder.gd
 class_name PathBuilder
 extends RefCounted
 

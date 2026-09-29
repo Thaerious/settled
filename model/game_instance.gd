@@ -1,3 +1,4 @@
+# filename: model/game_instance.gd
 ## game.gd
 class_name GameInstance
 extends Node

@@ -1,3 +1,4 @@
+# filename: mouse/drag_node_2d.gd
 # Requires an Area2D (with a CollisionShape2D child).
 
 class_name DragNode2D

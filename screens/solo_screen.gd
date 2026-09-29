@@ -1,3 +1,4 @@
+# filename: screens/solo_screen.gd
 extends Node2D
 
 

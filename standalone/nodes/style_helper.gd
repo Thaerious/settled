@@ -1,3 +1,4 @@
+# filename: nodes/style_helper.gd
 class_name StyleHelper
 extends Node
 

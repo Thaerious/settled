@@ -1,3 +1,4 @@
+# filename: game_board/number_piece.gd
 class_name NumberPiece
 extends Node2D
 

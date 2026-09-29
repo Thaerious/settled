@@ -1,3 +1,4 @@
+# filename: collections/exchange_calculator.gd
 class_name ExchangeCalculator
 
 static func best_source_for(exchange: Wallet, wallet: Wallet, target: Model.ResourceTypes) -> Model.ResourceTypes:

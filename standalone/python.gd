@@ -1,3 +1,4 @@
+# filename: standalone/python.gd
 extends Node2D
 
 signal server_connected()

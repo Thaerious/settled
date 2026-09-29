@@ -1,3 +1,4 @@
+# filename: game_board/pirate_piece.gd
 class_name PiratePiece
 extends Node2D
 

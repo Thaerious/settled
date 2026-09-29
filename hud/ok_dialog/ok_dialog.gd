@@ -1,3 +1,4 @@
+# filename: ok_dialog/ok_dialog.gd
 class_name OkDialog
 extends DialogPane
 

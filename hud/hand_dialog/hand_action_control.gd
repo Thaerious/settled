@@ -1,3 +1,4 @@
+# filename: hand_dialog/hand_action_control.gd
 @tool
 class_name HandActionControl
 extends DialogSpriteControl

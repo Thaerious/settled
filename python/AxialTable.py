@@ -1,3 +1,4 @@
+# filename: python/AxialTable.py
 # LookupTable.py
 from catanatron.models.map import NodeRef
 

@@ -1,3 +1,4 @@
+# filename: hand_dialog/hand_resource_control.gd
 @tool
 class_name HandResourceControl
 extends DraggableSpriteControl

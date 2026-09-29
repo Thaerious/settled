@@ -1,3 +1,4 @@
+# filename: model/player_record.gd
 class_name PlayerRecord
 extends RefCounted
 

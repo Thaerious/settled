@@ -1,3 +1,4 @@
+# filename: components/dialog_pane.gd
 class_name DialogPane
 extends DialogFrame
 

@@ -1,3 +1,4 @@
+# filename: error_dialog/error_dialog.gd
 class_name ErrorDialog
 extends DialogPane
 

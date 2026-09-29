@@ -1,3 +1,4 @@
+# filename: helpers/place_numbers.gd
 class_name GameBoardHelpers
 
 const NUMBER_PIECE: PackedScene = preload("res://game_board/number_piece.tscn")

@@ -1,3 +1,4 @@
+# filename: info_box/basic_info_box.gd
 class_name BasicInfoBox
 extends PanelContainer
 

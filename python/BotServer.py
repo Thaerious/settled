@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# filename: python/BotServer.py
 import sys
 import json
 import socket
