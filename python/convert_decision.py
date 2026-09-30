@@ -2,12 +2,14 @@
 from catanatron.models.player import Color
 from catanatron.models.enums import ActionType
 from AxialTable import AxialTable
-from model_converter import COLORS
+from convert_model import COLORS
 
 def convert_decision(action, catan_map) -> dict:
 	axial_table = AxialTable(catan_map)
 	v = action.value
 	data = None
+
+	print(f"Action {action}", flush=True)
 
 	match action.action_type:
 		case ActionType.BUILD_ROAD:
@@ -22,7 +24,7 @@ def convert_decision(action, catan_map) -> dict:
 				"victim": COLORS.index(v[1]) if v[1] is not None else -1
 			}
 
-		case ActionType.DISCARD:
+		case ActionType.DISCARD_RESOURCE:
 			data = list(v) if v is not None else []
 
 		case ActionType.PLAY_YEAR_OF_PLENTY:

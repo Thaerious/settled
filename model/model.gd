@@ -316,6 +316,7 @@ func get_hex_data(hex: Axial) -> HexData:
 func _calculate_setup_phase() -> void:
 	if self.get_current_phase() != Model.GamePhase.SETUP: 
 		self._setup_phase = Model.SetupPhase.NONE
+		return
 
 	var id = self.get_current_player()
 	var count_houses = self.get_houses(id).size()

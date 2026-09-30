@@ -1,12 +1,9 @@
-# filename: python/model_converter.py
-import json
 import random
 
 from catanatron.game import Game
-from catanatron.state import State, PLAYER_INITIAL_STATE
+from catanatron.state import PLAYER_INITIAL_STATE
 from catanatron.models.player import Color, RandomPlayer
 from catanatron.models.map import CatanMap, BASE_MAP_TEMPLATE, initialize_tiles, LandTile, Port
-from catanatron.models.board import Board
 from catanatron.models.actions import generate_playable_actions
 from catanatron.models.enums import ActionPrompt
 from catanatron.state_functions import (
@@ -38,6 +35,14 @@ DEV_CARD_MAP = {
 	"VICTORY_POINTS": "VICTORY_POINT",
 }
 
+# Settled SetupPhase -> catanatron initial-build prompt
+SETUP_PROMPTS = {
+	"HOUSE1": ActionPrompt.BUILD_INITIAL_SETTLEMENT,
+	"HOUSE2": ActionPrompt.BUILD_INITIAL_SETTLEMENT,
+	"ROAD1":  ActionPrompt.BUILD_INITIAL_ROAD,
+	"ROAD2":  ActionPrompt.BUILD_INITIAL_ROAD,
+}
+
 # Settled player id 0..3 -> catanatron seat color. Arbitrary but fixed.
 COLORS = [Color.RED, Color.BLUE, Color.WHITE, Color.ORANGE]
 
@@ -66,7 +71,7 @@ def convert_model(data) -> Game:
 	state.colors = tuple(COLORS)
 	state.color_to_index = {c: i for i, c in enumerate(COLORS)}
 
-	_place_buildings(state, data["houses"], data["cities"], node_lookup)
+	_place_buildings(state, data["houses"], data["cities"], data["initial_houses"], node_lookup)
 	_place_roads(state, data["roads"], node_lookup)
 	_load_hands(state, data["bank"])
 	_load_bank(state, data["remaining_resources"])
@@ -154,12 +159,22 @@ def _edge_key_to_corners(key: str):
 		return (int(q), int(r), int(s + 0.5)), (int(q), int(r), int(s - 0.5))
 
 
-def _place_buildings(state, houses: dict, cities: dict, node_lookup: dict) -> None:
+def _place_buildings(state, houses: dict, cities: dict, initial_houses: dict, node_lookup: dict) -> None:
+	# Initial houses go first, in placement order: during setup catanatron's
+	# initial_road_possibilities() only offers roads next to the LAST
+	# settlement appended to buildings_by_color[color][SETTLEMENT].
+	ordered = []
+	for pid_str, axials in initial_houses.items():
+		ordered += [(ax, int(pid_str)) for ax in axials]
+	seen = {ax for ax, _ in ordered}
+	ordered += [(ax, pid) for ax, pid in houses.items() if ax not in seen]
+
 	# Model.do_set_city() (pre-fix) never removed the stale entry from the
 	# flat _houses dict, only from _houses_mirror — so a city's axial could
 	# also still be sitting in `houses`. Cities win regardless.
-	for axial_key, pid in houses.items():
+	for axial_key, pid in ordered:
 		if axial_key in cities: continue
+		if axial_key not in houses: continue  # initial house no longer a house
 		color = COLORS[pid]
 		node_id = node_lookup[axial_key]
 		# initial_build_phase=True bypasses the road-connectivity check —
@@ -288,7 +303,12 @@ def _load_turn_state(state, s: dict) -> None:
 	state.free_roads_available = s["road_building"] if state.is_road_building else 0
 
 	if state.is_initial_build_phase:
-		state.current_prompt = ActionPrompt.BUILD_INITIAL_SETTLEMENT
+		# snake-draft direction is derived by catanatron from total
+		# settlement count, so only the prompt needs setting here
+		sp = s.get("setup_phase", "NONE")
+		if sp not in SETUP_PROMPTS:
+			raise ValueError(f"game_phase SETUP but setup_phase={sp!r}")
+		state.current_prompt = SETUP_PROMPTS[sp]
 	elif state.is_discarding:
 		state.current_prompt = ActionPrompt.DISCARD
 	elif state.is_moving_knight:

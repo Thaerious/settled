@@ -17,10 +17,10 @@
           <mxGeometry height="90" width="220" x="80" y="570" as="geometry" />
         </mxCell>
         <mxCell id="player" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=6;fontSize=12;" value="Player&#xa;&#xa;+ color: Color&#xa;+ decide(game, playable_actions): Action" vertex="1">
-          <mxGeometry height="80" width="220" x="420" y="40" as="geometry" />
+          <mxGeometry height="90" width="220" x="420" y="55" as="geometry" />
         </mxCell>
         <mxCell id="action" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=6;fontSize=12;" value="Action&#xa;&#xa;+ color: Color&#xa;+ action_type: ActionType&#xa;+ value" vertex="1">
-          <mxGeometry height="90" width="220" x="420" y="220" as="geometry" />
+          <mxGeometry height="90" width="220" x="420" y="235" as="geometry" />
         </mxCell>
         <mxCell id="e1" edge="1" parent="1" source="game" style="endArrow=diamondThin;startArrow=none;endFill=1;html=1;fontSize=11;" target="state" value="1">
           <mxGeometry relative="1" as="geometry" />
@@ -37,7 +37,7 @@
         <mxCell id="e5" edge="1" parent="1" source="player" style="endArrow=open;dashed=1;html=1;fontSize=11;" target="action" value="returns">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e6" edge="1" parent="1" source="game" style="endArrow=open;dashed=1;html=1;fontSize=11;" target="action" value="applies">
+        <mxCell id="e6" edge="1" parent="1" source="game" style="endArrow=open;dashed=1;html=1;fontSize=11;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="action" value="applies">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>

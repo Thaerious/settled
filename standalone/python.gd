@@ -21,17 +21,18 @@ var _buffer: String = ""  # received text not yet consumed as a complete line
 var _is_ready := false
 var _reading: bool = false
 
+
 var is_launched: bool:
 	get(): return self._stdio != null
 
 
-func _process(_1: float) -> void:
-	self.read_stdout()	
+var is_server_connected: bool:
+	get(): return self._peer != null and self._peer.get_status() == StreamPeerTCP.STATUS_CONNECTED
 
 
 func read_stdout() -> void:
 	if not self.is_launched: return
-	
+
 	while not self._stdio.eof_reached():
 		var line = self._stdio.get_line()
 		if line == "": break
@@ -44,12 +45,10 @@ func read_stdout() -> void:
 		print("[error] %s" % line)	
 
 
-func launch_server(_port: int) -> bool:	
-	if self.is_launched: return false
-	self._port = _port
-
+func launch_server(port: int) -> bool:	
 	var exe_path := ProjectSettings.globalize_path("res://python/venv/Scripts/python.exe")
-	var result := OS.execute_with_pipe(exe_path, ["D:/trunk/godot/settled/python/BotServer.py"], false)
+	var script_path := ProjectSettings.globalize_path("res://python/SettledServer.py")
+	var result := OS.execute_with_pipe(exe_path, [script_path, "--port", str(port)], false)
 
 	# var exe_path := ProjectSettings.globalize_path("res://python/dist/server/server.exe")
 	# var result := OS.execute_with_pipe(exe_path, [])
@@ -60,11 +59,15 @@ func launch_server(_port: int) -> bool:
 
 	self._pid = result["pid"]
 	self._stdio = result["stdio"]
-	self._stderr = result["stderr"]
-	return await self._connect_to_server()
+	self._stderr = result["stderr"]	
+
+	Engine.get_main_loop().process_frame.connect(self.read_stdout)
+
+	return true
 
 
-func _connect_to_server() -> bool:
+func connect_to_server(port) -> bool:
+	self._port = port
 	var deadline := Time.get_ticks_msec() + int(CONNECT_TIMEOUT_SEC * MSEC_PER_SEC)
 
 	while Time.get_ticks_msec() < deadline:
@@ -91,6 +94,10 @@ func _connect_to_server() -> bool:
 
 
 func read_response(cb: Callable = Callable(), timeout_sec: float = DEFAULT_TIMEOUT_SEC) -> Variant:
+	if not self.is_server_connected:
+		push_error("Server not connected")
+		return
+	
 	# multiple call guard
 	while self._reading: await self.get_tree().process_frame
 	self._reading = true
@@ -124,18 +131,16 @@ func read_response(cb: Callable = Callable(), timeout_sec: float = DEFAULT_TIMEO
 	return data
 
 
-func send_packet(action, data) -> void:
-	print("Python.send_packet(%s, ...)" % action)
-
-	if not self.is_launched:
-		push_error("Server not started")
+func send_packet(packet_type, data) -> void:
+	if not self.is_server_connected:
+		push_error("Server not connected")
 		return
 
 	if not self._is_ready:
 		await self.server_connected
 
 	var json_string := JSON.stringify({
-		"action": action,
+		"packet_type": packet_type,
 		"data": data
 	})
 
@@ -143,4 +148,3 @@ func send_packet(action, data) -> void:
 	if err != OK: push_error("Error sending packet: %s" % err)
 
 	self.read_stdout()
-	print("packet sent")
