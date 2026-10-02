@@ -1,3 +1,4 @@
+# filename: python/convert_model.py
 import random
 
 from catanatron.game import Game

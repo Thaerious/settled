@@ -7,11 +7,10 @@ var _last = null
 
 func _on_bot_button_pressed():
 	# if not Python.is_launched: Python.launch_server(9999)
+
 	if not Python.is_server_connected: 
 		await Python.connect_to_server(9999)
 		print("Connected to server")
-	else:
-		print("Already connected to server")
 
 	ModelLoader.save(Game.model, "user://_backup.json")
 	ok_dialog.visible = false
@@ -34,6 +33,8 @@ func _send_model():
 	if not resp is Dictionary:
 		push_error("bad or no response: %s" % [resp])
 		return
+
+	print("Server Response | packet: %s" % [resp])
 
 	if resp.get("action_type") != "decision":
 		push_error("unexpected packet: %s" % resp.get("action"))
