@@ -19,6 +19,8 @@ var _peer: StreamPeerTCP = null
 var is_client_connected: bool:
 	get(): return self._peer != null and self._peer.get_status() == StreamPeerTCP.STATUS_CONNECTED
 
+var writer: Writer = null
+var listener: Listener = null
 
 func connect_to_server(port: int, ip := "127.0.0.1") -> Array:
 	var err := await self._do_connect(port, ip)
@@ -27,7 +29,9 @@ func connect_to_server(port: int, ip := "127.0.0.1") -> Array:
 		push_error("Server connection error | err %s | port %s | ip %s" % [error_string(err), port, ip])
 		return [err, null, null]
 
-	return [Error.OK, Writer.new(self._peer), Listener.new(self._peer)]
+	self.writer = Writer.new(self._peer)
+	self.listener = Listener.new(self._peer)
+	return [Error.OK, writer, listener]
 
 
 func _do_connect(port: int, ip: String) -> Error:

@@ -134,44 +134,18 @@ layout_mode = 2
 text = "Reset"
 script = ExtResource("8_1rylp")
 
-[node name="ButtonBot" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Do Bot Action"
-
 [node name="ButtonRoll7" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
 text = "Roll 7
 "
 
-[node name="ButtonTestDistance" type="Button" parent="HBoxContainer/VBoxContainer1"]
+[node name="ButtonConnect" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
-text = "Show Valid Corners
-"
+text = "Connect to Server"
 
-[node name="ButtonTestDistance6" type="Button" parent="HBoxContainer/VBoxContainer1"]
+[node name="ButtonBot" type="Button" parent="HBoxContainer/VBoxContainer1"]
 layout_mode = 2
-text = "Reachable Corners
-"
-
-[node name="ButtonTestDistance4" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Playable Corners
-"
-
-[node name="ButtonTestDistance5" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Reachable & Playable
-"
-
-[node name="ButtonTestDistance7" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Lauch Python Server
-"
-
-[node name="ButtonSendModel" type="Button" parent="HBoxContainer/VBoxContainer1"]
-layout_mode = 2
-text = "Send Model
-"
+text = "Do Bot Action"
 
 [node name="PhaseButtons" type="VBoxContainer" parent="HBoxContainer"]
 unique_name_in_owner = true
@@ -284,11 +258,6 @@ script = ExtResource("1_gdvxq")
 phase = 10
 metadata/_custom_type_script = "uid://bsec75ti05trd"
 
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonBot" to="." method="_on_bot_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonRoll7" to="." method="_on_button_roll_7_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance" to="." method="on_button_show_valid_corners_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance6" to="." method="_show_reachable"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance4" to="." method="_show_playable"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance5" to="." method="_show_reachable_intersect_playable"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonTestDistance7" to="." method="_launch_python_server"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonSendModel" to="." method="_on_button_send_model_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonConnect" to="." method="_connect_to_server"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer1/ButtonBot" to="." method="_on_bot_button_pressed"]
