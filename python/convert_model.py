@@ -79,9 +79,11 @@ def convert_model(data) -> Game:
 	_load_dev_decks(state, data)
 	_load_turn_state(state, data["state"])
 	_load_robber(state, data["hex_data"])
+	_load_discard_counts(state, data)
 
 	state.playable_actions = generate_playable_actions(state)
 	game.id = "loaded-from-settled"
+			
 	return game
 
 
@@ -327,3 +329,8 @@ def _load_robber(state, hex_data: dict) -> None:
 			q, r, s = coord_key.split(",")
 			state.board.robber_coordinate = (int(q), int(r), int(s))
 			return
+		
+
+def _load_discard_counts(state, data):
+	records = data["player_records"]
+	state.discard_counts = [records[str(i)]["discard_target"] for i in range(len(COLORS))]		

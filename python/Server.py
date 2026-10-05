@@ -82,7 +82,7 @@ class Server:
 				waited += self.ACCEPT_TIMEOUT
 				continue
 
-			print(f"Client Connected: {addr}")
+			print(f"client connected: {addr}")
 			instance = ServerInstance(conn, self.routes, on_close=self._on_instance_closed)
 			self.instances.append(instance)
 			threading.Thread(target=instance.run, daemon=True).start()
@@ -93,7 +93,7 @@ class Server:
 
 
 	def serve(self) -> None:
-		print("Awaiting Connections")
+		print("awaiting connections")
 		try:
 			while self.await_connection() is not None:
 				pass
@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
 	bot_server = Server(host=args.host, port=args.port, timeout=args.timeout)
 	bot_server.load_routes(args.routes)
-	print(f"Starting server on {args.host}:{args.port}")
+	print(f"starting server on {args.host}:{args.port}")
 
 	if not bot_server.start():
 		bot_server.close()

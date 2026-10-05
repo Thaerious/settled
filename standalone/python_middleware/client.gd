@@ -31,6 +31,8 @@ func connect_to_server(port: int, ip := "127.0.0.1") -> Array:
 
 	self.writer = Writer.new(self._peer)
 	self.listener = Listener.new(self._peer)
+	self.listener.listen()
+
 	return [Error.OK, writer, listener]
 
 

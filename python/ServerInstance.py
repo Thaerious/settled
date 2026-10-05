@@ -26,7 +26,7 @@ class ServerInstance:
 			"packet_type": packet_type,
 			"data": data if data is not None else {}
 		}
-		print(f"Send Packet: {packet}")
+		print(f"send --> {packet}")
 		self.conn.sendall((json.dumps(packet, default=str) + "\n").encode())
 
 
@@ -34,8 +34,7 @@ class ServerInstance:
 		try:
 			while True:
 				packet = self.receive_packet()
-				if packet is None: break
-				print(f"Packet Received {packet['packet_type']}")
+				if packet is None: break				
 
 				for route in self.routes:
 					route(self, packet)

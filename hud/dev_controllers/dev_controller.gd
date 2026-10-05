@@ -12,7 +12,14 @@ func _on_button_roll_7_pressed():
 
 func _connect_to_server():
 	self._client = Client.new()
-	self._client.connect_to_server(9999)
+	await self._client.connect_to_server(9999)
+	print("connected to server")
+	
+	self._client.listener.packet_received.connect(func(packet):
+		print("packet received %s" % [packet])
+	)
+
+	self._client.listener.packet_received.connect(DoBotAction.run)
 
 
 func _on_bot_button_pressed():

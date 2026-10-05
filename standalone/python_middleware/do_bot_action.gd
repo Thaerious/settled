@@ -1,4 +1,4 @@
-# filename: bots/do_bot_action.gd
+# filename: python_middleware/do_bot_action.gd
 class_name DoBotAction
 extends RefCounted
 
@@ -14,23 +14,22 @@ static var _free_roads := AxialEdgeSet.new()	# road building buffer
 
 
 static func run(packet: Dictionary) -> void:
-	print("DoBotAction.run(%s)" % packet)
-
-	var pid: int = packet["pid"]
+	if packet["packet_type"] != "decision": return
 	var data = packet["data"]
+	var pid: int = data["pid"]
 
-	match packet["action"]:
+	match data["action"]:
 		"ROLL":
 			EventBus.request_roll.emit()
 
 		"BUILD_SETTLEMENT":
-			EventBus.request_house.emit(pid, Axial.from_key(data))
+			EventBus.request_house.emit(pid, Axial.from_key(data["corner"]))
 
 		"BUILD_CITY":
-			EventBus.request_city.emit(pid, Axial.from_key(data))
+			EventBus.request_city.emit(pid, Axial.from_key(data["corner"]))
 
 		"BUILD_ROAD":
-			var edge = AxialEdge.from_key(data)
+			var edge = AxialEdge.from_key(data["edge"])
 			if Game.model.get_current_phase() == Model.GamePhase.ROAD_BUILDING:
 				_free_roads.add(edge)
 				if _free_roads.size() >= 2:
@@ -44,8 +43,8 @@ static func run(packet: Dictionary) -> void:
 			var victim: int = data["victim"]
 			if victim != -1: EventBus.request_steal_from.emit(pid, victim)
 
-		"DISCARD":
-			EventBus.request_discard.emit(pid, to_wallet(data))	# ?
+		"DISCARD_RESOURCE":
+			EventBus.request_discard.emit(pid, to_wallet(data["resources"]))	# ?
 
 		"BUY_DEVELOPMENT_CARD":
 			EventBus.request_purchase_action_card.emit(pid)
@@ -59,11 +58,11 @@ static func run(packet: Dictionary) -> void:
 
 		"PLAY_YEAR_OF_PLENTY":
 			EventBus.request_play_action_card.emit(pid, Model.ActionCardTypes.PLENTY)
-			EventBus.plenty_card_decision.emit(pid, to_wallet(data))	# ?
+			EventBus.plenty_card_decision.emit(pid, to_wallet(data["resources"]))	# ?
 
 		"PLAY_MONOPOLY":
 			EventBus.request_play_action_card.emit(pid, Model.ActionCardTypes.MONOPOLY)
-			EventBus.monopoly_card_decision.emit(pid, to_resource(data))	# ?
+			EventBus.monopoly_card_decision.emit(pid, to_resource(data["resources"]))	# ?
 
 		"MARITIME_TRADE":
 			EventBus.request_exchange.emit(pid, to_resource(data["give"][0]), to_resource(data["get"]))
@@ -79,7 +78,10 @@ static func to_resource(name: String) -> Model.ResourceTypes:
 	return RESOURCE_NAMES[name]
 
 
-static func to_wallet(names: Array) -> Wallet:
+static func to_wallet(names: Variant) -> Wallet:
+	if names is String:
+		return Wallet.new([to_resource(names)])
+
 	var types: Array = []
 	for n in names:
 		types.append(to_resource(n))
